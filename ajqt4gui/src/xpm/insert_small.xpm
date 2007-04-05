@@ -1,0 +1,29 @@
+/* XPM */
+static const char *insert_small_xpm[] = {
+/* columns rows colors chars-per-pixel */
+"16 16 7 1",
+"  c black",
+". c #87852B",
+"X c #918F2E",
+"o c yellow",
+"O c #FFFFC0",
+"+ c gray100",
+"@ c None",
+/* pixels */
+"@@@@@@@@@@@@@@@@",
+"@@@@@@@@@@@@@@@@",
+"@@@@@@@@o@@@@@@@",
+"@@@o@@@@o.@@@o@@",
+"@@@@o.@Oo.@oo@@@",
+"@@@@oo.XoXOo.@@@",
+"@@@@@Oooooo.@@@@",
+"@@@..Xo+O+oXO@@@",
+"@@oooooO+Oooooo@",
+"@@@@OXo+O+oX..@@",
+"@@@@@.oooooO@@@@",
+"@@@@.oOXoX.oo@@@",
+"@@@@oo@.oO@.o@@@",
+"@@@o@@@.o@@@@o@@",
+"@@@@@@@@o@@@@@@@",
+"@@@@@@@@@@@@@@@@"
+};
