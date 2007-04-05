@@ -87,3 +87,5 @@ CONFIG += release \
           x11 \
           stl 
 TEMPLATE = app 
+QT += core gui network xml
+
