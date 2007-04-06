@@ -83,7 +83,7 @@ void QAjSearchWidget::insertSearch( QString id, QString searchText, QString runn
 
 }
 
-void QAjSearchWidget::insertSearchEntry( QString id, QString searchId, QString size, QString checksum )
+void QAjSearchWidget::insertSearchEntry( QString id, QString searchId, QString size, QString checksum, QStringList filenames )
 {
 	QAjSearchItem *searchItem = findSearch( searchId );
 	if( searchItem == NULL )
@@ -95,15 +95,28 @@ void QAjSearchWidget::insertSearchEntry( QString id, QString searchId, QString s
 	
 	if( searchItem->entriesCount < MAX_SEARCH_ENTRIES )
 	{
-		QAjSearchItem *searchEntryItem = searchItem->find( id.toULong() );
-		if( searchEntryItem == NULL )
+		if( searchItem->find( id.toULong() ) == NULL )
 		{
-			searchEntryItem = new QAjSearchItem( searchItem );
+			QAjSearchItem *searchEntryItem = new QAjSearchItem( searchItem );
 			searchItem->results[ id.toULong() ] = searchEntryItem;
 			searchEntries[ id.toULong() ] = searchEntryItem;
 			searchEntryItem->setText( ID_SEARCH_INDEX, id );
 			searchEntryItem->setText( SIZE_SEARCH_INDEX, QConvert::bytes(size) );
 			searchEntryItem->setText( CHECKSUM_SEARCH_INDEX, checksum );
+        QStringListIterator it(filenames);
+        while(it.hasNext())
+        {
+            QString filename = it.next();
+            if ( searchEntryItem->text( TEXT_SEARCH_INDEX ) == "" )
+            {
+                searchEntryItem->setText( TEXT_SEARCH_INDEX, filename);
+            }
+            else
+            {
+                QAjSearchItem *searchSubEntryItem = new QAjSearchItem( searchEntryItem );
+                searchSubEntryItem->setText( TEXT_SEARCH_INDEX, filename);
+            }
+        }
 			searchEntryItem->size = size;
 			searchItem->hits++;
 			searchItem->setText( COUNT_SEARCH_INDEX, QString::number(searchItem->hits) );
@@ -116,23 +129,6 @@ void QAjSearchWidget::insertSearchEntry( QString id, QString searchId, QString s
 		searchItem->setText( COUNT_SEARCH_INDEX, QString::number(searchItem->hits) );
 	}*/
 	
-}
-
-void QAjSearchWidget::insertFileName( QString id, QString fileName )
-{
-	QAjSearchItem *searchEntryItem = findSearchEntry( id );
-	if( searchEntryItem != NULL )
-	{
-		if( searchEntryItem->text( TEXT_SEARCH_INDEX ) == "" )
-		{
-			searchEntryItem->setText( TEXT_SEARCH_INDEX, fileName);
-		}
-		else
-		{
-			QAjSearchItem *searchSubEntryItem = new QAjSearchItem( searchEntryItem );
-			searchSubEntryItem->setText( TEXT_SEARCH_INDEX, fileName);
-		}
-	}
 }
 
 bool QAjSearchWidget::remove( QString id )

@@ -94,7 +94,8 @@ AjQtGUI::AjQtGUI( ) : QMainWindow( )
 	xml = new QXMLModule( this, ajTab );
 	connect( xml, SIGNAL( settingsReady( AjSettings ) ), this, SLOT( settingsReady( AjSettings ) ) );
 	connect( xml, SIGNAL( error( int ) ), this, SLOT( xmlError( int ) ) );
-	connect( xml, SIGNAL( done( bool ) ), this, SLOT( httpDone( bool ) ) );
+   connect( xml, SIGNAL( gotSession() ), this, SLOT( gotSession() ) );
+   connect( xml, SIGNAL( modifiedDone( ) ), ajTab->ajDownloadWidget, SLOT( updateView( ) ) );
 
 	serverHttp = new QHttp();
 	connect( serverHttp, SIGNAL( requestFinished ( int , bool ) ), this, SLOT( gotServer( int , bool ) ) );
@@ -116,8 +117,8 @@ AjQtGUI::AjQtGUI( ) : QMainWindow( )
 		}
 	}
 	xml->setPassword( password );
-	xml->setHost( lokalSettings.value("coreAddress", "localhost").toString(), lokalSettings.value("/progeln.de/AjQtGUI/xmlPort", 9851).toInt() );
-
+	xml->setHost( lokalSettings.value("coreAddress", "localhost").toString(),
+        lokalSettings.value("/progeln.de/AjQtGUI/xmlPort", 9851).toInt() );
 
 	ftp = new QFtp();
 
@@ -212,11 +213,9 @@ void AjQtGUI::initToolBars()
 
 	ajLinks->addAction( "download", this, SLOT( processLink() ) );
 
-	
+
 //	ajLinks->setStretchableWidget( ajAddressEdit );
 //	ajLinks->setHorizontallyStretchable( true );
-
-
 
 // DOWNLOAD TOOLBAR
 
@@ -356,8 +355,6 @@ void AjQtGUI::closeEvent( QCloseEvent* ce )
 
 void AjQtGUI::about()
 {
-	QWidget* k = NULL;
-	k->resize( 100, 10 );
 	QMessageBox::about( this, tr("AjQtGUI Info"),
 		tr("appleJuice Qt GUI 0.2\n\nhttp://ajqtgui.sf.net\nhttp://www.progeln.de"));
 }
@@ -373,16 +370,7 @@ void AjQtGUI::timerSlot()
 		return;
 	if( (!xml->hasPendingRequests()) )// && (!xml->isParsing()) )
 	{
-		if( ajTab->ajDownloadWidget->isVisible() )
-			xml->get( DOWNLOAD_XML );
-		else if( ajTab->ajUploadWidget->isVisible() )
-			xml->get( UPLOAD_XML );
-		else if( ajTab->ajSearchWidget->isVisible() )
-			xml->get( SEARCH_XML );
-		else if( ajTab->ajServerWidget->isVisible() )
-			xml->get( SERVER_XML );
-		else
-			xml->get( INFORMATION_XML );
+        xml->get( MODIFIED_XML );
 	}
 //	else
 //		printf("skipping\n");
@@ -482,12 +470,12 @@ bool AjQtGUI::login()
 	ajTab->ajSearchWidget->clear();
 	//xml->clearPendingRequests();
 	connected = false;
-	progressDialog = new QProgressDialog( tr("please wait") + "...", "cancel", 0, 6, this );
+/*	progressDialog = new QProgressDialog( tr("please wait") + "...", "cancel", 0, 6, this );
 	progressDialog->setMinimumDuration(0);
 	progressDialog->setValue( 0 );
-	connect( progressDialog, SIGNAL( canceled() ), qApp, SLOT( quit() ) );
+	connect( progressDialog, SIGNAL( canceled() ), qApp, SLOT( quit() ) );*/
 	qApp->processEvents();
-	xml->get( EVERYTHING_XML );
+   xml->get( GET_SESSION_XML );
 	return true;
 }
 
@@ -502,6 +490,7 @@ void AjQtGUI::setStatusBarText( QString downSpeed, QString upSpeed, QString cred
 
 void AjQtGUI::xmlError( int code )
 {
+    connected = false;
 	timer->stop();
 	partListTimer->stop();
 	disconnect( xml, SIGNAL( modifiedDone() ), this, SLOT( firstModified() ) );
@@ -532,25 +521,22 @@ void AjQtGUI::xmlError( int code )
 		lokalSettings.setValue( "xmlPort", loginDialog->getPort() );
 		if( lokalSettings.value( "savePassword", "false" ).toString() == "true" )
 			lokalSettings.setValue( "password",  password);
-		delete loginDialog;
 		login();
 	}
-	else
-	{
-		delete loginDialog;
-	}
+	delete loginDialog;
+}
+
+void AjQtGUI::gotSession()
+{
+    connected = true;
+    QSettings lokalSettings;
+    timer->setSingleShot( false );
+    timer->start( lokalSettings.value( "refresh", 3 ).toInt() * 1000 );
 }
 
 void AjQtGUI::httpDone( bool error )
 {
-	if( error )
-	{
-		if( ((QHttp*)xml)->error() != QHttp::Aborted )
-			xmlError( 0 );
-		connected = false;
-	}
-	else if( !connected )
-	{
+/*	{
 		xml->get( GET_SESSION_XML );
 		xml->get( EXTRA_INFORMATION_XML );
 		xml->get( GET_SETTINGS_XML );
@@ -571,12 +557,11 @@ void AjQtGUI::httpDone( bool error )
 		partListEnd = ajTab->ajDownloadWidget->getEndOfDownloads();
 		partListTimer->setSingleShot( false );
 		partListTimer->start( 3000 );
-	}
+	}*/
 }
 
 void AjQtGUI::showNetworkInfo()
 {
-	xml->get( INFORMATION_XML );
 	networkWidget->resize( 300, 200 );
 	networkWidget->exec();
 }
@@ -588,20 +573,12 @@ void AjQtGUI::powerChanged( const QString& )
 
 void AjQtGUI::applyPowerDownload()
 {
-	bool ok = true;
 	float value;
 	if( powerCheck->isChecked() )
 		value = powerSpin->value();
 	else
 		value = 1.0;
-	if( ok )
-	{
-		processSelected( SET_POWER_XML, "&Powerdownload=" + QConvert::power( value ) );
-	}
-	else
-	{
-		powerSpin->setValue( 2.2 );
-	}
+	processSelected( SET_POWER_XML, "&Powerdownload=" + QConvert::power( value ) );
 }
 
 void AjQtGUI::maxPowerDownload()
@@ -920,21 +897,6 @@ void AjQtGUI::exitCore()
 	}
 }
 
-void AjQtGUI::gotIds( QStringList ids )
-{
-	return;
-	QXMLModule *xmlSE = new QXMLModule(this, ajTab );
-	xmlSE->setIds( ids );
-	xmlSE->setHost( xml->getHost(), xml->getPort() );
-	xmlSE->setPasswordMD5( xml->getPasswordMD5() );
-
-	while( !ids.isEmpty() )
-	{
-		xmlSE->get( GET_OBJECT_XML, ids.front() );
-		ids.pop_front();
-	}
-}
-
 void AjQtGUI::clipboardChanged()
 {
 	clipboardButton->setToolTip( "process: " + qApp->clipboard()->text( QClipboard::Clipboard ) );
@@ -976,26 +938,26 @@ void AjQtGUI::findServer()
 
 void AjQtGUI::gotServer( int , bool error )
 {
-	if( error || ( serverHttp->bytesAvailable() <= 0 ) )
- 	{
-		QMessageBox::critical( NULL, "error", "Could not fetch server source." , QMessageBox::Abort, QMessageBox::Cancel );
-		printf("error fetching server\n");
-		return;
-	}
-
-	QString data( serverHttp->readAll() );
-	
-	int begin, start, end;
-	begin = 0;
-	QString link;
-	// while we found an ajfsp server link
-	while( ( start = data.indexOf( "ajfsp://server|", begin, Qt::CaseInsensitive ) ) != -1 )
-	{
-		end = data.indexOf( "/", start + 15 );
-		link = QString( QUrl::toPercentEncoding( data.mid(start, end - start +1) ) );
-		xml->set( PROCESS_LINK_XML, "&link=" + link );
-		begin = end;
-	}
+    if( error )
+    {
+        QMessageBox::critical( NULL, "error", "Could not fetch server source." , QMessageBox::Abort, QMessageBox::Cancel );
+    }
+    else
+    {
+        QString data( serverHttp->readAll() );
+        // TODO: use regular expressions
+        int begin, start, end;
+        begin = 0;
+        QString link;
+        // while we found an ajfsp server link
+        while( ( start = data.indexOf( "ajfsp://server|", begin, Qt::CaseInsensitive ) ) != -1 )
+        {
+            end = data.indexOf( "/", start + 15 );
+            link = QString( QUrl::toPercentEncoding( data.mid(start, end - start +1) ) );
+            xml->set( PROCESS_LINK_XML, "&link=" + link );
+            begin = end;
+        }
+    }
 }
 
 void AjQtGUI::reloadShare()

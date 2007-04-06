@@ -111,9 +111,7 @@ int QAjDownloadWidget::insertDownload(QString id, QString fileName, QString stat
 		downloads[ id.toULong() ] = downloadItem;
 		downloadItem->setText( ID_DOWN_INDEX, id );
 	}
-	
 	downloadItem->update( fileName, status, size, ready, power );
-	
 	return 0;
 }
 
@@ -121,7 +119,6 @@ int QAjDownloadWidget::insertDownload(QString id, QString fileName, QString stat
 int QAjDownloadWidget::insertUser(QString downloadId, QString id, QString fileName, QString speed, QString status, QString power, QString queuePos, QString os)
 {
 	QAjDownloadItem *downloadItem = findDownload( downloadId );
-
 	if( downloadItem == NULL )
 	{
 		downloadItem = new QAjDownloadItem( &descriptions, icons, this );
@@ -129,7 +126,6 @@ int QAjDownloadWidget::insertUser(QString downloadId, QString id, QString fileNa
 		downloadItem->setText( ID_DOWN_INDEX, downloadId );
 		downloadItem->setText( FILENAME_DOWN_INDEX, fileName );
 	}
-	
 	downloadItem->updateUser( id, fileName, speed, status, power, queuePos, os );
 	return 0;
 }
@@ -181,7 +177,6 @@ void QAjDownloadWidget::renameSlot()
 {
 	rename();
 }
-
 
 void QAjDownloadWidget::selectionChanged1(  bool oneSelected  )
 {
@@ -259,4 +254,3 @@ DownloadUser QAjDownloadWidget::findParent( QString id )
 	}
 	return du;
 }
-

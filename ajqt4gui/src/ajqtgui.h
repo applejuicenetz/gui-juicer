@@ -160,6 +160,7 @@ private slots:
 	void settingsReady( AjSettings settings );
 	void xmlError( int code );
 	void httpDone( bool error );
+   void gotSession();
 	
 	void processSelected( int xmlCode, QString para = "" );
 	void requestSelected( int xmlCode, QString para = "" );
@@ -190,8 +191,6 @@ private slots:
 	void downloadSelectionChanged( );
 	
 	void exitCore();
-	
-	void gotIds( QStringList ids );
 	
 	void clipboardChanged();
 	

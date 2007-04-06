@@ -41,10 +41,9 @@ public:
     QAjSearchWidget( QAjIcons *icons, QWidget *parent = 0, const char *name = 0);
 
     ~QAjSearchWidget();
-	 
+
 	void insertSearch( QString id, QString searchText, QString running, QString foundFiles );
-	void insertSearchEntry( QString id, QString searchId, QString size, QString checksum );
-	void insertFileName( QString id, QString fileName );
+	void insertSearchEntry( QString id, QString searchId, QString size, QString checksum, QStringList filenames );
 	bool remove( QString id );
 	QAjSearchItem* findSearch( QString id );
 	QAjSearchItem* findSearchEntry( QString id );

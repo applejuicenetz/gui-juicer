@@ -246,13 +246,14 @@ double QAjDownloadItem::calculateSpeed()
 
 void QAjDownloadItem::update( QString fileName, QString status, QString size, QString ready, QString power )
 {
+    
 	int newStatus = status.toInt();
 	if( this->size == 0.0 )
 	{
 		this->size = size.toDouble();//ULongLong();
 	}
 	double readyNew = ready.toDouble();//ULongLong();
-	
+
 	if( newStatus == DOWN_FINISHED )
 	{
 		readyNew = this->size;
@@ -349,7 +350,7 @@ void QAjDownloadItem::setFinishedPixmap(int newWidth, int newHeight, double newR
 	p.end();
 
 	setIcon( FINISHED_DOWN_INDEX, QIcon(*pixmap) );
-	setText(FINISHED_DOWN_INDEX, QString::number((int)(finished*100)) + "%" );
+	setText( FINISHED_DOWN_INDEX, QString::number((int)(finished*100)) + "%" );
 }
 
 QString QAjDownloadItem::getSourcesString()
@@ -376,14 +377,12 @@ void QAjDownloadItem::updateView()
 	{
 		if( getActiveSources() > 0 ) 
 		{
-			//setIcon( FILENAME_DOWN_INDEX, *icons->downloadLoadingIcon );
 			setTextColor( FILENAME_DOWN_INDEX, Qt::darkBlue );
 			setText( STATUS_DOWN_INDEX, description->getDownloadStatusDescription( DOWN_LOADING ) );
 			status = DOWN_LOADING;
 		}
 		else if( getActiveSources() <= 0 )
 		{
-			//setIcon( FILENAME_DOWN_INDEX, *icons->downloadSearchingIcon );
 			setTextColor( FILENAME_DOWN_INDEX, Qt::black );
 			setText( STATUS_DOWN_INDEX, description->getDownloadStatusDescription( DOWN_SEARCHING ) );
 			status = DOWN_SEARCHING;
@@ -519,22 +518,15 @@ void QAjDownloadItem::setParts( qulonglong size, list<QAjPart*>* partList )
 		to++;
 		
 	}
-	
-//	float ready = (double)bytesReady / (double)size * 100.0;
-//	float available = (double)bytesAvailable / (double)size * 100.0;
 	missing = (double)bytesMissing / (double)size * 100.0;
-	
 	if( missing < 1.0 && missing > 0.0 )
 		setText( MISSING_DOWN_INDEX, QString::number( missing, 'f', 1 ) + "%" );
 	else
 		setText( MISSING_DOWN_INDEX, QString::number( missing, 'f', 0 ) + "%" );
 	if( missing > 0.0 )
-		//setIcon( MISSING_DOWN_INDEX, *icons->warningSmallIcon );
 		setTextColor( MISSING_DOWN_INDEX, Qt::darkRed );
 	else
-		//setIcon( MISSING_DOWN_INDEX, *icons->dummyIcon );
 		setTextColor( MISSING_DOWN_INDEX, Qt::darkGreen );
-
 }
 
 bool QAjDownloadItem::operator<( const QTreeWidgetItem & other ) const
