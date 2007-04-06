@@ -19,7 +19,7 @@
  ***************************************************************************/
 #include "qajshareitem.h"
 
-QAjShareItem::QAjShareItem( QTreeWidget* parent ) : QAjItem( SHARE_TYPE, parent )
+QAjShareItem::QAjShareItem( QTreeWidget* parent ) : QAjItem( SHARE, parent )
 {
 	recursiv = "false";
 }

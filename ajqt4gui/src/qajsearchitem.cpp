@@ -19,7 +19,7 @@
  ***************************************************************************/
 #include "qajsearchitem.h"
 
-QAjSearchItem::QAjSearchItem( QTreeWidget* parent ) : QAjItem( SEARCH_TYPE, parent)
+QAjSearchItem::QAjSearchItem( QTreeWidget* parent ) : QAjItem( SEARCH, parent)
 {
 	hits = 0;
 	entriesCount = 0;
@@ -27,7 +27,7 @@ QAjSearchItem::QAjSearchItem( QTreeWidget* parent ) : QAjItem( SEARCH_TYPE, pare
 	setTextAlignment( COUNT_SEARCH_INDEX, Qt::AlignRight );
 }
 
-QAjSearchItem::QAjSearchItem( QTreeWidgetItem* parent ) : QAjItem( SEARCH_TYPE, parent)
+QAjSearchItem::QAjSearchItem( QTreeWidgetItem* parent ) : QAjItem( SEARCH, parent)
 {
 	hits = 0;
 	entriesCount = 0;

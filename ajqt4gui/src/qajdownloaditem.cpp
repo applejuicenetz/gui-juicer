@@ -20,7 +20,7 @@
 #include "qajdownloaditem.h"
 
 
-QAjDownloadItem::QAjDownloadItem( QString id, QAjDescription *description, QAjIcons *icons,  QAjListWidget *parent, const char *name) : QAjItem( DOWN_TYPE, parent )
+QAjDownloadItem::QAjDownloadItem( QString id, QAjDescription *description, QAjIcons *icons,  QAjListWidget *parent, const char *name) : QAjItem( DOWN, parent )
 {
     this->id = id;
 	int i;
@@ -45,15 +45,15 @@ QAjDownloadItem::QAjDownloadItem( QString id, QAjDescription *description, QAjIc
 	setText( SPEED_DOWN_INDEX, QString("0 b/s") );
 	setText( REMAIN_TIME_DOWN_INDEX, QString( "n.a." ) );
 
-	activeSourcesItem = new QAjItem( QAjItem::GENERIC_TYPE, this );
+	activeSourcesItem = new QAjItem( GENERIC, this );
 	activeSourcesItem->setText(FILENAME_DOWN_INDEX, QObject::tr("1. active"));
 	activeSourcesItem->setFlags( Qt::ItemIsEnabled );
 	
-	queuedSourcesItem = new QAjItem( QAjItem::GENERIC_TYPE, this );
+	queuedSourcesItem = new QAjItem( GENERIC, this );
 	queuedSourcesItem->setText(FILENAME_DOWN_INDEX, QObject::tr("2. queueing"));
 	queuedSourcesItem->setFlags( Qt::ItemIsEnabled );
 
-	otherSourcesItem = new QAjItem( QAjItem::GENERIC_TYPE, this );
+	otherSourcesItem = new QAjItem( GENERIC, this );
 	otherSourcesItem->setText(FILENAME_DOWN_INDEX, QObject::tr("3. others"));
 	otherSourcesItem->setFlags( Qt::ItemIsEnabled );
 
@@ -541,7 +541,7 @@ bool QAjDownloadItem::operator<( const QTreeWidgetItem & other ) const
 	Qt::SortOrder sortOrder = treeWidget()->header()->sortIndicatorOrder();
 	QMutexLocker(&((QAjListWidget*)treeWidget())->mutex);
 	QAjItem* item = (QAjItem*)&other;
-	if( item->getType() ==  QAjItem::DOWN_TYPE )
+	if( item->getType() ==  DOWN )
 	{
 		QAjDownloadItem* downItem = (QAjDownloadItem*)item;
 		switch( sortIndex )

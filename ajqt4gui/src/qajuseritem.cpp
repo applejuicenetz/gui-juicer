@@ -19,14 +19,14 @@
  ***************************************************************************/
 #include "qajuseritem.h"
 
-QAjUserItem::QAjUserItem( QAjDescription *description, QAjIcons *icons, QTreeWidget *parent ) : QAjItem(USER_TYPE, parent)
+QAjUserItem::QAjUserItem( QAjDescription *description, QAjIcons *icons, QTreeWidget *parent ) : QAjItem(USER, parent)
 {
 	this->description = description;
 	this->icons = icons;
 	init();
 }
 
-QAjUserItem::QAjUserItem( QAjDescription *description, QAjIcons *icons, QTreeWidgetItem *parent ) : QAjItem(USER_TYPE, parent)
+QAjUserItem::QAjUserItem( QAjDescription *description, QAjIcons *icons, QTreeWidgetItem *parent ) : QAjItem(USER, parent)
 {
 	this->description = description;
 	this->icons = icons;

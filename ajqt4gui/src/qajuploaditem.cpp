@@ -19,7 +19,7 @@
  ***************************************************************************/
 #include "qajuploaditem.h"
 
-QAjUploadItem::QAjUploadItem(QTreeWidgetItem *parent) : QAjItem(UP_TYPE, parent)
+QAjUploadItem::QAjUploadItem(QTreeWidgetItem *parent) : QAjItem(UP, parent)
 {
 }
 

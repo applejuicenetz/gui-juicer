@@ -56,7 +56,7 @@ void QAjFtpWidget::insert( QUrlInfo info )
 {
 	if( info.isFile() )
 	{
-		QAjItem *item = new QAjItem( -1, this );
+		QAjItem *item = new QAjItem( GENERIC, this );
 		item->setText( FILENAME_FTP_INDEX, info.name() );
 		item->setText( SIZE_FTP_INDEX, QConvert::bytes( (double)info.size() ) );
 		adjustSizeOfColumns();

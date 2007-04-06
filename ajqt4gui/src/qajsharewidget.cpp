@@ -121,7 +121,7 @@ void QAjShareWidget::insertDirList( QTreeWidgetItem* parent, QStringList* dirLis
 		return;
 	if( dirList->size() == 1 )
 	{
-		QAjItem* newItem = new QAjItem( QAjItem::SHARED_FILE_TYPE, parent );
+		QAjItem* newItem = new QAjItem( SHARED_FILE, parent );
 		newItem->setFlags( Qt::ItemIsEnabled );
 		parent->addChild( newItem );
 		newItem->setText( PATH_SHARE_INDEX, dirList->front() );
@@ -137,7 +137,7 @@ void QAjShareWidget::insertDirList( QTreeWidgetItem* parent, QStringList* dirLis
 		// nicht gefunden
 		if( currChild == NULL )
 		{
-			QAjItem* newItem = new QAjItem( QAjItem::SHARED_FILE_TYPE, parent );
+			QAjItem* newItem = new QAjItem( SHARED_FILE, parent );
 			newItem->setFlags( Qt::ItemIsEnabled );
 			parent->addChild( newItem );
 			newItem->setText( PATH_SHARE_INDEX, dirList->front() );
