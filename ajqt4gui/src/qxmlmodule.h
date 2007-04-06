@@ -34,10 +34,6 @@
 #include "md5class.h"
 #include "qconvert.h"
 
-#define GET_SESSION_XML 0
-#define GET_SETTINGS_XML 1
-#define MODIFIED_XML 2
-#define GET_OBJECT_XML 7
 #define SET_POWER_XML 8
 #define PROCESS_LINK_XML 9
 #define SET_SETTINGS_XML 10
@@ -76,7 +72,7 @@ public:
  
 	int setHost( const QString & hostname, quint16 portnumber = 80 );
 
-	int get( int getCode, QString param = "" );
+	int get( QString request, QString param = "" );
 	int set( int setCode, QString param = "" );
 	
    QString session;

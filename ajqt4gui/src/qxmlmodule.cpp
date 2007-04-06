@@ -43,56 +43,25 @@ int QXMLModule::setHost( const QString & hostname, quint16 portnumber )
     return QHttp::setHost( hostname, portnumber );
 }
 
-int QXMLModule::get( int getCode, QString param )
+int QXMLModule::get( QString request, QString param )
 {
-    QString get = "";
     QString partListId;
-    QString request;
-    switch (getCode)
+
+    if(request == "modified")
     {
-    case GET_SESSION_XML:
-        session = "";
-        request = "getsession";
-        break;
-    case GET_SETTINGS_XML:
-        request = "settings";
-        break;
-    case MODIFIED_XML:
-        request = "modified";
-        get = "&session=" + session + "&timestamp=" + timeStamp;
-        get += "&filter=down;uploads;user;server;search;informations";
-        break;
-    case GET_OBJECT_XML:
-        request = "getobject";
-        get = /*"&session=" + session +*/ "&Id=" + param;
-        break;
-    case SHARE_XML:
-        request = "share";
-        break;
-    case EXTRA_INFORMATION_XML:
-        request = "information";
-        break;
-    case DOWNLOAD_PARTLIST_XML:
-        request = "downloadpartlist";
-        partListId = param.split( "=" )[1];
-        get = param;
-        break;
-    case DOWNLOAD_PARTLIST_SIMPLE_XML:
-        request = "downloadpartlist";
-        partListId = param.split( "=" )[1];
-        get = param;
-        break;
+        param += "&session=" + session + "&timestamp=" + timeStamp;
+        param += "&filter=down;uploads;user;server;search;informations";
     }
 
-    int httpRequest = QHttp::get("/xml/" + request + ".xml?password=" + passwordMD5 + get);
+    int httpRequest = QHttp::get("/xml/" + request + ".xml?password=" + passwordMD5 + param);
 
-    if ( getCode == DOWNLOAD_PARTLIST_XML )
+    if(request == "downloadpartlist")
     {
-        partListRequests[ httpRequest ] = partListId;
-    }
-    else if ( getCode == DOWNLOAD_PARTLIST_SIMPLE_XML )
-    {
-        partListSimpleRequests[ httpRequest ] = partListId;
+        partListId = param.split( "=" )[1];
+        if(!param.contains("simple"))
+            partListRequests[ httpRequest ] = partListId;
+        else
+            partListSimpleRequests[ httpRequest ] = partListId;
     }
 
     return httpRequest;

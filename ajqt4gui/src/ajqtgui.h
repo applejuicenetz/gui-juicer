@@ -161,7 +161,7 @@ private slots:
    void gotSession();
 	
 	void processSelected( int xmlCode, QString para = "" );
-	void requestSelected( int xmlCode, QString para = "" );
+	void requestSelected( QString request, QString para = "" );
 
 	void powerChanged(const QString& );
 	void applyPowerDownload();

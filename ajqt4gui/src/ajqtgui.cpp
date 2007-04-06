@@ -367,14 +367,12 @@ void AjQtGUI::aboutQt()
 
 void AjQtGUI::timerSlot()
 {
-	if( xml->session == "" )
-		return;
-	if( (!xml->hasPendingRequests()) )// && (!xml->isParsing()) )
-	{
-        xml->get( MODIFIED_XML );
-	}
-//	else
-//		printf("skipping\n");
+    if( xml->session == "" )
+        return;
+    if( (!xml->hasPendingRequests()) )
+    {
+        xml->get( "modified" );
+    }
 }
 
 void AjQtGUI::partListTimerSlot()
@@ -382,14 +380,14 @@ void AjQtGUI::partListTimerSlot()
     QString id = ajTab->ajDownloadWidget->getNextIdRoundRobin();
     if(!id.isEmpty())
     {
-        xml->get( DOWNLOAD_PARTLIST_SIMPLE_XML, "&id=" + id);
+        xml->get( "downloadpartlist", "&simple&id=" + id);
         ajTab->ajDownloadWidget->doItemsLayout();
     }
 }
 
 void AjQtGUI::showOptions()
 {
-	xml->get( GET_SETTINGS_XML );
+	xml->get( "settings" );
 	if( optionsDialog->exec() == QDialog::Accepted )
 	{
 		// save options
@@ -468,7 +466,7 @@ bool AjQtGUI::login()
 	progressDialog->setValue( 0 );
 	connect( progressDialog, SIGNAL( canceled() ), qApp, SLOT( quit() ) );
 	qApp->processEvents();
-   xml->get( GET_SESSION_XML );
+   xml->get( "getsession" );
 	return true;
 }
 
@@ -595,13 +593,13 @@ void AjQtGUI::processSelected( int xmlCode, QString para )
 	}
 }
 
-void AjQtGUI::requestSelected( int xmlCode, QString para )
+void AjQtGUI::requestSelected( QString request, QString para )
 {
 	QList<QTreeWidgetItem *>  selectedItems = ajTab->ajDownloadWidget->selectedItems();
 	int i;
 	for( i=0; i<selectedItems.size(); i++ )
 	{
-		xml->get( xmlCode, para + "&id=" + selectedItems.at(i)->text(ID_DOWN_INDEX) );
+		xml->get( request, para + "&id=" + selectedItems.at(i)->text(ID_DOWN_INDEX) );
 	}
 }
 
@@ -660,7 +658,7 @@ void AjQtGUI::resumeDownload()
 
 void AjQtGUI::partListRequest( )
 {
-	requestSelected( DOWNLOAD_PARTLIST_XML );
+	requestSelected( "downloadpartlist" );
 }
 
 void AjQtGUI::renameDownload()
@@ -750,7 +748,7 @@ void AjQtGUI::applyShare()
 	}
 	sharesString = "&countshares=" + QString::number( cnt-1 );
 	xml->set( SET_SETTINGS_XML, sharesString );
-	xml->get( GET_SETTINGS_XML );
+	xml->get( "settings" );
 	ajTab->ajShareWidget->setChanged( false );
 	applyShareButton->setDisabled( true );
 }
@@ -957,8 +955,8 @@ void AjQtGUI::reloadShare()
 {
 	ajTab->ajShareWidget->clearShares();
 	ajTab->ajShareWidget->clear();
-	xml->get( GET_SETTINGS_XML );
-	xml->get( SHARE_XML );
+	xml->get( "settings" );
+	xml->get( "share" );
 }
 
 void AjQtGUI::setCoreVersion( QString version )
