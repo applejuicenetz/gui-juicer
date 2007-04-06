@@ -159,8 +159,6 @@ AjQtGUI::AjQtGUI( ) : QMainWindow( )
 	connect( ajTab->ajShareWidget, SIGNAL( remove() ), this, SLOT( removeShare() ) );
 	connect( ajTab->ajShareWidget, SIGNAL( reload() ), this, SLOT( reloadShare() ) );
 
-	connect( xml, SIGNAL( gotIds( QStringList) ) , this, SLOT( gotIds( QStringList ) ) );
-
 	connect( ftp, SIGNAL( listInfo ( QUrlInfo ) ), this->ajTab->ajFtpWidget, SLOT( insert( QUrlInfo ) ) );
 	connect( ajTab->ajFtpWidget, SIGNAL( itemDoubleClicked ( QTreeWidgetItem*, int ) ), this, SLOT( storeFtp( ) ) );
 	
