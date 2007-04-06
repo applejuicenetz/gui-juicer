@@ -23,7 +23,6 @@ HEADERS += ajqtgui.h \
            qajnetworkwidget.h \
            qajoptionsdialog.h \
            qajoptionswidget.h \
-           qajpart.h \
            qajpartlistwidget.h \
            qajpartswidget.h \
            qajsearchitem.h \
@@ -61,7 +60,6 @@ SOURCES += ajqtgui.cpp \
            qajnetworkwidget.cpp \
            qajoptionsdialog.cpp \
            qajoptionswidget.cpp \
-           qajpart.cpp \
            qajpartlistwidget.cpp \
            qajpartswidget.cpp \
            qajsearchitem.cpp \
