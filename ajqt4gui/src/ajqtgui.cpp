@@ -429,7 +429,7 @@ void AjQtGUI::showOptions()
 		settingsString += "&Temporarydirectory=" + settings.tempDir;
 		settingsString += "&MaxNewConnectionsPerTurn=" + settings.maxNewCon;
 		printf( "%s\n", settingsString.toAscii().data() );
-		xml->set( SET_SETTINGS_XML, settingsString );
+		xml->set( "setsettings", settingsString );
 	}
 }
 
@@ -569,7 +569,7 @@ void AjQtGUI::applyPowerDownload()
 		value = powerSpin->value();
 	else
 		value = 1.0;
-	processSelected( SET_POWER_XML, "&Powerdownload=" + QConvert::power( value ) );
+	processSelected( "setpowerdownload", "&Powerdownload=" + QConvert::power( value ) );
 }
 
 void AjQtGUI::maxPowerDownload()
@@ -583,13 +583,13 @@ void AjQtGUI::maxPowerDownload()
 // 	}
 }
 
-void AjQtGUI::processSelected( int xmlCode, QString para )
+void AjQtGUI::processSelected( QString request, QString para )
 {
 	QList<QTreeWidgetItem *>  selectedItems = ajTab->ajDownloadWidget->selectedItems();
 	int i;
 	for( i=0; i<selectedItems.size(); i++ )
 	{
-		xml->set( xmlCode, para + "&id=" + selectedItems.at(i)->text(ID_DOWN_INDEX) );
+		xml->set( request, para + "&id=" + selectedItems.at(i)->text(ID_DOWN_INDEX) );
 	}
 }
 
@@ -606,14 +606,14 @@ void AjQtGUI::requestSelected( QString request, QString para )
 void AjQtGUI::processLink()
 {
 	QString link = QString( QUrl::toPercentEncoding( ajAddressEdit->text().trimmed() ) );
-	xml->set( PROCESS_LINK_XML, "&link=" + link );
+	xml->set( "processlink", "&link=" + link );
 	ajAddressEdit->clear();
 }
 
 void AjQtGUI::processClipboard()
 {
 	QString link = QString( QUrl::toPercentEncoding( qApp->clipboard()->text( QClipboard::Clipboard ).trimmed() ) );
-	xml->set( PROCESS_LINK_XML, "&link=" + link );
+	xml->set( "processlink", "&link=" + link );
 }
 
 void AjQtGUI::downloadSearch()
@@ -630,7 +630,7 @@ void AjQtGUI::downloadSearch()
 			link += "|" + searchItem->text( CHECKSUM_SEARCH_INDEX );
 			link += "|" + searchItem->size + "/";
 			link = QString( QUrl::toPercentEncoding(link) );
-			xml->set( PROCESS_LINK_XML, "&link=" +link );
+			xml->set( "processlink", "&link=" +link );
 		}
 	}
 }
@@ -639,21 +639,21 @@ void AjQtGUI::cancelDownload()
 {
 	if( QMessageBox::question( this, "Confirm", "Do you realy want to cancel this download(s)?", QMessageBox::No, QMessageBox::Yes ) == QMessageBox::Yes )
 	{
-		processSelected( CANCEL_DOWNLOAD_XML );
+		processSelected( "canceldownload" );
 	}
 }
 
 void AjQtGUI::cleanDownload()
 {
-	xml->set( CLEAN_DOWNLOAD_XML );
+	xml->set( "cleandownloadlist" );
 }
 void AjQtGUI::pauseDownload()
 {
-	processSelected( PAUSE_DOWNLOAD_XML );
+	processSelected( "pausedownload" );
 }
 void AjQtGUI::resumeDownload()
 {
-	processSelected( RESUME_DOWNLOAD_XML );
+	processSelected( "resumedownload" );
 }
 
 void AjQtGUI::partListRequest( )
@@ -675,7 +675,7 @@ void AjQtGUI::renameDownload()
 			newFilename = QString( QUrl::toPercentEncoding( newFilename ) );
 			if( ok && !newFilename.isEmpty() )
 			{
-				xml->set( RENAME_DOWNLOAD_XML, "&id=" + selectedItems.at(i)->text( ID_DOWN_INDEX ) + "&name=" + newFilename );
+				xml->set( "renamedownload", "&id=" + selectedItems.at(i)->text( ID_DOWN_INDEX ) + "&name=" + newFilename );
 			}
 	}
 
@@ -688,7 +688,7 @@ void AjQtGUI::removeServer()
 	int i;
 	for( i=0; i<selectedItems.size(); i++ )
 	{
-		xml->set( REMOVE_SERVER_XML, "&id=" + selectedItems.at(i)->text(ID_SERVER_INDEX) );
+		xml->set( "removeserver", "&id=" + selectedItems.at(i)->text(ID_SERVER_INDEX) );
 	}
 }
 
@@ -697,7 +697,7 @@ void AjQtGUI::connectServer()
 	QList<QTreeWidgetItem *>  selectedItems = ajTab->ajServerWidget->selectedItems();
 	if( ! selectedItems.empty() )
 	{
-		xml->set( CONNECT_SERVER_XML, "&id=" + selectedItems.first()->text(ID_SERVER_INDEX) );
+		xml->set( "serverlogin", "&id=" + selectedItems.first()->text(ID_SERVER_INDEX) );
 	}
 }
 
@@ -747,7 +747,7 @@ void AjQtGUI::applyShare()
 		}
 	}
 	sharesString = "&countshares=" + QString::number( cnt-1 );
-	xml->set( SET_SETTINGS_XML, sharesString );
+	xml->set( "setsettings", sharesString );
 	xml->get( "settings" );
 	ajTab->ajShareWidget->setChanged( false );
 	applyShareButton->setDisabled( true );
@@ -884,7 +884,7 @@ void AjQtGUI::exitCore()
 {
 	if( QMessageBox::question( this, "Confirm", "Do you realy want to exit the core?\n All your credits will be lost!", QMessageBox::No, QMessageBox::Yes) == QMessageBox::Yes)
 	{
-		xml->set( EXIT_CORE_XML );
+		xml->set( "exitcore" );
 	}
 }
 
@@ -896,7 +896,7 @@ void AjQtGUI::clipboardChanged()
 void AjQtGUI::search()
 {
 	QString text( QUrl::toPercentEncoding( ajSearchEdit->text() ) );
-	xml->set( SEARCH_XML, "&search=" + text );
+	xml->set( "search", "&search=" + text );
 	ajSearchEdit->clear();
 }
 
@@ -906,7 +906,7 @@ void AjQtGUI::cancelSearch()
 	int i;
 	for( i=0; i<selectedItems.size(); i++ )
 	{
-		xml->set( CANCEL_SEARCH_XML, "&id=" + selectedItems.at(i)->text( ID_SEARCH_INDEX ));
+		xml->set( "cancelsearch", "&id=" + selectedItems.at(i)->text( ID_SEARCH_INDEX ));
 	}
 }
 
@@ -945,7 +945,7 @@ void AjQtGUI::gotServer( int , bool error )
         {
             end = data.indexOf( "/", start + 15 );
             link = QString( QUrl::toPercentEncoding( data.mid(start, end - start +1) ) );
-            xml->set( PROCESS_LINK_XML, "&link=" + link );
+            xml->set( "processlink", "&link=" + link );
             begin = end;
         }
     }
@@ -1000,7 +1000,7 @@ void AjQtGUI::firstModified()
 void AjQtGUI::linkServerLine( QString line )
 {
 	line = QString( QUrl::toPercentEncoding( line.trimmed() ) );
-	xml->set( PROCESS_LINK_XML, "&link=" + line );
+	xml->set( "processlink", "&link=" + line );
 }
 
 void AjQtGUI::processQueuedLinks()
@@ -1010,7 +1010,7 @@ void AjQtGUI::processQueuedLinks()
 		while( queuedLinks->size() > 0 )
 		{
 			QString link = QString( QUrl::toPercentEncoding( queuedLinks->front() ) );
-			xml->set( PROCESS_LINK_XML, "&link=" + link );
+			xml->set( "processlink", "&link=" + link );
 			queuedLinks->pop_front();
 		}
 	}

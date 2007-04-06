@@ -45,8 +45,6 @@ int QXMLModule::setHost( const QString & hostname, quint16 portnumber )
 
 int QXMLModule::get( QString request, QString param )
 {
-    QString partListId;
-
     if(request == "modified")
     {
         param += "&session=" + session + "&timestamp=" + timeStamp;
@@ -57,20 +55,18 @@ int QXMLModule::get( QString request, QString param )
 
     if(request == "downloadpartlist")
     {
-        partListId = param.split( "=" )[1];
         if(!param.contains("simple"))
-            partListRequests[ httpRequest ] = partListId;
+            partListRequests[ httpRequest ] = param.split( "=" )[1];
         else
-            partListSimpleRequests[ httpRequest ] = partListId;
+            partListSimpleRequests[ httpRequest ] = param.split( "=" )[1];
     }
 
     return httpRequest;
 }
 
-int QXMLModule::set( int setCode, QString param )
+int QXMLModule::set( QString request, QString param )
 {
-    QString request;
-    switch ( setCode )
+/*    switch ( setCode )
     {
     case SET_POWER_XML:
         request = "setpowerdownload";
@@ -111,7 +107,7 @@ int QXMLModule::set( int setCode, QString param )
     case CANCEL_SEARCH_XML:
         request = "cancelsearch";
         break;
-    }
+    }*/
     return QHttp::get( "/function/" + request + "?password=" + passwordMD5 + param );
 }
 

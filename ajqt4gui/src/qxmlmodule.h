@@ -34,26 +34,6 @@
 #include "md5class.h"
 #include "qconvert.h"
 
-#define SET_POWER_XML 8
-#define PROCESS_LINK_XML 9
-#define SET_SETTINGS_XML 10
-#define USER_XML 11
-#define CANCEL_DOWNLOAD_XML 12
-#define CLEAN_DOWNLOAD_XML 13
-#define PAUSE_DOWNLOAD_XML 14
-#define RESUME_DOWNLOAD_XML 15
-#define REMOVE_SERVER_XML 16
-#define CONNECT_SERVER_XML 17
-#define SEARCH_XML 18
-#define CANCEL_SEARCH_XML 19
-#define EXIT_CORE_XML 20
-
-#define SHARE_XML 23
-#define EXTRA_INFORMATION_XML 24
-#define DOWNLOAD_PARTLIST_XML 25
-#define DOWNLOAD_PARTLIST_SIMPLE_XML 26
-#define RENAME_DOWNLOAD_XML 27
-
 /**
 @author Matthias Reif
 */
@@ -73,7 +53,7 @@ public:
 	int setHost( const QString & hostname, quint16 portnumber = 80 );
 
 	int get( QString request, QString param = "" );
-	int set( int setCode, QString param = "" );
+	int set( QString request, QString param = "" );
 	
    QString session;
 

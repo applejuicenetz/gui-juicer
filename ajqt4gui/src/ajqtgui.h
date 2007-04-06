@@ -160,7 +160,7 @@ private slots:
 	void httpDone( bool error );
    void gotSession();
 	
-	void processSelected( int xmlCode, QString para = "" );
+	void processSelected( QString request, QString para = "" );
 	void requestSelected( QString request, QString para = "" );
 
 	void powerChanged(const QString& );
