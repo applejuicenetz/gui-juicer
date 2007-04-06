@@ -60,7 +60,7 @@ protected:
 	bool sizeAdjusted;
 
 private slots:
-	void selectionChanged1();
+	void selectionChanged();
 	void contextMenuRequested( const QPoint &pos );
 signals:
 	void newSelection( bool oneSelected );

@@ -63,8 +63,7 @@ QAjServerWidget::QAjServerWidget( QAjIcons *icons, QWidget *parent, const char *
 	popup->addAction( *icons->insertSmallIcon, "find new", this, SLOT(findSlot()) );
 	removeId->setEnabled( false );
 	connectId->setEnabled( false );
-	
-	QObject::connect( this, SIGNAL( selectionChanged() ) , this, SLOT(selectionChanged() ) );
+    QObject::connect( this, SIGNAL( newSelection( bool ) ) , this, SLOT( selectionChanged1( bool ) ) );
 }
 
 
@@ -145,9 +144,8 @@ void QAjServerWidget::connectedWith( QString id )
 	connectedWithId = id;
 }
 
-void QAjServerWidget::selectionChanged()
+void QAjServerWidget::selectionChanged1( bool oneSelected )
 {
-	bool oneSelected = isOneSelected();
 	removeId->setEnabled( oneSelected );
 	connectId->setEnabled( oneSelected );
 }

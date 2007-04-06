@@ -36,7 +36,7 @@ QAjListWidget::QAjListWidget( QAjIcons *icons, int idIndex, QWidget *parent, con
 	setSortingEnabled( true );
 	header()->setStretchLastSection( false );
 	
-	connect( this, SIGNAL( itemSelectionChanged() ) , this, SLOT( selectionChanged1() ) );
+	connect( this, SIGNAL( itemSelectionChanged() ) , this, SLOT( selectionChanged() ) );
 	connect( this, SIGNAL( customContextMenuRequested( const QPoint & ) ), this, SLOT( contextMenuRequested( const QPoint & ) ) );
 }
 
@@ -46,7 +46,7 @@ QAjListWidget::~QAjListWidget()
 	delete popup;
 }
 
-void QAjListWidget::selectionChanged1()
+void QAjListWidget::selectionChanged()
 {
 	newSelection( isOneSelected() );
 }

@@ -53,7 +53,7 @@ private:
 	map<unsigned long, QTreeWidgetItem*>::iterator serversIt;
 
 public slots:
-	void selectionChanged();
+	void selectionChanged1( bool isOneSelected );
 	void removeSlot();
 	void connectSlot();
 	void findSlot();
