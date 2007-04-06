@@ -225,9 +225,17 @@ void QXMLModule::requestFinished( int id, bool error )
                     {
                         handleSearchEntry( e );
                     }
+                    else if ( e.tagName() == "part" )
+                    {
+                        handlePart( e );
+                    }
+                    else if ( e.tagName() == "fileinformation" )
+                    {
+                        partsSize = e.attribute("filesize").toULongLong();
+                    }
                     else
                     {
-                        cout << "unhandled: " << e.tagName().toLatin1().data() << endl;
+                        cerr << "unhandled: " << e.tagName().toLatin1().data() << endl;
                     }
                 }
             }
@@ -239,35 +247,9 @@ void QXMLModule::requestFinished( int id, bool error )
         }
         else
         {
-            cout << "unhandled: " << root.tagName().toLatin1().data() << endl;
+            cerr << "unhandled: " << root.tagName().toLatin1().data() << endl;
         }
-
-        // process part list request result
-        if ( partList.size() > 0 )
-        {
-            map<int, QString>::iterator part = partListRequests.find( id );
-
-            if ( part != partListRequests.end() )
-            {
-                QAjDownloadItem* item = ajTab->ajDownloadWidget->findDownload( part->second );
-                if ( item != NULL )
-                    item->getPartListWidget()->update( partsSize, &partList );
-
-                partListRequests.erase( part );
-            }
-            else
-            {
-                part = partListSimpleRequests.find( id );
-                if ( part != partListSimpleRequests.end() )
-                {
-                    QAjDownloadItem* item = ajTab->ajDownloadWidget->findDownload( part->second );
-                    if ( item != NULL )
-                        item->setParts( partsSize, &partList );
-                }
-            }
-            partList.clear();
-        }
-
+        handlePartList(id);
     }
 }
 
@@ -513,4 +495,46 @@ void QXMLModule::httpDone(bool error)
     if(error) {
         this->error(-1);
     }
+}
+
+
+/*!
+    \fn QXMLModule::handlePart( QDomElement e )
+ */
+void QXMLModule::handlePart( QDomElement e )
+{
+    Part part;
+    part.type = e.attribute("type").toInt();
+    part.fromPosition = e.attribute("fromposition").toULongLong();
+    partList.push_back(part);
+}
+
+
+/*!
+    \fn QXMLModule::handlePartList( int id )
+ */
+void QXMLModule::handlePartList( int id )
+{
+    if ( partList.size() > 0 )
+    {
+        if( partListRequests.contains( id ) )
+        {
+            QAjDownloadItem* item = ajTab->ajDownloadWidget->findDownload( partListRequests[id] );
+            if( item != NULL )
+            {
+                item->getPartListWidget()->update( partsSize, partList );
+            }
+            partListRequests.remove( id );
+        }
+        else if( partListSimpleRequests.contains( id ) )
+        {
+            QAjDownloadItem* item = ajTab->ajDownloadWidget->findDownload( partListSimpleRequests[id] );
+            if ( item != NULL )
+            {
+                item->setParts( partsSize, partList );
+            }
+        }
+        partList.clear();
+    }
+
 }
