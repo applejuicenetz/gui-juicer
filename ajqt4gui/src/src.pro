@@ -39,10 +39,9 @@ HEADERS += ajqtgui.h \
            qajuploadwidget.h \
            qajuseritem.h \
            qconvert.h \
-           qxmlhandler.h \
            qxmlmodule.h \
            types.h \
-           ui_qajoptionsdialogbase.h 
+           ui_qajoptionsdialogbase.h
 SOURCES += ajqtgui.cpp \
            ftp.cpp \
            main.cpp \
@@ -78,8 +77,7 @@ SOURCES += ajqtgui.cpp \
            qajuploadwidget.cpp \
            qajuseritem.cpp \
            qconvert.cpp \
-           qxmlhandler.cpp \
-           qxmlmodule.cpp 
+           qxmlmodule.cpp
 TARGET = ../bin/ajqt4gui 
 CONFIG += release \
           warn_on \
