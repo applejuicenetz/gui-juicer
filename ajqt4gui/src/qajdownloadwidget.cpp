@@ -237,14 +237,9 @@ DownloadUser QAjDownloadWidget::findParent( QString id )
  */
 QString QAjDownloadWidget::getNextIdRoundRobin()
 {
-    if(downloadsList.size() > 0)
-    {
-        currIdRoundRobin ++;
-        currIdRoundRobin %= downloadsList.size();
-        return downloadsList[currIdRoundRobin]->id;
-    }
-    else
-    {
+    if(downloadsList.isEmpty())
         return "";
-    }
+    currIdRoundRobin ++;
+    currIdRoundRobin %= downloadsList.size();
+    return downloadsList[currIdRoundRobin]->id;
 }
