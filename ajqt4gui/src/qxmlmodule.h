@@ -20,21 +20,19 @@
 #ifndef QXMLMODULE_H
 #define QXMLMODULE_H
 
-using namespace std;
-#include <list>
-
 #include <QObject>
 #include <QtXml>
 #include <QHttp>
 #include <QIODevice>
 #include <QStringList>
+#include <QLinkedList>
+#include <QHash>
+#include <QDomDocument>
 
 #include "qajtab.h"
 #include "types.h"
 #include "md5class.h"
 #include "qconvert.h"
-
-#include "qajpart.h"
 
 #define GET_SESSION_XML 0
 #define GET_SETTINGS_XML 1
@@ -60,10 +58,6 @@ using namespace std;
 #define DOWNLOAD_PARTLIST_SIMPLE_XML 26
 #define RENAME_DOWNLOAD_XML 27
 
-#define SELF_DESTRUCT true
-
-#include <QDomDocument>
-
 /**
 @author Matthias Reif
 */
@@ -80,21 +74,16 @@ public:
 
 	~QXMLModule();
  
-	int setHost ( const QString & hostname, quint16 portnumber = 80 );
+	int setHost( const QString & hostname, quint16 portnumber = 80 );
 
 	int get( int getCode, QString param = "" );
 	int set( int setCode, QString param = "" );
 	
    QString session;
 
-//	void saveSettings( AjSettings settings );
 	void setPassword( QString password );
-	void setPasswordMD5( QString passwordMD5_ ) { passwordMD5 = passwordMD5_; }
+	void setPasswordMD5( QString passwordMD5 ) { this->passwordMD5 = passwordMD5; }
 	
-	QString getPasswordMD5( ) { return passwordMD5; }
-	QString getHost( ) { return host; }
-	quint16 getPort( ) { return port; }
-
 protected:
 	QString host;
 	quint16 port;
@@ -106,10 +95,10 @@ protected:
 
     QDomDocument doc;
 
-	list<QAjPart*> partList;
+	QLinkedList<Part> partList;
 	qulonglong partsSize;
-	map<int, QString> partListRequests;
-	map<int, QString> partListSimpleRequests;
+	QHash<int, QString> partListRequests;
+	QHash<int, QString> partListSimpleRequests;
 
 public slots:
     void responseHeaderReceived ( const QHttpResponseHeader & resp );
@@ -133,6 +122,8 @@ private:
     void handleSearchEntry( QDomElement e );
     void handleGeneralInformation( QDomNode node );
     void handleRemoved( QDomElement e );
+    void handlePart( QDomElement e );
+    void handlePartList( int id );
 };
 
 #endif
