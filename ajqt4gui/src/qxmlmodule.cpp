@@ -66,48 +66,6 @@ int QXMLModule::get( QString request, QString param )
 
 int QXMLModule::set( QString request, QString param )
 {
-/*    switch ( setCode )
-    {
-    case SET_POWER_XML:
-        request = "setpowerdownload";
-        break;
-    case PROCESS_LINK_XML:
-        request = "processlink";
-        break;
-    case SET_SETTINGS_XML:
-        request = "setsettings";
-        break;
-    case CANCEL_DOWNLOAD_XML:
-        request = "canceldownload";
-        break;
-    case CLEAN_DOWNLOAD_XML:
-        request = "cleandownloadlist";
-        break;
-    case PAUSE_DOWNLOAD_XML:
-        request = "pausedownload";
-        break;
-    case RESUME_DOWNLOAD_XML:
-        request = "resumedownload";
-        break;
-    case RENAME_DOWNLOAD_XML:
-        request = "renamedownload";
-        break;
-    case REMOVE_SERVER_XML:
-        request = "removeserver";
-        break;
-    case CONNECT_SERVER_XML:
-        request = "serverlogin";
-        break;
-    case EXIT_CORE_XML:
-        request = "exitcore";
-        break;
-    case SEARCH_XML:
-        request = "search";
-        break;
-    case CANCEL_SEARCH_XML:
-        request = "cancelsearch";
-        break;
-    }*/
     return QHttp::get( "/function/" + request + "?password=" + passwordMD5 + param );
 }
 
@@ -221,7 +179,7 @@ void QXMLModule::requestFinished( int id, bool error )
 
 void QXMLModule::responseHeaderReceived ( const QHttpResponseHeader & resp )
 {
-    if ( resp.statusCode() != 200 )
+    if( resp.statusCode() != 200 )
     {
         error( resp.statusCode() );
     }
@@ -501,5 +459,4 @@ void QXMLModule::handlePartList( int id )
         }
         partList.clear();
     }
-
 }
