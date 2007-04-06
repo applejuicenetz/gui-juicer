@@ -24,7 +24,7 @@
 
 #include <QTreeWidget>
 
-typedef enum { DOWN, UP, USER, SEARCH, SHARE, SHARED_FILE, GENERIC } ItemType;
+typedef enum { DOWN, UP, USER, SEARCH, SHARE, SHARED_FILE, GENERIC } AjItemType;
 
 /**
 @author Matthias Reif
@@ -32,8 +32,8 @@ typedef enum { DOWN, UP, USER, SEARCH, SHARE, SHARED_FILE, GENERIC } ItemType;
 class QAjItem : public QTreeWidgetItem
 {
 public:
-	QAjItem( ItemType type, QTreeWidget *parent = 0, const char *name = 0 );
-	QAjItem( ItemType type, QTreeWidgetItem *parent = 0, const char *name = 0 );
+	QAjItem( AjItemType type, QTreeWidget *parent = 0, const char *name = 0 );
+	QAjItem( AjItemType type, QTreeWidgetItem *parent = 0, const char *name = 0 );
 
 	virtual ~QAjItem();
 	
@@ -44,7 +44,7 @@ public:
 //	virtual bool operator<( const QAjItem & other ){ return false; };
 
 protected:
-    ItemType type;
+    AjItemType type;
     int status;
 };
 

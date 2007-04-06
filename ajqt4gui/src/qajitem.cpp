@@ -19,12 +19,12 @@
  ***************************************************************************/
 #include "qajitem.h"
 
-QAjItem::QAjItem(ItemType type, QTreeWidget *parent, const char *name) : QTreeWidgetItem( parent )
+QAjItem::QAjItem( AjItemType type, QTreeWidget *parent, const char *name ) : QTreeWidgetItem( parent )
 {
 	this->type = type;
 	status = -1;
 }
-QAjItem::QAjItem(ItemType type, QTreeWidgetItem *parent, const char *name) : QTreeWidgetItem( parent )
+QAjItem::QAjItem( AjItemType type, QTreeWidgetItem *parent, const char *name ) : QTreeWidgetItem( parent )
 {
 	this->type = type;
 	status = -1;
