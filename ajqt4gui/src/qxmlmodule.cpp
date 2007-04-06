@@ -35,9 +35,7 @@ QXMLModule::QXMLModule(AjQtGUI *ajQtGUI, QAjTab *ajTab, QObject *parent, const c
 	this->ajQtGUI = ajQtGUI;
 	this->ajTab = ajTab;
 	objectCnt = -1;
-	int i;
-	for(i=0; i<MAX_ACTIVE; i++)
-		active[i] = false;
+	bzero(active, sizeof(active));
 	name = "dummy";
 	currSearchEntryId = "";
 	firstDoc = true;
@@ -49,7 +47,6 @@ QXMLModule::QXMLModule(AjQtGUI *ajQtGUI, QAjTab *ajTab, QObject *parent, const c
 	simpleReader->setContentHandler(handler);
 	
 	buffer = new QBuffer();
-	buffer->close();
 	buffer->open( QIODevice::ReadWrite );
 	
 	QObject::connect(this, SIGNAL(readyRead(const QHttpResponseHeader&)), this, SLOT(readyRead( const QHttpResponseHeader&)));
@@ -130,11 +127,6 @@ bool QXMLModule::startElement( const QString& s1, const QString& s2, const QStri
 			fileName = fileName.section( '/', -1, -1 );
 			ajTab->ajUploadWidget->setFileName( id, fileName );
 		}
-		else if( active[SETTINGS] )
-		{
-			ajTab->ajShareWidget->clearShares();
-//			ajTab->ajShareWidget->clear();
-		}
 		if( active[SHARES] )
 		{
 			QString id = attr.value("id");
@@ -155,11 +147,6 @@ bool QXMLModule::startElement( const QString& s1, const QString& s2, const QStri
 	else if( name == "removed" )
 	{
 		active[REMOVED] = true;
-	}
-
-	else if( name == "settings" )
-	{
-		active[SETTINGS] = true;
 	}
 
 	else if( name == "ids" )
@@ -218,7 +205,7 @@ bool QXMLModule::startElement( const QString& s1, const QString& s2, const QStri
 		ajTab->ajDownloadWidget->insertUser(downloadId, id, fileName, speed, status, power, queuePos, os );
 // 		ajTab->ajDownloadWidget->setSortingEnabled( true );
 		ajTab->ajDownloadWidget->mutex.unlock();
-		//printf("user für %s mit id: %s\n", fileName.latin1(), id.latin1() );
+		//printf("user fr %s mit id: %s\n", fileName.latin1(), id.latin1() );
 	}
 	else if( name == "upload" )
 	{
@@ -323,11 +310,6 @@ bool QXMLModule::endElement( const QString& s1, const QString& s2, const QString
 	{
 		active[APPLEJUICE] = false;
 	}
-	else if( qName == "settings" )
-	{
-		active[SETTINGS] = false;
-		settingsReady( settings );
-	}
 	name = "dummy";
 	
 	// release the cpu
@@ -338,33 +320,7 @@ bool QXMLModule::endElement( const QString& s1, const QString& s2, const QString
 
 bool QXMLModule::characters( const QString& s1 )
 {
-	if( name == "nick" )
-		settings.nick = s1;
-	else if( name == "port" )
-		settings.tcpPort = s1;
-	else if( name == "xmlport" )
-		settings.xmlPort = s1;
-	else if( name == "allowbrowse" )
-		settings.allowBrowse = s1;
-	else if( name == "maxupload" )
-		settings.maxUp = s1;
-	else if( name == "maxdownload" )
-		settings.maxDown = s1;
-	else if( name == "speedperslot" )
-		settings.maxSlot = s1;
-	else if( name == "maxconnections" )
-		settings.maxCon = s1;
-	else if( name == "autoconnect" )
-		settings.autoconnect = s1;
-	else if( name == "maxsourcesperfile" )
-		settings.maxSources = s1;
-	else if( name == "incomingdirectory" )
-		settings.incomingDir = s1;
-		else if( name == "temporarydirectory" )
-		settings.tempDir = s1;
-	else if( name == "maxnewconnectionsperturn" )
-		settings.maxNewCon = s1;
-	else if( name == "version" )
+	if( name == "version" )
 		ajQtGUI->setCoreVersion( s1 );
 	else if( name == "time" )
 	{
@@ -388,7 +344,6 @@ int QXMLModule::get( int getCode, QString param )
 			request = "getsession";
 			break;
 		case GET_SETTINGS_XML:
-			active[SETTINGS] = true;
 			request = "settings";
 			break;
 		case MODIFIED_XML:
@@ -527,12 +482,80 @@ int QXMLModule::set( int setCode, QString param )
 
 void QXMLModule::requestFinished( int id, bool error )
 {
-//	printf("%d finished\n", id);
-//	printf("bytes available: %d\n", bytesAvailable() );
+// 	printf("%d finished\n", id);
+// 	printf("bytes available: %d\n", bytesAvailable() );
 	if( ! error )
 	{
 //		printf( "%s\n=======================================\n", QString( readAll() ).ascii() );
-		inputSource->setData( readAll() );
+
+		QByteArray x = readAll();
+
+		QDomDocument doc;
+		doc.setContent(x);
+
+		QDomElement root = doc.documentElement();
+		QDomNode n;
+
+		if(root.tagName().toLower() == "applejuice") {
+			
+			for(n = root.firstChild(); !n.isNull(); n = n.nextSibling()){
+				QDomElement e = n.toElement();
+				if(!e.isNull()) {
+					if( e.tagName().toLower() == "session" ) {
+						session = e.attribute("id");
+					}
+					if( e.tagName().toLower() == "shares" ) {
+						QDomNode shareNode;
+						for(shareNode=n.firstChild();!shareNode.isNull();shareNode=shareNode.nextSibling()) {
+							QDomElement shareElement = shareNode.toElement();
+							
+						}
+					}
+
+				}
+			}
+		} else if(root.tagName().toLower() == "settings" ) {
+			AjSettings settings;
+			for(n = root.firstChild(); !n.isNull(); n = n.nextSibling()){
+				QDomElement e = n.toElement();
+				if(!e.isNull()) {
+					if( e.tagName().toLower() == "nick" )
+						settings.nick = e.text();
+					if( e.tagName().toLower() == "port" )
+						settings.tcpPort = e.text();
+					if( e.tagName().toLower() == "xmlport" )
+						settings.xmlPort = e.text();
+					if( e.tagName().toLower() == "autoconnect" )
+						settings.autoconnect = e.text().toLower() == "true";
+					if( e.tagName().toLower() == "maxupload" )
+						settings.maxUp = e.text();
+					if( e.tagName().toLower() == "maxdownload" )
+						settings.maxDown = e.text();
+					if( e.tagName().toLower() == "maxconnections" )
+						settings.maxCon = e.text();
+					if( e.tagName().toLower() == "maxsourcesperfile" )
+						settings.maxSources = e.text();
+					if( e.tagName().toLower() == "speedperslot" )
+						settings.maxSlot = e.text();
+					if( e.tagName().toLower() == "maxnewconnectionsperturn" )
+						settings.maxNewCon = e.text();
+					if( e.tagName().toLower() == "incomingdirectory" )
+						settings.incomingDir = e.text();
+					if( e.tagName().toLower() == "temporarydirectory" )
+						settings.tempDir = e.text();
+				}
+			}
+			settingsReady(settings);
+		}
+
+// 		QFile file("xml.xml");
+// 		file.open(QIODevice::Append);
+// 
+// 		file.write(x);
+// 		file.write("\n==========================\n");
+// 		file.close();
+
+		inputSource->setData(x);
 		simpleReader->parse(inputSource);
 		
 		// process part list request result

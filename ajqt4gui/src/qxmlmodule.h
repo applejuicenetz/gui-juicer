@@ -44,7 +44,6 @@ using namespace std;
 #define MAX_ACTIVE 32
 #define SHARE 0
 #define REMOVED 1
-#define SETTINGS 2
 #define IDS 3
 #define APPLEJUICE 4
 #define SHARES 5
@@ -79,6 +78,8 @@ using namespace std;
 #define RENAME_DOWNLOAD_XML 27
 
 #define SELF_DESTRUCT true
+
+#include <QDomDocument>
 
 /**
 @author Matthias Reif
