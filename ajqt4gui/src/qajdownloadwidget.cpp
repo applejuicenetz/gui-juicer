@@ -21,6 +21,7 @@
 
 QAjDownloadWidget::QAjDownloadWidget( QAjIcons *icons, QWidget *parent, const char *name) : QAjListWidget(icons, ID_DOWN_INDEX, parent, name)
 {
+    currIdRoundRobin = -1;
 	QStringList headers;
 	int i;
 	for( i=0; i<NUM_DOWN_COL; i++)
@@ -93,8 +94,6 @@ QAjDownloadWidget::QAjDownloadWidget( QAjIcons *icons, QWidget *parent, const ch
 	cancelId->setEnabled( false );
 	QObject::connect( this, SIGNAL( newSelection( bool ) ) , this, SLOT( selectionChanged1( bool ) ) );
 	
-	QObject::connect( this, SIGNAL( doubleClicked ( Q3ListViewItem *, const QPoint &, int ) ), this, SLOT( showDownload( Q3ListViewItem *, const QPoint &, int ) ) );
-	
 	setIconSize( QSize( 100, 20 ) );
 }
 
@@ -107,8 +106,9 @@ int QAjDownloadWidget::insertDownload(QString id, QString fileName, QString stat
 	QAjDownloadItem *downloadItem = findDownload( id );
 	if( downloadItem == NULL )
 	{
-		downloadItem = new QAjDownloadItem( &descriptions, icons, this );
-		downloads[ id.toULong() ] = downloadItem;
+		downloadItem = new QAjDownloadItem( id, &descriptions, icons, this );
+		downloads[ id ] = downloadItem;
+      downloadsList.append( downloadItem );
 		downloadItem->setText( ID_DOWN_INDEX, id );
 	}
 	downloadItem->update( fileName, status, size, ready, power );
@@ -121,8 +121,9 @@ int QAjDownloadWidget::insertUser(QString downloadId, QString id, QString fileNa
 	QAjDownloadItem *downloadItem = findDownload( downloadId );
 	if( downloadItem == NULL )
 	{
-		downloadItem = new QAjDownloadItem( &descriptions, icons, this );
-		downloads[ downloadId.toULong() ] = downloadItem;
+		downloadItem = new QAjDownloadItem( downloadId, &descriptions, icons, this );
+		downloads[ downloadId ] = downloadItem;
+      downloadsList.append( downloadItem );
 		downloadItem->setText( ID_DOWN_INDEX, downloadId );
 		downloadItem->setText( FILENAME_DOWN_INDEX, fileName );
 	}
@@ -187,70 +188,63 @@ void QAjDownloadWidget::selectionChanged1(  bool oneSelected  )
 
 void QAjDownloadWidget::updateView()
 {
-	if( this->isVisible() )
-	{
-		downloadsIt = downloads.begin();
-		while ( downloadsIt != downloads.end() )
-		{
-			downloadsIt->second->updateView();
-			downloadsIt++;
-		}
-	}
-}
-
-void QAjDownloadWidget::showDownload( QTreeWidgetItem* item, const QPoint &p, int x )
-{
-/*	// emit signal
-	partListRequest();
-	QListViewItemIterator it( this );
-	while ( it.current() )
-	{
-		if ( it.current()->isSelected() )
-		{
-			((QAjDownloadItem*)it.current())->showWidget( p );
-		}
-		++it;
-	}
-*/
+    if( this->isVisible() )
+    {
+        int i;
+        for(i=0; i<downloadsList.size(); i++) {
+            downloadsList[i]->updateView();
+        }
+    }
 }
 
 QAjDownloadItem* QAjDownloadWidget::findDownload( QString id )
 {
-	downloadsIt = downloads.find( id.toULong() );
-	if( downloadsIt != downloads.end() )
-		return downloadsIt->second;
-	else
-		return NULL;
+    if(downloads.contains( id ))
+        return downloads[id];
+    else
+        return NULL;
 }
 
 QAjDownloadItem* QAjDownloadWidget::removeDownload( QString id )
 {
-	downloadsIt = downloads.find( id.toULong() );
-	if( downloadsIt != downloads.end() )
-	{
-		downloads.erase( downloadsIt );
-		return downloadsIt->second;
-	}
-	else
-		return NULL;
+    QAjDownloadItem* item = NULL;
+    if(downloads.contains( id ))
+    {
+        item = downloads[id];
+        downloads.remove( id );
+        downloadsList.removeAll( item );
+    }
+    return item;
 }
 
 
 DownloadUser QAjDownloadWidget::findParent( QString id )
 {
-	DownloadUser du;
-	du.download = NULL;
-	du.user = NULL;
-	downloadsIt = downloads.begin();
-	while( downloadsIt != downloads.end() )
-	{
-		du.user = downloadsIt->second->findUser( id );
-		if( du.user != NULL )
-		{
-			du.download = downloadsIt->second;
-			return du;
-		}
-		downloadsIt++;
-	}
-	return du;
+    DownloadUser du;
+    du.download = NULL;
+    du.user = NULL;
+    int i;
+    for(i=0; i<downloadsList.size() && du.user == NULL; i++) {
+        du.download = downloadsList[i];
+        du.user = du.download->findUser( id );
+    }
+    return du;
+}
+
+
+/*!
+    \fn QAjDownloadWidget::getNextIdRoundRobin()
+ */
+QString QAjDownloadWidget::getNextIdRoundRobin()
+{
+    if(downloadsList.size() > 0)
+    {
+        currIdRoundRobin ++;
+        currIdRoundRobin %= downloadsList.size();
+        return downloadsList[currIdRoundRobin]->id;
+    }
+    else
+    {
+        return "";
+    }
 }

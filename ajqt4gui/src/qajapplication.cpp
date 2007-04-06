@@ -33,11 +33,6 @@ QAjApplication::QAjApplication( int & argc, char ** argv ) : QApplication( argc,
 		{
 			argList->push_back( QString( *argv++ ) );
 		}
-		/* future work
-		int quiet = 0;
-		quiet += argList->remove( "--quiet" );
-		quiet += argList->remove( "-q" );
-		*/
 		socket = new QAjSocket( APP_PORT, argList );
 		QObject::connect( (QThread*)socket, SIGNAL( done( ) ), this, SLOT( start( ) ) );
 	}

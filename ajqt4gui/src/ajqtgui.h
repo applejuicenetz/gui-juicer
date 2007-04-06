@@ -145,8 +145,6 @@ protected:
 	
 	QStringList *queuedLinks;
 
-	map<unsigned long, QAjDownloadItem*>::iterator partListIt, partListEnd;
-
 	QFtp* ftp;
 	
 private slots:

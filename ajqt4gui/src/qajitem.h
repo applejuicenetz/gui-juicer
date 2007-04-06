@@ -48,10 +48,10 @@ public:
 	static const int GENERIC_TYPE = 6;
 	
 //	virtual bool operator<( const QAjItem & other ){ return false; };
-	
+
 protected:
-	int type;
-	int status;
+    int type;
+    int status;
 
 };
 

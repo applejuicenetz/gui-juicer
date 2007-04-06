@@ -20,15 +20,14 @@
 #ifndef QAJDOWNLOADWIDGET_H
 #define QAJDOWNLOADWIDGET_H
 	
-using namespace std;
-#include <map>
 
 #include <QWidget>
 #include <QTreeWidget>
 #include <QPixmap>
 #include <QPainter>
 #include <QMenu>
-
+#include <QHash>
+#include <QList>
 
 #include "qajlistwidget.h"
 #include "qajdownloaditem.h"
@@ -49,7 +48,7 @@ typedef struct {
 	QAjUserItem* user;
 } DownloadUser;
 
-typedef map<unsigned long, QAjDownloadItem*> QAjDownloadItemMap;
+typedef QHash<QString, QAjDownloadItem*> QAjDownloadItemMap;
 
 class QAjDownloadWidget : public QAjListWidget
 {
@@ -68,15 +67,17 @@ public:
 	DownloadUser findParent( QString id );
 	
 	QAjDownloadItemMap::iterator getFirstDownload() { return downloads.begin(); }
- 	QAjDownloadItemMap::iterator getEndOfDownloads() { return downloads.end(); }
+    QAjDownloadItemMap::iterator getEndOfDownloads() { return downloads.end(); }
+    QString getNextIdRoundRobin();
 	
+private:
+
 	QAjDownloadItemMap downloads;
+   QList<QAjDownloadItem*> downloadsList;
+   int currIdRoundRobin;
 	QAjDownloadItemMap::iterator downloadsIt;
 	QAjDownloadItemMap::iterator userIt;
 
-
-private:
-	
 	QAction* pauseId;
 	QAction* resumeId;
 	QAction* cancelId;
@@ -93,8 +94,7 @@ private slots:
 	void cleanSlot();
 	void partListSlot();
 	void renameSlot();
-	void showDownload( QTreeWidgetItem *item, const QPoint &p, int x );
-	
+
 public slots:
 	void updateView();
 

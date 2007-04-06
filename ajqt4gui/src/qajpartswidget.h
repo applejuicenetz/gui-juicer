@@ -20,13 +20,14 @@
 #ifndef QAJPARTSWIDGET_H
 #define QAJPARTSWIDGET_H
 
-using namespace std;
-#include <list>
-
 #include <QWidget>
 #include <QPainter>
+#include <QLinkedList>
 
-#include "qajpart.h"
+typedef struct{
+    qulonglong fromPosition;
+    int type;
+} Part;
 
 /**
 @author Matthias Reif
@@ -38,7 +39,7 @@ public:
 	QAjPartsWidget(QWidget *parent = 0, const char *name = 0);
 
 	~QAjPartsWidget();
-	void update( qulonglong size, list<QAjPart*> *partList );
+	void update( qulonglong size, QLinkedList<Part> partList );
 
 	double ready;
 	double available;
@@ -47,7 +48,7 @@ public:
 protected:
 	void paintEvent( QPaintEvent* );
 	qulonglong size;
-	list<QAjPart*> *partList;
+	QLinkedList<Part> partList;
 	static const int BLOCK_ROWS = 6;
 	int blockHeight;
 	int numPixels;

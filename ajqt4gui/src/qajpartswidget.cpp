@@ -24,7 +24,6 @@ QAjPartsWidget::QAjPartsWidget( QWidget *parent, const char *name ) : QWidget( p
 	setFixedSize( 560, 200 );
 	move( 20, 20 );
 	show();
-	partList = NULL;
 	blockHeight = this->height() / BLOCK_ROWS;
 	numPixels = this->width() * BLOCK_ROWS;
 }
@@ -35,22 +34,22 @@ QAjPartsWidget::~QAjPartsWidget()
 }
 
 
-
-
 /*!
     \fn QAjPartsWidget::paintEvent( QPaintEvent* )
  */
 void QAjPartsWidget::paintEvent( QPaintEvent* )
 {
-	if( partList == NULL )
+	if( partList.empty() )
 		return;
-	
-	list<QAjPart*>::iterator from = partList->begin();
-	list<QAjPart*>::iterator to = ++partList->begin();
-	
+
+    QLinkedListIterator<Part> it(partList);
+
 	QPainter painter( this );
 	
-	int fromPixel, toPixel;
+    int fromPixel, toPixel;
+    Part fromPart, toPart;
+
+
 	QColor color;
 	
 	int fromRow;
@@ -60,18 +59,20 @@ void QAjPartsWidget::paintEvent( QPaintEvent* )
 	qulonglong partSize;
 	bytesReady = bytesAvailable = bytesMissing = 0;
 	
-	while( to != partList->end() )
-	{
-		fromPixel = (*from)->getFromPosition() * pixelPerByte;
-		toPixel = ( (*to)->getFromPosition() - 1 ) * pixelPerByte;
-		partSize = (*to)->getFromPosition() - (*from)->getFromPosition();
+    toPart = it.next();
 
-		if( (*from)->getFromPosition() != (*to)->getFromPosition() )
+    while( it.hasNext() )
+    {
+        fromPart = toPart;
+        toPart = it.next();
+
+		fromPixel = fromPart.fromPosition * pixelPerByte;
+		toPixel = ( toPart.fromPosition - 1 ) * pixelPerByte;
+		partSize = toPart.fromPosition - fromPart.fromPosition;
+
+		if( fromPart.fromPosition != toPart.fromPosition )
 		{
-		
-//		printf("(%d, %d)\t%d\n", fromPixel, toPixel, (*from)->getType() );
-
-			switch( (*from)->getType() )
+			switch( fromPart.type )
 			{
 				case -1:
 					color.setRgb( 0, 220, 0 );
@@ -92,10 +93,6 @@ void QAjPartsWidget::paintEvent( QPaintEvent* )
 			toRow = toPixel / width();
 			toPixel = toPixel % width();
 			
-	/*		printf("fromrow: %d   torow: %d\n", fromRow, toRow );
-			printf("frompix: %d   topix: %d\n", fromPixel, toPixel );
-			printf("type: %d\n==============\n", (*from)->getType() );
-		*/	
 			while( fromRow < toRow )
 			{
 				// fill until the end of the col
@@ -105,10 +102,6 @@ void QAjPartsWidget::paintEvent( QPaintEvent* )
 			}
 			painter.fillRect( fromPixel, fromRow*blockHeight, toPixel - fromPixel, blockHeight, QBrush( color ) );
 		}
-		
-		from = to;
-		to++;
-		
 	}
 	
 	painter.end();
@@ -120,9 +113,9 @@ void QAjPartsWidget::paintEvent( QPaintEvent* )
 
 
 /*!
-    \fn QAjPartsWidget::update( qulonglong size, list<QAjPart*> *partList )
+    \fn QAjPartsWidget::update( qulonglong size, QLinkedList<Part> partList )
  */
-void QAjPartsWidget::update( qulonglong size, list<QAjPart*> *partList )
+void QAjPartsWidget::update( qulonglong size, QLinkedList<Part> partList )
 {
 	this->size = size;
 	this->partList = partList;

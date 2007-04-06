@@ -20,8 +20,9 @@
 #include "qajdownloaditem.h"
 
 
-QAjDownloadItem::QAjDownloadItem( QAjDescription *description, QAjIcons *icons,  QAjListWidget *parent, const char *name) : QAjItem( DOWN_TYPE, parent )
+QAjDownloadItem::QAjDownloadItem( QString id, QAjDescription *description, QAjIcons *icons,  QAjListWidget *parent, const char *name) : QAjItem( DOWN_TYPE, parent )
 {
+    this->id = id;
 	int i;
 	for( i=1; i<NUM_DOWN_COL; i++ )
 	{
@@ -483,26 +484,34 @@ QAjPartListWidget* QAjDownloadItem::getPartListWidget()
 
 
 /*!
-    \fn QAjDownloadItem::setParts( Q_ULLONG size, llist<QAjPart*>* partList )
+    \fn QAjDownloadItem::setParts( Q_ULLONG size, QLinkedList<Part> partList )
  */
-void QAjDownloadItem::setParts( qulonglong size, list<QAjPart*>* partList )
+void QAjDownloadItem::setParts( qulonglong size, QLinkedList<Part> partList )
 {
 	if( partListWidget->isVisible() )
 		partListWidget->update( size, partList );
 
-	partList->push_back( new QAjPart( size, -10 ) );
-	list<QAjPart*>::iterator from = partList->begin();
-	list<QAjPart*>::iterator to = ++partList->begin();
-	
+   Part closePart;
+   closePart.type = -10;
+   closePart.fromPosition = size;
+	partList.push_back( closePart );
+
 	qulonglong bytesReady, bytesAvailable, bytesMissing;
 	qulonglong partSize;
 	bytesReady = bytesAvailable = bytesMissing = 0;
-	
-	while( to != partList->end() )
-	{
-		partSize = (*to)->getFromPosition() - (*from)->getFromPosition();
 
-		switch( (*from)->getType() )
+    Part fromPart, toPart;
+    QLinkedListIterator<Part> it(partList);
+    toPart = it.next();
+
+    while( it.hasNext() )
+    {
+        fromPart = toPart;
+        toPart = it.next();
+
+        partSize = toPart.fromPosition - fromPart.fromPosition;
+
+		switch( fromPart.type )
 		{
 			case -1:
 				bytesReady += partSize;
@@ -514,9 +523,6 @@ void QAjDownloadItem::setParts( qulonglong size, list<QAjPart*>* partList )
 				bytesAvailable += partSize;
 				break;
 		}
-		from = to;
-		to++;
-		
 	}
 	missing = (double)bytesMissing / (double)size * 100.0;
 	if( missing < 1.0 && missing > 0.0 )

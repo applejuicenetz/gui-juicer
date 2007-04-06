@@ -59,39 +59,29 @@ QAjPartListWidget::~QAjPartListWidget()
 
 
 /*!
-    \fn QAjPartListWidget::update( Q_ULLONG size, list<QAjPart*>* partList )
+    \fn QAjPartListWidget::update( Q_ULLONG size, QLinkedList<Part> partList )
  */
-void QAjPartListWidget::update( qulonglong size, list<QAjPart*>* partList )
+void QAjPartListWidget::update( qulonglong size, QLinkedList<Part> partList )
 {
 	if( !isVisible() )
 	{
 		move( QCursor::pos() - QPoint( width()/2, height()/2 ) );
 		show();
 	}
-/*	else
-	{
-		raise();
-		setActiveWindow();
-	}
-*/
+
 	if( ! timer->isActive() )
 		timer->start( 5000 );
 
 //	filesizeLabel->setText( "file size: " + QConvert::bytes( size ) );
 	
-	
-	// delete old part list
-	while( ! this->partList.empty() )
-	{
-		delete *this->partList.begin();
-		this->partList.pop_front();
-	}
-	
 	this->size = size;
-	this->partList = *partList;
-	this->partList.push_back( new QAjPart( size, -10 ) );
+	this->partList = partList;
+   Part closePart;
+   closePart.fromPosition = size;
+   closePart.type = -10;
+	this->partList.push_back( closePart );
 
-	paintWidget->update( size, &this->partList );
+	paintWidget->update( size, this->partList );
 	paintWidget->repaint();
 	repaint();
 }

@@ -96,6 +96,7 @@ AjQtGUI::AjQtGUI( ) : QMainWindow( )
 	connect( xml, SIGNAL( error( int ) ), this, SLOT( xmlError( int ) ) );
    connect( xml, SIGNAL( gotSession() ), this, SLOT( gotSession() ) );
    connect( xml, SIGNAL( modifiedDone( ) ), ajTab->ajDownloadWidget, SLOT( updateView( ) ) );
+   connect( xml, SIGNAL( modifiedDone( ) ), this, SLOT( firstModified() ) );
 
 	serverHttp = new QHttp();
 	connect( serverHttp, SIGNAL( requestFinished ( int , bool ) ), this, SLOT( gotServer( int , bool ) ) );
@@ -378,20 +379,12 @@ void AjQtGUI::timerSlot()
 
 void AjQtGUI::partListTimerSlot()
 {
-	if( partListIt == partListEnd )
-	{
-		partListIt = ajTab->ajDownloadWidget->getFirstDownload();
-		partListEnd = ajTab->ajDownloadWidget->getEndOfDownloads();
-	}
-	xml->get( DOWNLOAD_PARTLIST_SIMPLE_XML, "&id=" + QString::number( partListIt->first ) );
-	partListIt++;
-	ajTab->ajDownloadWidget->doItemsLayout();
-/*			ajTab->ajDownloadWidget->resizeColumnToContents( 0 );
-			ajTab->ajDownloadWidget->resizeColumnToContents( 1 );
-			ajTab->ajDownloadWidget->resizeColumnToContents( 2 );
-			ajTab->ajDownloadWidget->resizeColumnToContents( 3 );
-			ajTab->ajDownloadWidget->resizeColumnToContents( 4 );
-			ajTab->ajDownloadWidget->resizeColumnToContents( 5 );*/
+    QString id = ajTab->ajDownloadWidget->getNextIdRoundRobin();
+    if(!id.isEmpty())
+    {
+        xml->get( DOWNLOAD_PARTLIST_SIMPLE_XML, "&id=" + id);
+        ajTab->ajDownloadWidget->doItemsLayout();
+    }
 }
 
 void AjQtGUI::showOptions()
@@ -470,10 +463,10 @@ bool AjQtGUI::login()
 	ajTab->ajSearchWidget->clear();
 	//xml->clearPendingRequests();
 	connected = false;
-/*	progressDialog = new QProgressDialog( tr("please wait") + "...", "cancel", 0, 6, this );
+	progressDialog = new QProgressDialog( tr("please wait") + "...", "cancel", 0, 6, this );
 	progressDialog->setMinimumDuration(0);
 	progressDialog->setValue( 0 );
-	connect( progressDialog, SIGNAL( canceled() ), qApp, SLOT( quit() ) );*/
+	connect( progressDialog, SIGNAL( canceled() ), qApp, SLOT( quit() ) );
 	qApp->processEvents();
    xml->get( GET_SESSION_XML );
 	return true;
@@ -493,7 +486,6 @@ void AjQtGUI::xmlError( int code )
     connected = false;
 	timer->stop();
 	partListTimer->stop();
-	disconnect( xml, SIGNAL( modifiedDone() ), this, SLOT( firstModified() ) );
 	if( progressDialog != NULL )
 	{
 		delete progressDialog;
@@ -530,8 +522,11 @@ void AjQtGUI::gotSession()
 {
     connected = true;
     QSettings lokalSettings;
+    timerSlot();
     timer->setSingleShot( false );
     timer->start( lokalSettings.value( "refresh", 3 ).toInt() * 1000 );
+    partListTimer->setSingleShot( false );
+    partListTimer->start( 3000 );
 }
 
 void AjQtGUI::httpDone( bool error )
@@ -555,8 +550,6 @@ void AjQtGUI::httpDone( bool error )
 		timer->start( lokalSettings.value( "refresh", 3 ).toInt() * 1000 );
 		partListIt = ajTab->ajDownloadWidget->getFirstDownload();
 		partListEnd = ajTab->ajDownloadWidget->getEndOfDownloads();
-		partListTimer->setSingleShot( false );
-		partListTimer->start( 3000 );
 	}*/
 }
 
@@ -583,13 +576,13 @@ void AjQtGUI::applyPowerDownload()
 
 void AjQtGUI::maxPowerDownload()
 {
-	map<unsigned long, QAjDownloadItem*>::iterator downloadsIt = ajTab->ajDownloadWidget->getFirstDownload();
-	map<unsigned long, QAjDownloadItem*>::iterator downloadsEnd = ajTab->ajDownloadWidget->getEndOfDownloads();
-	while( downloadsIt != downloadsEnd )
-	{
-		xml->set( SET_POWER_XML, "&Powerdownload=" + QConvert::power( 50 ) + "&id=" + downloadsIt->second->text(ID_DOWN_INDEX)  );
-		downloadsIt++;
-	}
+// 	map<unsigned long, QAjDownloadItem*>::iterator downloadsIt = ajTab->ajDownloadWidget->getFirstDownload();
+// 	map<unsigned long, QAjDownloadItem*>::iterator downloadsEnd = ajTab->ajDownloadWidget->getEndOfDownloads();
+// 	while( downloadsIt != downloadsEnd )
+// 	{
+// 		xml->set( SET_POWER_XML, "&Powerdownload=" + QConvert::power( 50 ) + "&id=" + downloadsIt->second->text(ID_DOWN_INDEX)  );
+// 		downloadsIt++;
+// 	}
 }
 
 void AjQtGUI::processSelected( int xmlCode, QString para )
@@ -993,15 +986,16 @@ void AjQtGUI::firstModified()
 		qApp->processEvents();
 		if( progressDialog->value() == -1 )
 		{
-			disconnect( xml, SIGNAL( modifiedDone() ), this, SLOT( firstModified() ) );
 			delete progressDialog;
 			progressDialog = NULL;
-			partListIt = ajTab->ajDownloadWidget->getFirstDownload();
+/*			partListIt = ajTab->ajDownloadWidget->getFirstDownload();
 			partListEnd = ajTab->ajDownloadWidget->getEndOfDownloads();
-			QTimer::singleShot( 100, this, SLOT( partListTimerSlot() ) );
+			QTimer::singleShot( 100, this, SLOT( partListTimerSlot() ) );*/
 			ajTab->ajDownloadWidget->adjustSizeOfColumns();
 			ajTab->ajDownloadWidget->sortItems( 0, Qt::AscendingOrder );
 		}
+      delete progressDialog;
+      progressDialog = NULL;
 	}
 }
 

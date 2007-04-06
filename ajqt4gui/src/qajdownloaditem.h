@@ -58,7 +58,7 @@ class QAjDownloadItem : public QAjItem
 {
 //Q_OBJECT
 public:
-	QAjDownloadItem( QAjDescription *description, QAjIcons *icons,  QAjListWidget *parent = 0, const char *name = 0 );
+	QAjDownloadItem( QString id, QAjDescription *description, QAjIcons *icons,  QAjListWidget *parent = 0, const char *name = 0 );
 
 	~QAjDownloadItem();
  
@@ -111,10 +111,12 @@ public:
 	double getFinished() { return finished; }
 	int getPercent() { return percent; }
 	QAjPartListWidget* getPartListWidget();
-	void setParts( qulonglong size, list<QAjPart*>* partList );
+	void setParts( qulonglong size, QLinkedList<Part> partList );
 	
 	virtual bool operator<( const QTreeWidgetItem & other ) const;
-	
+
+    QString id;
+
 protected:
 	//Q_ULLONG
 	double size, ready, remainingSize;

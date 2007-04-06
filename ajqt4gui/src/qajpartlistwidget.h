@@ -20,9 +20,6 @@
 #ifndef QAJPARTLISTWIDGET_H
 #define QAJPARTLISTWIDGET_H
 
-using namespace std;
-#include <list>
-
 #include <QWidget>
 #include <QPainter>
 #include <QLabel>
@@ -31,12 +28,11 @@ using namespace std;
 #include <QPushButton>
 #include <QCursor>
 #include <QTimer>
+#include <QLinkedList>
 
-#include "qajpart.h"
 #include "qconvert.h"
 #include "qajicons.h"
 #include "qajpartswidget.h"
-
 
 /**
 @author Matthias Reif
@@ -48,7 +44,7 @@ public:
 	QAjPartListWidget( QAjIcons *icons, QWidget *parent = 0, const char *name = 0 );
 
 	~QAjPartListWidget();
-	void update( qulonglong size, list<QAjPart*>* partList );
+	void update( qulonglong size, QLinkedList<Part> partList );
 	void setFilename( QString filename );
 	void setId( QString id );
 protected:
@@ -60,7 +56,7 @@ protected:
 	double available;
 	double missing;
 	
-	list<QAjPart*> partList;
+	QLinkedList<Part> partList;
 	
 protected:
 	void paintEvent( QPaintEvent* );
