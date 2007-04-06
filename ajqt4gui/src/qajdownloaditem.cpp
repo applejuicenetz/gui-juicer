@@ -539,7 +539,7 @@ bool QAjDownloadItem::operator<( const QTreeWidgetItem & other ) const
 {
 	int sortIndex = treeWidget()->header()->sortIndicatorSection();
 	Qt::SortOrder sortOrder = treeWidget()->header()->sortIndicatorOrder();
-	QMutexLocker(&((QAjListWidget*)treeWidget())->mutex);
+// 	QMutexLocker(&((QAjListWidget*)treeWidget())->mutex);
 	QAjItem* item = (QAjItem*)&other;
 	if( item->getType() ==  DOWN )
 	{

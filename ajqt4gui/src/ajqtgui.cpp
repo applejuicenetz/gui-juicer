@@ -367,10 +367,7 @@ void AjQtGUI::timerSlot()
 {
     if( xml->session == "" )
         return;
-    if( (!xml->hasPendingRequests()) )
-    {
-        xml->get( "modified" );
-    }
+    xml->get( "modified" );
 }
 
 void AjQtGUI::partListTimerSlot()
@@ -457,9 +454,8 @@ bool AjQtGUI::login()
 //	ajTab->ajUploadWidget->clear();
 	ajTab->ajServerWidget->clear();
 	ajTab->ajSearchWidget->clear();
-	//xml->clearPendingRequests();
 	connected = false;
-	progressDialog = new QProgressDialog( tr("please wait") + "...", "cancel", 0, 6, this );
+	progressDialog = new QProgressDialog( tr("please wait") + "...", "cancel", 0, 3, this );
 	progressDialog->setMinimumDuration(0);
 	progressDialog->setValue( 0 );
 	connect( progressDialog, SIGNAL( canceled() ), qApp, SLOT( quit() ) );
@@ -517,6 +513,7 @@ void AjQtGUI::xmlError( int code )
 void AjQtGUI::gotSession()
 {
     connected = true;
+    xml->get( "information" );
     QSettings lokalSettings;
     timerSlot();
     timer->setSingleShot( false );
@@ -990,8 +987,6 @@ void AjQtGUI::firstModified()
 			ajTab->ajDownloadWidget->adjustSizeOfColumns();
 			ajTab->ajDownloadWidget->sortItems( 0, Qt::AscendingOrder );
 		}
-      delete progressDialog;
-      progressDialog = NULL;
 	}
 }
 

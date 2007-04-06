@@ -302,7 +302,7 @@ void QXMLModule::handleUpload( QDomElement e )
  */
 void QXMLModule::handleUser( QDomElement e )
 {
-    ajTab->ajDownloadWidget->mutex.lock();
+//     ajTab->ajDownloadWidget->mutex.lock();
     ajTab->ajDownloadWidget->insertUser(
         e.attribute("downloadid"),
         e.attribute("id"),
@@ -312,7 +312,7 @@ void QXMLModule::handleUser( QDomElement e )
         e.attribute("powerdownload"),
         e.attribute("queueposition"),
         e.attribute("operatingsystem"));
-    ajTab->ajDownloadWidget->mutex.unlock();
+//     ajTab->ajDownloadWidget->mutex.unlock();
 }
 
 
@@ -321,7 +321,7 @@ void QXMLModule::handleUser( QDomElement e )
  */
 void QXMLModule::handleDownload( QDomElement e )
 {
-    ajTab->ajDownloadWidget->mutex.lock();
+//     ajTab->ajDownloadWidget->mutex.lock();
     ajTab->ajDownloadWidget->insertDownload(
         e.attribute("id"),
         e.attribute("filename"),
@@ -329,7 +329,7 @@ void QXMLModule::handleDownload( QDomElement e )
         e.attribute("size"),
         e.attribute("ready"),
         e.attribute("powerdownload"));
-    ajTab->ajDownloadWidget->mutex.unlock();
+//     ajTab->ajDownloadWidget->mutex.unlock();
 }
 
 
@@ -387,6 +387,7 @@ void QXMLModule::handleGeneralInformation( QDomNode node )
 {
     ajQtGUI->setFilesystemSeparator(
         node.firstChildElement("filesystem").attribute("seperator"));
+    ajQtGUI->setCoreVersion(node.firstChildElement("version").text());
 }
 
 
@@ -400,12 +401,12 @@ void QXMLModule::handleRemoved( QDomElement e )
         !objectE.isNull(); objectE = objectE.nextSiblingElement("object"))
     {
         QString id = objectE.attribute("id");
-        ajTab->ajDownloadWidget->mutex.lock();
+//         ajTab->ajDownloadWidget->mutex.lock();
         if ( ! ajTab->ajDownloadWidget->remove( id ) )
             if ( ! ajTab->ajUploadWidget->remove( id ) )
                 if ( ! ajTab->ajServerWidget->remove( id ) )
                     ajTab->ajSearchWidget->remove( id );
-        ajTab->ajDownloadWidget->mutex.unlock();
+//         ajTab->ajDownloadWidget->mutex.unlock();
     }
 }
 
