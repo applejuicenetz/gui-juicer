@@ -190,8 +190,6 @@ private slots:
 	
 	void exitCore();
 	
-	void clipboardChanged();
-	
 	void search();
 	void cancelSearch();
 	

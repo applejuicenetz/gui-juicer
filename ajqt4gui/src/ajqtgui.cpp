@@ -198,9 +198,8 @@ void AjQtGUI::initToolBars()
 	ajLinks->setToolTip( "applejuice links" );
 	
 	clipboardButton = ajLinks->addAction( *icons->clipboardIcon, "process link from clipboard", this, SLOT( processClipboard() ) );
-	clipboardButton->setToolTip( "process: " + qApp->clipboard()->text( QClipboard::Clipboard ) );
-	connect( qApp->clipboard(), SIGNAL( dataChanged() ), this, SLOT( clipboardChanged() ) );
-	
+	clipboardButton->setToolTip( "process link from clipboard" );
+
 	ajAddressLabel = new QLabel(ajLinks);
 	ajAddressLabel->setText("ajfsp link:");
 	ajAddressLabel->adjustSize();
@@ -573,7 +572,7 @@ void AjQtGUI::maxPowerDownload()
 {
     QList<QString> ids = ajTab->ajDownloadWidget->getIds();
     int i;
-    for(i=0;i<ids.size(); i++)
+    for( i=0; i<ids.size(); i++ )
     {
         xml->set( "setpowerdownload", "&Powerdownload="+QConvert::power( 50 )+"&id="+ids[i] );
     }
@@ -882,11 +881,6 @@ void AjQtGUI::exitCore()
 	{
 		xml->set( "exitcore" );
 	}
-}
-
-void AjQtGUI::clipboardChanged()
-{
-	clipboardButton->setToolTip( "process: " + qApp->clipboard()->text( QClipboard::Clipboard ) );
 }
 
 void AjQtGUI::search()
