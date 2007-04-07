@@ -569,13 +569,12 @@ void AjQtGUI::applyPowerDownload()
 
 void AjQtGUI::maxPowerDownload()
 {
-// 	map<unsigned long, QAjDownloadItem*>::iterator downloadsIt = ajTab->ajDownloadWidget->getFirstDownload();
-// 	map<unsigned long, QAjDownloadItem*>::iterator downloadsEnd = ajTab->ajDownloadWidget->getEndOfDownloads();
-// 	while( downloadsIt != downloadsEnd )
-// 	{
-// 		xml->set( SET_POWER_XML, "&Powerdownload=" + QConvert::power( 50 ) + "&id=" + downloadsIt->second->text(ID_DOWN_INDEX)  );
-// 		downloadsIt++;
-// 	}
+    QList<QString> ids = ajTab->ajDownloadWidget->getIds();
+    int i;
+    for(i=0;i<ids.size(); i++)
+    {
+        xml->set( "setpowerdownload", "&Powerdownload="+QConvert::power( 50 )+"&id="+ids[i] );
+    }
 }
 
 void AjQtGUI::processSelected( QString request, QString para )

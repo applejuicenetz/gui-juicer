@@ -19,7 +19,6 @@
  ***************************************************************************/
 #ifndef QAJDOWNLOADWIDGET_H
 #define QAJDOWNLOADWIDGET_H
-	
 
 #include <QWidget>
 #include <QTreeWidget>
@@ -66,17 +65,14 @@ public:
 	QAjDownloadItem* removeDownload( QString id );
 	DownloadUser findParent( QString id );
 	
-	QAjDownloadItemMap::iterator getFirstDownload() { return downloads.begin(); }
-    QAjDownloadItemMap::iterator getEndOfDownloads() { return downloads.end(); }
     QString getNextIdRoundRobin();
+    QList<QString> getIds() { return downloads.keys(); }
 	
 private:
 
 	QAjDownloadItemMap downloads;
    QList<QAjDownloadItem*> downloadsList;
    int currIdRoundRobin;
-	QAjDownloadItemMap::iterator downloadsIt;
-	QAjDownloadItemMap::iterator userIt;
 
 	QAction* pauseId;
 	QAction* resumeId;
