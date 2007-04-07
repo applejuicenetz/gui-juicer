@@ -87,7 +87,7 @@ signals:
     void modifiedDone();
 private:
     void handleSettings( QDomElement e );
-    void handleShares( QDomNode node );
+    void handleShares( QDomElement e );
     void handleIds( QDomNode node );
     void handleNetworkInfo( QDomElement e );
     void handleUpload( QDomElement e );

@@ -96,7 +96,7 @@ void QXMLModule::requestFinished( int id, bool error )
                     }
                     else if ( e.tagName() == "shares" )
                     {
-                        handleShares(n);
+                        handleShares(e);
                     }
                     else if ( e.tagName() == "ids" )
                     {
@@ -219,16 +219,18 @@ void QXMLModule::handleSettings( QDomElement e )
 
 
 /*!
-    \fn QXMLModule::handleShares( QDomNode node )
+    \fn QXMLModule::handleShares( QDomElement e )
  */
-void QXMLModule::handleShares( QDomNode node )
+void QXMLModule::handleShares( QDomElement e )
 {
-    QDomNode shareNode;
-    for (shareNode=node.firstChild();!shareNode.isNull();shareNode=shareNode.nextSibling())
+    // TODO
+    /*
+    QDomElement shareE;
+    for( shareE=e.firstChildElement("share");!shareE.isNull();
+         shareE=shareE.nextSiblingElement("share") )
     {
-        QDomElement shareElement = shareNode.toElement();
-
     }
+    */
 }
 
 
@@ -237,27 +239,30 @@ void QXMLModule::handleShares( QDomNode node )
  */
 void QXMLModule::handleIds( QDomNode node )
 {
+    // TODO
+    /*
     QDomNode childNode;
     for (childNode=node.firstChild();!childNode.isNull();childNode=childNode.nextSibling())
     {
         QDomElement childElement = childNode.toElement();
         if(childElement.tagName().toLower() == "serverid")
         {
-
+            // TODO
         }
         else if(childElement.tagName().toLower() == "uploadid")
         {
-
+            // TODO
         }
         else if(childElement.tagName().toLower() == "downloadid")
         {
-
+            // TODO
         }
         else if(childElement.tagName().toLower() == "userid")
         {
-
+            // TODO
         }
     }
+    */
 }
 
 
