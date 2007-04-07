@@ -48,7 +48,7 @@ int QXMLModule::get( QString request, QString param )
     if(request == "modified")
     {
         param += "&session=" + session + "&timestamp=" + timeStamp;
-        param += "&filter=down;uploads;user;server;search;informations";
+        param += "&filter=down;uploads;user;server;search;informations;ids";
     }
 
     int httpRequest = QHttp::get("/xml/" + request + ".xml?password=" + passwordMD5 + param);
@@ -158,7 +158,7 @@ void QXMLModule::requestFinished( int id, bool error )
                     }
                     else
                     {
-                        cerr << "unhandled: " << e.tagName().toLatin1().data() << endl;
+                        cerr << "unhandled element: " << e.tagName().toLatin1().data() << endl;
                     }
                 }
             }
@@ -167,10 +167,6 @@ void QXMLModule::requestFinished( int id, bool error )
         else if (root.tagName() == "settings" )
         {
             handleSettings(root);
-        }
-        else
-        {
-            cerr << "unhandled: " << root.tagName().toLatin1().data() << endl;
         }
         handlePartList(id);
     }
