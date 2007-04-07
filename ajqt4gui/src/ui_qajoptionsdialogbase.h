@@ -1,3 +1,12 @@
+/********************************************************************************
+** Form generated from reading ui file 'qajoptionsdialogbase.ui'
+**
+** Created: Sat Apr 7 00:31:10 2007
+**      by: Qt User Interface Compiler version 4.2.3
+**
+** WARNING! All changes made in this file will be lost when recompiling ui file!
+********************************************************************************/
+
 #ifndef UI_QAJOPTIONSDIALOGBASE_H
 #define UI_QAJOPTIONSDIALOGBASE_H
 
@@ -90,7 +99,6 @@ public:
     void setupUi(QDialog *QAjOptionsDialogBase)
     {
     QAjOptionsDialogBase->setObjectName(QString::fromUtf8("QAjOptionsDialogBase"));
-    QAjOptionsDialogBase->resize(QSize(421, 440).expandedTo(QAjOptionsDialogBase->minimumSizeHint()));
     layoutWidget = new QWidget(QAjOptionsDialogBase);
     layoutWidget->setObjectName(QString::fromUtf8("layoutWidget"));
     layoutWidget->setGeometry(QRect(20, 390, 381, 33));
@@ -436,7 +444,13 @@ public:
     QWidget::setTabOrder(ftpPortEdit, ftpUserEdit);
     QWidget::setTabOrder(ftpUserEdit, ftpPasswordEdit);
     QWidget::setTabOrder(ftpPasswordEdit, ftpDirEdit);
+
     retranslateUi(QAjOptionsDialogBase);
+
+    QSize size(421, 440);
+    size = size.expandedTo(QAjOptionsDialogBase->minimumSizeHint());
+    QAjOptionsDialogBase->resize(size);
+
     QObject::connect(okButton, SIGNAL(clicked()), QAjOptionsDialogBase, SLOT(accept()));
     QObject::connect(cancelButton, SIGNAL(clicked()), QAjOptionsDialogBase, SLOT(reject()));
 
@@ -464,9 +478,9 @@ public:
     savePassword->setText(QApplication::translate("QAjOptionsDialogBase", "save password", 0, QApplication::UnicodeUTF8));
     tabWidget->setTabText(tabWidget->indexOf(tab), QApplication::translate("QAjOptionsDialogBase", "Common", 0, QApplication::UnicodeUTF8));
     slotSpin->setSuffix(QApplication::translate("QAjOptionsDialogBase", " kByte/s", 0, QApplication::UnicodeUTF8));
-    sourcesSpin->setSuffix(QApplication::translate("QAjOptionsDialogBase", "", 0, QApplication::UnicodeUTF8));
+    sourcesSpin->setSuffix(QString());
     label_15->setText(QApplication::translate("QAjOptionsDialogBase", "Max. New Connections:", 0, QApplication::UnicodeUTF8));
-    connectionsSpin->setSuffix(QApplication::translate("QAjOptionsDialogBase", "", 0, QApplication::UnicodeUTF8));
+    connectionsSpin->setSuffix(QString());
     label_11->setText(QApplication::translate("QAjOptionsDialogBase", "Max. Upload Speed:", 0, QApplication::UnicodeUTF8));
     label_10->setText(QApplication::translate("QAjOptionsDialogBase", "Max. Download Speed:", 0, QApplication::UnicodeUTF8));
     upSpin->setSuffix(QApplication::translate("QAjOptionsDialogBase", " kByte/s", 0, QApplication::UnicodeUTF8));
