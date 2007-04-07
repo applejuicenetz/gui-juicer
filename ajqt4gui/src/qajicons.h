@@ -64,6 +64,7 @@ public:
 	
 	QPixmap *partListPixmap, *partListSmallPixmap;
 	QPixmap *downloadRenamePixmap, *downloadRenameSmallPixmap;
+   QPixmap *downloadRenamePlusPixmap, *downloadRenamePlusSmallPixmap;
 	
 	QPixmap *warningSmallPixmap;
 	QPixmap *ftpSmallPixmap;
@@ -104,6 +105,7 @@ public:
 	QIcon *partListIcon, *partListSmallIcon;
 	
 	QIcon *downloadRenameIcon, *downloadRenameSmallIcon;
+   QIcon *downloadRenamePlusIcon, *downloadRenamePlusSmallIcon;
 	
 	QIcon *warningSmallIcon;
 	QIcon *ftpSmallIcon;

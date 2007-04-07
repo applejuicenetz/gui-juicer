@@ -134,7 +134,8 @@ AjQtGUI::AjQtGUI( ) : QMainWindow( )
 	connect( ajTab->ajDownloadWidget, SIGNAL( clean() ), this, SLOT( cleanDownload() ) );
 	connect( ajTab->ajDownloadWidget, SIGNAL( partListRequest() ), this, SLOT( partListRequest() ) );
 	connect( ajTab->ajDownloadWidget, SIGNAL( rename() ), this, SLOT( renameDownload() ) );
-	
+	connect( ajTab->ajDownloadWidget, SIGNAL( renamePlus() ), this, SLOT( renamePlusDownload() ) );
+   
 	connect( ajTab->ajServerWidget, SIGNAL( remove() ), this, SLOT( removeServer() ) );
 	connect( ajTab->ajServerWidget, SIGNAL( connect() ), this, SLOT( connectServer() ) );
 	connect( ajTab->ajServerWidget, SIGNAL( find() ), this, SLOT( findServer() ) );
@@ -230,6 +231,7 @@ void AjQtGUI::initToolBars()
 	
 	partListButton = downloadToolBar->addAction( *icons->partListIcon, "show part list", this, SLOT( partListRequest() ) );
 	renameDownloadButton = downloadToolBar->addAction( *icons->downloadRenameIcon, "rename download", this, SLOT( renameDownload() ) );
+   renamePlusDownloadButton = downloadToolBar->addAction( *icons->downloadRenamePlusIcon, "rename download by clipboard", this, SLOT( renamePlusDownload() ) );
 	
 	clearDownloadButton = downloadToolBar->addAction( *icons->downloadFilterIcon, "remove finished/canceld download", this, SLOT( cleanDownload() ) );
 
@@ -241,6 +243,7 @@ void AjQtGUI::initToolBars()
 	cancelDownloadButton->setDisabled( true );
 	partListButton->setDisabled( true );
 	renameDownloadButton->setDisabled( true );
+   renamePlusDownloadButton->setDisabled( true );
 	saveDownloadButton->setDisabled( true );
 	
 	downloadToolBar->addSeparator();
@@ -523,30 +526,6 @@ void AjQtGUI::gotSession()
     partListTimer->start( 3000 );
 }
 
-void AjQtGUI::httpDone( bool error )
-{
-/*	{
-		xml->get( GET_SESSION_XML );
-		xml->get( EXTRA_INFORMATION_XML );
-		xml->get( GET_SETTINGS_XML );
-		xml->get( SHARE_XML );
-		xml->get( SEARCH_XML );
-
-		//processQueuedLinks();
-		
-		connected = true;
-		disconnect( ajTab->ajDownloadWidget, SLOT( updateView( ) ) );
-		connect( xml, SIGNAL( modifiedDone( ) ), ajTab->ajDownloadWidget, SLOT( updateView( ) ) );
-		connect( xml, SIGNAL( modifiedDone( ) ), this, SLOT( firstModified() ) );
-
-		QSettings lokalSettings;
-		timer->setSingleShot( false );
-		timer->start( lokalSettings.value( "refresh", 3 ).toInt() * 1000 );
-		partListIt = ajTab->ajDownloadWidget->getFirstDownload();
-		partListEnd = ajTab->ajDownloadWidget->getEndOfDownloads();
-	}*/
-}
-
 void AjQtGUI::showNetworkInfo()
 {
 	networkWidget->resize( 300, 200 );
@@ -665,7 +644,7 @@ void AjQtGUI::renameDownload()
 	int i;
 	for( i=0; i<selectedItems.size(); i++ )
 	{
-			oldFilename = selectedItems.at(i)->text( FILENAME_DOWN_INDEX );
+			oldFilename = selectedItems[i]->text( FILENAME_DOWN_INDEX );
 			newFilename = QInputDialog::getText( this, "rename download", "enter new filename for " + oldFilename, QLineEdit::Normal, oldFilename, &ok );
 			newFilename = QString( QUrl::toPercentEncoding( newFilename ) );
 			if( ok && !newFilename.isEmpty() )
@@ -673,7 +652,34 @@ void AjQtGUI::renameDownload()
 				xml->set( "renamedownload", "&id=" + selectedItems.at(i)->text( ID_DOWN_INDEX ) + "&name=" + newFilename );
 			}
 	}
+}
 
+void AjQtGUI::renamePlusDownload()
+{
+    QString oldFilename;
+    QString newFilename;
+    QString newFilenameBase = qApp->clipboard()->text( QClipboard::Clipboard );
+    QList<QTreeWidgetItem *>  selectedItems = ajTab->ajDownloadWidget->selectedItems();
+    int i;
+    for( i=0; i<selectedItems.size(); i++ )
+    {
+        oldFilename = selectedItems[i]->text( FILENAME_DOWN_INDEX );
+        newFilename = newFilenameBase;
+        if(selectedItems.size() > 1)
+        {
+            newFilename += "_" + QString(i);
+        }
+        QStringList s = oldFilename.split(".");
+        if(s.size() > 1)
+        {
+            newFilename += "." + s[s.size() - 1];
+        }
+        newFilename = QString( QUrl::toPercentEncoding( newFilename ) );
+        if(!newFilename.isEmpty())
+        {
+            xml->set( "renamedownload", "&id=" + selectedItems[i]->text( ID_DOWN_INDEX ) + "&name=" + newFilename );
+        }
+    }
 }
 
 
@@ -870,6 +876,7 @@ void AjQtGUI::downloadSelectionChanged( )
 	cancelDownloadButton->setEnabled( oneSelected );
 	partListButton->setEnabled( oneSelected );
 	renameDownloadButton->setEnabled( oneSelected );
+   renamePlusDownloadButton->setEnabled( oneSelected );
 	saveDownloadButton->setEnabled( oneFinished );
 	resumeDownloadButton->setEnabled( onePaused );
 	pauseDownloadButton->setEnabled( oneActive );

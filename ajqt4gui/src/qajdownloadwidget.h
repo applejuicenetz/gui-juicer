@@ -67,11 +67,10 @@ public:
 	
     QString getNextIdRoundRobin();
     QList<QString> getIds() { return downloads.keys(); }
-	
+
 private:
 
 	QAjDownloadItemMap downloads;
-   QList<QAjDownloadItem*> downloadsList;
    int currIdRoundRobin;
 
 	QAction* pauseId;
@@ -79,6 +78,7 @@ private:
 	QAction* cancelId;
 	QAction* partListId;
 	QAction* renameId;
+   QAction* renamePlusId;
 	
 	QAjDescription descriptions;
 	
@@ -90,6 +90,7 @@ private slots:
 	void cleanSlot();
 	void partListSlot();
 	void renameSlot();
+   void renamePlusSlot();
 
 public slots:
 	void updateView();
@@ -101,6 +102,7 @@ signals:
 	void resume( );
 	void partListRequest( );
 	void rename( );
+    void renamePlus( );
 };
 
 #endif

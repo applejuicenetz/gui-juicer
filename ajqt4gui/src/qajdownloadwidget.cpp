@@ -86,7 +86,8 @@ QAjDownloadWidget::QAjDownloadWidget( QAjIcons *icons, QWidget *parent, const ch
 	resumeId = popup->addAction( *icons->downloadResumeSmallIcon, "resume", this, SLOT(resumeSlot()) );
 	cancelId = popup->addAction( *icons->downloadCancelSmallIcon, "cancel", this, SLOT(cancelSlot()) );
 	partListId = popup->addAction( *icons->partListSmallIcon, "part list", this, SLOT(partListSlot()) );
-	renameId = popup->addAction( *icons->downloadRenameSmallIcon, "rename", this, SLOT(renameSlot()) );	
+	renameId = popup->addAction( *icons->downloadRenameSmallIcon, "rename", this, SLOT(renameSlot()) );
+   renamePlusId = popup->addAction( *icons->downloadRenamePlusSmallIcon, "rename by clipboard", this, SLOT(renamePlusSlot()) );
 	popup->addSeparator();
 	popup->addAction( *icons->downloadFilterSmallIcon, "remove finished/canceld", this, SLOT(cleanSlot()) );
 	pauseId->setEnabled( false );
@@ -106,9 +107,8 @@ int QAjDownloadWidget::insertDownload(QString id, QString fileName, QString stat
 	QAjDownloadItem *downloadItem = findDownload( id );
 	if( downloadItem == NULL )
 	{
-		downloadItem = new QAjDownloadItem( id, &descriptions, icons, this );
+		downloadItem = new QAjDownloadItem( &descriptions, icons, this );
 		downloads[ id ] = downloadItem;
-      downloadsList.append( downloadItem );
 		downloadItem->setText( ID_DOWN_INDEX, id );
 	}
 	downloadItem->update( fileName, status, size, ready, power );
@@ -121,9 +121,8 @@ int QAjDownloadWidget::insertUser(QString downloadId, QString id, QString fileNa
 	QAjDownloadItem *downloadItem = findDownload( downloadId );
 	if( downloadItem == NULL )
 	{
-		downloadItem = new QAjDownloadItem( downloadId, &descriptions, icons, this );
+		downloadItem = new QAjDownloadItem( &descriptions, icons, this );
 		downloads[ downloadId ] = downloadItem;
-      downloadsList.append( downloadItem );
 		downloadItem->setText( ID_DOWN_INDEX, downloadId );
 		downloadItem->setText( FILENAME_DOWN_INDEX, fileName );
 	}
@@ -178,6 +177,10 @@ void QAjDownloadWidget::renameSlot()
 {
 	rename();
 }
+void QAjDownloadWidget::renamePlusSlot()
+{
+	renamePlus();
+}
 
 void QAjDownloadWidget::selectionChanged1(  bool oneSelected  )
 {
@@ -191,8 +194,8 @@ void QAjDownloadWidget::updateView()
     if( this->isVisible() )
     {
         int i;
-        for(i=0; i<downloadsList.size(); i++) {
-            downloadsList[i]->updateView();
+        for(i=0; i<topLevelItemCount(); i++) {
+            ((QAjDownloadItem*)topLevelItem(i))->updateView();
         }
     }
 }
@@ -212,7 +215,6 @@ QAjDownloadItem* QAjDownloadWidget::removeDownload( QString id )
     {
         item = downloads[id];
         downloads.remove( id );
-        downloadsList.removeAll( item );
     }
     return item;
 }
@@ -224,8 +226,8 @@ DownloadUser QAjDownloadWidget::findParent( QString id )
     du.download = NULL;
     du.user = NULL;
     int i;
-    for(i=0; i<downloadsList.size() && du.user == NULL; i++) {
-        du.download = downloadsList[i];
+    for(i=0; i<topLevelItemCount() && du.user == NULL; i++) {
+        du.download = (QAjDownloadItem*)topLevelItem(i);
         du.user = du.download->findUser( id );
     }
     return du;
@@ -237,9 +239,9 @@ DownloadUser QAjDownloadWidget::findParent( QString id )
  */
 QString QAjDownloadWidget::getNextIdRoundRobin()
 {
-    if(downloadsList.isEmpty())
+    if(topLevelItemCount() < 1)
         return "";
     currIdRoundRobin ++;
-    currIdRoundRobin %= downloadsList.size();
-    return downloadsList[currIdRoundRobin]->id;
+    currIdRoundRobin %= topLevelItemCount();
+    return topLevelItem( currIdRoundRobin )->text(ID_DOWN_INDEX );
 }

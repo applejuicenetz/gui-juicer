@@ -81,6 +81,8 @@
 
 #include "./xpm/rename.xpm"
 #include "./xpm/rename_small.xpm"
+#include "./xpm/rename_plus.xpm"
+#include "./xpm/rename_plus_small.xpm"
 
 #include "./xpm/save.xpm"
 #include "./xpm/save_small.xpm"
@@ -158,6 +160,8 @@ QAjIcons::QAjIcons()
 
 	downloadRenamePixmap = new QPixmap( rename_xpm );
 	downloadRenameSmallPixmap = new QPixmap( rename_small_xpm );
+	downloadRenamePlusPixmap = new QPixmap( rename_plus_xpm );
+	downloadRenamePlusSmallPixmap = new QPixmap( rename_plus_small_xpm );
 	
 	warningSmallPixmap = new QPixmap( warning_small_xpm );
 	ftpSmallPixmap = new QPixmap( ftp_small_xpm );
@@ -231,6 +235,8 @@ QAjIcons::QAjIcons()
 	
 	downloadRenameIcon = new QIcon( *downloadRenamePixmap );
 	downloadRenameSmallIcon = new QIcon( *downloadRenameSmallPixmap );
+	downloadRenamePlusIcon = new QIcon( *downloadRenamePlusPixmap );
+	downloadRenamePlusSmallIcon = new QIcon( *downloadRenamePlusSmallPixmap );
 	
 	warningSmallIcon = new QIcon( *warningSmallPixmap );
 	ftpSmallIcon = new QIcon( *ftpSmallPixmap );

@@ -131,7 +131,8 @@ protected:
 	QDoubleSpinBox* powerSpin;
 	QAction *powerUpButton, *powerDownButton, *powerOkButton, *powerMaxButton;
 	QAction *pauseDownloadButton, *resumeDownloadButton;
-	QAction *cancelDownloadButton, *clearDownloadButton,  *partListButton, *renameDownloadButton;
+	QAction *cancelDownloadButton, *clearDownloadButton,  *partListButton;
+   QAction *renameDownloadButton, *renamePlusDownloadButton;
 	QAction *saveDownloadButton;
 	QAction *clipboardButton;
 	QCheckBox *powerCheck;
@@ -157,7 +158,6 @@ private slots:
 	void showNetworkInfo();
 	void settingsReady( AjSettings settings );
 	void xmlError( int code );
-	void httpDone( bool error );
    void gotSession();
 	
 	void processSelected( QString request, QString para = "" );
@@ -173,6 +173,7 @@ private slots:
 	void pauseDownload();
 	void partListRequest();
 	void renameDownload();
+   void renamePlusDownload();
 	
 	void removeServer();
 	void connectServer();

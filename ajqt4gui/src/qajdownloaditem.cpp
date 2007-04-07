@@ -20,9 +20,8 @@
 #include "qajdownloaditem.h"
 
 
-QAjDownloadItem::QAjDownloadItem( QString id, QAjDescription *description, QAjIcons *icons,  QAjListWidget *parent, const char *name) : QAjItem( DOWN, parent )
+QAjDownloadItem::QAjDownloadItem( QAjDescription *description, QAjIcons *icons,  QAjListWidget *parent, const char *name) : QAjItem( DOWN, parent )
 {
-    this->id = id;
 	int i;
 	for( i=1; i<NUM_DOWN_COL; i++ )
 	{

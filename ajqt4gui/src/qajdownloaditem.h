@@ -58,7 +58,7 @@ class QAjDownloadItem : public QAjItem
 {
 //Q_OBJECT
 public:
-	QAjDownloadItem( QString id, QAjDescription *description, QAjIcons *icons,  QAjListWidget *parent = 0, const char *name = 0 );
+	QAjDownloadItem( QAjDescription *description, QAjIcons *icons,  QAjListWidget *parent = 0, const char *name = 0 );
 
 	~QAjDownloadItem();
  
@@ -114,8 +114,6 @@ public:
 	void setParts( qulonglong size, QLinkedList<Part> partList );
 	
 	virtual bool operator<( const QTreeWidgetItem & other ) const;
-
-    QString id;
 
 protected:
 	//Q_ULLONG
