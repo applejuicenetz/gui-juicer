@@ -141,7 +141,7 @@ AjQtGUI::AjQtGUI( ) : QMainWindow( )
 	
 	connect( ajTab->ajSearchWidget, SIGNAL( remove() ), this, SLOT( cancelSearch() ) );
 	connect( ajTab->ajSearchWidget, SIGNAL( download() ), this, SLOT( downloadSearch() ) );
-	connect( ajTab->ajSearchWidget, SIGNAL( doubleClicked ( Q3ListViewItem *, const QPoint &, int ) ), this, SLOT( downloadSearch() ) );
+	connect( ajTab->ajSearchWidget, SIGNAL( itemDoubleClicked ( QTreeWidgetItem *, int ) ), this, SLOT( downloadSearch() ) );
 	
 	
 	connect( ajTab, SIGNAL( currentChanged( QWidget* ) ), this, SLOT( tabChanged( QWidget* ) ) );
@@ -455,7 +455,7 @@ bool AjQtGUI::login()
 	ajTab->ajServerWidget->clear();
 	ajTab->ajSearchWidget->clear();
 	connected = false;
-	progressDialog = new QProgressDialog( tr("please wait") + "...", "cancel", 0, 3, this );
+	progressDialog = new QProgressDialog( tr("please wait") + "...", "cancel", 0, 5, this );
 	progressDialog->setMinimumDuration(0);
 	progressDialog->setValue( 0 );
 	connect( progressDialog, SIGNAL( canceled() ), qApp, SLOT( quit() ) );
@@ -514,6 +514,8 @@ void AjQtGUI::gotSession()
 {
     connected = true;
     xml->get( "information" );
+    xml->get( "settings" );
+    xml->get( "share" );
     QSettings lokalSettings;
     timerSlot();
     timer->setSingleShot( false );
