@@ -51,82 +51,130 @@ class QAjDownloadItem : public QAjItem
 {
 //Q_OBJECT
 public:
-	QAjDownloadItem( QAjListWidget *parent = 0, const char *name = 0 );
+    QAjDownloadItem( QAjListWidget *parent = 0, const char *name = 0 );
 
-	~QAjDownloadItem();
- 
-	void moveItem( QAjUserItem *userItem, QString oldStatus );
-	void update( QString fileName, QString status, QString size, QString ready, QString power, QString tempNumber );
-	void updateUser( QString id, QString fileName, QString speed, QString status, QString power, QString queuePos, QString statusString, QIcon *osIcon );
-	
-	void decSources( QString type );
-	void incSources( QString type );
-	
-	QAjUserItem* findUser( QString id );
-	void removeUser( QString id );
+    ~QAjDownloadItem();
 
-	QTreeWidgetItem* activeSourcesItem;
-	QTreeWidgetItem* queuedSourcesItem;
-	QTreeWidgetItem* otherSourcesItem;
-	void incActiveSources() { activeSources++; }
-	void incQueuedSources() { queuedSources++; }
-	void incOtherSources() { otherSources++; }
+    void moveItem( QAjUserItem *userItem, QString oldStatus );
+    void update( QString fileName, QString status, QString size, QString ready, QString power, QString tempNumber );
+    void updateUser( QString id, QString fileName, QString speed, QString status, QString power, QString queuePos, QString statusString, QIcon *osIcon );
 
-	void decActiveSources() { activeSources--; } //  = (activeSources>0)?activeSources-1:0; }
-	void decQueuedSources() { queuedSources--; } // = (queuedSources>0)?queuedSources-1:0; }
-	void decOtherSources() { otherSources--; } // = (otherSources>0)?otherSources-1:0; }
-	
-	int getActiveSources() { return activeSources; }
-	
-	void setFinishedPixmap(int newWidth, int newHeight, double newReady);
+    void decSources( QString type );
+    void incSources( QString type );
+
+    QAjUserItem* findUser( QString id );
+    void removeUser( QString id );
+
+    QTreeWidgetItem* activeSourcesItem;
+    QTreeWidgetItem* queuedSourcesItem;
+    QTreeWidgetItem* otherSourcesItem;
+    void incActiveSources()
+    {
+        activeSources++;
+    }
+    void incQueuedSources()
+    {
+        queuedSources++;
+    }
+    void incOtherSources()
+    {
+        otherSources++;
+    }
+
+    void decActiveSources()
+    {
+        activeSources--;
+    } //  = (activeSources>0)?activeSources-1:0; }
+    void decQueuedSources()
+    {
+        queuedSources--;
+    } // = (queuedSources>0)?queuedSources-1:0; }
+    void decOtherSources()
+    {
+        otherSources--;
+    } // = (otherSources>0)?otherSources-1:0; }
+
+    int getActiveSources()
+    {
+        return activeSources;
+    }
+
+    void setFinishedPixmap(int newWidth, int newHeight, double newReady);
 
 
-	QString getSourcesString();
+    QString getSourcesString();
 
-	void updateView( QHash<QString, QString>* downloadStatusDescr );
-	
-	void deleteUsers();
-	
-	int compare( QTreeWidgetItem * i, int col, bool ascending ) const;
-	void showWidget( const QPoint &p );
-	
-	QHash<QString, QAjUserItem*> users;
+    void updateView( QHash<QString, QString>* downloadStatusDescr );
 
-	double getSize() { return size; }
-	double getReady() { return ready; }
-	double getRemainingSize() { return remainingSize; }
-	double getRemainingSec() { return remainingSec; }
-	double getSpeed() { return speed; }
-	double getMissing() { return missing; }
-	double getFinished() { return finished; }
-	int getPercent() { return percent; }
-	QAjPartListWidget* getPartListWidget();
-	void setParts( qulonglong size, QLinkedList<Part> partList );
+    void deleteUsers();
 
-   QString getTempNumber() { return tempNumber; }
-	
-	virtual bool operator<( const QTreeWidgetItem & other ) const;
+    int compare( QTreeWidgetItem * i, int col, bool ascending ) const;
+    void showWidget( const QPoint &p );
+
+    QHash<QString, QAjUserItem*> users;
+
+    double getSize()
+    {
+        return size;
+    }
+    double getReady()
+    {
+        return ready;
+    }
+    double getRemainingSize()
+    {
+        return remainingSize;
+    }
+    double getRemainingSec()
+    {
+        return remainingSec;
+    }
+    double getSpeed()
+    {
+        return speed;
+    }
+    double getMissing()
+    {
+        return missing;
+    }
+    double getFinished()
+    {
+        return finished;
+    }
+    int getPercent()
+    {
+        return percent;
+    }
+    QAjPartListWidget* getPartListWidget();
+    void setParts( qulonglong size, QLinkedList<Part> partList );
+
+    QString getTempNumber()
+    {
+        return tempNumber;
+    }
+
+    virtual bool operator<( const QTreeWidgetItem & other ) const;
 
 protected:
-	//Q_ULLONG
-	double size, ready, remainingSize;
-	double speed;
-	double finished;
-	int percent;
-	int width, height;
-	double missing;
-	long int remainingSec;
-	
-	bool finishedChanged;
-	bool first;
-	
-	int activeSources, queuedSources, otherSources;
-	QAjListWidget *parentWidget;
-	QPixmap *pixmap;
+    //Q_ULLONG
+    double size, ready, remainingSize;
+    double speed;
+    double finished;
+    int percent;
+    int width, height;
+    double missing;
+    long int remainingSec;
 
-	QAjPartListWidget* partListWidget;
+    bool finishedChanged;
+    bool first;
 
-   QString tempNumber;
+    int activeSources, queuedSources, otherSources;
+    QAjListWidget *parentWidget;
+    QPixmap *pixmap;
+
+    QAjPartListWidget* partListWidget;
+
+    QString tempNumber;
 };
 
 #endif

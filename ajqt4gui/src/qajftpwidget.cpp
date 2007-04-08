@@ -22,31 +22,30 @@
 
 QAjFtpWidget::QAjFtpWidget( QWidget *parent ) : QAjListWidget( ID_FTP_INDEX, parent )
 {
-	QStringList headers;
-	int i;
-	for( i=0; i<NUM_FTP_COL; i++)
-	{
-		switch(i)
-		{
-			case ID_FTP_INDEX:
-				headers.append( tr("id") );
-				break;
-			case FILENAME_FTP_INDEX:
-				headers.append( tr("filename") );
-				break;
-			case SIZE_FTP_INDEX:
-				headers.append( tr("size") );
-				break;
-		}
-	}
-	setHeaderLabels( headers );
-	setColumnHidden( ID_FTP_INDEX, true );
+    QStringList headers;
+    int i;
+    for ( i=0; i<NUM_FTP_COL; i++)
+    {
+        switch (i)
+        {
+        case ID_FTP_INDEX:
+            headers.append( tr("id") );
+            break;
+        case FILENAME_FTP_INDEX:
+            headers.append( tr("filename") );
+            break;
+        case SIZE_FTP_INDEX:
+            headers.append( tr("size") );
+            break;
+        }
+    }
+    setHeaderLabels( headers );
+    setColumnHidden( ID_FTP_INDEX, true );
 }
 
 
 QAjFtpWidget::~QAjFtpWidget()
-{
-}
+{}
 
 
 /*!
@@ -54,11 +53,11 @@ QAjFtpWidget::~QAjFtpWidget()
  */
 void QAjFtpWidget::insert( QUrlInfo info )
 {
-	if( info.isFile() )
-	{
-		QAjItem *item = new QAjItem( GENERIC, this );
-		item->setText( FILENAME_FTP_INDEX, info.name() );
-		item->setText( SIZE_FTP_INDEX, QConvert::bytes( (double)info.size() ) );
-		adjustSizeOfColumns();
-	}
+    if ( info.isFile() )
+    {
+        QAjItem *item = new QAjItem( GENERIC, this );
+        item->setText( FILENAME_FTP_INDEX, info.name() );
+        item->setText( SIZE_FTP_INDEX, QConvert::bytes( (double)info.size() ) );
+        adjustSizeOfColumns();
+    }
 }

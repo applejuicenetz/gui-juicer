@@ -19,47 +19,42 @@
  ***************************************************************************/
 #include "qajlistwidget.h"
 
-
 QAjListWidget::QAjListWidget( int idIndex, QWidget *parent, const char *name ) : QTreeWidget( parent )
 {
-	this->idIndex = idIndex;
-	changed = false;
-	sizeAdjusted = false;
-	setContextMenuPolicy( Qt::CustomContextMenu );
+    this->idIndex = idIndex;
+    changed = false;
+    setContextMenuPolicy( Qt::CustomContextMenu );
 
-	popup = new QMenu( this );
-	
-	setSelectionBehavior( QAbstractItemView::SelectRows );
-	setSelectionMode( QAbstractItemView::ExtendedSelection );
-	setRootIsDecorated( true );
-	setSortingEnabled( true );
-	header()->setStretchLastSection( false );
-	
-	connect( this, SIGNAL( itemSelectionChanged() ) , this, SLOT( selectionChanged() ) );
-	connect( this, SIGNAL( customContextMenuRequested( const QPoint & ) ), this, SLOT( contextMenuRequested( const QPoint & ) ) );
+    popup = new QMenu( this );
+
+    setSelectionBehavior( QAbstractItemView::SelectRows );
+    setSelectionMode( QAbstractItemView::ExtendedSelection );
+    setRootIsDecorated( true );
+    setSortingEnabled( true );
+    header()->setStretchLastSection( false );
+
+    connect( this, SIGNAL( itemSelectionChanged() ) , this, SLOT( selectionChanged() ) );
+    connect( this, SIGNAL( customContextMenuRequested( const QPoint & ) ), this, SLOT( contextMenuRequested( const QPoint & ) ) );
 }
-
 
 QAjListWidget::~QAjListWidget()
-{
-	delete popup;
-}
+{}
 
 void QAjListWidget::selectionChanged()
 {
-	newSelection( isOneSelected() );
+    newSelection( isOneSelected() );
 }
 
 void QAjListWidget::contextMenuRequested( const QPoint &pos )
 {
-	QAjItem* item = (QAjItem*)this->itemAt( pos );
-	popupItem = item;
-	popup->exec( QCursor::pos() );
+    QAjItem* item = (QAjItem*)this->itemAt( pos );
+    popupItem = item;
+    popup->exec( QCursor::pos() );
 }
 
 bool QAjListWidget::isOneSelected()
 {
-	return  !selectedItems().empty();
+    return  !selectedItems().empty();
 }
 
 /*!
@@ -67,19 +62,7 @@ bool QAjListWidget::isOneSelected()
  */
 void QAjListWidget::adjustSizeOfColumns()
 {
-	int i;
-	for( i=0; i<this->columnCount(); i++ )
-	{
-		resizeColumnToContents( i );
-	}
-	sizeAdjusted = true;
-}
-
-
-/*!
-    \fn QAjListWidget::wasSizeAdjusted()
- */
-bool QAjListWidget::wasSizeAdjusted()
-{
-	return sizeAdjusted;
+    int i;
+    for ( i=0; i<this->columnCount(); i++ )
+        resizeColumnToContents( i );
 }

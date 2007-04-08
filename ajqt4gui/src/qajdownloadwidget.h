@@ -42,69 +42,74 @@
 
 class QAjDownloadItem;
 
-typedef struct {
-	QAjDownloadItem* download;
-	QAjUserItem* user;
-} DownloadUser;
+typedef struct
+{
+    QAjDownloadItem* download;
+    QAjUserItem* user;
+}
+DownloadUser;
 
 class QAjDownloadWidget : public QAjListWidget
 {
-Q_OBJECT
+    Q_OBJECT
 public:
-	QAjDownloadWidget( QWidget *parent = 0, const char *name = 0);
+    QAjDownloadWidget( QWidget *parent = 0, const char *name = 0);
 
-	~QAjDownloadWidget();
-	
-	int insertDownload(QString id, QString fileName, QString status, QString size, QString ready, QString power, QString tempNumber);
-	int insertUser(QString downloadId, QString id, QString fileName, QString speed, QString status, QString power, QString queuePos, QString os);
-	bool remove( QString id );
-	
-	QAjDownloadItem* findDownload( QString id );
-	QAjDownloadItem* removeDownload( QString id );
-	DownloadUser findParent( QString id );
-	
+    ~QAjDownloadWidget();
+
+    void insertDownload(QString id, QString fileName, QString status, QString size, QString ready, QString power, QString tempNumber);
+    void insertUser(QString downloadId, QString id, QString fileName, QString speed, QString status, QString power, QString queuePos, QString os);
+    bool remove( QString id );
+
+    QAjDownloadItem* findDownload( QString id );
+    QAjDownloadItem* removeDownload( QString id );
+    DownloadUser findParent( QString id );
+
     QString getNextIdRoundRobin();
-    QList<QString> getIds() { return downloads.keys(); }
+    QList<QString> getIds()
+    {
+        return downloads.keys();
+    }
     QAjDownloadItem* findDownloadByTempNum( QString tempNum );
 
 private:
 
-	QHash<QString, QAjDownloadItem*> downloads;
-   int currIdRoundRobin;
+    QHash<QString, QAjDownloadItem*> downloads;
+    int currIdRoundRobin;
 
-	QAction* pauseId;
-	QAction* resumeId;
-	QAction* cancelId;
-	QAction* partListId;
-	QAction* renameId;
-   QAction* renamePlusId;
+    QAction* pauseId;
+    QAction* resumeId;
+    QAction* cancelId;
+    QAction* partListId;
+    QAction* renameId;
+    QAction* renamePlusId;
 
-	QIcon *linuxIcon, *windowsIcon, *otherOsIcon;
+    QIcon *linuxIcon, *windowsIcon, *otherOsIcon;
 
     QHash<QString, QString> userStatusDescr;
     QHash<QString, QString> downloadStatusDescr;
 
-	
+
 private slots:
-	void selectionChanged1( bool oneSelected );
-	void pauseSlot();
-	void resumeSlot();
-	void cancelSlot();
-	void cleanSlot();
-	void partListSlot();
-	void renameSlot();
-   void renamePlusSlot();
+    void selectionChanged1( bool oneSelected );
+    void pauseSlot();
+    void resumeSlot();
+    void cancelSlot();
+    void cleanSlot();
+    void partListSlot();
+    void renameSlot();
+    void renamePlusSlot();
 
 public slots:
-	void updateView();
+    void updateView();
 
 signals:
-	void cancel( );
-	void clean( );
-	void pause( );
-	void resume( );
-	void partListRequest( );
-	void rename( );
+    void cancel( );
+    void clean( );
+    void pause( );
+    void resume( );
+    void partListRequest( );
+    void rename( );
     void renamePlus( );
 };
 

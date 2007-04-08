@@ -22,6 +22,7 @@
 
 #include <qglobal.h>
 #include <QApplication>
+#include <QSplashScreen>
 
 #include "qajserversocket.h"
 #include "qajsocket.h"
@@ -32,19 +33,18 @@
 */
 class QAjApplication : public QApplication
 {
-Q_OBJECT
+    Q_OBJECT
 public:
-	QAjApplication( int & argc, char ** argv );
+    QAjApplication( int & argc, char ** argv );
 
-	~QAjApplication();
-	int exec();
-	static const int APP_PORT = 21456;
+    ~QAjApplication();
+    int exec();
+    static const int APP_PORT = 21456;
 public slots:
-	void start();
+    void start();
 private:
-	QAjSocket *socket;
-	QStringList* argList;
-
+    QAjSocket *socket;
+    QStringList* argList;
 };
 
 #endif

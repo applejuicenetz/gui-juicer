@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading ui file 'qajoptionsdialogbase.ui'
 **
-** Created: Sun Apr 8 22:13:08 2007
+** Created: Mon Apr 9 00:13:43 2007
 **      by: Qt User Interface Compiler version 4.2.3
 **
 ** WARNING! All changes made in this file will be lost when recompiling ui file!
@@ -26,19 +26,16 @@
 #include <QtGui/QSpinBox>
 #include <QtGui/QTabWidget>
 #include <QtGui/QToolButton>
+#include <QtGui/QVBoxLayout>
 #include <QtGui/QWidget>
 
 class Ui_QAjOptionsDialogBase
 {
 public:
-    QWidget *layoutWidget;
-    QHBoxLayout *hboxLayout;
-    QSpacerItem *spacerItem;
-    QPushButton *okButton;
-    QPushButton *cancelButton;
     QTabWidget *tabWidget;
     QWidget *tab;
     QWidget *widget;
+    QVBoxLayout *vboxLayout;
     QGridLayout *gridLayout;
     QLineEdit *coreEdit;
     QLabel *label_2;
@@ -62,13 +59,12 @@ public:
     QLineEdit *serverEdit;
     QLabel *label_8;
     QLabel *label_6;
-    QWidget *widget1;
-    QHBoxLayout *hboxLayout1;
+    QVBoxLayout *vboxLayout1;
     QCheckBox *autoConnect;
-    QSpacerItem *spacerItem1;
     QCheckBox *savePassword;
+    QCheckBox *showSplash;
     QWidget *tab_2;
-    QWidget *widget2;
+    QWidget *widget1;
     QGridLayout *gridLayout1;
     QSpinBox *slotSpin;
     QSpinBox *sourcesSpin;
@@ -85,7 +81,7 @@ public:
     QLabel *label_13;
     QSpinBox *downSpin;
     QWidget *ftp_tab;
-    QWidget *widget3;
+    QWidget *widget2;
     QGridLayout *gridLayout2;
     QLineEdit *ftpServerEdit;
     QLabel *label_18;
@@ -97,41 +93,29 @@ public:
     QLineEdit *ftpPortEdit;
     QLineEdit *ftpDirEdit;
     QLabel *label_21;
+    QWidget *layoutWidget;
+    QHBoxLayout *hboxLayout;
+    QSpacerItem *spacerItem;
+    QPushButton *okButton;
+    QPushButton *cancelButton;
 
     void setupUi(QDialog *QAjOptionsDialogBase)
     {
     QAjOptionsDialogBase->setObjectName(QString::fromUtf8("QAjOptionsDialogBase"));
-    layoutWidget = new QWidget(QAjOptionsDialogBase);
-    layoutWidget->setObjectName(QString::fromUtf8("layoutWidget"));
-    layoutWidget->setGeometry(QRect(20, 430, 381, 33));
-    hboxLayout = new QHBoxLayout(layoutWidget);
-    hboxLayout->setSpacing(6);
-    hboxLayout->setMargin(0);
-    hboxLayout->setObjectName(QString::fromUtf8("hboxLayout"));
-    spacerItem = new QSpacerItem(131, 31, QSizePolicy::Expanding, QSizePolicy::Minimum);
-
-    hboxLayout->addItem(spacerItem);
-
-    okButton = new QPushButton(layoutWidget);
-    okButton->setObjectName(QString::fromUtf8("okButton"));
-
-    hboxLayout->addWidget(okButton);
-
-    cancelButton = new QPushButton(layoutWidget);
-    cancelButton->setObjectName(QString::fromUtf8("cancelButton"));
-
-    hboxLayout->addWidget(cancelButton);
-
     tabWidget = new QTabWidget(QAjOptionsDialogBase);
     tabWidget->setObjectName(QString::fromUtf8("tabWidget"));
     tabWidget->setEnabled(true);
-    tabWidget->setGeometry(QRect(20, 20, 381, 391));
+    tabWidget->setGeometry(QRect(20, 20, 381, 441));
     tab = new QWidget();
     tab->setObjectName(QString::fromUtf8("tab"));
     widget = new QWidget(tab);
     widget->setObjectName(QString::fromUtf8("widget"));
-    widget->setGeometry(QRect(10, 12, 351, 305));
-    gridLayout = new QGridLayout(widget);
+    widget->setGeometry(QRect(10, 12, 351, 393));
+    vboxLayout = new QVBoxLayout(widget);
+    vboxLayout->setSpacing(6);
+    vboxLayout->setMargin(0);
+    vboxLayout->setObjectName(QString::fromUtf8("vboxLayout"));
+    gridLayout = new QGridLayout();
     gridLayout->setSpacing(6);
     gridLayout->setMargin(0);
     gridLayout->setObjectName(QString::fromUtf8("gridLayout"));
@@ -248,113 +232,117 @@ public:
 
     gridLayout->addWidget(label_6, 5, 0, 1, 1);
 
-    widget1 = new QWidget(tab);
-    widget1->setObjectName(QString::fromUtf8("widget1"));
-    widget1->setGeometry(QRect(11, 330, 351, 24));
-    hboxLayout1 = new QHBoxLayout(widget1);
-    hboxLayout1->setSpacing(6);
-    hboxLayout1->setMargin(0);
-    hboxLayout1->setObjectName(QString::fromUtf8("hboxLayout1"));
-    autoConnect = new QCheckBox(widget1);
+
+    vboxLayout->addLayout(gridLayout);
+
+    vboxLayout1 = new QVBoxLayout();
+    vboxLayout1->setSpacing(6);
+    vboxLayout1->setMargin(0);
+    vboxLayout1->setObjectName(QString::fromUtf8("vboxLayout1"));
+    autoConnect = new QCheckBox(widget);
     autoConnect->setObjectName(QString::fromUtf8("autoConnect"));
 
-    hboxLayout1->addWidget(autoConnect);
+    vboxLayout1->addWidget(autoConnect);
 
-    spacerItem1 = new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
-
-    hboxLayout1->addItem(spacerItem1);
-
-    savePassword = new QCheckBox(widget1);
+    savePassword = new QCheckBox(widget);
     savePassword->setObjectName(QString::fromUtf8("savePassword"));
 
-    hboxLayout1->addWidget(savePassword);
+    vboxLayout1->addWidget(savePassword);
+
+    showSplash = new QCheckBox(widget);
+    showSplash->setObjectName(QString::fromUtf8("showSplash"));
+
+    vboxLayout1->addWidget(showSplash);
+
+
+    vboxLayout->addLayout(vboxLayout1);
 
     tabWidget->addTab(tab, QApplication::translate("QAjOptionsDialogBase", "Common", 0, QApplication::UnicodeUTF8));
     tab_2 = new QWidget();
     tab_2->setObjectName(QString::fromUtf8("tab_2"));
-    widget2 = new QWidget(tab_2);
-    widget2->setObjectName(QString::fromUtf8("widget2"));
-    widget2->setGeometry(QRect(10, 10, 351, 213));
-    gridLayout1 = new QGridLayout(widget2);
+    widget1 = new QWidget(tab_2);
+    widget1->setObjectName(QString::fromUtf8("widget1"));
+    widget1->setGeometry(QRect(10, 10, 351, 213));
+    gridLayout1 = new QGridLayout(widget1);
     gridLayout1->setSpacing(6);
     gridLayout1->setMargin(0);
     gridLayout1->setObjectName(QString::fromUtf8("gridLayout1"));
-    slotSpin = new QSpinBox(widget2);
+    slotSpin = new QSpinBox(widget1);
     slotSpin->setObjectName(QString::fromUtf8("slotSpin"));
     slotSpin->setAlignment(Qt::AlignRight);
     slotSpin->setMaximum(9999);
 
     gridLayout1->addWidget(slotSpin, 2, 1, 1, 1);
 
-    sourcesSpin = new QSpinBox(widget2);
+    sourcesSpin = new QSpinBox(widget1);
     sourcesSpin->setObjectName(QString::fromUtf8("sourcesSpin"));
     sourcesSpin->setAlignment(Qt::AlignRight);
     sourcesSpin->setMaximum(9999);
 
     gridLayout1->addWidget(sourcesSpin, 3, 1, 1, 1);
 
-    label_15 = new QLabel(widget2);
+    label_15 = new QLabel(widget1);
     label_15->setObjectName(QString::fromUtf8("label_15"));
 
     gridLayout1->addWidget(label_15, 5, 0, 1, 1);
 
-    connectionsSpin = new QSpinBox(widget2);
+    connectionsSpin = new QSpinBox(widget1);
     connectionsSpin->setObjectName(QString::fromUtf8("connectionsSpin"));
     connectionsSpin->setAlignment(Qt::AlignRight);
     connectionsSpin->setMaximum(9999);
 
     gridLayout1->addWidget(connectionsSpin, 4, 1, 1, 1);
 
-    label_11 = new QLabel(widget2);
+    label_11 = new QLabel(widget1);
     label_11->setObjectName(QString::fromUtf8("label_11"));
 
     gridLayout1->addWidget(label_11, 1, 0, 1, 1);
 
-    label_10 = new QLabel(widget2);
+    label_10 = new QLabel(widget1);
     label_10->setObjectName(QString::fromUtf8("label_10"));
 
     gridLayout1->addWidget(label_10, 0, 0, 1, 1);
 
-    tcpEdit = new QLineEdit(widget2);
+    tcpEdit = new QLineEdit(widget1);
     tcpEdit->setObjectName(QString::fromUtf8("tcpEdit"));
 
     gridLayout1->addWidget(tcpEdit, 6, 1, 1, 1);
 
-    upSpin = new QSpinBox(widget2);
+    upSpin = new QSpinBox(widget1);
     upSpin->setObjectName(QString::fromUtf8("upSpin"));
     upSpin->setAlignment(Qt::AlignRight);
     upSpin->setMaximum(9999);
 
     gridLayout1->addWidget(upSpin, 1, 1, 1, 1);
 
-    label_12 = new QLabel(widget2);
+    label_12 = new QLabel(widget1);
     label_12->setObjectName(QString::fromUtf8("label_12"));
 
     gridLayout1->addWidget(label_12, 2, 0, 1, 1);
 
-    label_16 = new QLabel(widget2);
+    label_16 = new QLabel(widget1);
     label_16->setObjectName(QString::fromUtf8("label_16"));
 
     gridLayout1->addWidget(label_16, 6, 0, 1, 1);
 
-    newSpin = new QSpinBox(widget2);
+    newSpin = new QSpinBox(widget1);
     newSpin->setObjectName(QString::fromUtf8("newSpin"));
     newSpin->setAlignment(Qt::AlignRight);
     newSpin->setMaximum(9999);
 
     gridLayout1->addWidget(newSpin, 5, 1, 1, 1);
 
-    label_14 = new QLabel(widget2);
+    label_14 = new QLabel(widget1);
     label_14->setObjectName(QString::fromUtf8("label_14"));
 
     gridLayout1->addWidget(label_14, 4, 0, 1, 1);
 
-    label_13 = new QLabel(widget2);
+    label_13 = new QLabel(widget1);
     label_13->setObjectName(QString::fromUtf8("label_13"));
 
     gridLayout1->addWidget(label_13, 3, 0, 1, 1);
 
-    downSpin = new QSpinBox(widget2);
+    downSpin = new QSpinBox(widget1);
     downSpin->setObjectName(QString::fromUtf8("downSpin"));
     downSpin->setAlignment(Qt::AlignRight);
     downSpin->setMaximum(9999);
@@ -364,65 +352,86 @@ public:
     tabWidget->addTab(tab_2, QApplication::translate("QAjOptionsDialogBase", "Network", 0, QApplication::UnicodeUTF8));
     ftp_tab = new QWidget();
     ftp_tab->setObjectName(QString::fromUtf8("ftp_tab"));
-    widget3 = new QWidget(ftp_tab);
-    widget3->setObjectName(QString::fromUtf8("widget3"));
-    widget3->setGeometry(QRect(10, 10, 351, 151));
-    gridLayout2 = new QGridLayout(widget3);
+    widget2 = new QWidget(ftp_tab);
+    widget2->setObjectName(QString::fromUtf8("widget2"));
+    widget2->setGeometry(QRect(10, 10, 351, 151));
+    gridLayout2 = new QGridLayout(widget2);
     gridLayout2->setSpacing(6);
     gridLayout2->setMargin(0);
     gridLayout2->setObjectName(QString::fromUtf8("gridLayout2"));
-    ftpServerEdit = new QLineEdit(widget3);
+    ftpServerEdit = new QLineEdit(widget2);
     ftpServerEdit->setObjectName(QString::fromUtf8("ftpServerEdit"));
 
     gridLayout2->addWidget(ftpServerEdit, 0, 1, 1, 1);
 
-    label_18 = new QLabel(widget3);
+    label_18 = new QLabel(widget2);
     label_18->setObjectName(QString::fromUtf8("label_18"));
 
     gridLayout2->addWidget(label_18, 1, 0, 1, 1);
 
-    label_19 = new QLabel(widget3);
+    label_19 = new QLabel(widget2);
     label_19->setObjectName(QString::fromUtf8("label_19"));
 
     gridLayout2->addWidget(label_19, 2, 0, 1, 1);
 
-    ftpPasswordEdit = new QLineEdit(widget3);
+    ftpPasswordEdit = new QLineEdit(widget2);
     ftpPasswordEdit->setObjectName(QString::fromUtf8("ftpPasswordEdit"));
     ftpPasswordEdit->setEchoMode(QLineEdit::Password);
 
     gridLayout2->addWidget(ftpPasswordEdit, 3, 1, 1, 1);
 
-    label_17 = new QLabel(widget3);
+    label_17 = new QLabel(widget2);
     label_17->setObjectName(QString::fromUtf8("label_17"));
 
     gridLayout2->addWidget(label_17, 0, 0, 1, 1);
 
-    ftpUserEdit = new QLineEdit(widget3);
+    ftpUserEdit = new QLineEdit(widget2);
     ftpUserEdit->setObjectName(QString::fromUtf8("ftpUserEdit"));
 
     gridLayout2->addWidget(ftpUserEdit, 2, 1, 1, 1);
 
-    label_20 = new QLabel(widget3);
+    label_20 = new QLabel(widget2);
     label_20->setObjectName(QString::fromUtf8("label_20"));
 
     gridLayout2->addWidget(label_20, 3, 0, 1, 1);
 
-    ftpPortEdit = new QLineEdit(widget3);
+    ftpPortEdit = new QLineEdit(widget2);
     ftpPortEdit->setObjectName(QString::fromUtf8("ftpPortEdit"));
 
     gridLayout2->addWidget(ftpPortEdit, 1, 1, 1, 1);
 
-    ftpDirEdit = new QLineEdit(widget3);
+    ftpDirEdit = new QLineEdit(widget2);
     ftpDirEdit->setObjectName(QString::fromUtf8("ftpDirEdit"));
 
     gridLayout2->addWidget(ftpDirEdit, 4, 1, 1, 1);
 
-    label_21 = new QLabel(widget3);
+    label_21 = new QLabel(widget2);
     label_21->setObjectName(QString::fromUtf8("label_21"));
 
     gridLayout2->addWidget(label_21, 4, 0, 1, 1);
 
     tabWidget->addTab(ftp_tab, QApplication::translate("QAjOptionsDialogBase", "Ftp", 0, QApplication::UnicodeUTF8));
+    layoutWidget = new QWidget(QAjOptionsDialogBase);
+    layoutWidget->setObjectName(QString::fromUtf8("layoutWidget"));
+    layoutWidget->setGeometry(QRect(20, 474, 381, 33));
+    hboxLayout = new QHBoxLayout(layoutWidget);
+    hboxLayout->setSpacing(6);
+    hboxLayout->setMargin(0);
+    hboxLayout->setObjectName(QString::fromUtf8("hboxLayout"));
+    spacerItem = new QSpacerItem(131, 31, QSizePolicy::Expanding, QSizePolicy::Minimum);
+
+    hboxLayout->addItem(spacerItem);
+
+    okButton = new QPushButton(layoutWidget);
+    okButton->setObjectName(QString::fromUtf8("okButton"));
+
+    hboxLayout->addWidget(okButton);
+
+    cancelButton = new QPushButton(layoutWidget);
+    cancelButton->setObjectName(QString::fromUtf8("cancelButton"));
+
+    hboxLayout->addWidget(cancelButton);
+
     QWidget::setTabOrder(okButton, cancelButton);
     QWidget::setTabOrder(cancelButton, tabWidget);
     QWidget::setTabOrder(tabWidget, nickEdit);
@@ -453,7 +462,7 @@ public:
 
     retranslateUi(QAjOptionsDialogBase);
 
-    QSize size(421, 472);
+    QSize size(421, 521);
     size = size.expandedTo(QAjOptionsDialogBase->minimumSizeHint());
     QAjOptionsDialogBase->resize(size);
 
@@ -469,8 +478,6 @@ public:
     void retranslateUi(QDialog *QAjOptionsDialogBase)
     {
     QAjOptionsDialogBase->setWindowTitle(QApplication::translate("QAjOptionsDialogBase", "Configure", 0, QApplication::UnicodeUTF8));
-    okButton->setText(QApplication::translate("QAjOptionsDialogBase", "OK", 0, QApplication::UnicodeUTF8));
-    cancelButton->setText(QApplication::translate("QAjOptionsDialogBase", "Cancel", 0, QApplication::UnicodeUTF8));
     label_2->setText(QApplication::translate("QAjOptionsDialogBase", "New Password:", 0, QApplication::UnicodeUTF8));
     tempButton->setText(QApplication::translate("QAjOptionsDialogBase", "...", 0, QApplication::UnicodeUTF8));
     label_22->setText(QApplication::translate("QAjOptionsDialogBase", "Open files with:", 0, QApplication::UnicodeUTF8));
@@ -484,8 +491,9 @@ public:
     label_3->setText(QApplication::translate("QAjOptionsDialogBase", "Retype Password:", 0, QApplication::UnicodeUTF8));
     label_8->setText(QApplication::translate("QAjOptionsDialogBase", "Server Source:", 0, QApplication::UnicodeUTF8));
     label_6->setText(QApplication::translate("QAjOptionsDialogBase", "Incoming Directory:", 0, QApplication::UnicodeUTF8));
-    autoConnect->setText(QApplication::translate("QAjOptionsDialogBase", "auto connect", 0, QApplication::UnicodeUTF8));
-    savePassword->setText(QApplication::translate("QAjOptionsDialogBase", "save password", 0, QApplication::UnicodeUTF8));
+    autoConnect->setText(QApplication::translate("QAjOptionsDialogBase", "automatically connect to servers", 0, QApplication::UnicodeUTF8));
+    savePassword->setText(QApplication::translate("QAjOptionsDialogBase", "save core password", 0, QApplication::UnicodeUTF8));
+    showSplash->setText(QApplication::translate("QAjOptionsDialogBase", "show splash screen on startup", 0, QApplication::UnicodeUTF8));
     tabWidget->setTabText(tabWidget->indexOf(tab), QApplication::translate("QAjOptionsDialogBase", "Common", 0, QApplication::UnicodeUTF8));
     slotSpin->setSuffix(QApplication::translate("QAjOptionsDialogBase", " kByte/s", 0, QApplication::UnicodeUTF8));
     sourcesSpin->setSuffix(QString());
@@ -507,6 +515,8 @@ public:
     label_20->setText(QApplication::translate("QAjOptionsDialogBase", "Password:", 0, QApplication::UnicodeUTF8));
     label_21->setText(QApplication::translate("QAjOptionsDialogBase", "Directory:", 0, QApplication::UnicodeUTF8));
     tabWidget->setTabText(tabWidget->indexOf(ftp_tab), QApplication::translate("QAjOptionsDialogBase", "Ftp", 0, QApplication::UnicodeUTF8));
+    okButton->setText(QApplication::translate("QAjOptionsDialogBase", "OK", 0, QApplication::UnicodeUTF8));
+    cancelButton->setText(QApplication::translate("QAjOptionsDialogBase", "Cancel", 0, QApplication::UnicodeUTF8));
     Q_UNUSED(QAjOptionsDialogBase);
     } // retranslateUi
 

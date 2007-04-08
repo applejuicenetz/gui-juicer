@@ -29,14 +29,14 @@
 
 class QAjOptionsDialog : public QDialog, public Ui::QAjOptionsDialogBase
 {
-  Q_OBJECT
+    Q_OBJECT
 
 public:
-	QAjOptionsDialog( QWidget* parent = 0 );
-	~QAjOptionsDialog();
+    QAjOptionsDialog( QWidget* parent = 0 );
+    ~QAjOptionsDialog();
 
-	AjSettings getAjSettings();
-	void setAjSettings( AjSettings settings );
+    AjSettings getAjSettings();
+    void setAjSettings( AjSettings settings );
     void setSpecial( bool special );
 
     QString winLauncher;
@@ -45,8 +45,8 @@ public:
     QString gnomeLauncher;
 
 protected slots:
-	void selectIncomingDir();
-	void selectTempDir();
+    void selectIncomingDir();
+    void selectTempDir();
 };
 
 #endif

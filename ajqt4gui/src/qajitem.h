@@ -32,15 +32,21 @@ typedef enum { DOWN, UP, USER, SEARCH, SHARE, SHARED_FILE, GENERIC } AjItemType;
 class QAjItem : public QTreeWidgetItem
 {
 public:
-	QAjItem( AjItemType type, QTreeWidget *parent = 0, const char *name = 0 );
-	QAjItem( AjItemType type, QTreeWidgetItem *parent = 0, const char *name = 0 );
+    QAjItem( AjItemType type, QTreeWidget *parent = 0, const char *name = 0 );
+    QAjItem( AjItemType type, QTreeWidgetItem *parent = 0, const char *name = 0 );
 
-	virtual ~QAjItem();
-	
-	QString getStatus() { return status; }
-	void setStatus( QString newStatus ) { status = newStatus; }
-	int getType();
-	
+    virtual ~QAjItem();
+
+    QString getStatus()
+    {
+        return status;
+    }
+    void setStatus( QString newStatus )
+    {
+        status = newStatus;
+    }
+    int getType();
+
 //	virtual bool operator<( const QAjItem & other ){ return false; };
 
 protected:

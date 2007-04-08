@@ -23,7 +23,7 @@
 
 QAjPartListWidget::QAjPartListWidget( QWidget *parent, const char *name ) : QWidget( parent )
 {
-	this->setWindowIcon(QPixmap(ajqtgui_xpm));
+	this->setWindowIcon( QPixmap( ajqtgui_xpm ) );
 	this->setFixedSize( 600, 280 );
 	paintWidget = new QAjPartsWidget( this );
 	
@@ -74,8 +74,6 @@ void QAjPartListWidget::update( qulonglong size, QLinkedList<Part> partList )
 	if( ! timer->isActive() )
 		timer->start( 5000 );
 
-//	filesizeLabel->setText( "file size: " + QConvert::bytes( size ) );
-	
 	this->size = size;
 	this->partList = partList;
    Part closePart;
@@ -117,7 +115,7 @@ void QAjPartListWidget::paintEvent( QPaintEvent* )
  */
 void QAjPartListWidget::setFilename( QString filename )
 {
-	setWindowTitle( filename );
+	setWindowTitle( "Juicer - " + filename );
 }
 
 

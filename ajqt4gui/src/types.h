@@ -90,7 +90,6 @@
 #define ID_FTP_INDEX NUM_FTP_COL - 1
 
 
-
 #define ONE_DAY 86400
 #define ONE_HOUR 3600
 #define ONE_MINUTE 60
@@ -98,7 +97,6 @@
 #define ONE_GIG 1073741824
 #define ONE_MEG 1048576
 #define ONE_KILO 1024
-
 
 #define WINDOWS "1"
 #define LINUX "2"
@@ -114,18 +112,22 @@
 
 #include <QString>
 
-typedef struct{
-	QString nick, password, coreAddress, tcpPort, xmlPort, incomingDir, tempDir, autoconnect, savePassword;
-	QString maxDown, maxUp, maxCon, maxSlot, maxSources, maxNewCon, allowBrowse;
-	QString serverURL;
-	int refresh;
+typedef struct
+{
+    QString nick, password, coreAddress, tcpPort, xmlPort, incomingDir, tempDir, autoconnect, savePassword, showSplash;
+    QString maxDown, maxUp, maxCon, maxSlot, maxSources, maxNewCon, allowBrowse;
+    QString serverURL;
+    int refresh;
     QString launcher;
-	QString ftpServer, ftpPort, ftpUser, ftpPassword, ftpDir;
-} AjSettings;
+    QString ftpServer, ftpPort, ftpUser, ftpPassword, ftpDir;
+}
+AjSettings;
 
-typedef struct{
+typedef struct
+{
     qulonglong fromPosition;
     int type;
-} Part;
+}
+Part;
 
 #endif

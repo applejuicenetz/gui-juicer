@@ -36,32 +36,36 @@
 */
 class QAjListWidget : public QTreeWidget
 {
-Q_OBJECT
+    Q_OBJECT
 public:
-	QAjListWidget( int idIndex, QWidget *parent = 0, const char *name = 0);
+    QAjListWidget( int idIndex, QWidget *parent = 0, const char *name = 0);
 
-	~QAjListWidget();
+    ~QAjListWidget();
 
-	bool wasChanged() { return changed; }
-	void setChanged( bool changed = true ) { this->changed = changed; }
+    bool wasChanged()
+    {
+        return changed;
+    }
+    void setChanged( bool changed = true )
+    {
+        this->changed = changed;
+    }
 
-	QMenu *popup;
-	void adjustSizeOfColumns();
-	bool wasSizeAdjusted();
+    QMenu *popup;
+    void adjustSizeOfColumns();
 
-	QMutex mutex;
+    QMutex mutex;
 protected:
-	bool isOneSelected();
-	bool changed;
-	QAjItem *popupItem;
-	int idIndex;
-	bool sizeAdjusted;
+    bool isOneSelected();
+    bool changed;
+    QAjItem *popupItem;
+    int idIndex;
 
 private slots:
-	void selectionChanged();
-	void contextMenuRequested( const QPoint &pos );
+    void selectionChanged();
+    void contextMenuRequested( const QPoint &pos );
 signals:
-	void newSelection( bool oneSelected );
+    void newSelection( bool oneSelected );
 };
 
 #endif

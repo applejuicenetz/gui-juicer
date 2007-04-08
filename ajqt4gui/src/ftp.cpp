@@ -21,28 +21,28 @@
 
 FTP::FTP( QString host, int port, QString user, QString password, bool binary, QObject *parent ) : QThread( parent )
 {
-	this->host = host;
-	this->port = port;
-	this->user = user;
-	this->password = password;
-	this->binary = binary;
-	dstFile = NULL;
-	
-	ftp = new QFtp( );
-	connect( ftp, SIGNAL( stateChanged( int ) ), this, SLOT( stateChangedSlot( int ) ) );
-	connect( ftp, SIGNAL( commandFinished( int, bool ) ), this, SLOT( commandFinishedSlot( int, bool ) ) );
-	connect( ftp, SIGNAL( dataTransferProgress( qint64, qint64 ) ), this, SLOT( dataTransferProgressSlot( qint64, qint64 ) ) );
-	connect( ftp, SIGNAL( listInfo ( QUrlInfo ) ), this, SLOT( listInfoSlot( QUrlInfo ) ) );
+    this->host = host;
+    this->port = port;
+    this->user = user;
+    this->password = password;
+    this->binary = binary;
+    dstFile = NULL;
 
-	progressDialog = new QProgressDialog();
-	progressDialog->hide();
-	connect( progressDialog, SIGNAL( canceled() ), this, SLOT( abort() ) );
+    ftp = new QFtp( );
+    connect( ftp, SIGNAL( stateChanged( int ) ), this, SLOT( stateChangedSlot( int ) ) );
+    connect( ftp, SIGNAL( commandFinished( int, bool ) ), this, SLOT( commandFinishedSlot( int, bool ) ) );
+    connect( ftp, SIGNAL( dataTransferProgress( qint64, qint64 ) ), this, SLOT( dataTransferProgressSlot( qint64, qint64 ) ) );
+    connect( ftp, SIGNAL( listInfo ( QUrlInfo ) ), this, SLOT( listInfoSlot( QUrlInfo ) ) );
+
+    progressDialog = new QProgressDialog();
+    progressDialog->hide();
+    connect( progressDialog, SIGNAL( canceled() ), this, SLOT( abort() ) );
 }
 
 FTP::~FTP()
 {
-	ftp->close();
-	delete ftp;
+    ftp->close();
+    delete ftp;
 }
 
 
@@ -51,19 +51,16 @@ FTP::~FTP()
  */
 void FTP::stateChangedSlot( int state )
 {
-	switch( state )
-	{
-		case( QFtp::Connected ):
-//			cout << "connected, logging in... " << user.toLatin1().data() << ", " << password.toLatin1().data() << endl;
-			break;
-		case( QFtp::LoggedIn ):
-//			cout << "logged in" << endl;
-			getNext();
-			break;
-		default:
-// 			cout << "new state: " << state << endl;
-			break;
-	}
+    switch ( state )
+    {
+    case( QFtp::Connected ):
+                    break;
+    case( QFtp::LoggedIn ):
+                    getNext();
+        break;
+    default:
+        break;
+    }
 }
 
 
@@ -72,21 +69,20 @@ void FTP::stateChangedSlot( int state )
  */
 void FTP::commandFinishedSlot( int id, bool error )
 {
-	if( error )
-	{
-		cout << "ERROR: " << ftp->errorString().toLatin1().data() << endl;
-		errorOccured( ftp->errorString() );
-		abort();
-	}
-	if( id == getFile )
-	{
-		dstFile->flush();
-		dstFile->close();
-		downloadFinished( dstFile );
+    if ( error )
+    {
+        errorOccured( ftp->errorString() );
+        abort();
+    }
+    if ( id == getFile )
+    {
+        dstFile->flush();
+        dstFile->close();
+        downloadFinished( dstFile );
 //		QMessageBox::information ( NULL, "finished", dstFile->fileName() + " finished", QMessageBox::Ok );
-		dstFile = NULL;
-		getNext();
-	}
+        dstFile = NULL;
+        getNext();
+    }
 }
 
 
@@ -95,10 +91,10 @@ void FTP::commandFinishedSlot( int id, bool error )
  */
 void FTP::run()
 {
-	ftp->connectToHost( host, port );
-	ftp->login( user, password );
-	ftp->setTransferMode( QFtp::Passive );
-	exec();
+    ftp->connectToHost( host, port );
+    ftp->login( user, password );
+    ftp->setTransferMode( QFtp::Passive );
+    exec();
 }
 
 
@@ -107,13 +103,13 @@ void FTP::run()
  */
 void FTP::dataTransferProgressSlot( qint64 done, qint64 total )
 {
-	if( dstFile != NULL )
-	{
-		progressDialog->setLabelText( dstFile->fileName() );
-	}
-	progressDialog->setRange( 0, total );
-	progressDialog->show();
-	progressDialog->setValue( done );
+    if ( dstFile != NULL )
+    {
+        progressDialog->setLabelText( dstFile->fileName() );
+    }
+    progressDialog->setRange( 0, total );
+    progressDialog->show();
+    progressDialog->setValue( done );
 }
 
 
@@ -122,12 +118,12 @@ void FTP::dataTransferProgressSlot( qint64 done, qint64 total )
  */
 void FTP::getNext()
 {
-	if( ! queue.empty() )
-	{
-		StoreInfo s = queue.takeFirst();
-		dstFile = s.dstFile;
-		getFile = ftp->get( s.srcFile, s.dstFile );//, binary?(QFtp::Binary):(QFtp::Ascii) );
-	}
+    if ( ! queue.empty() )
+    {
+        StoreInfo s = queue.takeFirst();
+        dstFile = s.dstFile;
+        getFile = ftp->get( s.srcFile, s.dstFile );//, binary?(QFtp::Binary):(QFtp::Ascii) );
+    }
 }
 
 
@@ -136,10 +132,10 @@ void FTP::getNext()
  */
 void FTP::add( QString srcFilename, QFile* dstFile )
 {
-	StoreInfo s;
-	s.srcFile = srcFilename;
-	s.dstFile = dstFile;
-	queue.append( s );
+    StoreInfo s;
+    s.srcFile = srcFilename;
+    s.dstFile = dstFile;
+    queue.append( s );
 }
 
 
@@ -148,13 +144,13 @@ void FTP::add( QString srcFilename, QFile* dstFile )
  */
 void FTP::abort()
 {
-	ftp->abort();
-	progressDialog->hide();
-	if( dstFile != NULL )
-	{
-		dstFile->flush();
-		dstFile->close();
-	}
+    ftp->abort();
+    progressDialog->hide();
+    if ( dstFile != NULL )
+    {
+        dstFile->flush();
+        dstFile->close();
+    }
 }
 
 
@@ -163,9 +159,9 @@ void FTP::abort()
  */
 void FTP::list( QString directory )
 {
-	ftp->connectToHost( host, port );
-	ftp->login( user, password );
-	ftp->list( directory );
+    ftp->connectToHost( host, port );
+    ftp->login( user, password );
+    ftp->list( directory );
 }
 
 
@@ -174,5 +170,5 @@ void FTP::list( QString directory )
  */
 void FTP::listInfoSlot( QUrlInfo info )
 {
-	listEntry( info );
+    listEntry( info );
 }

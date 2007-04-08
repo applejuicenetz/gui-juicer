@@ -32,26 +32,45 @@
 */
 class QAjNetworkWidget : public QMessageBox
 {
-Q_OBJECT
+    Q_OBJECT
 public:
-	QAjNetworkWidget(QWidget *parent = 0, const char *name = 0);
+    QAjNetworkWidget(QWidget *parent = 0, const char *name = 0);
 
-	~QAjNetworkWidget();
+    ~QAjNetworkWidget();
 
-	void setUsers(QString users) { usersLabel2->setText(users); usersLabel2->adjustSize(); }
-	void setFiles(QString files) { filesLabel2->setText(files); filesLabel2->adjustSize(); }
-	void setSize(QString size) { sizeLabel2->setText(size); sizeLabel2->adjustSize(); }
-	void setIp(QString ip) { ipLabel2->setText(ip); ipLabel2->adjustSize(); }
+    void setUsers(QString users)
+    {
+        usersLabel2->setText(users);
+        usersLabel2->adjustSize();
+    }
+    void setFiles(QString files)
+    {
+        filesLabel2->setText(files);
+        filesLabel2->adjustSize();
+    }
+    void setSize(QString size)
+    {
+        sizeLabel2->setText(size);
+        sizeLabel2->adjustSize();
+    }
+    void setIp(QString ip)
+    {
+        ipLabel2->setText(ip);
+        ipLabel2->adjustSize();
+    }
 
 protected:
-	QLabel *usersLabel1, *usersLabel2;
-	QLabel *filesLabel1, *filesLabel2;
-	QLabel *sizeLabel1, *sizeLabel2;
-	QLabel *ipLabel1, *ipLabel2;
+    QLabel *usersLabel1, *usersLabel2;
+    QLabel *filesLabel1, *filesLabel2;
+    QLabel *sizeLabel1, *sizeLabel2;
+    QLabel *ipLabel1, *ipLabel2;
 
-	int secondCol;
+    int secondCol;
 
-	void actSecondCol(int x) { secondCol = x>secondCol?x:secondCol; }
+    void actSecondCol(int x)
+    {
+        secondCol = x>secondCol?x:secondCol;
+    }
 };
 
 #endif

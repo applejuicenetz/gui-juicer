@@ -30,29 +30,38 @@
 */
 class QAjLoginDialog : public QDialog
 {
-Q_OBJECT
+    Q_OBJECT
 public:
     QAjLoginDialog(QString host, QString port, QString password, QString errorMsg, QWidget *parent = 0, const char *name = 0);
 
     ~QAjLoginDialog();
-	 QString getHost() { return hostEdit->text(); }
-	 QString getPort() { return portEdit->text(); }
-	 QString getPassword() { return passwordEdit->text(); }
-	
+    QString getHost()
+    {
+        return hostEdit->text();
+    }
+    QString getPort()
+    {
+        return portEdit->text();
+    }
+    QString getPassword()
+    {
+        return passwordEdit->text();
+    }
+
 protected:
-	QLabel *messageLabel;
-	QLabel *hostLabel;
-	QLineEdit *hostEdit;
-	QLabel *portLabel;
-	QLineEdit *portEdit;
-	QLabel *passwordLabel;
-	QLineEdit *passwordEdit;
-	QPushButton *retryButton;
-	QPushButton *cancelButton;
+    QLabel *messageLabel;
+    QLabel *hostLabel;
+    QLineEdit *hostEdit;
+    QLabel *portLabel;
+    QLineEdit *portEdit;
+    QLabel *passwordLabel;
+    QLineEdit *passwordEdit;
+    QPushButton *retryButton;
+    QPushButton *cancelButton;
 protected slots:
-	void retryClicked();
-	void cancelClicked();
-	
+    void retryClicked();
+    void cancelClicked();
+
 };
 
 #endif

@@ -32,23 +32,23 @@
 */
 class QConvert : public QObject
 {
-Q_OBJECT
+    Q_OBJECT
 public:
-	QConvert(QObject *parent = 0, const char *name = 0);
+    QConvert(QObject *parent = 0, const char *name = 0);
 
-	~QConvert();
-	
-	static QString num( long int num );
-	static QString bytes( QString x );
-	static QString bytes( long int x );
-	static QString bytes( double x, int precision = 2 );
-	static QString bytes( qulonglong x );
-	static QString bytes( QString x, QString y );
-	static QString bytesLong( QString x );
-	static QString bytesExtra( QString x );
-	static QString power( QString x );
-	static QString power( float power );
-	static QString time( long int seconds );
+    ~QConvert();
+
+    static QString num( long int num );
+    static QString bytes( QString x );
+    static QString bytes( long int x );
+    static QString bytes( double x, int precision = 2 );
+    static QString bytes( qulonglong x );
+    static QString bytes( QString x, QString y );
+    static QString bytesLong( QString x );
+    static QString bytesExtra( QString x );
+    static QString power( QString x );
+    static QString power( float power );
+    static QString time( long int seconds );
 };
 
 #endif

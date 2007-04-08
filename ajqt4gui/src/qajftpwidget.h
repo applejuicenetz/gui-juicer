@@ -30,11 +30,11 @@
 */
 class QAjFtpWidget : public QAjListWidget
 {
-Q_OBJECT
+    Q_OBJECT
 public:
-	QAjFtpWidget( QWidget *parent = 0 );
+    QAjFtpWidget( QWidget *parent = 0 );
 
-	~QAjFtpWidget();
+    ~QAjFtpWidget();
 
 public slots:
     void insert( QUrlInfo info );

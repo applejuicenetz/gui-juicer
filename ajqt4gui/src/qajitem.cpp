@@ -21,23 +21,22 @@
 
 QAjItem::QAjItem( AjItemType type, QTreeWidget *parent, const char *name ) : QTreeWidgetItem( parent )
 {
-	this->type = type;
-	status = -1;
+    this->type = type;
+    status = -1;
 }
 QAjItem::QAjItem( AjItemType type, QTreeWidgetItem *parent, const char *name ) : QTreeWidgetItem( parent )
 {
-	this->type = type;
-	status = -1;
+    this->type = type;
+    status = -1;
 }
 
 QAjItem::~QAjItem()
-{
-}
+{}
 
 /*!
     \fn QAjItem::getType()
  */
 int QAjItem::getType()
 {
-	return type;
+    return type;
 }

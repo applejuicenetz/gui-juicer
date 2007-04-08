@@ -42,7 +42,6 @@
 #include <QToolBar>
 #include <QToolButton>
 #include <QFileDialog>
-#include <QProgressDialog>
 #include <QUrl>
 #include <QFtp>
 #include <QFileInfo>
@@ -69,158 +68,165 @@
 
 class AjQtGUI: public QMainWindow
 {
-	Q_OBJECT
+    Q_OBJECT
 public:
-	AjQtGUI( );
-	~AjQtGUI();
-	bool login();
+    AjQtGUI( );
+    ~AjQtGUI();
+    bool login();
 
-	void setStatusBarText( QString downSpeed, QString upSpeed, QString credits, QString downSize, QString upSize );
-	QAjNetworkWidget *networkWidget;
-	QAjDownloadWidget *ajDownloadWidget;
-	QAjUploadWidget *ajUploadWidget;
-	QAjSearchWidget *ajSearchWidget;
-	QAjServerWidget *ajServerWidget;
-	QAjShareWidget *ajShareWidget;
-	QAjFtpWidget *ajFtpWidget;
-	
-	void setFilesystemSeparator( QString separator ) { filesystemSeparator = separator; }
-	QString getFilesystemSeparator( ) { return filesystemSeparator; }
-	void setCoreVersion( QString version );
-	void connectedSince( QString since );
-	void queueLinks( QStringList* links );
+    void setStatusBarText( QString downSpeed, QString upSpeed, QString credits, QString downSize, QString upSize );
+    QAjNetworkWidget *networkWidget;
+    QAjDownloadWidget *ajDownloadWidget;
+    QAjUploadWidget *ajUploadWidget;
+    QAjSearchWidget *ajSearchWidget;
+    QAjServerWidget *ajServerWidget;
+    QAjShareWidget *ajShareWidget;
+    QAjFtpWidget *ajFtpWidget;
+
+    void setFilesystemSeparator( QString separator )
+    {
+        filesystemSeparator = separator;
+    }
+    QString getFilesystemSeparator( )
+    {
+        return filesystemSeparator;
+    }
+    void setCoreVersion( QString version );
+    void connectedSince( QString since );
+    void queueLinks( QStringList* links );
     void setUploadFilename( QString shareId, QString filename );
 
 protected:
-	void initToolBars();
+    void initToolBars();
+    void closeEvent( QCloseEvent* );
+    QString getSelectedDownloads();
+    void processQueuedLinks();
 
-	void closeEvent( QCloseEvent* );
-	
-	QString getSelectedDownloads();
-	
-	void processQueuedLinks();
+    QString password;
+    QString filesystemSeparator;
 
-	QString password;
-	
-	QString filesystemSeparator;
-	
-	QTimer *timer;
-	QTimer *partListTimer;
+    QTimer *timer;
+    QTimer *partListTimer;
 
-	QWidget *prevTab;
-	QAjOptionsDialog *optionsDialog;
-	QXMLModule *xml;
-	
-	QHttp *serverHttp;
-	QAjServerSocket *linkServer;
+    QWidget *prevTab;
+    QAjOptionsDialog *optionsDialog;
+    QXMLModule *xml;
 
-	QLabel *ajAddressLabel;
-	QLineEdit *ajAddressEdit;
-	QToolButton *ajAddressButton;
+    QHttp *serverHttp;
+    QAjServerSocket *linkServer;
 
-	QMenu* file;
-	QMenu* help;
-	
-	QLabel *downSpeedLabel;
-	QLabel *upSpeedLabel;
-	QLabel *creditsLabel;
-	QLabel *downSizeLabel;
-	QLabel *upSizeLabel;
-	QLabel *coreVersionLabel;
-	QLabel *connectedLabel;
-	
-	QToolBar *downloadToolBar, *uploadToolBar, *searchToolBar, *serverToolBar, *shareToolBar, *ftpToolBar;
-	
-	QLabel *ajSearchLabel;
-	QLineEdit *ajSearchEdit;
-	QAction *ajSearchButton;
-	
-	QAction *downloadMenuBar, *serverMenuBar, *shareMenuBar, *searchMenuBar;
-	
-	bool connected;
-	
-	QDoubleSpinBox* powerSpin;
-	QAction *powerUpButton, *powerDownButton, *powerOkButton, *powerMaxButton;
-	QAction *pauseDownloadButton, *resumeDownloadButton;
-	QAction *cancelDownloadButton, *clearDownloadButton,  *partListButton;
-   QAction *renameDownloadButton, *renamePlusDownloadButton;
-	QAction *saveDownloadButton;
-	QAction *clipboardButton;
-	QCheckBox *powerCheck;
-	QAction *removeShareButton, *applyShareButton, *reloadSharedFilesButton;
-	QAction *removeServerButton, *connectServerButton, *findServerButton;
-	QAction *storeFtpButton;
-	
-	QProgressDialog* progressDialog;
-	
-	bool special;
-	
-	QStringList *queuedLinks;
+    QLabel *ajAddressLabel;
+    QLineEdit *ajAddressEdit;
+    QToolButton *ajAddressButton;
 
-	QFtp* ftp;
-   QFileInfo tempDir;
-	
+    QMenu* file;
+    QMenu* help;
+
+    QLabel *downSpeedLabel;
+    QLabel *upSpeedLabel;
+    QLabel *creditsLabel;
+    QLabel *downSizeLabel;
+    QLabel *upSizeLabel;
+    QLabel *coreVersionLabel;
+    QLabel *connectedLabel;
+
+    QToolBar *downloadToolBar, *uploadToolBar, *searchToolBar, *serverToolBar, *shareToolBar, *ftpToolBar;
+
+    QLabel *ajSearchLabel;
+    QLineEdit *ajSearchEdit;
+    QAction *ajSearchButton;
+
+    QAction *downloadMenuBar, *serverMenuBar, *shareMenuBar, *searchMenuBar;
+
+    bool connected;
+
+    QDoubleSpinBox* powerSpin;
+    QAction *powerUpButton, *powerDownButton, *powerOkButton, *powerMaxButton;
+    QAction *pauseDownloadButton, *resumeDownloadButton;
+    QAction *cancelDownloadButton, *clearDownloadButton,  *partListButton;
+    QAction *renameDownloadButton, *renamePlusDownloadButton;
+    QAction *saveDownloadButton;
+    QAction *clipboardButton;
+    QCheckBox *powerCheck;
+    QAction *removeShareButton, *applyShareButton, *reloadSharedFilesButton;
+    QAction *removeServerButton, *connectServerButton, *findServerButton;
+    QAction *storeFtpButton;
+
+// 	QProgressDialog* progressDialog;
+
+    bool special;
+
+    QStringList *queuedLinks;
+
+    QFtp* ftp;
+    QFileInfo tempDir;
+    int firstModifiedCnt;
+
 private slots:
 
-	void about();
-	void aboutQt();
-	void timerSlot();
-	void partListTimerSlot();
-	void showOptions();
-	void showNetworkInfo();
-	void settingsReady( AjSettings settings );
-	void xmlError( int code );
-   void gotSession();
-	
-	void processSelected( QString request, QString para = "" );
-	void requestSelected( QString request, QString para = "" );
+    void about();
+    void aboutQt();
+    void timerSlot();
+    void partListTimerSlot();
+    void showOptions();
+    void showNetworkInfo();
+    void settingsReady( AjSettings settings );
+    void xmlError( int code );
+    void gotSession();
 
-	void powerChanged(const QString& );
-	void applyPowerDownload();
-	void maxPowerDownload();
-	
-	void cancelDownload();
-	void cleanDownload();
-	void resumeDownload();
-	void pauseDownload();
-	void partListRequest();
-	void renameDownload();
-   void renamePlusDownload();
-	
-	void removeServer();
-	void connectServer();
-	
-	void processLink();
-	void processClipboard();
-	void downloadSearch();
-	
-	void addShare();
-	void removeShare();
-	void applyShare();
-	
-	void tabChanged( QWidget *tab );
-	void downloadSelectionChanged( );
-	
-	void exitCore();
-	
-	void search();
-	void cancelSearch();
-	
-	void findServer();
-	void gotServer( int id, bool error );
-	
-	void reloadShare();
-	
-	void firstModified();
-	
-	void linkServerLine( QString line );
-	void powerChanged( double value );
+    void processSelected( QString request, QString para = "" );
+    void requestSelected( QString request, QString para = "" );
 
-	void storeDownload();
-	void reloadFtp();
-	void storeFtp();
+    void powerChanged(const QString& );
+    void applyPowerDownload();
+    void maxPowerDownload();
+
+    void cancelDownload();
+    void cleanDownload();
+    void resumeDownload();
+    void pauseDownload();
+    void partListRequest();
+    void renameDownload();
+    void renamePlusDownload();
+
+    void removeServer();
+    void connectServer();
+
+    void processLink();
+    void processClipboard();
+    void downloadSearch();
+
+    void addShare();
+    void removeShare();
+    void applyShare();
+
+    void tabChanged( QWidget *tab );
+    void downloadSelectionChanged( );
+
+    void exitCore();
+
+    void search();
+    void cancelSearch();
+
+    void findServer();
+    void gotServer( int id, bool error );
+
+    void reloadShare();
+
+    void firstModified();
+
+    void linkServerLine( QString line );
+    void powerChanged( double value );
+
+    void storeDownload();
+    void reloadFtp();
+    void storeFtp();
+    void AjQtGUI::openDownload( QList<QTreeWidgetItem *>  items );
     void openDownload( QTreeWidgetItem *item, int col );
+    void openDownload();
 
+public slots:
+    void adjustColumns();
 };
 
 

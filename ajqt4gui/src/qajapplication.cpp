@@ -19,57 +19,68 @@
  ***************************************************************************/
 #include "qajapplication.h"
 
+#include "./xpm/splash.xpm"
+
 QAjApplication::QAjApplication( int & argc, char ** argv ) : QApplication( argc, argv )
 {
-	QCoreApplication::setOrganizationName("progeln.de");
-	QCoreApplication::setOrganizationDomain("progeln.de");
-	QCoreApplication::setApplicationName("AjQtGUI");
-	setQuitOnLastWindowClosed( false );
-	if( argc > 1 )
-	{
-		argList = new QStringList();
-		*argv++;
-		while(argc-- > 1)
-		{
-			argList->push_back( QString( *argv++ ) );
-		}
-		socket = new QAjSocket( APP_PORT, argList );
-		QObject::connect( (QThread*)socket, SIGNAL( done( ) ), this, SLOT( start( ) ) );
-	}
-	else
-	{
-		argList = NULL;
-		socket = NULL;
-	}
+    QCoreApplication::setOrganizationName("progeln.de");
+    QCoreApplication::setOrganizationDomain("progeln.de");
+    QCoreApplication::setApplicationName("Juicer");
+    setQuitOnLastWindowClosed( false );
+    if ( argc > 1 )
+    {
+        argList = new QStringList();
+        *argv++;
+        while (argc-- > 1)
+        {
+            argList->push_back( QString( *argv++ ) );
+        }
+        socket = new QAjSocket( APP_PORT, argList );
+        QObject::connect( (QThread*)socket, SIGNAL( done( ) ), this, SLOT( start( ) ) );
+    }
+    else
+    {
+        argList = NULL;
+        socket = NULL;
+    }
 }
 
 
 QAjApplication::~QAjApplication()
 {
-	if( socket != NULL )
-		delete socket;
-	if( argList != NULL )
-		delete argList;
+    if ( socket != NULL )
+        delete socket;
+    if ( argList != NULL )
+        delete argList;
 }
 
 int QAjApplication::exec()
 {
-	if( socket != NULL )
-	{
-		socket->start();
-	}
-	else
-	{
-		start();
-	}
-	return QApplication::exec();
+    if ( socket != NULL )
+        socket->start();
+    else
+        start();
+    return QApplication::exec();
 }
 
 void QAjApplication::start()
 {
-	AjQtGUI * mw = new AjQtGUI( );
-	mw->queueLinks( argList );
-	mw->setWindowTitle( "AjQtGUI" );
-	mw->show();
-	connect( this, SIGNAL(lastWindowClosed()), this, SLOT(quit()) );
+    QSettings lokalSettings;
+    QSplashScreen *splash = NULL;
+    if ( lokalSettings.value( "showSplash", "true" ).toString() == "true" )
+    {
+        splash = new QSplashScreen(QPixmap(splash_xpm ));
+        splash->show();
+    }
+
+    AjQtGUI * mw = new AjQtGUI( );
+    if ( splash != NULL )
+    {
+        splash->finish( mw );
+        delete splash;
+    }
+
+    mw->queueLinks( argList );
+    mw->setWindowTitle( "Juicer" );
+    connect( this, SIGNAL(lastWindowClosed()), this, SLOT(quit()) );
 }
