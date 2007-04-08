@@ -19,8 +19,49 @@
  ***************************************************************************/
 #include "qajdownloadwidget.h"
 
-QAjDownloadWidget::QAjDownloadWidget( QAjIcons *icons, QWidget *parent, const char *name) : QAjListWidget(icons, ID_DOWN_INDEX, parent, name)
+#include "./xpm/resume_small.xpm"
+#include "./xpm/pause_small.xpm"
+#include "./xpm/cancel_small.xpm"
+#include "./xpm/partlist_small.xpm"
+#include "./xpm/rename_small.xpm"
+#include "./xpm/rename_plus_small.xpm"
+#include "./xpm/filter_small.xpm"
+
+#include "./xpm/windows.xpm"
+#include "./xpm/linux.xpm"
+
+QAjDownloadWidget::QAjDownloadWidget( QWidget *parent, const char *name) : QAjListWidget( ID_DOWN_INDEX, parent, name)
 {
+	userStatusDescr["1"] = QObject::tr("unasked ");
+	userStatusDescr["2"] = QObject::tr("try to connect ");
+	userStatusDescr["3"] = QObject::tr("partner have to old vers. ");
+	userStatusDescr["4"] = QObject::tr("partner can't	 open file ");
+	userStatusDescr["5"] = QObject::tr("queueing ");
+	userStatusDescr["6"] = QObject::tr("no usable parts ");
+	userStatusDescr["7"] = QObject::tr("loading ");
+	userStatusDescr["8"] = QObject::tr("not enough disk space ");
+	userStatusDescr["9"] = QObject::tr("finished ");
+	userStatusDescr["11"] = QObject::tr("no connection possible ");
+	userStatusDescr["12"] = QObject::tr("try indirect ");
+	userStatusDescr["13"] = QObject::tr("paused ");
+	userStatusDescr["14"] = QObject::tr("queue full ");
+	userStatusDescr["15"] = QObject::tr("own limit reached ");
+	userStatusDescr["16"] = QObject::tr("indirect conn. rejected ");
+   downloadStatusDescr["-1"] = QObject::tr("loading ");
+	downloadStatusDescr["0"] = QObject::tr("searching ");
+	downloadStatusDescr["1"] = QObject::tr("error at creating ");
+	downloadStatusDescr["12"] = QObject::tr("finishing ");
+	downloadStatusDescr["13"] = QObject::tr("error at finishing ");
+	downloadStatusDescr["14"] = QObject::tr("finished ");
+	downloadStatusDescr["15"] = QObject::tr("canceling ");
+	downloadStatusDescr["16"] = QObject::tr("creating .dat ");
+	downloadStatusDescr["17"] = QObject::tr("canceled ");
+	downloadStatusDescr["18"] = QObject::tr("paused ");
+
+   linuxIcon = new QIcon(QPixmap(linux_xpm));
+   windowsIcon = new QIcon(QPixmap(windows_xpm));
+   otherOsIcon = new QIcon();
+
     currIdRoundRobin = -1;
 	QStringList headers;
 	int i;
@@ -67,29 +108,18 @@ QAjDownloadWidget::QAjDownloadWidget( QAjIcons *icons, QWidget *parent, const ch
 		}
 	}
 	setHeaderLabels( headers );
-	
-	//setColumnWidthMode(ID_DOWN_INDEX, Q3ListView::Manual );
+
 	setColumnHidden( ID_DOWN_INDEX, true );
-/*	setColumnAlignment( SOURCES_DOWN_INDEX, Qt::AlignRight );
-	setColumnAlignment( FINISHED_DOWN_INDEX, Qt::AlignRight );
-	setColumnAlignment( SPEED_DOWN_INDEX, Qt::AlignRight );
-	setColumnAlignment( STATUS_DOWN_INDEX, Qt::AlignRight );
-	setColumnAlignment( SIZE_DOWN_INDEX, Qt::AlignRight );
-	setColumnAlignment( REMAIN_SIZE_DOWN_INDEX, Qt::AlignRight );
-	setColumnAlignment( FINISHED_SIZE_DOWN_INDEX, Qt::AlignRight );
-	setColumnAlignment( POWER_DOWN_INDEX, Qt::AlignRight );
-	setColumnAlignment( REMAIN_TIME_DOWN_INDEX, Qt::AlignRight );
-	setColumnAlignment( MISSING_DOWN_INDEX, Qt::AlignRight );
-*/
+
 	popup->setTitle( tr("&Download") );
-	pauseId = popup->addAction( *icons->downloadPauseSmallIcon, "pause", this, SLOT(pauseSlot()) );
-	resumeId = popup->addAction( *icons->downloadResumeSmallIcon, "resume", this, SLOT(resumeSlot()) );
-	cancelId = popup->addAction( *icons->downloadCancelSmallIcon, "cancel", this, SLOT(cancelSlot()) );
-	partListId = popup->addAction( *icons->partListSmallIcon, "part list", this, SLOT(partListSlot()) );
-	renameId = popup->addAction( *icons->downloadRenameSmallIcon, "rename", this, SLOT(renameSlot()) );
-   renamePlusId = popup->addAction( *icons->downloadRenamePlusSmallIcon, "rename by clipboard", this, SLOT(renamePlusSlot()) );
+	pauseId = popup->addAction( QIcon(QPixmap(pause_small_xpm)), "pause", this, SLOT(pauseSlot()) );
+	resumeId = popup->addAction( QIcon(QPixmap(resume_small_xpm)), "resume", this, SLOT(resumeSlot()) );
+	cancelId = popup->addAction( QIcon(QPixmap(cancel_small_xpm)), "cancel", this, SLOT(cancelSlot()) );
+	partListId = popup->addAction( QIcon(QPixmap(partlist_small_xpm)), "part list", this, SLOT(partListSlot()) );
+	renameId = popup->addAction( QIcon(QPixmap(rename_small_xpm)), "rename", this, SLOT(renameSlot()) );
+   renamePlusId = popup->addAction( QIcon(QPixmap(rename_plus_small_xpm)), "rename by clipboard", this, SLOT(renamePlusSlot()) );
 	popup->addSeparator();
-	popup->addAction( *icons->downloadFilterSmallIcon, "remove finished/canceld", this, SLOT(cleanSlot()) );
+	popup->addAction( QIcon(QPixmap(filter_small_xpm)), "remove finished/canceld", this, SLOT(cleanSlot()) );
 	pauseId->setEnabled( false );
 	resumeId->setEnabled( false );
 	cancelId->setEnabled( false );
@@ -102,16 +132,16 @@ QAjDownloadWidget::~QAjDownloadWidget()
 {
 }
 
-int QAjDownloadWidget::insertDownload(QString id, QString fileName, QString status, QString size, QString ready, QString power)
+int QAjDownloadWidget::insertDownload(QString id, QString fileName, QString status, QString size, QString ready, QString power, QString tempNumber)
 {
 	QAjDownloadItem *downloadItem = findDownload( id );
 	if( downloadItem == NULL )
 	{
-		downloadItem = new QAjDownloadItem( &descriptions, icons, this );
+		downloadItem = new QAjDownloadItem( this );
 		downloads[ id ] = downloadItem;
 		downloadItem->setText( ID_DOWN_INDEX, id );
 	}
-	downloadItem->update( fileName, status, size, ready, power );
+	downloadItem->update( fileName, status, size, ready, power, tempNumber );
 	return 0;
 }
 
@@ -121,12 +151,19 @@ int QAjDownloadWidget::insertUser(QString downloadId, QString id, QString fileNa
 	QAjDownloadItem *downloadItem = findDownload( downloadId );
 	if( downloadItem == NULL )
 	{
-		downloadItem = new QAjDownloadItem( &descriptions, icons, this );
+		downloadItem = new QAjDownloadItem( this );
 		downloads[ downloadId ] = downloadItem;
 		downloadItem->setText( ID_DOWN_INDEX, downloadId );
 		downloadItem->setText( FILENAME_DOWN_INDEX, fileName );
 	}
-	downloadItem->updateUser( id, fileName, speed, status, power, queuePos, os );
+   QIcon *osIcon;
+   if( os == LINUX )
+       osIcon = linuxIcon;
+   else if( os == WINDOWS )
+       osIcon = windowsIcon;
+   else
+       osIcon = otherOsIcon;
+	downloadItem->updateUser( id, fileName, speed, status, power, queuePos, userStatusDescr[status], osIcon );
 	return 0;
 }
 
@@ -195,7 +232,7 @@ void QAjDownloadWidget::updateView()
     {
         int i;
         for(i=0; i<topLevelItemCount(); i++) {
-            ((QAjDownloadItem*)topLevelItem(i))->updateView();
+            ((QAjDownloadItem*)topLevelItem(i))->updateView( &downloadStatusDescr );
         }
     }
 }
@@ -243,5 +280,22 @@ QString QAjDownloadWidget::getNextIdRoundRobin()
         return "";
     currIdRoundRobin ++;
     currIdRoundRobin %= topLevelItemCount();
-    return topLevelItem( currIdRoundRobin )->text(ID_DOWN_INDEX );
+    return topLevelItem( currIdRoundRobin )->text( ID_DOWN_INDEX );
+}
+
+
+/*!
+    \fn QAjDownloadWidget::findDownloadByTempNum( QString tempNum )
+ */
+QAjDownloadItem* QAjDownloadWidget::findDownloadByTempNum( QString tempNum )
+{
+    QAjDownloadItem* item;
+    int i;
+    for( i=0; i<topLevelItemCount(); i++ )
+    {
+        item = (QAjDownloadItem*)topLevelItem(i);
+        if( item->getTempNumber() == tempNum )
+            return item;
+    }
+    return NULL;
 }

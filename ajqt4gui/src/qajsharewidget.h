@@ -20,11 +20,7 @@
 #ifndef QAJSHAREWIDGET_H
 #define QAJSHAREWIDGET_H
 
-using namespace std;
-#include <vector>
-
 #include <qstringlist.h>
-
 #include "qajlistwidget.h"
 #include "qajshareitem.h"
 
@@ -35,22 +31,17 @@ class QAjShareWidget : public QAjListWidget
 {
 Q_OBJECT
 public:
-	QAjShareWidget( QString* filesystemSeparator, QAjIcons *icons, QWidget *parent = 0, const char *name = 0);
+	QAjShareWidget( QString filesystemSeparator, QWidget *parent = 0, const char *name = 0);
 
 	~QAjShareWidget();
 
 	void insertShare( QString path, QString shareMode );
-	void insertSharedFile( QString id, QString path );
-	void clearShares();
 	QAction* removeId;
 
 protected:
-	vector<QAjShareItem*> shares;
-	vector<QAjShareItem*>::iterator sharesIt;
-	
 	void insertDirList( QTreeWidgetItem* parent, QStringList* dirList );
-	QString* filesystemSeparator;
-	
+	QString filesystemSeparator;
+
 private slots:
 	void newSelection( bool oneSelected);
 	void insertSlot();

@@ -38,6 +38,12 @@ public:
 	AjSettings getAjSettings();
 	void setAjSettings( AjSettings settings );
     void setSpecial( bool special );
+
+    QString winLauncher;
+    QString macLauncher;
+    QString kdeLauncher;
+    QString gnomeLauncher;
+
 protected slots:
 	void selectIncomingDir();
 	void selectTempDir();

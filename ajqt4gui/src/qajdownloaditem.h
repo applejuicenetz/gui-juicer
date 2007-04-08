@@ -20,15 +20,13 @@
 #ifndef QAJDOWNLOADITEM_H
 #define QAJDOWNLOADITEM_H
 
-using namespace std;
-#include <map>
-
 #include <QTreeWidget>
 #include <QTreeWidgetItem>
 #include <QString>
 #include <QObject>
 #include <QPixmap>
 #include <QPainter>
+#include <QHash>
 
 #include <QHeaderView>
 
@@ -38,16 +36,11 @@ using namespace std;
 #include "qajlistwidget.h"
 #include "qajitem.h"
 
-#include "qajdescription.h"
-#include "qajicons.h"
-
 #include "types.h"
 
 #include "qconvert.h"
 
-#include "qajdescription.h"
 #include "qajpartlistwidget.h"
-
 
 class QAjUserItem;
 
@@ -58,21 +51,19 @@ class QAjDownloadItem : public QAjItem
 {
 //Q_OBJECT
 public:
-	QAjDownloadItem( QAjDescription *description, QAjIcons *icons,  QAjListWidget *parent = 0, const char *name = 0 );
+	QAjDownloadItem( QAjListWidget *parent = 0, const char *name = 0 );
 
 	~QAjDownloadItem();
  
-	void moveItem( QAjUserItem *userItem, int oldStatus );
-	void update( QString fileName, QString status, QString size, QString ready, QString power );
-	void updateUser( QString id, QString fileName, QString speed, QString status, QString power, QString queuePos, QString os );
+	void moveItem( QAjUserItem *userItem, QString oldStatus );
+	void update( QString fileName, QString status, QString size, QString ready, QString power, QString tempNumber );
+	void updateUser( QString id, QString fileName, QString speed, QString status, QString power, QString queuePos, QString statusString, QIcon *osIcon );
 	
-	void decSources( int type );
-	void incSources( int type );
-	
-	double calculateSpeed();
+	void decSources( QString type );
+	void incSources( QString type );
 	
 	QAjUserItem* findUser( QString id );
-	QAjUserItem* removeUser( QString id );
+	void removeUser( QString id );
 
 	QTreeWidgetItem* activeSourcesItem;
 	QTreeWidgetItem* queuedSourcesItem;
@@ -92,16 +83,15 @@ public:
 
 	QString getSourcesString();
 
-	void updateView();
+	void updateView( QHash<QString, QString>* downloadStatusDescr );
 	
 	void deleteUsers();
 	
 	int compare( QTreeWidgetItem * i, int col, bool ascending ) const;
 	void showWidget( const QPoint &p );
 	
-	map <unsigned long, QAjUserItem*> users;
-	map <unsigned long, QAjUserItem*>::iterator usersIt;
-	
+	QHash<QString, QAjUserItem*> users;
+
 	double getSize() { return size; }
 	double getReady() { return ready; }
 	double getRemainingSize() { return remainingSize; }
@@ -112,6 +102,8 @@ public:
 	int getPercent() { return percent; }
 	QAjPartListWidget* getPartListWidget();
 	void setParts( qulonglong size, QLinkedList<Part> partList );
+
+   QString getTempNumber() { return tempNumber; }
 	
 	virtual bool operator<( const QTreeWidgetItem & other ) const;
 
@@ -132,11 +124,9 @@ protected:
 	QAjListWidget *parentWidget;
 	QPixmap *pixmap;
 
-	QAjDescription *description;
-	QAjIcons *icons;
-	
 	QAjPartListWidget* partListWidget;
 
+   QString tempNumber;
 };
 
 #endif

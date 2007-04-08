@@ -21,13 +21,13 @@
 #ifndef TYPES_H_12345678901
 #define TYPES_H_12345678901
 
-#define ACTIVE_SOURCE 7
-#define QUEUED_SOURCE 5
-#define NEW_SOURCE -1
+#define ACTIVE_SOURCE "7"
+#define QUEUED_SOURCE "5"
+#define NEW_SOURCE "-1"
 
-#define ACTIVE_UPLOAD 1
-#define QUEUEING_UPLOAD 2
-#define NEW_UPLOAD -1
+#define ACTIVE_UPLOAD "1"
+#define QUEUEING_UPLOAD "2"
+#define NEW_UPLOAD "-1"
 
 // download col managment
 #define NUM_DOWN_COL 12
@@ -106,11 +106,11 @@
 #define WINDOWS_INT 1
 #define LINUX_INT 2
 
-#define DOWN_PAUSED 18
-#define DOWN_FINISHED 14
-#define DOWN_CANCELD 17
-#define DOWN_SEARCHING 0
-#define DOWN_LOADING 4
+#define DOWN_PAUSED "18"
+#define DOWN_FINISHED "14"
+#define DOWN_CANCELD "17"
+#define DOWN_SEARCHING "0"
+#define DOWN_LOADING "-1"
 
 #include <QString>
 
@@ -119,8 +119,13 @@ typedef struct{
 	QString maxDown, maxUp, maxCon, maxSlot, maxSources, maxNewCon, allowBrowse;
 	QString serverURL;
 	int refresh;
-
+    QString launcher;
 	QString ftpServer, ftpPort, ftpUser, ftpPassword, ftpDir;
 } AjSettings;
+
+typedef struct{
+    qulonglong fromPosition;
+    int type;
+} Part;
 
 #endif

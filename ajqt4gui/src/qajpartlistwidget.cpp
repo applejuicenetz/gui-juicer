@@ -19,9 +19,11 @@
  ***************************************************************************/
 #include "qajpartlistwidget.h"
 
-QAjPartListWidget::QAjPartListWidget( QAjIcons *icons, QWidget *parent, const char *name ) : QWidget( parent )
+#include "./xpm/ajqtgui.xpm"
+
+QAjPartListWidget::QAjPartListWidget( QWidget *parent, const char *name ) : QWidget( parent )
 {
-	this->setWindowIcon( *icons->ajqtguiPixmap );
+	this->setWindowIcon(QPixmap(ajqtgui_xpm));
 	this->setFixedSize( 600, 280 );
 	paintWidget = new QAjPartsWidget( this );
 	

@@ -20,7 +20,7 @@
 #include "qajdownloaditem.h"
 
 
-QAjDownloadItem::QAjDownloadItem( QAjDescription *description, QAjIcons *icons,  QAjListWidget *parent, const char *name) : QAjItem( DOWN, parent )
+QAjDownloadItem::QAjDownloadItem( QAjListWidget *parent, const char *name) : QAjItem( DOWN, parent )
 {
 	int i;
 	for( i=1; i<NUM_DOWN_COL; i++ )
@@ -29,9 +29,7 @@ QAjDownloadItem::QAjDownloadItem( QAjDescription *description, QAjIcons *icons, 
 	}
 	parentWidget = parent;
 	activeSources = queuedSources = otherSources = 0;
-	this->description = description;
-	this->icons = icons;
-	
+
 	size = 0.0;
 	ready = 0.0;
 	speed = 0.0;
@@ -56,7 +54,7 @@ QAjDownloadItem::QAjDownloadItem( QAjDescription *description, QAjIcons *icons, 
 	otherSourcesItem->setText(FILENAME_DOWN_INDEX, QObject::tr("3. others"));
 	otherSourcesItem->setFlags( Qt::ItemIsEnabled );
 
-	partListWidget = new QAjPartListWidget( icons );
+	partListWidget = new QAjPartListWidget();
 	partListWidget->hide();
 }
 
@@ -74,7 +72,7 @@ QAjDownloadItem::~QAjDownloadItem()
 		delete partListWidget;
 }
 
-void QAjDownloadItem::moveItem( QAjUserItem *userItem, int oldStatus )
+void QAjDownloadItem::moveItem( QAjUserItem *userItem, QString oldStatus )
 {
 	if( oldStatus != userItem->getStatus() )
 	{
@@ -140,90 +138,62 @@ void QAjDownloadItem::moveItem( QAjUserItem *userItem, int oldStatus )
 }
 
 
-void QAjDownloadItem::decSources( int type )
+void QAjDownloadItem::decSources( QString type )
 {
-	switch( type )
-	{
-		case NEW_SOURCE:
-			break;
-		case ACTIVE_SOURCE:
-			decActiveSources();
-			break;
-		case QUEUED_SOURCE:
-			decQueuedSources();
-			break;
-		default:
-			decOtherSources();
-			break;
-	}
+    if( type == NEW_SOURCE );
+    else if( type == ACTIVE_SOURCE )
+        decActiveSources();
+    else if( type == QUEUED_SOURCE )
+        decQueuedSources();
+    else
+        decOtherSources();
 }
 
-void QAjDownloadItem::incSources( int type )
+void QAjDownloadItem::incSources( QString type )
 {
-	switch( type )
-	{
-		case NEW_SOURCE:
-			break;
-		case ACTIVE_SOURCE:
-			incActiveSources();
-			break;
-		case QUEUED_SOURCE:
-			incQueuedSources();
-			break;
-		default:
-			incOtherSources();
-			break;
-	}
+    if( type == NEW_SOURCE );
+    else if( type == ACTIVE_SOURCE )
+        incActiveSources();
+    else if( type == QUEUED_SOURCE )
+        incQueuedSources();
+    else
+        incOtherSources();
 }
 
 QAjUserItem* QAjDownloadItem::findUser( QString id )
 {
-	usersIt = users.find( id.toULong() );
-	if( usersIt != users.end() )
-		return usersIt->second;
-	else
-		return NULL;
+    if( users.contains( id ) )
+        return users[ id ];
+    else
+        return NULL;
 }
 
-QAjUserItem* QAjDownloadItem::removeUser( QString id )
+void QAjDownloadItem::removeUser( QString id )
 {
-	usersIt = users.find( id.toULong() );
-	if( usersIt != users.end() )
-	{
-		users.erase( usersIt );
-		return usersIt->second;
-	}
-	else
-		return NULL;
+    users.remove( id );
 }
 
-void QAjDownloadItem::updateUser( QString id, QString fileName, QString speed, QString status, QString power, QString queuePos, QString os )
+void QAjDownloadItem::updateUser( QString id, QString fileName, QString speed, QString status, QString power, QString queuePos, QString statusString, QIcon* osIcon )
 {
 	QAjUserItem* userItem = findUser( id );
 	if( userItem == NULL )
 	{
-		int newStatus = status.toInt();
-		switch( newStatus )
-		{
-			case ACTIVE_SOURCE:
-				userItem = new QAjUserItem( description, icons, activeSourcesItem );
-				break;
-			case QUEUED_SOURCE:
-				userItem = new QAjUserItem( description, icons, queuedSourcesItem );
-				break;
-			default:
-				userItem = new QAjUserItem( description, icons, otherSourcesItem );
-				break;
-		}
-		users[ id.toULong() ] = userItem;
+        if( status == ACTIVE_SOURCE )
+            userItem = new QAjUserItem( activeSourcesItem );
+        else if( status == QUEUED_SOURCE )
+            userItem = new QAjUserItem( queuedSourcesItem );
+        else
+            userItem = new QAjUserItem( otherSourcesItem );
+        users[ id ] = userItem;
 	}
 	else
 	{
 		decSources( userItem->getStatus() );
 	}
-	int oldStatus = userItem->getStatus();
-	userItem->update( fileName, speed, status, power, queuePos, os );
-	
+	QString oldStatus = userItem->getStatus();
+
+	userItem->update( fileName, speed, status, power, queuePos, statusString, osIcon );
+
 	incSources( userItem->getStatus() );
 
 	this->speed += userItem->getSpeedDif();
@@ -232,29 +202,16 @@ void QAjDownloadItem::updateUser( QString id, QString fileName, QString speed, Q
 
 }
 
-double QAjDownloadItem::calculateSpeed()
+void QAjDownloadItem::update( QString fileName, QString status, QString size, QString ready, QString power, QString tempNumber )
 {
-	speed = 0.0;
-	usersIt  = users.begin();
-	while( usersIt != users.end() )
-	{
-		speed += usersIt->second->getSpeed();
-		++usersIt;
-	}
-	return speed;
-}
-
-void QAjDownloadItem::update( QString fileName, QString status, QString size, QString ready, QString power )
-{
-    
-	int newStatus = status.toInt();
+    this->tempNumber = tempNumber;
 	if( this->size == 0.0 )
 	{
 		this->size = size.toDouble();//ULongLong();
 	}
 	double readyNew = ready.toDouble();//ULongLong();
 
-	if( newStatus == DOWN_FINISHED )
+	if( status == DOWN_FINISHED )
 	{
 		readyNew = this->size;
 		this->remainingSize = 0.0;
@@ -274,47 +231,23 @@ void QAjDownloadItem::update( QString fileName, QString status, QString size, QS
 
 	if( this->text( SIZE_DOWN_INDEX ).isEmpty() )
 		this->setText( SIZE_DOWN_INDEX, " " + QConvert::bytes( this->size ) + " " );
-//	if( this->text( FILENAME_DOWN_INDEX ).isEmpty() )
-	{
-		this->setText( FILENAME_DOWN_INDEX, fileName );
-		
-	}
+	this->setText( FILENAME_DOWN_INDEX, fileName );
 	partListWidget->setFilename( fileName );
 
 	this->setText( POWER_DOWN_INDEX, " " + QConvert::power( power ) + " " );
 
-/*	if( (newStatus == DOWN_SEARCHING) && (item->getActiveSources() > 0) )
-		newStatus = DOWN_LOADING;*/
-	if( newStatus != this->status )
+	if( status != this->status )
 	{
-		switch ( newStatus )
-		{
-/*			case DOWN_LOADING:
-				item->setPixmap( FILENAME_DOWN_INDEX, *icons->downloadLoadingPixmap );
-				break;
-			case DOWN_SEARCHING:
-				item->setPixmap( FILENAME_DOWN_INDEX, *icons->downloadSearchingPixmap );
-				break;*/
-			case DOWN_PAUSED:
-				//this->setIcon( FILENAME_DOWN_INDEX, *icons->downloadPausedIcon );
-				this->setTextColor( FILENAME_DOWN_INDEX, Qt::darkGray );
-				break;
-			case DOWN_FINISHED:
-				//this->setIcon( FILENAME_DOWN_INDEX, *icons->downloadFinishedIcon );
-				this->setTextColor( FILENAME_DOWN_INDEX, Qt::darkGreen );
-				break;
-			case DOWN_CANCELD:
-				//this->setIcon( FILENAME_DOWN_INDEX, *icons->downloadCanceldIcon );
-				this->setTextColor( FILENAME_DOWN_INDEX, Qt::red );
-				break;
-			default:
-				//this->setIcon( FILENAME_DOWN_INDEX, *icons->dummyIcon );
-				this->setTextColor( FILENAME_DOWN_INDEX, Qt::black );
-				break;
-		}
-		this->status = newStatus;
+        if( status == DOWN_PAUSED )
+         this->setTextColor( FILENAME_DOWN_INDEX, Qt::darkGray );
+        else if( status == DOWN_FINISHED )
+            this->setTextColor( FILENAME_DOWN_INDEX, Qt::darkGreen );
+        else if( status == DOWN_CANCELD )
+            this->setTextColor( FILENAME_DOWN_INDEX, Qt::red );
+        else
+            this->setTextColor( FILENAME_DOWN_INDEX, Qt::black );
+        this->status = status;
 	}
-	//item->setText( _DOWN_INDEX, descriptions.getDownloadStatusDescription(newStatus) );
 }
 
 void QAjDownloadItem::setFinishedPixmap(int newWidth, int newHeight, double newReady)
@@ -358,7 +291,7 @@ QString QAjDownloadItem::getSourcesString()
 	return QString( " " + QString::number(activeSources) + "-" + QString::number(queuedSources) + "-" + QString::number(otherSources) + " " );
 }
 
-void QAjDownloadItem::updateView()
+void QAjDownloadItem::updateView( QHash<QString, QString>* downloadStatusDescr )
 {
 	setText( SPEED_DOWN_INDEX, " " + QConvert::bytes( speed, 1 ) + "/s ");
 	
@@ -378,19 +311,19 @@ void QAjDownloadItem::updateView()
 		if( getActiveSources() > 0 ) 
 		{
 			setTextColor( FILENAME_DOWN_INDEX, Qt::darkBlue );
-			setText( STATUS_DOWN_INDEX, description->getDownloadStatusDescription( DOWN_LOADING ) );
+			setText( STATUS_DOWN_INDEX, downloadStatusDescr->value( "-1", "unknown" ) );
 			status = DOWN_LOADING;
 		}
 		else if( getActiveSources() <= 0 )
 		{
 			setTextColor( FILENAME_DOWN_INDEX, Qt::black );
-			setText( STATUS_DOWN_INDEX, description->getDownloadStatusDescription( DOWN_SEARCHING ) );
+			setText( STATUS_DOWN_INDEX, downloadStatusDescr->value( status, "unknown" ) );
 			status = DOWN_SEARCHING;
 		}
 	}
 	else
 	{
-		setText( STATUS_DOWN_INDEX, description->getDownloadStatusDescription( status ) );
+		setText( STATUS_DOWN_INDEX, downloadStatusDescr->value( status, "unknown" ) );
 	}
 
 	setText( SOURCES_DOWN_INDEX, getSourcesString() );
@@ -455,7 +388,7 @@ void QAjDownloadItem::showWidget( const QPoint & p )
 {
 	if( partListWidget == NULL )
 	{
-		partListWidget = new QAjPartListWidget( icons );
+		partListWidget = new QAjPartListWidget();
 	}
 	partListWidget->move( p );
 	partListWidget->show();
@@ -463,13 +396,11 @@ void QAjDownloadItem::showWidget( const QPoint & p )
 
 void QAjDownloadItem::deleteUsers()
 {
-	usersIt = users.begin();
-	while( usersIt != users.end() )
-	{
-		delete usersIt->second;
-		usersIt++;
-	}
-	users.clear();
+    QList<QString> userIds = users.keys();
+    int i;
+    for( i=0; i<userIds.size(); i++ )
+        delete users[userIds[i]];
+    users.clear();
 }
 
 

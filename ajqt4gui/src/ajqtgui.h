@@ -45,9 +45,16 @@
 #include <QProgressDialog>
 #include <QUrl>
 #include <QFtp>
+#include <QFileInfo>
 
-#include "qajtab.h"
-#include "qajicons.h"
+#include <QTabWidget>
+#include "qajdownloadwidget.h"
+#include "qajuploadwidget.h"
+#include "qajsearchwidget.h"
+#include "qajserverwidget.h"
+#include "qajsharewidget.h"
+#include "qajftpwidget.h"
+
 #include "qxmlmodule.h"
 #include "qajoptionsdialog.h"
 #include "qajlogindialog.h"
@@ -70,13 +77,20 @@ public:
 
 	void setStatusBarText( QString downSpeed, QString upSpeed, QString credits, QString downSize, QString upSize );
 	QAjNetworkWidget *networkWidget;
+	QAjDownloadWidget *ajDownloadWidget;
+	QAjUploadWidget *ajUploadWidget;
+	QAjSearchWidget *ajSearchWidget;
+	QAjServerWidget *ajServerWidget;
+	QAjShareWidget *ajShareWidget;
+	QAjFtpWidget *ajFtpWidget;
 	
 	void setFilesystemSeparator( QString separator ) { filesystemSeparator = separator; }
 	QString getFilesystemSeparator( ) { return filesystemSeparator; }
 	void setCoreVersion( QString version );
 	void connectedSince( QString since );
 	void queueLinks( QStringList* links );
-	
+    void setUploadFilename( QString shareId, QString filename );
+
 protected:
 	void initToolBars();
 
@@ -93,7 +107,6 @@ protected:
 	QTimer *timer;
 	QTimer *partListTimer;
 
-	QAjTab *ajTab;
 	QWidget *prevTab;
 	QAjOptionsDialog *optionsDialog;
 	QXMLModule *xml;
@@ -123,9 +136,7 @@ protected:
 	QAction *ajSearchButton;
 	
 	QAction *downloadMenuBar, *serverMenuBar, *shareMenuBar, *searchMenuBar;
-		
-	QAjIcons *icons;
-		
+	
 	bool connected;
 	
 	QDoubleSpinBox* powerSpin;
@@ -147,6 +158,7 @@ protected:
 	QStringList *queuedLinks;
 
 	QFtp* ftp;
+   QFileInfo tempDir;
 	
 private slots:
 
@@ -207,6 +219,8 @@ private slots:
 	void storeDownload();
 	void reloadFtp();
 	void storeFtp();
+    void openDownload( QTreeWidgetItem *item, int col );
+
 };
 
 

@@ -28,7 +28,6 @@
 #include <QMutexLocker>
 
 #include "qconvert.h"
-#include "qajicons.h"
 #include "qajitem.h"
 #include "types.h"
 
@@ -39,7 +38,7 @@ class QAjListWidget : public QTreeWidget
 {
 Q_OBJECT
 public:
-	QAjListWidget( QAjIcons *icons, int idIndex, QWidget *parent = 0, const char *name = 0);
+	QAjListWidget( int idIndex, QWidget *parent = 0, const char *name = 0);
 
 	~QAjListWidget();
 
@@ -53,7 +52,6 @@ public:
 	QMutex mutex;
 protected:
 	bool isOneSelected();
-	QAjIcons *icons;
 	bool changed;
 	QAjItem *popupItem;
 	int idIndex;

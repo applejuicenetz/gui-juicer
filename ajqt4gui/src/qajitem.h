@@ -37,15 +37,15 @@ public:
 
 	virtual ~QAjItem();
 	
-	int getStatus() { return status; }
-	void setStatus( int newStatus ) { status = newStatus; }
+	QString getStatus() { return status; }
+	void setStatus( QString newStatus ) { status = newStatus; }
 	int getType();
 	
 //	virtual bool operator<( const QAjItem & other ){ return false; };
 
 protected:
     AjItemType type;
-    int status;
+    QString status;
 };
 
 #endif

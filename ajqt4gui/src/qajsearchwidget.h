@@ -25,7 +25,6 @@ using namespace std;
 
 #include "qajlistwidget.h"
 #include "qajsearchitem.h"
-#include "qajicons.h"
 #include "types.h"
 #include "qconvert.h"
 
@@ -38,7 +37,7 @@ class QAjSearchWidget : public QAjListWidget
 {
 Q_OBJECT
 public:
-    QAjSearchWidget( QAjIcons *icons, QWidget *parent = 0, const char *name = 0);
+    QAjSearchWidget( QWidget *parent = 0, const char *name = 0);
 
     ~QAjSearchWidget();
 
@@ -49,7 +48,6 @@ public:
 	QAjSearchItem* findSearchEntry( QString id );
 
 protected:
-	QAjIcons *icons;
 	QAction *downloadId, *removeId;
 	map<unsigned long, QAjSearchItem*> searches;
 	map<unsigned long, QAjSearchItem*>::iterator searchesIt;

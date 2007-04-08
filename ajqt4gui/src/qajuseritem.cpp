@@ -19,17 +19,13 @@
  ***************************************************************************/
 #include "qajuseritem.h"
 
-QAjUserItem::QAjUserItem( QAjDescription *description, QAjIcons *icons, QTreeWidget *parent ) : QAjItem(USER, parent)
+QAjUserItem::QAjUserItem( QTreeWidget *parent ) : QAjItem(USER, parent)
 {
-	this->description = description;
-	this->icons = icons;
 	init();
 }
 
-QAjUserItem::QAjUserItem( QAjDescription *description, QAjIcons *icons, QTreeWidgetItem *parent ) : QAjItem(USER, parent)
+QAjUserItem::QAjUserItem( QTreeWidgetItem *parent ) : QAjItem(USER, parent)
 {
-	this->description = description;
-	this->icons = icons;
 	init();
 }
 
@@ -39,11 +35,9 @@ QAjUserItem::~QAjUserItem()
 
 void QAjUserItem::init()
 {
-	os = -1;
 	speed = 0;
 	fileNameSet = false;
 	status = NEW_SOURCE;
-	setFlags( Qt::ItemIsEnabled );
 }
 
 void QAjUserItem::setSpeed( QString newSpeedString )
@@ -57,7 +51,7 @@ void QAjUserItem::setSpeed( QString newSpeedString )
 		setText( SPEED_DOWN_INDEX, "" );
 }
 
-void QAjUserItem::update( QString fileName, QString speed, QString status, QString power, QString queuePos, QString os )
+void QAjUserItem::update( QString fileName, QString speed, QString status, QString power, QString queuePos, QString statusString, QIcon* osIcon )
 {
 	this->fileName = fileName;
 	this->status = status.toInt();
@@ -65,8 +59,7 @@ void QAjUserItem::update( QString fileName, QString speed, QString status, QStri
 	this->queuePos = queuePos.toInt();
 	setSpeed( speed );
 	
-	QString statusString = description->getUserStatusDescription( this->status );
-	if( this->status == 5 )  // queueing? print position
+	if( this->status == QUEUED_SOURCE )  // queueing? print position
 		statusString += " (" + queuePos + ")";
 	setText( STATUS_DOWN_INDEX,  statusString );
 	setText( POWER_DOWN_INDEX,  QConvert::power( power ) );
@@ -75,12 +68,8 @@ void QAjUserItem::update( QString fileName, QString speed, QString status, QStri
 		setText( FILENAME_DOWN_INDEX, fileName );
 		fileNameSet = true;
 	}
-	if( this->os == -1 )
-	{
-		this->os = os.toInt();
-		if( this->os == WINDOWS_INT )
-			setIcon( SOURCES_DOWN_INDEX, *icons->windowsIcon );
-		else if( this->os == LINUX_INT )
-			setIcon( SOURCES_DOWN_INDEX, *icons->linuxIcon );
+   if( this->icon(SOURCES_DOWN_INDEX).isNull() )
+   {
+		setIcon( SOURCES_DOWN_INDEX, *osIcon );
 	}
 }

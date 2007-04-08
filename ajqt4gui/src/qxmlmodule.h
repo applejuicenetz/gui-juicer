@@ -29,7 +29,6 @@
 #include <QHash>
 #include <QDomDocument>
 
-#include "qajtab.h"
 #include "types.h"
 #include "md5class.h"
 #include "qconvert.h"
@@ -39,14 +38,13 @@
 */
 
 class AjQtGUI;
-class QAjTab;
 class QXMLHandler;
 
 class QXMLModule : public QHttp
 {
 Q_OBJECT
 public:
-	QXMLModule(AjQtGUI *ajQtGUI, QAjTab *ajTab, QObject *parent = 0, const char *name = 0 );
+	QXMLModule(AjQtGUI *ajQtGUI, QObject *parent = 0, const char *name = 0 );
 
 	~QXMLModule();
  
@@ -65,7 +63,6 @@ protected:
 	quint16 port;
 	
 	AjQtGUI *ajQtGUI;
-	QAjTab *ajTab;
 	QString timeStamp;
 	QString passwordMD5;
 
@@ -87,6 +84,7 @@ signals:
     void modifiedDone();
 private:
     void handleSettings( QDomElement e );
+    void handleShare( QDomElement e );
     void handleShares( QDomElement e );
     void handleIds( QDomNode node );
     void handleNetworkInfo( QDomElement e );

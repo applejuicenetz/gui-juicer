@@ -25,6 +25,22 @@ QAjOptionsDialog::QAjOptionsDialog( QWidget* parent ) : QDialog( parent )
 	setupUi( this );
 	connect( incomingButton, SIGNAL( clicked() ), this, SLOT( selectIncomingDir() ) );
 	connect( tempButton, SIGNAL( clicked() ), this, SLOT( selectTempDir() ) );
+
+    winLauncher = "Windows default";
+    macLauncher = "MacOS default";
+    kdeLauncher = "kfmclient (KDE)";
+    gnomeLauncher = "gnome-open (Gnome)";
+
+    #ifdef Q_WS_WIN
+        launchCombo->addItem( winLauncher );
+    #else
+        #ifdef Q_WS_MAC
+            launchCombo->addItem( macLauncher );
+        #else
+            launchCombo->addItem( kdeLauncher );
+            launchCombo->addItem( gnomeLauncher );
+        #endif
+    #endif
 }
 
 QAjOptionsDialog::~QAjOptionsDialog()
@@ -56,6 +72,8 @@ AjSettings QAjOptionsDialog::getAjSettings()
 	settings.maxNewCon = QString::number( newSpin->value() );
 
 	settings.tcpPort = tcpEdit->text();
+
+   settings.launcher = launchCombo->currentText();
 
 	settings.ftpServer = ftpServerEdit->text();
 	settings.ftpPort = ftpPortEdit->text();
@@ -89,6 +107,8 @@ void QAjOptionsDialog::setAjSettings( AjSettings settings )
 	newSpin->setValue( settings.maxNewCon.toInt() );
 	
 	tcpEdit->setText( settings.tcpPort );
+
+   launchCombo->setEditText( settings.launcher );
 
 	ftpServerEdit->setText( settings.ftpServer );
 	ftpPortEdit->setText( settings.ftpPort );

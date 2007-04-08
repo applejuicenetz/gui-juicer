@@ -27,12 +27,12 @@
 #include <QMenu>
 #include <QHash>
 #include <QList>
+#include <QIcon>
 
 #include "qajlistwidget.h"
 #include "qajdownloaditem.h"
 #include "qajuseritem.h"
 #include "qconvert.h"
-#include "qajdescription.h"
 
 #include "types.h"
 
@@ -47,17 +47,15 @@ typedef struct {
 	QAjUserItem* user;
 } DownloadUser;
 
-typedef QHash<QString, QAjDownloadItem*> QAjDownloadItemMap;
-
 class QAjDownloadWidget : public QAjListWidget
 {
 Q_OBJECT
 public:
-	QAjDownloadWidget( QAjIcons *icons, QWidget *parent = 0, const char *name = 0);
+	QAjDownloadWidget( QWidget *parent = 0, const char *name = 0);
 
 	~QAjDownloadWidget();
 	
-	int insertDownload(QString id, QString fileName, QString status, QString size, QString ready, QString power);
+	int insertDownload(QString id, QString fileName, QString status, QString size, QString ready, QString power, QString tempNumber);
 	int insertUser(QString downloadId, QString id, QString fileName, QString speed, QString status, QString power, QString queuePos, QString os);
 	bool remove( QString id );
 	
@@ -67,10 +65,11 @@ public:
 	
     QString getNextIdRoundRobin();
     QList<QString> getIds() { return downloads.keys(); }
+    QAjDownloadItem* findDownloadByTempNum( QString tempNum );
 
 private:
 
-	QAjDownloadItemMap downloads;
+	QHash<QString, QAjDownloadItem*> downloads;
    int currIdRoundRobin;
 
 	QAction* pauseId;
@@ -79,8 +78,12 @@ private:
 	QAction* partListId;
 	QAction* renameId;
    QAction* renamePlusId;
-	
-	QAjDescription descriptions;
+
+	QIcon *linuxIcon, *windowsIcon, *otherOsIcon;
+
+    QHash<QString, QString> userStatusDescr;
+    QHash<QString, QString> downloadStatusDescr;
+
 	
 private slots:
 	void selectionChanged1( bool oneSelected );

@@ -34,7 +34,7 @@ class QAjServerWidget : public QAjListWidget
 {
 Q_OBJECT
 public:
-	QAjServerWidget( QAjIcons *icons, QWidget *parent = 0, const char *name = 0);
+	QAjServerWidget( QWidget *parent = 0, const char *name = 0);
 
 	~QAjServerWidget();
 	

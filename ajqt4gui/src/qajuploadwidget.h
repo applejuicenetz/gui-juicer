@@ -20,9 +20,10 @@
 #ifndef QAJUPLOADWIDGET_H
 #define QAJUPLOADWIDGET_H
 
-using namespace std;
-#include <map>
-
+#include <QHash>
+#include <QIcon>
+#include <QPixmap>
+#include <QFileInfo>
 #include "qajlistwidget.h"
 #include "qajuploaditem.h"
 #include "qconvert.h"
@@ -37,27 +38,25 @@ class QAjUploadWidget : public QAjListWidget
 {
 Q_OBJECT
 public:
-	QAjUploadWidget( QAjIcons *icons, QWidget *parent = 0, const char *name = 0 );
+	QAjUploadWidget( QWidget *parent = 0, const char *name = 0 );
 
 	~QAjUploadWidget();
 
 	bool insertUpload( QString id, QString shareId, QString version, QString os, QString status, QString directState, QString priority, QString nick, QString speed );
 	
-	bool setFileName( QString shareId, QString fileName );
-	
 	bool remove( QString id );
-	
+    void setFilename( QString shareId, QString filename );
+
 	QTreeWidgetItem *activeUpload;
 	QTreeWidgetItem *queuedUpload;
 	QTreeWidgetItem *otherUpload;
 private:
 	QAjUploadItem* findUpload( QString id );
-	QAjUploadItem* removeUpload( QString id );
-	bool isOtherUpload( int status );
-	QString uploadStatusDescr[NUM_UPLOAD_STATES];
-	map<unsigned long, QAjUploadItem*> uploads;
-	map<unsigned long, QAjUploadItem*>::iterator uploadsIt;
-	
+	bool isOtherUpload( QString status );
+	QHash<QString, QString> uploadStatusDescr;
+	QHash<QString, QAjUploadItem*> uploads;
+
+    QIcon *linuxIcon, *windowsIcon;
 };
 
 #endif

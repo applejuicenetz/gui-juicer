@@ -19,7 +19,12 @@
  ***************************************************************************/
 #include "qajserverwidget.h"
 
-QAjServerWidget::QAjServerWidget( QAjIcons *icons, QWidget *parent, const char *name) : QAjListWidget(icons, ID_SERVER_INDEX, parent, name)
+#include "./xpm/connect_small.xpm"
+#include "./xpm/cancel_small.xpm"
+#include "./xpm/insert_small.xpm"
+#include "./xpm/connected_small.xpm"
+
+QAjServerWidget::QAjServerWidget( QWidget *parent, const char *name) : QAjListWidget( ID_SERVER_INDEX, parent, name )
 {
 	connectedWithId = "";
 	setColumnCount( NUM_SERVER_COL );
@@ -58,9 +63,11 @@ QAjServerWidget::QAjServerWidget( QAjIcons *icons, QWidget *parent, const char *
 	setColumnAlignment( LASTSEEN_SERVER_INDEX, Qt::AlignRight );
 	setColumnAlignment( TESTS_SERVER_INDEX, Qt::AlignRight );
 	*/
-	connectId = popup->addAction( *icons->serverConnectSmallIcon, "connect", this, SLOT(connectSlot()) );
-	removeId =popup->addAction( *icons->serverRemoveSmallIcon, "remove", this, SLOT(removeSlot()) );
-	popup->addAction( *icons->insertSmallIcon, "find new", this, SLOT(findSlot()) );
+
+   
+	connectId = popup->addAction( QIcon(QPixmap(connect_small_xpm)), "connect", this, SLOT(connectSlot()) );
+	removeId =popup->addAction( QIcon(QPixmap(cancel_small_xpm)), "remove", this, SLOT(removeSlot()) );
+	popup->addAction( QIcon(QPixmap(insert_small_xpm)), "find new", this, SLOT(findSlot()) );
 	removeId->setEnabled( false );
 	connectId->setEnabled( false );
     QObject::connect( this, SIGNAL( newSelection( bool ) ) , this, SLOT( selectionChanged1( bool ) ) );
@@ -132,13 +139,13 @@ void QAjServerWidget::connectedWith( QString id )
 		item = servers[ connectedWithId.toULong() ];// findItem( connectedWithId, ID_SERVER_INDEX );
 		if( item !=  NULL )
 		{
-			item->setIcon( NAME_SERVER_INDEX, *icons->dummyIcon );
+			item->setIcon( NAME_SERVER_INDEX, QIcon() );
 		}
 	}
 	item = servers[ id.toULong() ];
 	if( item !=  NULL )
 	{
-		item->setIcon( NAME_SERVER_INDEX, *icons->serverConnectedSmallIcon );
+		item->setIcon( NAME_SERVER_INDEX, QIcon(QPixmap(connected_small_xpm)) );
 		connected( item->text( NAME_SERVER_INDEX ) );
 	}
 	connectedWithId = id;

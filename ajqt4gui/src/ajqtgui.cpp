@@ -20,6 +20,44 @@
 
 #include "ajqtgui.h"
 
+#include "./xpm/ajqtgui.xpm"
+#include "./xpm/download_small.xpm"
+#include "./xpm/upload_small.xpm"
+#include "./xpm/connect_small.xpm"
+#include "./xpm/searching_small.xpm"
+#include "./xpm/share_small.xpm"
+#include "./xpm/ftp_small.xpm"
+#include "./xpm/info_small.xpm"
+#include "./xpm/options_small.xpm"
+#include "./xpm/exit_small.xpm"
+#include "./xpm/close_small.xpm"
+#include "./xpm/cancel_small.xpm"
+
+#include "./xpm/info.xpm"
+#include "./xpm/options.xpm"
+#include "./xpm/clipboard.xpm"
+
+// download toolbar
+#include "./xpm/pause.xpm"
+#include "./xpm/resume.xpm"
+#include "./xpm/cancel.xpm"
+#include "./xpm/rename.xpm"
+#include "./xpm/rename_plus.xpm"
+#include "./xpm/partlist.xpm"
+#include "./xpm/powerMax.xpm"
+#include "./xpm/filter.xpm"
+#include "./xpm/save.xpm"
+#include "./xpm/ok.xpm"
+#include "./xpm/dummy.xpm"
+
+// server/share toolbars
+#include "./xpm/connect.xpm"
+#include "./xpm/remove.xpm"
+#include "./xpm/new.xpm"
+
+#include "./xpm/insert.xpm"
+#include "./xpm/reload.xpm"
+
 AjQtGUI::AjQtGUI( ) : QMainWindow( )
 {
 	char* mode = getenv( "AJQTGUI_MODE" );
@@ -28,16 +66,33 @@ AjQtGUI::AjQtGUI( ) : QMainWindow( )
 	queuedLinks = NULL;
 	filesystemSeparator = "\\";
 	progressDialog = NULL;
-	icons = new QAjIcons();
-	
+
 	linkServer = new QAjServerSocket( QAjApplication::APP_PORT );
 	connect( linkServer, SIGNAL( lineReady( QString ) ), this, SLOT( linkServerLine( QString ) ) );
 	
-	setWindowIcon( *icons->ajqtguiPixmap );
+	setWindowIcon(QPixmap(ajqtgui_xpm));
 
-	ajTab = new QAjTab( &filesystemSeparator, icons, special, this );
+	QTabWidget* ajTab = new QTabWidget(this);
+	ajDownloadWidget = new QAjDownloadWidget( ajTab );
+	ajUploadWidget = new QAjUploadWidget( ajTab );
+	ajSearchWidget = new QAjSearchWidget( ajTab );
+	ajServerWidget = new QAjServerWidget( ajTab );
+	ajShareWidget = new QAjShareWidget( filesystemSeparator, ajTab );
+	
+	ajTab->setTabToolTip( ajTab->addTab( ajDownloadWidget, QIcon(QPixmap(download_small_xpm)), "Downloads" ), "dowloads" );
+	ajTab->setTabToolTip( ajTab->addTab( ajUploadWidget, QIcon(QPixmap(upload_small_xpm)), "Uploads" ), "uploads" );
+	ajTab->setTabToolTip( ajTab->addTab( ajSearchWidget, QIcon(QPixmap(searching_small_xpm)), "Search" ), "servers" );
+	ajTab->setTabToolTip( ajTab->addTab( ajServerWidget, QIcon(QPixmap(connect_small_xpm)), "Server" ), "searches" );
+	ajTab->setTabToolTip( ajTab->addTab( ajShareWidget, QIcon(QPixmap(share_small_xpm)), "Shares" ), "shares" );
+
+	if( special )
+	{
+		ajFtpWidget = new QAjFtpWidget( NULL );
+		ajTab->setTabToolTip( ajTab->addTab( ajFtpWidget, QIcon(QPixmap(ftp_small_xpm)), "Ftp" ), "ftp" );
+	}
+
 	setCentralWidget( ajTab );
-	prevTab = ajTab->ajDownloadWidget;
+	prevTab = ajDownloadWidget;
 
 	networkWidget = new QAjNetworkWidget(NULL);
 	optionsDialog = new QAjOptionsDialog( this );
@@ -48,16 +103,16 @@ AjQtGUI::AjQtGUI( ) : QMainWindow( )
 	file = new QMenu( tr("&AppleJuice"), this );
 	menuBar()->addMenu( file );
 
-	file->addAction( *icons->configureSmallIcon, tr("C&onfigure"), this, SLOT( showOptions() ), QKeySequence( Qt::CTRL+Qt::Key_O ) );
-	file->addAction( *icons->infoSmallIcon, tr("&Net Info"), this, SLOT( showNetworkInfo() ), QKeySequence( Qt::CTRL+Qt::Key_N ) );
+	file->addAction( QIcon(QPixmap(options_small_xpm)), tr("C&onfigure"), this, SLOT( showOptions() ), QKeySequence( Qt::CTRL+Qt::Key_O ) );
+	file->addAction( QIcon(QPixmap(info_small_xpm)), tr("&Net Info"), this, SLOT( showNetworkInfo() ), QKeySequence( Qt::CTRL+Qt::Key_N ) );
 	file->addSeparator();
-	file->addAction( *icons->exitSmallIcon, tr("&Exit Core"), this, SLOT( exitCore() ), QKeySequence( Qt::CTRL+Qt::Key_E ) );
-	file->addAction( *icons->closeSmallIcon, tr("&Quit GUI"), qApp, SLOT( closeAllWindows() ), QKeySequence( Qt::CTRL+Qt::Key_Q ) );
+	file->addAction( QIcon(QPixmap(exit_small_xpm)), tr("&Exit Core"), this, SLOT( exitCore() ), QKeySequence( Qt::CTRL+Qt::Key_E ) );
+	file->addAction( QIcon(QPixmap(close_small_xpm)), tr("&Quit GUI"), qApp, SLOT( closeAllWindows() ), QKeySequence( Qt::CTRL+Qt::Key_Q ) );
 	
-	downloadMenuBar = menuBar()->addMenu( /*tr("&Download"), */ajTab->ajDownloadWidget->popup );
-	serverMenuBar = menuBar()->addMenu( /*tr("&Server"), */ajTab->ajServerWidget->popup );
-	shareMenuBar = menuBar()->addMenu( /*tr("&Share"), */ajTab->ajShareWidget->popup );
-	searchMenuBar = menuBar()->addMenu( /*tr("&Search"),*/ ajTab->ajSearchWidget->popup );
+	downloadMenuBar = menuBar()->addMenu( /*tr("&Download"), */ajDownloadWidget->popup );
+	serverMenuBar = menuBar()->addMenu( /*tr("&Server"), */ajServerWidget->popup );
+	shareMenuBar = menuBar()->addMenu( /*tr("&Share"), */ajShareWidget->popup );
+	searchMenuBar = menuBar()->addMenu( /*tr("&Search"),*/ ajSearchWidget->popup );
 
 	menuBar()->addSeparator();
 
@@ -66,7 +121,7 @@ AjQtGUI::AjQtGUI( ) : QMainWindow( )
 	help->addAction( tr("&About"), this, SLOT(about()), QKeySequence( Qt::Key_F1  ) );
 	help->addAction( tr("About &Qt"), this, SLOT(aboutQt()) );
 	help->addSeparator();
-	help->addAction( tr("What's &This"), this, SLOT(whatsThis()), QKeySequence( Qt::SHIFT+Qt::Key_F1 ) );
+// 	help->addAction( tr("What's &This"), this, SLOT(whatsThis()), QKeySequence( Qt::SHIFT+Qt::Key_F1 ) );
    menuBar()->addMenu( help );
    
 	downSpeedLabel = new QLabel(this);
@@ -91,11 +146,11 @@ AjQtGUI::AjQtGUI( ) : QMainWindow( )
 	move( lokalSettings.value( "pos", QPoint(100, 100) ).toPoint() );
 	lokalSettings.endGroup();
 
-	xml = new QXMLModule( this, ajTab );
+	xml = new QXMLModule( this );
 	connect( xml, SIGNAL( settingsReady( AjSettings ) ), this, SLOT( settingsReady( AjSettings ) ) );
 	connect( xml, SIGNAL( error( int ) ), this, SLOT( xmlError( int ) ) );
    connect( xml, SIGNAL( gotSession() ), this, SLOT( gotSession() ) );
-   connect( xml, SIGNAL( modifiedDone( ) ), ajTab->ajDownloadWidget, SLOT( updateView( ) ) );
+   connect( xml, SIGNAL( modifiedDone( ) ), ajDownloadWidget, SLOT( updateView( ) ) );
    connect( xml, SIGNAL( modifiedDone( ) ), this, SLOT( firstModified() ) );
 
 	serverHttp = new QHttp();
@@ -128,49 +183,47 @@ AjQtGUI::AjQtGUI( ) : QMainWindow( )
 	partListTimer = new QTimer( this );
 	connect( partListTimer, SIGNAL( timeout() ), this, SLOT( partListTimerSlot() ) );
 	
-	connect( ajTab->ajDownloadWidget, SIGNAL( pause() ), this, SLOT( pauseDownload() ) );
-	connect( ajTab->ajDownloadWidget, SIGNAL( resume() ), this, SLOT( resumeDownload() ) );
-	connect( ajTab->ajDownloadWidget, SIGNAL( cancel() ), this, SLOT( cancelDownload() ) );
-	connect( ajTab->ajDownloadWidget, SIGNAL( clean() ), this, SLOT( cleanDownload() ) );
-	connect( ajTab->ajDownloadWidget, SIGNAL( partListRequest() ), this, SLOT( partListRequest() ) );
-	connect( ajTab->ajDownloadWidget, SIGNAL( rename() ), this, SLOT( renameDownload() ) );
-	connect( ajTab->ajDownloadWidget, SIGNAL( renamePlus() ), this, SLOT( renamePlusDownload() ) );
+	connect( ajDownloadWidget, SIGNAL( pause() ), this, SLOT( pauseDownload() ) );
+	connect( ajDownloadWidget, SIGNAL( resume() ), this, SLOT( resumeDownload() ) );
+	connect( ajDownloadWidget, SIGNAL( cancel() ), this, SLOT( cancelDownload() ) );
+	connect( ajDownloadWidget, SIGNAL( clean() ), this, SLOT( cleanDownload() ) );
+	connect( ajDownloadWidget, SIGNAL( partListRequest() ), this, SLOT( partListRequest() ) );
+	connect( ajDownloadWidget, SIGNAL( rename() ), this, SLOT( renameDownload() ) );
+	connect( ajDownloadWidget, SIGNAL( renamePlus() ), this, SLOT( renamePlusDownload() ) );
    
-	connect( ajTab->ajServerWidget, SIGNAL( remove() ), this, SLOT( removeServer() ) );
-	connect( ajTab->ajServerWidget, SIGNAL( connect() ), this, SLOT( connectServer() ) );
-	connect( ajTab->ajServerWidget, SIGNAL( find() ), this, SLOT( findServer() ) );
+	connect( ajServerWidget, SIGNAL( remove() ), this, SLOT( removeServer() ) );
+	connect( ajServerWidget, SIGNAL( connect() ), this, SLOT( connectServer() ) );
+	connect( ajServerWidget, SIGNAL( find() ), this, SLOT( findServer() ) );
 	
-	connect( ajTab->ajSearchWidget, SIGNAL( remove() ), this, SLOT( cancelSearch() ) );
-	connect( ajTab->ajSearchWidget, SIGNAL( download() ), this, SLOT( downloadSearch() ) );
-	connect( ajTab->ajSearchWidget, SIGNAL( itemDoubleClicked ( QTreeWidgetItem *, int ) ), this, SLOT( downloadSearch() ) );
-	
+	connect( ajSearchWidget, SIGNAL( remove() ), this, SLOT( cancelSearch() ) );
+	connect( ajSearchWidget, SIGNAL( download() ), this, SLOT( downloadSearch() ) );
+	connect( ajSearchWidget, SIGNAL( itemDoubleClicked ( QTreeWidgetItem *, int ) ), this, SLOT( downloadSearch() ) );
+	connect( ajDownloadWidget, SIGNAL( itemDoubleClicked ( QTreeWidgetItem *, int ) ), this, SLOT( openDownload( QTreeWidgetItem *, int ) ) );
 	
 	connect( ajTab, SIGNAL( currentChanged( QWidget* ) ), this, SLOT( tabChanged( QWidget* ) ) );
 	
-	connect( ajTab->ajDownloadWidget, SIGNAL( itemSelectionChanged( ) ), this, SLOT( downloadSelectionChanged( ) ) );
+	connect( ajDownloadWidget, SIGNAL( itemSelectionChanged( ) ), this, SLOT( downloadSelectionChanged( ) ) );
 	
-	connect( ajTab->ajServerWidget, SIGNAL( newSelection( bool ) ), connectServerButton, SLOT( setEnabled( bool ) ) );
-	connect( ajTab->ajServerWidget, SIGNAL( newSelection( bool ) ), removeServerButton, SLOT( setEnabled( bool ) ) );
+	connect( ajServerWidget, SIGNAL( newSelection( bool ) ), connectServerButton, SLOT( setEnabled( bool ) ) );
+	connect( ajServerWidget, SIGNAL( newSelection( bool ) ), removeServerButton, SLOT( setEnabled( bool ) ) );
 	
-	connect( ajTab->ajShareWidget, SIGNAL( newSelection( bool ) ), removeShareButton, SLOT( setEnabled( bool ) ) );
+	connect( ajShareWidget, SIGNAL( newSelection( bool ) ), removeShareButton, SLOT( setEnabled( bool ) ) );
 
-	connect( ajTab->ajFtpWidget, SIGNAL( newSelection( bool ) ), storeFtpButton, SLOT( setEnabled( bool ) ) );
+	connect( ajFtpWidget, SIGNAL( newSelection( bool ) ), storeFtpButton, SLOT( setEnabled( bool ) ) );
 	
-	connect( ajTab->ajShareWidget, SIGNAL( insert() ), this, SLOT( addShare() ) );
-	connect( ajTab->ajShareWidget, SIGNAL( remove() ), this, SLOT( removeShare() ) );
-	connect( ajTab->ajShareWidget, SIGNAL( reload() ), this, SLOT( reloadShare() ) );
+	connect( ajShareWidget, SIGNAL( insert() ), this, SLOT( addShare() ) );
+	connect( ajShareWidget, SIGNAL( remove() ), this, SLOT( removeShare() ) );
+	connect( ajShareWidget, SIGNAL( reload() ), this, SLOT( reloadShare() ) );
 
-	connect( ftp, SIGNAL( listInfo ( QUrlInfo ) ), this->ajTab->ajFtpWidget, SLOT( insert( QUrlInfo ) ) );
-	connect( ajTab->ajFtpWidget, SIGNAL( itemDoubleClicked ( QTreeWidgetItem*, int ) ), this, SLOT( storeFtp( ) ) );
+	connect( ftp, SIGNAL( listInfo ( QUrlInfo ) ), this->ajFtpWidget, SLOT( insert( QUrlInfo ) ) );
+	connect( ajFtpWidget, SIGNAL( itemDoubleClicked ( QTreeWidgetItem*, int ) ), this, SLOT( storeFtp( ) ) );
 	
 	login();
 }
 
 AjQtGUI::~AjQtGUI()
 {
-	delete ajTab;
 	delete networkWidget;
-	delete optionsDialog;
 	delete file;
 	delete help;
 	delete downSpeedLabel;
@@ -184,7 +237,6 @@ AjQtGUI::~AjQtGUI()
 	delete serverHttp;
 	delete timer;
 	delete partListTimer;
-	delete icons;
 }
 
 void AjQtGUI::initToolBars()
@@ -192,13 +244,13 @@ void AjQtGUI::initToolBars()
 	QToolBar* ajTools = new QToolBar( "applejuice operations", this );
 	ajTools->setToolTip( "applejuice operations" );
 	
-	ajTools->addAction( *icons->configureIcon , "configure", this, SLOT( showOptions() ) )->setToolTip("configure");
-	ajTools->addAction( *icons->infoIcon , "aj network info", this, SLOT( showNetworkInfo() ) )->setToolTip("aj network info");
+	ajTools->addAction( QIcon(QPixmap(options_xpm)), "configure", this, SLOT( showOptions() ) )->setToolTip("configure");
+	ajTools->addAction( QIcon(QPixmap(info_xpm)), "aj network info", this, SLOT( showNetworkInfo() ) )->setToolTip("aj network info");
 	
 	QToolBar* ajLinks = new QToolBar( "applejuice links", this );
 	ajLinks->setToolTip( "applejuice links" );
 	
-	clipboardButton = ajLinks->addAction( *icons->clipboardIcon, "process link from clipboard", this, SLOT( processClipboard() ) );
+	clipboardButton = ajLinks->addAction( QIcon(QPixmap(clipboard_xpm)), "process link from clipboard", this, SLOT( processClipboard() ) );
 	clipboardButton->setToolTip( "process link from clipboard" );
 
 	ajAddressLabel = new QLabel(ajLinks);
@@ -221,21 +273,21 @@ void AjQtGUI::initToolBars()
 	downloadToolBar = new QToolBar( "download operations", this );
 //	downloadToolBar->setNewLine( true );
 
-	pauseDownloadButton = downloadToolBar->addAction( *icons->downloadPauseIcon, "pause download", this, SLOT( pauseDownload() ) );
+	pauseDownloadButton = downloadToolBar->addAction( QIcon(QPixmap(pause_xpm)), "pause download", this, SLOT( pauseDownload() ) );
 	pauseDownloadButton->setToolTip( "pause download" );
 	
-	resumeDownloadButton = downloadToolBar->addAction( *icons->downloadResumeIcon, "resume download", this, SLOT( resumeDownload() ) );
+	resumeDownloadButton = downloadToolBar->addAction( QIcon(QPixmap(resume_xpm)), "resume download", this, SLOT( resumeDownload() ) );
 	resumeDownloadButton->setToolTip( "resume download" );
 
-	cancelDownloadButton = downloadToolBar->addAction( *icons->downloadCancelIcon, "cancel download", this, SLOT( cancelDownload() ) );
+	cancelDownloadButton = downloadToolBar->addAction( QIcon(QPixmap(cancel_xpm)), "cancel download", this, SLOT( cancelDownload() ) );
 	
-	partListButton = downloadToolBar->addAction( *icons->partListIcon, "show part list", this, SLOT( partListRequest() ) );
-	renameDownloadButton = downloadToolBar->addAction( *icons->downloadRenameIcon, "rename download", this, SLOT( renameDownload() ) );
-   renamePlusDownloadButton = downloadToolBar->addAction( *icons->downloadRenamePlusIcon, "rename download by clipboard", this, SLOT( renamePlusDownload() ) );
+	partListButton = downloadToolBar->addAction( QIcon(QPixmap(partlist_xpm)), "show part list", this, SLOT( partListRequest() ) );
+	renameDownloadButton = downloadToolBar->addAction( QIcon(QPixmap(rename_xpm)), "rename download", this, SLOT( renameDownload() ) );
+   renamePlusDownloadButton = downloadToolBar->addAction( QIcon(QPixmap(rename_plus_xpm)), "rename download by clipboard", this, SLOT( renamePlusDownload() ) );
 	
-	clearDownloadButton = downloadToolBar->addAction( *icons->downloadFilterIcon, "remove finished/canceld download", this, SLOT( cleanDownload() ) );
+	clearDownloadButton = downloadToolBar->addAction( QIcon(QPixmap(filter_xpm)), "remove finished/canceld download", this, SLOT( cleanDownload() ) );
 
-	saveDownloadButton = downloadToolBar->addAction( *icons->downloadSaveIcon, "store file", this, SLOT( storeDownload() ) );
+	saveDownloadButton = downloadToolBar->addAction( QIcon(QPixmap(save_xpm)), "store file", this, SLOT( storeDownload() ) );
 	
 
 	pauseDownloadButton->setDisabled( true );
@@ -264,24 +316,24 @@ void AjQtGUI::initToolBars()
 	connect( powerSpin, SIGNAL( valueChanged( const QString&) ), this, SLOT( powerChanged( const  QString& ) ) );
 	connect( powerSpin, SIGNAL( valueChanged( double ) ), this, SLOT( powerChanged( double ) ) );
 
-	powerOkButton = downloadToolBar->addAction( *icons->powerOkIcon, "apply power download", this, SLOT( applyPowerDownload() ) );
+	powerOkButton = downloadToolBar->addAction( QIcon(QPixmap(ok_xpm)), "apply power download", this, SLOT( applyPowerDownload() ) );
 	
-	powerMaxButton = downloadToolBar->addAction( *icons->powerMaxIcon, "set all downloads to 1:50", this, SLOT( maxPowerDownload() )  );
+	powerMaxButton = downloadToolBar->addAction( QIcon(QPixmap(power_max_xpm)), "set all downloads to 1:50", this, SLOT( maxPowerDownload() )  );
 	powerMaxButton->setVisible( special );
 
 // UPLOAD TOOLBAR
 
 	uploadToolBar = new QToolBar( "upload operations", this );
 	
-	uploadToolBar->addAction( *icons->dummyIcon, "" )->setDisabled( true );
+	uploadToolBar->addAction( QIcon(QPixmap(dummy_xpm)), "" )->setDisabled( true );
 	uploadToolBar->hide();
 
 // SEARCH TOOLBAR
 
 	searchToolBar = new QToolBar( "search operations", this );
 	
-	searchToolBar->addAction( *icons->downloadSmallIcon, "download", this, SLOT( downloadSearch() ) );
-	searchToolBar->addAction( *icons->downloadCancelIcon, "cancel search", this, SLOT( cancelSearch() ) );
+	searchToolBar->addAction( QIcon(QPixmap(download_small_xpm)), "download", this, SLOT( downloadSearch() ) );
+	searchToolBar->addAction( QIcon(QPixmap(cancel_small_xpm)), "cancel search", this, SLOT( cancelSearch() ) );
 
 	searchToolBar->addSeparator();
 	
@@ -300,9 +352,9 @@ void AjQtGUI::initToolBars()
 
 	serverToolBar = new QToolBar( "server operations", this );
 	
-	connectServerButton = serverToolBar->addAction( *icons->serverConnectIcon, "connect to this server", this, SLOT( connectServer() ) );
-	removeServerButton = serverToolBar->addAction( *icons->serverRemoveIcon, "remove server", this, SLOT( removeServer() ) );
-	findServerButton = serverToolBar->addAction( *icons->newIcon, "find server", this, SLOT( findServer() ) );
+	connectServerButton = serverToolBar->addAction( QIcon(QPixmap(connect_xpm)), "connect to this server", this, SLOT( connectServer() ) );
+	removeServerButton = serverToolBar->addAction( QIcon(QPixmap(remove_xpm)), "remove server", this, SLOT( removeServer() ) );
+	findServerButton = serverToolBar->addAction( QIcon(QPixmap(new_xpm)), "find server", this, SLOT( findServer() ) );
 	
 	removeServerButton->setDisabled( true );
 	connectServerButton->setDisabled( true );
@@ -312,20 +364,20 @@ void AjQtGUI::initToolBars()
 
 	shareToolBar = new QToolBar( "share operations", this );
 	
-	shareToolBar->addAction( *icons->insertIcon, "add share", this, SLOT( addShare() ) );
-	removeShareButton = shareToolBar->addAction( *icons->removeIcon, "remove share", this, SLOT( removeShare() ) );
-	applyShareButton = shareToolBar->addAction( *icons->powerOkIcon, "transmit to the core", this, SLOT( applyShare() ) );
+	shareToolBar->addAction( QIcon(QPixmap(insert_xpm)), "add share", this, SLOT( addShare() ) );
+	removeShareButton = shareToolBar->addAction( QIcon(QPixmap(remove_xpm)), "remove share", this, SLOT( removeShare() ) );
+	applyShareButton = shareToolBar->addAction( QIcon(QPixmap(ok_xpm)), "transmit to the core", this, SLOT( applyShare() ) );
 	applyShareButton->setDisabled( true );
 	removeShareButton->setDisabled( true );
 	
-	reloadSharedFilesButton = shareToolBar->addAction( *icons->reloadIcon, "reload shared files", this, SLOT( reloadShare() ) );
+	reloadSharedFilesButton = shareToolBar->addAction( QIcon(QPixmap(reload_xpm)), "reload shared files", this, SLOT( reloadShare() ) );
 
 	shareToolBar->hide();
 
 	// FTP TOOLBAR
 	ftpToolBar = new QToolBar( "ftp operations", this );
-	ftpToolBar->addAction( *icons->reloadIcon, "reload files", this, SLOT( reloadFtp() ) );
-	storeFtpButton = ftpToolBar->addAction( *icons->downloadSaveIcon, "store file", this, SLOT( storeFtp() ) );
+	ftpToolBar->addAction( QIcon(QPixmap(reload_xpm)), "reload files", this, SLOT( reloadFtp() ) );
+	storeFtpButton = ftpToolBar->addAction( QIcon(QPixmap(save_xpm)), "store file", this, SLOT( storeFtp() ) );
 	storeFtpButton->setDisabled( true );
 	
 	ftpToolBar->hide();
@@ -374,11 +426,11 @@ void AjQtGUI::timerSlot()
 
 void AjQtGUI::partListTimerSlot()
 {
-    QString id = ajTab->ajDownloadWidget->getNextIdRoundRobin();
+    QString id = ajDownloadWidget->getNextIdRoundRobin();
     if(!id.isEmpty())
     {
         xml->get( "downloadpartlist", "&simple&id=" + id);
-        ajTab->ajDownloadWidget->doItemsLayout();
+        ajDownloadWidget->doItemsLayout();
     }
 }
 
@@ -395,6 +447,7 @@ void AjQtGUI::showOptions()
 		lokalSettings.setValue( "serverURL",  settings.serverURL );
 		lokalSettings.setValue( "refresh",  settings.refresh );
 
+      lokalSettings.setValue( "launcher",  settings.launcher );
 		lokalSettings.setValue( "ftpServer",  settings.ftpServer );
 		lokalSettings.setValue( "ftpPort",  settings.ftpPort );
 		lokalSettings.setValue( "ftpUser",  settings.ftpUser );
@@ -432,6 +485,7 @@ void AjQtGUI::showOptions()
 
 void AjQtGUI::settingsReady( AjSettings settings )
 {
+    tempDir = QFileInfo( settings.tempDir );
 	if( optionsDialog != NULL )
 	{
 		QSettings lokalSettings;
@@ -440,6 +494,8 @@ void AjQtGUI::settingsReady( AjSettings settings )
 		settings.serverURL = lokalSettings.value( "serverURL",  "http://www.applejuicenet.de/18.0.html" ).toString();
 		settings.refresh = lokalSettings.value( "refresh", 3 ).toInt();
 
+        settings.launcher = lokalSettings.value( "launcher", optionsDialog->launchCombo->itemText(0)).toString();
+      
 		settings.ftpServer = lokalSettings.value( "ftpServer", "localhost" ).toString();
 		settings.ftpPort = lokalSettings.value( "ftpPort", "21" ).toString();
 		settings.ftpUser = lokalSettings.value( "ftpUser", "anonymous" ).toString();
@@ -452,12 +508,12 @@ void AjQtGUI::settingsReady( AjSettings settings )
 
 bool AjQtGUI::login()
 {
-	ajTab->ajDownloadWidget->clear();
-//	ajTab->ajUploadWidget->clear();
-	ajTab->ajServerWidget->clear();
-	ajTab->ajSearchWidget->clear();
+	ajDownloadWidget->clear();
+//	ajUploadWidget->clear();
+	ajServerWidget->clear();
+	ajSearchWidget->clear();
 	connected = false;
-	progressDialog = new QProgressDialog( tr("please wait") + "...", "cancel", 0, 5, this );
+	progressDialog = new QProgressDialog( tr("please wait") + "...", "cancel", 0, 4, this );
 	progressDialog->setMinimumDuration(0);
 	progressDialog->setValue( 0 );
 	connect( progressDialog, SIGNAL( canceled() ), qApp, SLOT( quit() ) );
@@ -517,7 +573,6 @@ void AjQtGUI::gotSession()
     connected = true;
     xml->get( "information" );
     xml->get( "settings" );
-    xml->get( "share" );
     QSettings lokalSettings;
     timerSlot();
     timer->setSingleShot( false );
@@ -549,7 +604,7 @@ void AjQtGUI::applyPowerDownload()
 
 void AjQtGUI::maxPowerDownload()
 {
-    QList<QString> ids = ajTab->ajDownloadWidget->getIds();
+    QList<QString> ids = ajDownloadWidget->getIds();
     int i;
     for( i=0; i<ids.size(); i++ )
     {
@@ -559,7 +614,7 @@ void AjQtGUI::maxPowerDownload()
 
 void AjQtGUI::processSelected( QString request, QString para )
 {
-	QList<QTreeWidgetItem *>  selectedItems = ajTab->ajDownloadWidget->selectedItems();
+	QList<QTreeWidgetItem *>  selectedItems = ajDownloadWidget->selectedItems();
 	int i;
 	for( i=0; i<selectedItems.size(); i++ )
 	{
@@ -569,7 +624,7 @@ void AjQtGUI::processSelected( QString request, QString para )
 
 void AjQtGUI::requestSelected( QString request, QString para )
 {
-	QList<QTreeWidgetItem *>  selectedItems = ajTab->ajDownloadWidget->selectedItems();
+	QList<QTreeWidgetItem *>  selectedItems = ajDownloadWidget->selectedItems();
 	int i;
 	for( i=0; i<selectedItems.size(); i++ )
 	{
@@ -592,7 +647,7 @@ void AjQtGUI::processClipboard()
 
 void AjQtGUI::downloadSearch()
 {
-	QList<QTreeWidgetItem *>  selectedItems = ajTab->ajSearchWidget->selectedItems();
+	QList<QTreeWidgetItem *>  selectedItems = ajSearchWidget->selectedItems();
 	int i;
 	for( i=0; i<selectedItems.size(); i++ )
 	{
@@ -640,7 +695,7 @@ void AjQtGUI::renameDownload()
 	QString oldFilename;
 	QString newFilename;
 	bool ok;
-	QList<QTreeWidgetItem *>  selectedItems = ajTab->ajDownloadWidget->selectedItems();
+	QList<QTreeWidgetItem *>  selectedItems = ajDownloadWidget->selectedItems();
 	int i;
 	for( i=0; i<selectedItems.size(); i++ )
 	{
@@ -659,7 +714,7 @@ void AjQtGUI::renamePlusDownload()
     QString oldFilename;
     QString newFilename;
     QString newFilenameBase = qApp->clipboard()->text( QClipboard::Clipboard );
-    QList<QTreeWidgetItem *>  selectedItems = ajTab->ajDownloadWidget->selectedItems();
+    QList<QTreeWidgetItem *>  selectedItems = ajDownloadWidget->selectedItems();
     int i;
     for( i=0; i<selectedItems.size(); i++ )
     {
@@ -667,7 +722,7 @@ void AjQtGUI::renamePlusDownload()
         newFilename = newFilenameBase;
         if(selectedItems.size() > 1)
         {
-            newFilename += "_" + QString(i);
+            newFilename += "_" + QString::number(i+1);
         }
         QStringList s = oldFilename.split(".");
         if(s.size() > 1)
@@ -685,7 +740,7 @@ void AjQtGUI::renamePlusDownload()
 
 void AjQtGUI::removeServer()
 {
-	QList<QTreeWidgetItem *>  selectedItems = ajTab->ajServerWidget->selectedItems();
+	QList<QTreeWidgetItem *>  selectedItems = ajServerWidget->selectedItems();
 	int i;
 	for( i=0; i<selectedItems.size(); i++ )
 	{
@@ -695,7 +750,7 @@ void AjQtGUI::removeServer()
 
 void AjQtGUI::connectServer()
 {
-	QList<QTreeWidgetItem *>  selectedItems = ajTab->ajServerWidget->selectedItems();
+	QList<QTreeWidgetItem *>  selectedItems = ajServerWidget->selectedItems();
 	if( ! selectedItems.empty() )
 	{
 		xml->set( "serverlogin", "&id=" + selectedItems.first()->text(ID_SERVER_INDEX) );
@@ -713,22 +768,22 @@ void AjQtGUI::addShare()
 			mode = "subdirectory";
 		else
 			mode = "directory";
-		ajTab->ajShareWidget->insertShare( dir, mode );
+		ajShareWidget->insertShare( dir, mode );
 	}
-	ajTab->ajShareWidget->setChanged();
+	ajShareWidget->setChanged();
 	applyShareButton->setEnabled( true );
 }
 
 void AjQtGUI::removeShare()
 {
-	QList<QTreeWidgetItem *>  selectedItems = ajTab->ajShareWidget->selectedItems();
+	QList<QTreeWidgetItem *>  selectedItems = ajShareWidget->selectedItems();
 	int i;
 	for( i=0; i<selectedItems.size(); i++ )
 	{
 		//delete it.current();
 		selectedItems.at(i)->setFlags( 0 );
 	}
-	ajTab->ajShareWidget->setChanged();
+	ajShareWidget->setChanged();
 	applyShareButton->setEnabled( true );
 }
 
@@ -737,9 +792,9 @@ void AjQtGUI::applyShare()
 	QString sharesString;
 	int i;
 	int cnt = 1;
-	for( i=0; i<ajTab->ajShareWidget->topLevelItemCount() ; i++)
+	for( i=0; i<ajShareWidget->topLevelItemCount() ; i++)
 	{
-		QTreeWidgetItem* item = ajTab->ajShareWidget->topLevelItem( i );
+		QTreeWidgetItem* item = ajShareWidget->topLevelItem( i );
 		if( item->flags() & Qt::ItemIsEnabled )
 		{
 			sharesString += "&sharedirectory" + QString::number(cnt) + "=" + item->text( PATH_SHARE_INDEX );
@@ -750,14 +805,14 @@ void AjQtGUI::applyShare()
 	sharesString = "&countshares=" + QString::number( cnt-1 );
 	xml->set( "setsettings", sharesString );
 	xml->get( "settings" );
-	ajTab->ajShareWidget->setChanged( false );
+	ajShareWidget->setChanged( false );
 	applyShareButton->setDisabled( true );
 }
 
 QString AjQtGUI::getSelectedDownloads()
 {
 	QString ids = "";
-	QList<QTreeWidgetItem *>  selectedItems = ajTab->ajDownloadWidget->selectedItems();
+	QList<QTreeWidgetItem *>  selectedItems = ajDownloadWidget->selectedItems();
 	int i;
 	for( i=0; i<selectedItems.size(); i++ )
 	{
@@ -772,7 +827,7 @@ QString AjQtGUI::getSelectedDownloads()
 void AjQtGUI::tabChanged( QWidget *tab )
 {
 	QSettings lokalSettings;
-	if( tab != ajTab->ajDownloadWidget )
+	if( tab != ajDownloadWidget )
 	{
 		downloadToolBar->hide();
 		downloadMenuBar->setDisabled( true );
@@ -782,19 +837,19 @@ void AjQtGUI::tabChanged( QWidget *tab )
 		downloadToolBar->show();
 		downloadMenuBar->setEnabled( true );
 	}
-	if( tab != ajTab->ajUploadWidget )
+	if( tab != ajUploadWidget )
 	{
 		uploadToolBar->hide();
 	}
 	else
 	{
 		uploadToolBar->show();
-		if( ! ajTab->ajUploadWidget->wasSizeAdjusted() )
+		if( ! ajUploadWidget->wasSizeAdjusted() )
 		{
-			ajTab->ajUploadWidget->adjustSizeOfColumns();
+			ajUploadWidget->adjustSizeOfColumns();
 		}
 	}
-	if( tab != ajTab->ajSearchWidget )
+	if( tab != ajSearchWidget )
 	{
 		searchToolBar->hide();
 		searchMenuBar->setDisabled( true );
@@ -804,42 +859,42 @@ void AjQtGUI::tabChanged( QWidget *tab )
 		searchToolBar->show();
 		searchMenuBar->setEnabled( true );
 	}
-	if( tab != ajTab->ajServerWidget )
+	if( tab != ajServerWidget )
 	{
 		serverToolBar->hide();
 		serverMenuBar->setDisabled( true );
 	}
 	else
 	{
-		if( ! ajTab->ajServerWidget->wasSizeAdjusted() )
+		if( ! ajServerWidget->wasSizeAdjusted() )
 		{
-			ajTab->ajServerWidget->adjustSizeOfColumns();
+			ajServerWidget->adjustSizeOfColumns();
 		}
 		serverToolBar->show();
 		serverMenuBar->setEnabled( true );
 	}
-	if( tab != ajTab->ajShareWidget )
+	if( tab != ajShareWidget )
 	{
 		shareToolBar->hide();
 		shareMenuBar->setDisabled( true );
 	}
 	else
 	{
-		if( ! ajTab->ajShareWidget->wasSizeAdjusted() )
+		if( ! ajShareWidget->wasSizeAdjusted() )
 		{
-			ajTab->ajShareWidget->adjustSizeOfColumns();
+			ajShareWidget->adjustSizeOfColumns();
 		}
 		shareToolBar->show();
 		shareMenuBar->setEnabled( true );
 	}
-	if( (prevTab == ajTab->ajShareWidget) && ( ajTab->ajShareWidget->wasChanged() ) )
+	if( (prevTab == ajShareWidget) && ( ajShareWidget->wasChanged() ) )
 	{
 		if( QMessageBox::question( this, "question", "You've changed your shares.\nDo you want to transfer it to the core?", QMessageBox::Yes, QMessageBox::No ) == QMessageBox::Yes)
 		{
 			applyShare();
 		}
 	}
-	if( tab != ajTab->ajFtpWidget )
+	if( tab != ajFtpWidget )
 	{
 		ftpToolBar->hide();
 	}
@@ -858,7 +913,7 @@ void AjQtGUI::downloadSelectionChanged( )
 	bool oneActive = false;
 	bool oneFinished = false;
 	
-	QList<QTreeWidgetItem *>  selectedItems = ajTab->ajDownloadWidget->selectedItems();
+	QList<QTreeWidgetItem *>  selectedItems = ajDownloadWidget->selectedItems();
 	int i;
 	for( i=0; i<selectedItems.size(); i++ )
 	{
@@ -899,7 +954,7 @@ void AjQtGUI::search()
 
 void AjQtGUI::cancelSearch()
 {
-	QList<QTreeWidgetItem *>  selectedItems = ajTab->ajSearchWidget->selectedItems();
+	QList<QTreeWidgetItem *>  selectedItems = ajSearchWidget->selectedItems();
 	int i;
 	for( i=0; i<selectedItems.size(); i++ )
 	{
@@ -950,8 +1005,7 @@ void AjQtGUI::gotServer( int , bool error )
 
 void AjQtGUI::reloadShare()
 {
-	ajTab->ajShareWidget->clearShares();
-	ajTab->ajShareWidget->clear();
+	ajShareWidget->clear();
 	xml->get( "settings" );
 	xml->get( "share" );
 }
@@ -983,11 +1037,11 @@ void AjQtGUI::firstModified()
 		{
 			delete progressDialog;
 			progressDialog = NULL;
-/*			partListIt = ajTab->ajDownloadWidget->getFirstDownload();
-			partListEnd = ajTab->ajDownloadWidget->getEndOfDownloads();
+/*			partListIt = ajDownloadWidget->getFirstDownload();
+			partListEnd = ajDownloadWidget->getEndOfDownloads();
 			QTimer::singleShot( 100, this, SLOT( partListTimerSlot() ) );*/
-			ajTab->ajDownloadWidget->adjustSizeOfColumns();
-			ajTab->ajDownloadWidget->sortItems( 0, Qt::AscendingOrder );
+			ajDownloadWidget->adjustSizeOfColumns();
+			ajDownloadWidget->sortItems( 0, Qt::AscendingOrder );
 		}
 	}
 }
@@ -1032,7 +1086,7 @@ void AjQtGUI::storeDownload()
 	FTP* ftp = NULL;
 	QString filename, localDir;
 	bool ok;
-	QList<QTreeWidgetItem *>  selectedItems = ajTab->ajDownloadWidget->selectedItems();
+	QList<QTreeWidgetItem *>  selectedItems = ajDownloadWidget->selectedItems();
 
 	QSettings lokalSettings;
 	QString server = lokalSettings.value( "ftpServer", "localhost" ).toString();
@@ -1074,7 +1128,7 @@ void AjQtGUI::storeDownload()
  */
 void AjQtGUI::reloadFtp()
 {
-	ajTab->ajFtpWidget->clear();
+	ajFtpWidget->clear();
 	
 	QSettings lokalSettings;
 	QString server = lokalSettings.value( "ftpServer", "localhost" ).toString();
@@ -1101,7 +1155,7 @@ void AjQtGUI::storeFtp()
 {
 	QString filename, localDir;
 	bool ok;
-	QList<QTreeWidgetItem *>  selectedItems = ajTab->ajFtpWidget->selectedItems();
+	QList<QTreeWidgetItem *>  selectedItems = ajFtpWidget->selectedItems();
 
 	QSettings lokalSettings;
 	QString server = lokalSettings.value( "ftpServer", "localhost" ).toString();
@@ -1139,4 +1193,64 @@ void AjQtGUI::storeFtp()
 		}
 	}
 	ftp->start();
+}
+
+
+/*!
+    \fn AjQtGUI::openDownload( QTreeWidgetItem *item, int col )
+ */
+void AjQtGUI::openDownload( QTreeWidgetItem *item, int col )
+{
+    QAjItem* ajItem = (QAjItem*)item;
+    if(ajItem->getType() == DOWN)
+    {
+        QAjDownloadItem* ajDownloadItem = (QAjDownloadItem*)ajItem;
+
+        QSettings lokalSettings;
+        QString launcher = lokalSettings.value( "launcher", optionsDialog->launchCombo->itemText(0)).toString().simplified();
+        QStringList args = launcher.split(" ");
+
+        QString exec = args.takeFirst();
+        if( launcher == optionsDialog->kdeLauncher )
+        {
+            args.removeFirst();
+            args.push_front("exec");
+        }
+        else if( launcher == optionsDialog->gnomeLauncher )
+        {
+            args.removeFirst();
+        }
+        else if( launcher == optionsDialog->macLauncher )
+        {
+            exec = "open";
+            args.clear();
+        }
+        else if( launcher == optionsDialog->winLauncher )
+        {
+            exec = "start";
+            args.clear();
+            args.push_back("\"\"");
+        }
+        args.push_back( tempDir.absolutePath() + filesystemSeparator + ajDownloadItem->getTempNumber() + ".data" );
+        QProcess::startDetached( exec, args );
+    }
+}
+
+
+/*!
+    \fn AjQtGUI::setUploadFilename( QString shareId, QString filename )
+ */
+void AjQtGUI::setUploadFilename( QString shareId, QString filename )
+{
+    QFileInfo fileInfo(filename);
+    if(tempDir.absolutePath() == fileInfo.absolutePath())
+    {
+        QAjDownloadItem* item = ajDownloadWidget->findDownloadByTempNum( fileInfo.baseName() );
+        if( item != NULL )
+            ajUploadWidget->setFilename( shareId, item->text( FILENAME_DOWN_INDEX ) );
+    }
+    else
+    {
+        ajUploadWidget->setFilename( shareId, fileInfo.fileName() );
+    }
 }

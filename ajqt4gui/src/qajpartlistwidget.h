@@ -31,7 +31,6 @@
 #include <QLinkedList>
 
 #include "qconvert.h"
-#include "qajicons.h"
 #include "qajpartswidget.h"
 
 /**
@@ -41,7 +40,7 @@ class QAjPartListWidget : public QWidget
 {
 Q_OBJECT
 public:
-	QAjPartListWidget( QAjIcons *icons, QWidget *parent = 0, const char *name = 0 );
+	QAjPartListWidget( QWidget *parent = 0, const char *name = 0 );
 
 	~QAjPartListWidget();
 	void update( qulonglong size, QLinkedList<Part> partList );

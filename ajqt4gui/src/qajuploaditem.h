@@ -21,6 +21,7 @@
 #define QAJUPLOADITEM_H
 
 #include "qajitem.h"
+#include "types.h"
 
 /**
 @author Matthias Reif

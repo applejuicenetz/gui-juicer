@@ -21,6 +21,7 @@
 
 QAjUploadItem::QAjUploadItem(QTreeWidgetItem *parent) : QAjItem(UP, parent)
 {
+    status = NEW_UPLOAD;
 }
 
 

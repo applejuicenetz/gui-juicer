@@ -20,9 +20,8 @@
 #include "qajlistwidget.h"
 
 
-QAjListWidget::QAjListWidget( QAjIcons *icons, int idIndex, QWidget *parent, const char *name ) : QTreeWidget( parent )
+QAjListWidget::QAjListWidget( int idIndex, QWidget *parent, const char *name ) : QTreeWidget( parent )
 {
-	this->icons = icons;
 	this->idIndex = idIndex;
 	changed = false;
 	sizeAdjusted = false;

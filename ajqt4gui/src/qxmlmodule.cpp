@@ -22,10 +22,9 @@
 
 #include "ajqtgui.h"
 
-QXMLModule::QXMLModule(AjQtGUI *ajQtGUI, QAjTab *ajTab, QObject *parent, const char *name) : QHttp()
+QXMLModule::QXMLModule(AjQtGUI *ajQtGUI, QObject *parent, const char *name) : QHttp()
 {
     this->ajQtGUI = ajQtGUI;
-    this->ajTab = ajTab;
     timeStamp = "0";
     QObject::connect(this, SIGNAL(done( bool )), this, SLOT( httpDone( bool ) ) );
     QObject::connect(this, SIGNAL(requestFinished( int , bool )), this, SLOT(requestFinished(int, bool )));
@@ -94,13 +93,13 @@ void QXMLModule::requestFinished( int id, bool error )
                     {
                         timeStamp = e.text();
                     }
-                    else if ( e.tagName() == "shares" )
-                    {
-                        handleShares(e);
-                    }
                     else if ( e.tagName() == "ids" )
                     {
                         handleIds(n);
+                    }
+                    else if ( e.tagName() == "share" )
+                    {
+                        handleShare(e);
                     }
                     else if ( e.tagName() == "removed" )
                     {
@@ -164,9 +163,13 @@ void QXMLModule::requestFinished( int id, bool error )
             }
             modifiedDone();
         }
-        else if (root.tagName() == "settings" )
+        else if ( root.tagName() == "settings" )
         {
             handleSettings(root);
+        }
+        else if ( root.tagName() == "shares" )
+        {
+            handleShares(root);
         }
         handlePartList(id);
     }
@@ -212,9 +215,18 @@ void QXMLModule::handleSettings( QDomElement e )
     for(shareE=e.firstChildElement("share").firstChildElement("directory");
         !shareE.isNull(); shareE = shareE.nextSiblingElement("directory"))
     {
-        ajTab->ajShareWidget->insertShare(
+        ajQtGUI->ajShareWidget->insertShare(
             shareE.attribute("name"), shareE.attribute("sharemode"));
     }
+}
+
+
+/*!
+    \fn QXMLModule::handleShare( QDomElement e )
+ */
+void QXMLModule::handleShare( QDomElement e )
+{
+    ajQtGUI->setUploadFilename( e.attribute("id"), e.attribute("filename") );
 }
 
 
@@ -223,14 +235,12 @@ void QXMLModule::handleSettings( QDomElement e )
  */
 void QXMLModule::handleShares( QDomElement e )
 {
-    // TODO
-    /*
     QDomElement shareE;
     for( shareE=e.firstChildElement("share");!shareE.isNull();
          shareE=shareE.nextSiblingElement("share") )
     {
+        handleShare(shareE);
     }
-    */
 }
 
 
@@ -275,7 +285,7 @@ void QXMLModule::handleNetworkInfo( QDomElement e )
     ajQtGUI->networkWidget->setFiles( e.attribute("files") );
     ajQtGUI->networkWidget->setSize( QConvert::bytesLong( e.attribute("filesize")) );
     ajQtGUI->networkWidget->setIp( e.attribute("ip") );
-    ajTab->ajServerWidget->connectedWith( e.attribute("connectedwithserverid") );
+    ajQtGUI->ajServerWidget->connectedWith( e.attribute("connectedwithserverid") );
     ajQtGUI->connectedSince( e.attribute("connectedSince") );
 }
 
@@ -285,16 +295,19 @@ void QXMLModule::handleNetworkInfo( QDomElement e )
  */
 void QXMLModule::handleUpload( QDomElement e )
 {
-    ajTab->ajUploadWidget->insertUpload(
-        e.attribute("id"),
-        e.attribute("shareid"),
-        e.attribute("version"),
-        e.attribute("operatingsystem"),
-        e.attribute("status"),
-        e.attribute("directstate"),
-        e.attribute("priority"),
-        e.attribute("nick"),
-        e.attribute("speed"));
+    if( ! ajQtGUI->ajUploadWidget->insertUpload(
+            e.attribute("id"),
+            e.attribute("shareid"),
+            e.attribute("version"),
+            e.attribute("operatingsystem"),
+            e.attribute("status"),
+            e.attribute("directstate"),
+            e.attribute("priority"),
+            e.attribute("nick"),
+            e.attribute("speed")) )
+    {
+        this->get("getobject", "&Id="+e.attribute("shareid"));
+    }
 }
 
 
@@ -303,8 +316,8 @@ void QXMLModule::handleUpload( QDomElement e )
  */
 void QXMLModule::handleUser( QDomElement e )
 {
-//     ajTab->ajDownloadWidget->mutex.lock();
-    ajTab->ajDownloadWidget->insertUser(
+//     ajQtGUI->ajDownloadWidget->mutex.lock();
+    ajQtGUI->ajDownloadWidget->insertUser(
         e.attribute("downloadid"),
         e.attribute("id"),
         e.attribute("filename"),
@@ -313,7 +326,7 @@ void QXMLModule::handleUser( QDomElement e )
         e.attribute("powerdownload"),
         e.attribute("queueposition"),
         e.attribute("operatingsystem"));
-//     ajTab->ajDownloadWidget->mutex.unlock();
+//     ajQtGUI->ajDownloadWidget->mutex.unlock();
 }
 
 
@@ -322,15 +335,16 @@ void QXMLModule::handleUser( QDomElement e )
  */
 void QXMLModule::handleDownload( QDomElement e )
 {
-//     ajTab->ajDownloadWidget->mutex.lock();
-    ajTab->ajDownloadWidget->insertDownload(
+//     ajQtGUI->ajDownloadWidget->mutex.lock();
+    ajQtGUI->ajDownloadWidget->insertDownload(
         e.attribute("id"),
         e.attribute("filename"),
         e.attribute("status"),
         e.attribute("size"),
         e.attribute("ready"),
-        e.attribute("powerdownload"));
-//     ajTab->ajDownloadWidget->mutex.unlock();
+        e.attribute("powerdownload"),
+        e.attribute("temporaryfilenumber"));
+//     ajQtGUI->ajDownloadWidget->mutex.unlock();
 }
 
 
@@ -339,7 +353,7 @@ void QXMLModule::handleDownload( QDomElement e )
  */
 void QXMLModule::handleServer( QDomElement e )
 {
-    ajTab->ajServerWidget->insertServer(
+    ajQtGUI->ajServerWidget->insertServer(
         e.attribute("id"),
         e.attribute("name"),
         e.attribute("host"),
@@ -354,7 +368,7 @@ void QXMLModule::handleServer( QDomElement e )
  */
 void QXMLModule::handleSearch( QDomElement e )
 {
-    ajTab->ajSearchWidget->insertSearch(
+    ajQtGUI->ajSearchWidget->insertSearch(
         e.attribute("id"),
         e.attribute("searchtext"),
         e.attribute("running"),
@@ -372,7 +386,7 @@ void QXMLModule::handleSearchEntry( QDomElement e )
     for(fileE=e.firstChildElement("filename"); !fileE.isNull(); fileE = fileE.nextSiblingElement("filename")) {
         filenames.append(fileE.attribute("name"));
     }
-    ajTab->ajSearchWidget->insertSearchEntry(
+    ajQtGUI->ajSearchWidget->insertSearchEntry(
         e.attribute("id"),
         e.attribute("searchid"),
         e.attribute("size"),
@@ -402,12 +416,12 @@ void QXMLModule::handleRemoved( QDomElement e )
         !objectE.isNull(); objectE = objectE.nextSiblingElement("object"))
     {
         QString id = objectE.attribute("id");
-//         ajTab->ajDownloadWidget->mutex.lock();
-        if ( ! ajTab->ajDownloadWidget->remove( id ) )
-            if ( ! ajTab->ajUploadWidget->remove( id ) )
-                if ( ! ajTab->ajServerWidget->remove( id ) )
-                    ajTab->ajSearchWidget->remove( id );
-//         ajTab->ajDownloadWidget->mutex.unlock();
+//         ajQtGUI->ajDownloadWidget->mutex.lock();
+        if ( ! ajQtGUI->ajDownloadWidget->remove( id ) )
+            if ( ! ajQtGUI->ajUploadWidget->remove( id ) )
+                if ( ! ajQtGUI->ajServerWidget->remove( id ) )
+                    ajQtGUI->ajSearchWidget->remove( id );
+//         ajQtGUI->ajDownloadWidget->mutex.unlock();
     }
 }
 
@@ -444,7 +458,7 @@ void QXMLModule::handlePartList( int id )
     {
         if( partListRequests.contains( id ) )
         {
-            QAjDownloadItem* item = ajTab->ajDownloadWidget->findDownload( partListRequests[id] );
+            QAjDownloadItem* item = ajQtGUI->ajDownloadWidget->findDownload( partListRequests[id] );
             if( item != NULL )
             {
                 item->getPartListWidget()->update( partsSize, partList );
@@ -453,7 +467,7 @@ void QXMLModule::handlePartList( int id )
         }
         else if( partListSimpleRequests.contains( id ) )
         {
-            QAjDownloadItem* item = ajTab->ajDownloadWidget->findDownload( partListSimpleRequests[id] );
+            QAjDownloadItem* item = ajQtGUI->ajDownloadWidget->findDownload( partListSimpleRequests[id] );
             if ( item != NULL )
             {
                 item->setParts( partsSize, partList );

@@ -24,11 +24,7 @@
 #include <QPainter>
 #include <QLinkedList>
 
-typedef struct{
-    qulonglong fromPosition;
-    int type;
-} Part;
-
+#include "types.h"
 /**
 @author Matthias Reif
 */

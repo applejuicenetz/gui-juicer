@@ -19,7 +19,14 @@
  ***************************************************************************/
 #include "qajsharewidget.h"
 
-QAjShareWidget::QAjShareWidget( QString* filesystemSeparator, QAjIcons *icons, QWidget *parent, const char *name) : QAjListWidget( icons, ID_SHARE_INDEX, parent, name )
+#include "./xpm/cancel_small.xpm"
+#include "./xpm/reload_small.xpm"
+#include "./xpm/insert_small.xpm"
+#include "./xpm/ok.xpm"
+#include "./xpm/cancel.xpm"
+#include "./xpm/shared_files.xpm"
+
+QAjShareWidget::QAjShareWidget( QString filesystemSeparator, QWidget *parent, const char *name) : QAjListWidget( ID_SHARE_INDEX, parent, name )
 {
 	this->filesystemSeparator = filesystemSeparator;
 	setColumnCount( NUM_SHARE_COL );
@@ -46,10 +53,10 @@ QAjShareWidget::QAjShareWidget( QString* filesystemSeparator, QAjIcons *icons, Q
 	setColumnHidden( ID_SHARE_INDEX, true );
 	//setColumnAlignment( MODE_SHARE_INDEX, Qt::AlignRight );
 
-	removeId = popup->addAction( *icons->downloadCanceldIcon, "remove", this, SLOT(removeSlot()) );
+	removeId = popup->addAction( QIcon(QPixmap(cancel_small_xpm)), "remove", this, SLOT(removeSlot()) );
 	popup->addSeparator();
-	popup->addAction( *icons->insertSmallIcon, "insert new", this, SLOT(insertSlot()) );
-	popup->addAction( *icons->reloadSmallIcon, "reload view", this, SLOT(reloadSlot()) );
+	popup->addAction( QIcon(QPixmap(insert_small_xpm)), "insert new", this, SLOT(insertSlot()) );
+	popup->addAction( QIcon(QPixmap(reload_small_xpm)), "reload view", this, SLOT(reloadSlot()) );
 	removeId->setEnabled( false );
 	
 	connect( this, SIGNAL( newSelection( bool ) ) , this, SLOT( newSelection( bool ) ) );
@@ -62,22 +69,21 @@ QAjShareWidget::~QAjShareWidget()
 
 void QAjShareWidget::insertShare( QString path, QString shareMode )
 {
-	if( !path.endsWith( *filesystemSeparator ) )
-		path += *filesystemSeparator;
+	if( !path.endsWith( filesystemSeparator ) )
+		path += filesystemSeparator;
 	QAjShareItem *item = new QAjShareItem( this );
 	item->path = path;
-	shares.push_back( item );
 	item->setText( PATH_SHARE_INDEX, path );
-	item->setIcon( PATH_SHARE_INDEX, *icons->sharedFilesIcon );
+	item->setIcon( PATH_SHARE_INDEX, QIcon(QPixmap(shared_files_xpm)) );
 	if( shareMode == "subdirectory" )
 	{
 		item->recursiv = "true";
-		item->setIcon( MODE_SHARE_INDEX, *icons->downloadFinishedIcon );
+		item->setIcon( MODE_SHARE_INDEX, QIcon(QPixmap(ok_xpm)) );
 	}
 	else
 	{
 		item->recursiv = "false";
-		item->setIcon( MODE_SHARE_INDEX, *icons->downloadCanceldIcon );
+		item->setIcon( MODE_SHARE_INDEX, QIcon(QPixmap(cancel_xpm)) );
 	}
 }
 
@@ -97,22 +103,6 @@ void QAjShareWidget::reloadSlot()
 void QAjShareWidget::newSelection( bool oneSelected )
 {
 	removeId->setEnabled( oneSelected );
-}
-
-void QAjShareWidget::insertSharedFile( QString id, QString path )
-{
-	sharesIt = shares.begin();
-	while( ( sharesIt != shares.end() ) && ( !path.startsWith( (*sharesIt)->path ) ) )
-	{
-		sharesIt++;
-	}
-	if( sharesIt != shares.end() )
-	{
-		QAjShareItem *shareItem = *sharesIt;
-		QString filename = path.right( path.length() - shareItem->path.length() );
-		
-		insertDirList( shareItem, &filename.split( *filesystemSeparator ) );
-	}
 }
 
 void QAjShareWidget::insertDirList( QTreeWidgetItem* parent, QStringList* dirList )
@@ -141,7 +131,7 @@ void QAjShareWidget::insertDirList( QTreeWidgetItem* parent, QStringList* dirLis
 			newItem->setFlags( Qt::ItemIsEnabled );
 			parent->addChild( newItem );
 			newItem->setText( PATH_SHARE_INDEX, dirList->front() );
-			newItem->setIcon( PATH_SHARE_INDEX, *icons->sharedFilesIcon );
+			newItem->setIcon( PATH_SHARE_INDEX, QIcon(QPixmap(shared_files_xpm)) );
 			dirList->pop_front();
 			insertDirList( newItem, dirList );
 		}
@@ -153,7 +143,3 @@ void QAjShareWidget::insertDirList( QTreeWidgetItem* parent, QStringList* dirLis
 	}
 }
 
-void QAjShareWidget::clearShares()
-{
-	shares.clear();
-}

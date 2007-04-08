@@ -10,19 +10,14 @@ HEADERS += ajqtgui.h \
            md5class.h \
            md5.h \
            qajapplication.h \
-           qajcommonoptionswidget.h \
-           qajdescription.h \
            qajdownloaditem.h \
            qajdownloadwidget.h \
            qajftpwidget.h \
-           qajicons.h \
            qajitem.h \
            qajlistwidget.h \
            qajlogindialog.h \
-           qajnetoptionswidget.h \
            qajnetworkwidget.h \
            qajoptionsdialog.h \
-           qajoptionswidget.h \
            qajpartlistwidget.h \
            qajpartswidget.h \
            qajsearchitem.h \
@@ -33,7 +28,6 @@ HEADERS += ajqtgui.h \
            qajshareoptionswidget.h \
            qajsharewidget.h \
            qajsocket.h \
-           qajtab.h \
            qajuploaditem.h \
            qajuploadwidget.h \
            qajuseritem.h \
@@ -47,19 +41,14 @@ SOURCES += ajqtgui.cpp \
            md5c.c \
            md5class.cpp \
            qajapplication.cpp \
-           qajcommonoptionswidget.cpp \
-           qajdescription.cpp \
            qajdownloaditem.cpp \
            qajdownloadwidget.cpp \
            qajftpwidget.cpp \
-           qajicons.cpp \
            qajitem.cpp \
            qajlistwidget.cpp \
            qajlogindialog.cpp \
-           qajnetoptionswidget.cpp \
            qajnetworkwidget.cpp \
            qajoptionsdialog.cpp \
-           qajoptionswidget.cpp \
            qajpartlistwidget.cpp \
            qajpartswidget.cpp \
            qajsearchitem.cpp \
@@ -70,18 +59,17 @@ SOURCES += ajqtgui.cpp \
            qajshareoptionswidget.cpp \
            qajsharewidget.cpp \
            qajsocket.cpp \
-           qajtab.cpp \
            qajuploaditem.cpp \
            qajuploadwidget.cpp \
            qajuseritem.cpp \
            qconvert.cpp \
            qxmlmodule.cpp
 TARGET = ../bin/ajqt4gui 
-CONFIG += release \
-          warn_on \
+CONFIG += warn_on \
           qt \
           x11 \
-          stl 
+          stl \
+          debug
 TEMPLATE = app 
 QT += core gui network xml
 

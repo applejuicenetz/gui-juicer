@@ -20,7 +20,7 @@
 #include "qajftpwidget.h"
 #include "iostream.h"
 
-QAjFtpWidget::QAjFtpWidget( QAjIcons *icons, QWidget *parent ) : QAjListWidget( icons, ID_FTP_INDEX, parent )
+QAjFtpWidget::QAjFtpWidget( QWidget *parent ) : QAjListWidget( ID_FTP_INDEX, parent )
 {
 	QStringList headers;
 	int i;

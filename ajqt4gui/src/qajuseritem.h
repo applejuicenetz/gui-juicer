@@ -25,8 +25,6 @@
 #include "qajitem.h"
 #include "qconvert.h"
 #include "types.h"
-#include "qajdescription.h"
-#include "qajicons.h"
 
 /**
 @author Matthias Reif
@@ -34,12 +32,12 @@
 class QAjUserItem : public QAjItem
 {
 public:
-	QAjUserItem( QAjDescription* description, QAjIcons *icons, QTreeWidget *parent );
-	QAjUserItem( QAjDescription* description, QAjIcons *icons, QTreeWidgetItem *parent );
+	QAjUserItem( QTreeWidget *parent );
+	QAjUserItem( QTreeWidgetItem *parent );
 
 	~QAjUserItem();
 	
-	void update( QString fileName, QString speed, QString status, QString power, QString queuePos, QString os );
+	void update( QString fileName, QString speed, QString status, QString power, QString queuePos, QString statusString, QIcon* osIcon );
 	
 	void setSpeed( QString newSpeedString );
 	
@@ -56,9 +54,6 @@ protected:
 	int queuePos;
 	QString power;
 	QString fileName;
-	int os;
-	QAjDescription *description;
-	QAjIcons *icons;
 	bool fileNameSet;
 };
 
