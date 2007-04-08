@@ -157,7 +157,7 @@ void QXMLModule::requestFinished( int id, bool error )
                     }
                     else
                     {
-                        cerr << "unhandled element: " << e.tagName().toLatin1().data() << endl;
+                        fprintf(stderr, "unhandled element: %s\n", e.tagName().toLatin1().data());
                     }
                 }
             }
