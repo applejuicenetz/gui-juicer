@@ -25,6 +25,7 @@
     <tree>
       <hidenonprojectfiles>false</hidenonprojectfiles>
       <hidepatterns>*.o,*.lo,CVS</hidepatterns>
+      <showvcsfields>false</showvcsfields>
     </tree>
   </kdevfileview>
   <kdevcppsupport>
@@ -125,16 +126,16 @@
       <programargs/>
       <directoryradio>executable</directoryradio>
       <runarguments>
-        <ajqt4gui></ajqt4gui>
-        <juicer></juicer>
+        <ajqt4gui/>
+        <juicer/>
       </runarguments>
       <cwd>
         <ajqt4gui>/home/remat/projekte/svn/ajqtgui/juicer</ajqt4gui>
         <juicer>/home/remat/projekte/svn/ajqtgui/juicer</juicer>
       </cwd>
       <debugarguments>
-        <ajqt4gui></ajqt4gui>
-        <juicer></juicer>
+        <ajqt4gui/>
+        <juicer/>
       </debugarguments>
     </run>
     <general>
