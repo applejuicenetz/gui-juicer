@@ -20,9 +20,10 @@
 #ifndef QAJNETWORKWIDGET_H
 #define QAJNETWORKWIDGET_H
 
-#include <qmessagebox.h>
-#include <qlabel.h>
-#include <qlineedit.h>
+#include <QLabel>
+#include <QMessageBox>
+#include <QLineEdit>
+#include <QIcon>
 
 #define VER_SPACING 10
 #define HOR_SPACING 20

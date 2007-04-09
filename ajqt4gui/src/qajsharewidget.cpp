@@ -19,13 +19,6 @@
  ***************************************************************************/
 #include "qajsharewidget.h"
 
-#include "./xpm/cancel_small.xpm"
-#include "./xpm/reload_small.xpm"
-#include "./xpm/insert_small.xpm"
-#include "./xpm/ok.xpm"
-#include "./xpm/cancel.xpm"
-#include "./xpm/shared_files.xpm"
-
 QAjShareWidget::QAjShareWidget( QString filesystemSeparator, QWidget *parent, const char *name) : QAjListWidget( ID_SHARE_INDEX, parent, name )
 {
 	this->filesystemSeparator = filesystemSeparator;
@@ -53,10 +46,11 @@ QAjShareWidget::QAjShareWidget( QString filesystemSeparator, QWidget *parent, co
 	setColumnHidden( ID_SHARE_INDEX, true );
 	//setColumnAlignment( MODE_SHARE_INDEX, Qt::AlignRight );
 
-	removeId = popup->addAction( QIcon(QPixmap(cancel_small_xpm)), "remove", this, SLOT(removeSlot()) );
+	removeId = popup->addAction( QIcon(":/small/remove.png"), "remove", this, SLOT(removeSlot()) );
 	popup->addSeparator();
-	popup->addAction( QIcon(QPixmap(insert_small_xpm)), "insert new", this, SLOT(insertSlot()) );
-	popup->addAction( QIcon(QPixmap(reload_small_xpm)), "reload view", this, SLOT(reloadSlot()) );
+	popup->addAction( QIcon(":/small/add.png"), "insert new", this, SLOT(insertSlot()) );
+	popup->addAction( QIcon(":/small/update.png"), "reload shared files", this, SLOT(reloadSlot()) );
+   popup->addAction( QIcon(":/small/commit.png"), "commit changes", this, SLOT(commitSlot()) );
 	removeId->setEnabled( false );
 	
 	connect( this, SIGNAL( newSelection( bool ) ) , this, SLOT( newSelection( bool ) ) );
@@ -74,16 +68,16 @@ void QAjShareWidget::insertShare( QString path, QString shareMode )
 	QAjShareItem *item = new QAjShareItem( this );
 	item->path = path;
 	item->setText( PATH_SHARE_INDEX, path );
-	item->setIcon( PATH_SHARE_INDEX, QIcon(QPixmap(shared_files_xpm)) );
+	item->setIcon( PATH_SHARE_INDEX, QIcon(":/small/shares.png") );
 	if( shareMode == "subdirectory" )
 	{
 		item->recursiv = "true";
-		item->setIcon( MODE_SHARE_INDEX, QIcon(QPixmap(ok_xpm)) );
+		item->setIcon( MODE_SHARE_INDEX, QIcon(":/small/ok.png") );
 	}
 	else
 	{
 		item->recursiv = "false";
-		item->setIcon( MODE_SHARE_INDEX, QIcon(QPixmap(cancel_xpm)) );
+		item->setIcon( MODE_SHARE_INDEX, QIcon(":/small/cancel.png") );
 	}
 }
 
@@ -98,6 +92,10 @@ void QAjShareWidget::removeSlot()
 void QAjShareWidget::reloadSlot()
 {
 	reload();
+}
+void QAjShareWidget::commitSlot()
+{
+	commit();
 }
 
 void QAjShareWidget::newSelection( bool oneSelected )
@@ -131,7 +129,7 @@ void QAjShareWidget::insertDirList( QTreeWidgetItem* parent, QStringList* dirLis
 			newItem->setFlags( Qt::ItemIsEnabled );
 			parent->addChild( newItem );
 			newItem->setText( PATH_SHARE_INDEX, dirList->front() );
-			newItem->setIcon( PATH_SHARE_INDEX, QIcon(QPixmap(shared_files_xpm)) );
+			newItem->setIcon( PATH_SHARE_INDEX, QIcon(":/small/shares.png") );
 			dirList->pop_front();
 			insertDirList( newItem, dirList );
 		}

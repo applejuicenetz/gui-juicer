@@ -20,46 +20,6 @@
 
 #include "ajqtgui.h"
 
-#include "./xpm/ajqtgui.xpm"
-#include "./xpm/adjust_columns.xpm"
-#include "./xpm/download_small.xpm"
-#include "./xpm/upload_small.xpm"
-#include "./xpm/connect_small.xpm"
-#include "./xpm/searching_small.xpm"
-#include "./xpm/share_small.xpm"
-#include "./xpm/ftp_small.xpm"
-#include "./xpm/info_small.xpm"
-#include "./xpm/options_small.xpm"
-#include "./xpm/exit_small.xpm"
-#include "./xpm/close_small.xpm"
-#include "./xpm/cancel_small.xpm"
-
-#include "./xpm/info.xpm"
-#include "./xpm/options.xpm"
-#include "./xpm/clipboard.xpm"
-
-// download toolbar
-#include "./xpm/pause.xpm"
-#include "./xpm/resume.xpm"
-#include "./xpm/cancel.xpm"
-#include "./xpm/rename.xpm"
-#include "./xpm/exec.xpm"
-#include "./xpm/rename_plus.xpm"
-#include "./xpm/partlist.xpm"
-#include "./xpm/powerMax.xpm"
-#include "./xpm/filter.xpm"
-#include "./xpm/save.xpm"
-#include "./xpm/ok.xpm"
-#include "./xpm/dummy.xpm"
-
-// server/share toolbars
-#include "./xpm/connect.xpm"
-#include "./xpm/remove.xpm"
-#include "./xpm/new.xpm"
-
-#include "./xpm/insert.xpm"
-#include "./xpm/reload.xpm"
-
 AjQtGUI::AjQtGUI( ) : QMainWindow( )
 {
     char* mode = getenv( "AJQTGUI_MODE" );
@@ -72,7 +32,7 @@ AjQtGUI::AjQtGUI( ) : QMainWindow( )
     linkServer = new QAjServerSocket( QAjApplication::APP_PORT );
     connect( linkServer, SIGNAL( lineReady( QString ) ), this, SLOT( linkServerLine( QString ) ) );
 
-    setWindowIcon(QPixmap(ajqtgui_xpm));
+    setWindowIcon(QIcon(":/juicer.png"));
 
     QTabWidget* ajTab = new QTabWidget(this);
     ajDownloadWidget = new QAjDownloadWidget( ajTab );
@@ -81,16 +41,16 @@ AjQtGUI::AjQtGUI( ) : QMainWindow( )
     ajServerWidget = new QAjServerWidget( ajTab );
     ajShareWidget = new QAjShareWidget( filesystemSeparator, ajTab );
 
-    ajTab->setTabToolTip( ajTab->addTab( ajDownloadWidget, QIcon(QPixmap(download_small_xpm)), "Downloads" ), "dowloads" );
-    ajTab->setTabToolTip( ajTab->addTab( ajUploadWidget, QIcon(QPixmap(upload_small_xpm)), "Uploads" ), "uploads" );
-    ajTab->setTabToolTip( ajTab->addTab( ajSearchWidget, QIcon(QPixmap(searching_small_xpm)), "Search" ), "servers" );
-    ajTab->setTabToolTip( ajTab->addTab( ajServerWidget, QIcon(QPixmap(connect_small_xpm)), "Server" ), "searches" );
-    ajTab->setTabToolTip( ajTab->addTab( ajShareWidget, QIcon(QPixmap(share_small_xpm)), "Shares" ), "shares" );
+    ajTab->setTabToolTip( ajTab->addTab( ajDownloadWidget, QIcon(":/small/down.png"), "Downloads" ), "dowloads" );
+    ajTab->setTabToolTip( ajTab->addTab( ajUploadWidget, QIcon(":/small/up.png"), "Uploads" ), "uploads" );
+    ajTab->setTabToolTip( ajTab->addTab( ajSearchWidget, QIcon(":/small/searching.png"), "Search" ), "servers" );
+    ajTab->setTabToolTip( ajTab->addTab( ajServerWidget, QIcon(":/small/server.png"), "Server" ), "searches" );
+    ajTab->setTabToolTip( ajTab->addTab( ajShareWidget, QIcon(":/small/shares.png"), "Shares" ), "shares" );
 
     if ( special )
     {
         ajFtpWidget = new QAjFtpWidget( NULL );
-        ajTab->setTabToolTip( ajTab->addTab( ajFtpWidget, QIcon(QPixmap(ftp_small_xpm)), "Ftp" ), "ftp" );
+        ajTab->setTabToolTip( ajTab->addTab( ajFtpWidget, QIcon(":/small/ftp.png"), "Ftp" ), "ftp" );
     }
 
     setCentralWidget( ajTab );
@@ -105,11 +65,11 @@ AjQtGUI::AjQtGUI( ) : QMainWindow( )
     file = new QMenu( tr("&AppleJuice"), this );
     menuBar()->addMenu( file );
 
-    file->addAction( QIcon(QPixmap(options_small_xpm)), tr("C&onfigure"), this, SLOT( showOptions() ), QKeySequence( Qt::CTRL+Qt::Key_O ) );
-    file->addAction( QIcon(QPixmap(info_small_xpm)), tr("&Net Info"), this, SLOT( showNetworkInfo() ), QKeySequence( Qt::CTRL+Qt::Key_N ) );
+    file->addAction( QIcon(":/small/configure.png"), tr("C&onfigure"), this, SLOT( showOptions() ), QKeySequence( Qt::CTRL+Qt::Key_O ) );
+    file->addAction( QIcon(":/small/network.png"), tr("&Net Info"), this, SLOT( showNetworkInfo() ), QKeySequence( Qt::CTRL+Qt::Key_N ) );
     file->addSeparator();
-    file->addAction( QIcon(QPixmap(exit_small_xpm)), tr("&Exit Core"), this, SLOT( exitCore() ), QKeySequence( Qt::CTRL+Qt::Key_E ) );
-    file->addAction( QIcon(QPixmap(close_small_xpm)), tr("&Quit GUI"), qApp, SLOT( closeAllWindows() ), QKeySequence( Qt::CTRL+Qt::Key_Q ) );
+    file->addAction( QIcon(":/small/exit.png"), tr("&Exit Core"), this, SLOT( exitCore() ), QKeySequence( Qt::CTRL+Qt::Key_E ) );
+    file->addAction( QIcon(":/small/close.png"), tr("&Quit GUI"), qApp, SLOT( closeAllWindows() ), QKeySequence( Qt::CTRL+Qt::Key_Q ) );
 
     downloadMenuBar = menuBar()->addMenu( /*tr("&Download"), */ajDownloadWidget->popup );
     serverMenuBar = menuBar()->addMenu( /*tr("&Server"), */ajServerWidget->popup );
@@ -216,6 +176,7 @@ AjQtGUI::AjQtGUI( ) : QMainWindow( )
     connect( ajShareWidget, SIGNAL( insert() ), this, SLOT( addShare() ) );
     connect( ajShareWidget, SIGNAL( remove() ), this, SLOT( removeShare() ) );
     connect( ajShareWidget, SIGNAL( reload() ), this, SLOT( reloadShare() ) );
+    connect( ajShareWidget, SIGNAL( commit() ), this, SLOT( applyShare() ) );
 
     connect( ftp, SIGNAL( listInfo ( QUrlInfo ) ), this->ajFtpWidget, SLOT( insert( QUrlInfo ) ) );
     connect( ajFtpWidget, SIGNAL( itemDoubleClicked ( QTreeWidgetItem*, int ) ), this, SLOT( storeFtp( ) ) );
@@ -246,15 +207,15 @@ void AjQtGUI::initToolBars()
     QToolBar* ajTools = new QToolBar( "applejuice operations", this );
     ajTools->setToolTip( "applejuice operations" );
 
-    ajTools->addAction( QIcon(QPixmap(options_xpm)), "configure", this, SLOT( showOptions() ) )->setToolTip("configure");
-    ajTools->addAction( QIcon(QPixmap(info_xpm)), "aj network info", this, SLOT( showNetworkInfo() ) )->setToolTip("aj network info");
+    ajTools->addAction( QIcon(":/configure.png"), "configure", this, SLOT( showOptions() ) )->setToolTip("configure");
+    ajTools->addAction( QIcon(":/network.png"), "aj network info", this, SLOT( showNetworkInfo() ) )->setToolTip("aj network info");
 
-    ajTools->addAction( QIcon(QPixmap(adjust_columns_xpm)), "adjust columns", this, SLOT( adjustColumns() ) )->setToolTip("adjust colmuns");
+    ajTools->addAction( QIcon(":/adjust.png"), "adjust columns", this, SLOT( adjustColumns() ) )->setToolTip("adjust colmuns");
 
     QToolBar* ajLinks = new QToolBar( "applejuice links", this );
     ajLinks->setToolTip( "applejuice links" );
 
-    clipboardButton = ajLinks->addAction( QIcon(QPixmap(clipboard_xpm)), "process link from clipboard", this, SLOT( processClipboard() ) );
+    clipboardButton = ajLinks->addAction( QIcon(":/wizard.png"), "process link from clipboard", this, SLOT( processClipboard() ) );
     clipboardButton->setToolTip( "process link from clipboard" );
 
     ajAddressLabel = new QLabel(ajLinks);
@@ -266,34 +227,29 @@ void AjQtGUI::initToolBars()
     ajLinks->addWidget( ajAddressEdit );
     connect( ajAddressEdit, SIGNAL( returnPressed() ), this, SLOT( processLink() ) );
 
-    ajLinks->addAction( "download", this, SLOT( processLink() ) );
-
-
-//	ajLinks->setStretchableWidget( ajAddressEdit );
-//	ajLinks->setHorizontallyStretchable( true );
+    ajLinks->addAction( QIcon(":/ok.png"), "process link", this, SLOT( processLink() ) );
 
 // DOWNLOAD TOOLBAR
 
     downloadToolBar = new QToolBar( "download operations", this );
-//	downloadToolBar->setNewLine( true );
 
-    pauseDownloadButton = downloadToolBar->addAction( QIcon(QPixmap(pause_xpm)), "pause download", this, SLOT( pauseDownload() ) );
+    pauseDownloadButton = downloadToolBar->addAction( QIcon(":/pause.png"), "pause download", this, SLOT( pauseDownload() ) );
     pauseDownloadButton->setToolTip( "pause download" );
 
-    resumeDownloadButton = downloadToolBar->addAction( QIcon(QPixmap(resume_xpm)), "resume download", this, SLOT( resumeDownload() ) );
+    resumeDownloadButton = downloadToolBar->addAction( QIcon(":/resume.png"), "resume download", this, SLOT( resumeDownload() ) );
     resumeDownloadButton->setToolTip( "resume download" );
 
-    cancelDownloadButton = downloadToolBar->addAction( QIcon(QPixmap(cancel_xpm)), "cancel download", this, SLOT( cancelDownload() ) );
+    cancelDownloadButton = downloadToolBar->addAction( QIcon(":/cancel.png"), "cancel download", this, SLOT( cancelDownload() ) );
 
-    partListButton = downloadToolBar->addAction( QIcon(QPixmap(partlist_xpm)), "show part list", this, SLOT( partListRequest() ) );
-    renameDownloadButton = downloadToolBar->addAction( QIcon(QPixmap(rename_xpm)), "rename download", this, SLOT( renameDownload() ) );
-    renamePlusDownloadButton = downloadToolBar->addAction( QIcon(QPixmap(rename_plus_xpm)), "rename download by clipboard", this, SLOT( renamePlusDownload() ) );
+    partListButton = downloadToolBar->addAction( QIcon(":/partlist.png"), "show part list", this, SLOT( partListRequest() ) );
+    renameDownloadButton = downloadToolBar->addAction( QIcon(":/rename.png"), "rename download", this, SLOT( renameDownload() ) );
+    renamePlusDownloadButton = downloadToolBar->addAction( QIcon(":/rename_plus.png"), "rename download by clipboard", this, SLOT( renamePlusDownload() ) );
 
-    downloadToolBar->addAction( QIcon(QPixmap(exec_xpm)), "open download", this, SLOT( openDownload() ) );
+    downloadToolBar->addAction( QIcon(":/exec.png"), "open download", this, SLOT( openDownload() ) );
 
-    clearDownloadButton = downloadToolBar->addAction( QIcon(QPixmap(filter_xpm)), "remove finished/canceld download", this, SLOT( cleanDownload() ) );
+    clearDownloadButton = downloadToolBar->addAction( QIcon(":/filter.png"), "remove finished/canceld download", this, SLOT( cleanDownload() ) );
 
-    saveDownloadButton = downloadToolBar->addAction( QIcon(QPixmap(save_xpm)), "store file", this, SLOT( storeDownload() ) );
+    saveDownloadButton = downloadToolBar->addAction( QIcon(":/save.png"), "store file", this, SLOT( storeDownload() ) );
 
 
     pauseDownloadButton->setDisabled( true );
@@ -322,24 +278,24 @@ void AjQtGUI::initToolBars()
     connect( powerSpin, SIGNAL( valueChanged( const QString&) ), this, SLOT( powerChanged( const  QString& ) ) );
     connect( powerSpin, SIGNAL( valueChanged( double ) ), this, SLOT( powerChanged( double ) ) );
 
-    powerOkButton = downloadToolBar->addAction( QIcon(QPixmap(ok_xpm)), "apply power download", this, SLOT( applyPowerDownload() ) );
+    powerOkButton = downloadToolBar->addAction( QIcon(":/ok.png"), "apply power download", this, SLOT( applyPowerDownload() ) );
 
-    powerMaxButton = downloadToolBar->addAction( QIcon(QPixmap(power_max_xpm)), "set all downloads to 1:50", this, SLOT( maxPowerDownload() )  );
+    powerMaxButton = downloadToolBar->addAction( QIcon(":/launch.png"), "set all downloads to 1:50", this, SLOT( maxPowerDownload() )  );
     powerMaxButton->setVisible( special );
 
 // UPLOAD TOOLBAR
 
     uploadToolBar = new QToolBar( "upload operations", this );
 
-    uploadToolBar->addAction( QIcon(QPixmap(dummy_xpm)), "" )->setDisabled( true );
+    uploadToolBar->addAction( QIcon(":/dummy.png"), "" )->setDisabled( true );
     uploadToolBar->hide();
 
 // SEARCH TOOLBAR
 
     searchToolBar = new QToolBar( "search operations", this );
 
-    searchToolBar->addAction( QIcon(QPixmap(download_small_xpm)), "download", this, SLOT( downloadSearch() ) );
-    searchToolBar->addAction( QIcon(QPixmap(cancel_small_xpm)), "cancel search", this, SLOT( cancelSearch() ) );
+    searchToolBar->addAction( QIcon(":/save.png"), "download", this, SLOT( downloadSearch() ) );
+    searchToolBar->addAction( QIcon(":/cancel.png"), "cancel search", this, SLOT( cancelSearch() ) );
 
     searchToolBar->addSeparator();
 
@@ -358,9 +314,9 @@ void AjQtGUI::initToolBars()
 
     serverToolBar = new QToolBar( "server operations", this );
 
-    connectServerButton = serverToolBar->addAction( QIcon(QPixmap(connect_xpm)), "connect to this server", this, SLOT( connectServer() ) );
-    removeServerButton = serverToolBar->addAction( QIcon(QPixmap(remove_xpm)), "remove server", this, SLOT( removeServer() ) );
-    findServerButton = serverToolBar->addAction( QIcon(QPixmap(new_xpm)), "find server", this, SLOT( findServer() ) );
+    connectServerButton = serverToolBar->addAction( QIcon(":/connect.png"), "connect to this server", this, SLOT( connectServer() ) );
+    removeServerButton = serverToolBar->addAction( QIcon(":/cancel.png"), "remove server", this, SLOT( removeServer() ) );
+    findServerButton = serverToolBar->addAction( QIcon(":/find.png"), "find server", this, SLOT( findServer() ) );
 
     removeServerButton->setDisabled( true );
     connectServerButton->setDisabled( true );
@@ -370,20 +326,21 @@ void AjQtGUI::initToolBars()
 
     shareToolBar = new QToolBar( "share operations", this );
 
-    shareToolBar->addAction( QIcon(QPixmap(insert_xpm)), "add share", this, SLOT( addShare() ) );
-    removeShareButton = shareToolBar->addAction( QIcon(QPixmap(remove_xpm)), "remove share", this, SLOT( removeShare() ) );
-    applyShareButton = shareToolBar->addAction( QIcon(QPixmap(ok_xpm)), "transmit to the core", this, SLOT( applyShare() ) );
+    shareToolBar->addAction( QIcon(":/add.png"), "add share", this, SLOT( addShare() ) );
+    removeShareButton = shareToolBar->addAction( QIcon(":/remove.png"), "remove share", this, SLOT( removeShare() ) );
+    reloadSharedFilesButton = shareToolBar->addAction( QIcon(":/update.png"), "reload shared files", this, SLOT( reloadShare() ) );
+    applyShareButton = shareToolBar->addAction( QIcon(":/commit.png"), "commit changes to the core", this, SLOT( applyShare() ) );
     applyShareButton->setDisabled( true );
     removeShareButton->setDisabled( true );
 
-    reloadSharedFilesButton = shareToolBar->addAction( QIcon(QPixmap(reload_xpm)), "reload shared files", this, SLOT( reloadShare() ) );
+    
 
     shareToolBar->hide();
 
     // FTP TOOLBAR
     ftpToolBar = new QToolBar( "ftp operations", this );
-    ftpToolBar->addAction( QIcon(QPixmap(reload_xpm)), "reload files", this, SLOT( reloadFtp() ) );
-    storeFtpButton = ftpToolBar->addAction( QIcon(QPixmap(save_xpm)), "store file", this, SLOT( storeFtp() ) );
+    ftpToolBar->addAction( QIcon(":/reload.png"), "reload files", this, SLOT( reloadFtp() ) );
+    storeFtpButton = ftpToolBar->addAction( QIcon(":/save.png"), "store file", this, SLOT( storeFtp() ) );
     storeFtpButton->setDisabled( true );
 
     ftpToolBar->hide();

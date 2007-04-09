@@ -19,11 +19,9 @@
  ***************************************************************************/
 #include "qajpartlistwidget.h"
 
-#include "./xpm/ajqtgui.xpm"
-
 QAjPartListWidget::QAjPartListWidget( QWidget *parent, const char *name ) : QWidget( parent )
 {
-	this->setWindowIcon( QPixmap( ajqtgui_xpm ) );
+	this->setWindowIcon( QIcon(":/juicer.png") );
 	this->setFixedSize( 600, 280 );
 	paintWidget = new QAjPartsWidget( this );
 	

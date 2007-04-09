@@ -170,7 +170,9 @@ QAjUserItem* QAjDownloadItem::findUser( QString id )
 
 void QAjDownloadItem::removeUser( QString id )
 {
+    QAjUserItem* item = users[ id ];
     users.remove( id );
+    delete item;
 }
 
 void QAjDownloadItem::updateUser( QString id, QString fileName, QString speed, QString status, QString power, QString queuePos, QString statusString, QIcon* osIcon )

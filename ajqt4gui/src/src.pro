@@ -25,7 +25,6 @@ HEADERS += ajqtgui.h \
            qajserversocket.h \
            qajserverwidget.h \
            qajshareitem.h \
-           qajshareoptionswidget.h \
            qajsharewidget.h \
            qajsocket.h \
            qajuploaditem.h \
@@ -56,7 +55,6 @@ SOURCES += ajqtgui.cpp \
            qajserversocket.cpp \
            qajserverwidget.cpp \
            qajshareitem.cpp \
-           qajshareoptionswidget.cpp \
            qajsharewidget.cpp \
            qajsocket.cpp \
            qajuploaditem.cpp \

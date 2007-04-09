@@ -18,12 +18,11 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 #include "qajnetworkwidget.h"
-//Added by qt3to4:
-#include <QLabel>
 
 QAjNetworkWidget::QAjNetworkWidget(QWidget *parent, const char *name) : QMessageBox( parent )
 {
     setWindowTitle( "network info");
+    setWindowIcon( QIcon(":/juicer.png") );
 
     secondCol = 0;
     usersLabel1 = new QLabel(this);

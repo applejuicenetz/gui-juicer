@@ -22,7 +22,6 @@
 
 #include <QWidget>
 #include <QTreeWidget>
-#include <QPixmap>
 #include <QPainter>
 #include <QMenu>
 #include <QHash>
@@ -62,7 +61,7 @@ public:
     bool remove( QString id );
 
     QAjDownloadItem* findDownload( QString id );
-    QAjDownloadItem* removeDownload( QString id );
+    bool removeDownload( QString id );
     DownloadUser findParent( QString id );
 
     QString getNextIdRoundRobin();

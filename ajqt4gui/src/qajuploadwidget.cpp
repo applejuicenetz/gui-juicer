@@ -19,10 +19,6 @@
  ***************************************************************************/
 #include "qajuploadwidget.h"
 
-#include "./xpm/windows.xpm"
-#include "./xpm/linux.xpm"
-
-
 QAjUploadWidget::QAjUploadWidget( QWidget *parent, const char *name) : QAjListWidget( ID_UP_INDEX, parent, name)
 {
 	uploadStatusDescr["1"] = "active";
@@ -31,8 +27,8 @@ QAjUploadWidget::QAjUploadWidget( QWidget *parent, const char *name) : QAjListWi
 	uploadStatusDescr["6"] = "connecting indirect";
 	uploadStatusDescr["7"] = "connection failed";
 
-    linuxIcon = new QIcon(QPixmap(linux_xpm));
-    windowsIcon = new QIcon(QPixmap(windows_xpm));
+    linuxIcon = new QIcon(":/small/linux.png");
+    windowsIcon = new QIcon(":/small/windows.png");
 	
 	QStringList headers;
 	int i;

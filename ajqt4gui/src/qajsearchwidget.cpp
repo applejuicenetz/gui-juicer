@@ -19,11 +19,6 @@
  ***************************************************************************/
 #include "qajsearchwidget.h"
 
-#include "./xpm/download_small.xpm"
-#include "./xpm/cancel_small.xpm"
-#include "./xpm/searching.xpm"
-#include "./xpm/ok.xpm"
-
 QAjSearchWidget::QAjSearchWidget( QWidget *parent, const char *name) : QAjListWidget( ID_SERVER_INDEX, parent, name)
 {
 	setColumnCount( NUM_SEARCH_COL );
@@ -58,8 +53,8 @@ QAjSearchWidget::QAjSearchWidget( QWidget *parent, const char *name) : QAjListWi
 	setColumnHidden( ID_SEARCH_INDEX, true );
 	setColumnHidden( CHECKSUM_SEARCH_INDEX, true );
 
-	downloadId = popup->addAction( QIcon(QPixmap(download_small_xpm)), "download", this, SLOT(downloadSlot()) );
-	removeId = popup->addAction( QIcon(QPixmap(cancel_small_xpm)), "remove", this, SLOT(removeSlot()) );
+	downloadId = popup->addAction( QIcon(":/small/save.png"), "download", this, SLOT(downloadSlot()) );
+	removeId = popup->addAction( QIcon(":/small/cancel.png"), "remove", this, SLOT(removeSlot()) );
 //	popup->setItemEnabled( removeId,  false );
 //	popup->setItemEnabled( downloadId, false );
 }
@@ -81,9 +76,9 @@ void QAjSearchWidget::insertSearch( QString id, QString searchText, QString runn
 	}
 	item->setText( TEXT_SEARCH_INDEX, searchText + " (" + foundFiles + ")" );
 	if( running == "true" )
-		item->setIcon( TEXT_SEARCH_INDEX, QIcon(QPixmap(searching_xpm)) );
+		item->setIcon( TEXT_SEARCH_INDEX, QIcon(":/small/searching.png") );
 	else
-		item->setIcon( TEXT_SEARCH_INDEX, QIcon(QPixmap(ok_xpm)) );
+		item->setIcon( TEXT_SEARCH_INDEX, QIcon(":/small/ok.png") );
 
 }
 

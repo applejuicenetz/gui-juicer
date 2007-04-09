@@ -20,8 +20,7 @@
 #ifndef QAJSERVERWIDGET_H
 #define QAJSERVERWIDGET_H
 
-using namespace std;
-#include <map>
+#include <QHash>
 
 #include <time.h>
 
@@ -41,16 +40,14 @@ public:
 	void insertServer( QString id, QString name, QString host, QString port, QString lastseen, QString tests );
 	
 	void connectedWith( QString id );
-	bool remove( QString id );
 	QTreeWidgetItem* findServer( QString id );
-	QTreeWidgetItem* removeServer( QString id );
+	bool remove( QString id );
 
 private:
 	QString connectedWithId;
 	QAction* removeId;
 	QAction* connectId;
-	map<unsigned long, QTreeWidgetItem*> servers;
-	map<unsigned long, QTreeWidgetItem*>::iterator serversIt;
+	QHash<QString, QTreeWidgetItem*> servers;
 
 public slots:
 	void selectionChanged1( bool isOneSelected );

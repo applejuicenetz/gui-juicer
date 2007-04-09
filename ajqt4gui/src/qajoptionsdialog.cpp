@@ -23,6 +23,7 @@
 QAjOptionsDialog::QAjOptionsDialog( QWidget* parent ) : QDialog( parent )
 {
     setupUi( this );
+    this->setWindowIcon( QIcon(":/juicer.png") );
     connect( incomingButton, SIGNAL( clicked() ), this, SLOT( selectIncomingDir() ) );
     connect( tempButton, SIGNAL( clicked() ), this, SLOT( selectTempDir() ) );
 

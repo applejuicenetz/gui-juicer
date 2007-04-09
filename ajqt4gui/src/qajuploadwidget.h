@@ -22,7 +22,6 @@
 
 #include <QHash>
 #include <QIcon>
-#include <QPixmap>
 #include <QFileInfo>
 #include "qajlistwidget.h"
 #include "qajuploaditem.h"

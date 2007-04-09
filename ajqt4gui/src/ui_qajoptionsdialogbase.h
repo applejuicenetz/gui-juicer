@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading ui file 'qajoptionsdialogbase.ui'
 **
-** Created: Mon Apr 9 15:13:52 2007
+** Created: Mon Apr 9 17:29:20 2007
 **      by: Qt User Interface Compiler version 4.2.3
 **
 ** WARNING! All changes made in this file will be lost when recompiling ui file!

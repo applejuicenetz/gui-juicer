@@ -20,7 +20,7 @@
 #ifndef QAJSHAREWIDGET_H
 #define QAJSHAREWIDGET_H
 
-#include <qstringlist.h>
+#include <QStringList>
 #include "qajlistwidget.h"
 #include "qajshareitem.h"
 
@@ -47,11 +47,13 @@ private slots:
 	void insertSlot();
 	void removeSlot();
 	void reloadSlot();
+   void commitSlot();
 
 signals:
 	void insert();
 	void remove();
 	void reload();
+   void commit();
 };
 
 #endif

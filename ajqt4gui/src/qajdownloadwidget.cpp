@@ -19,17 +19,6 @@
  ***************************************************************************/
 #include "qajdownloadwidget.h"
 
-#include "./xpm/resume_small.xpm"
-#include "./xpm/pause_small.xpm"
-#include "./xpm/cancel_small.xpm"
-#include "./xpm/partlist_small.xpm"
-#include "./xpm/rename_small.xpm"
-#include "./xpm/rename_plus_small.xpm"
-#include "./xpm/filter_small.xpm"
-
-#include "./xpm/windows.xpm"
-#include "./xpm/linux.xpm"
-
 QAjDownloadWidget::QAjDownloadWidget( QWidget *parent, const char *name) : QAjListWidget( ID_DOWN_INDEX, parent, name)
 {
     userStatusDescr["1"] = QObject::tr("unasked ");
@@ -58,8 +47,8 @@ QAjDownloadWidget::QAjDownloadWidget( QWidget *parent, const char *name) : QAjLi
     downloadStatusDescr["17"] = QObject::tr("canceled ");
     downloadStatusDescr["18"] = QObject::tr("paused ");
 
-    linuxIcon = new QIcon(QPixmap(linux_xpm));
-    windowsIcon = new QIcon(QPixmap(windows_xpm));
+    linuxIcon = new QIcon(":/small/linux.png");
+    windowsIcon = new QIcon(":/small/windows.png");
     otherOsIcon = new QIcon();
 
     currIdRoundRobin = -1;
@@ -112,14 +101,14 @@ QAjDownloadWidget::QAjDownloadWidget( QWidget *parent, const char *name) : QAjLi
     setColumnHidden( ID_DOWN_INDEX, true );
 
     popup->setTitle( tr("&Download") );
-    pauseId = popup->addAction( QIcon(QPixmap(pause_small_xpm)), "pause", this, SLOT(pauseSlot()) );
-    resumeId = popup->addAction( QIcon(QPixmap(resume_small_xpm)), "resume", this, SLOT(resumeSlot()) );
-    cancelId = popup->addAction( QIcon(QPixmap(cancel_small_xpm)), "cancel", this, SLOT(cancelSlot()) );
-    partListId = popup->addAction( QIcon(QPixmap(partlist_small_xpm)), "part list", this, SLOT(partListSlot()) );
-    renameId = popup->addAction( QIcon(QPixmap(rename_small_xpm)), "rename", this, SLOT(renameSlot()) );
-    renamePlusId = popup->addAction( QIcon(QPixmap(rename_plus_small_xpm)), "rename by clipboard", this, SLOT(renamePlusSlot()) );
+    pauseId = popup->addAction( QIcon(":/small/pause.png"), "pause", this, SLOT(pauseSlot()) );
+    resumeId = popup->addAction( QIcon(":/small/resume.png"), "resume", this, SLOT(resumeSlot()) );
+    cancelId = popup->addAction( QIcon(":/small/cancel.png"), "cancel", this, SLOT(cancelSlot()) );
+    partListId = popup->addAction( QIcon(":/small/partlist.png"), "part list", this, SLOT(partListSlot()) );
+    renameId = popup->addAction( QIcon(":/small/rename.png"), "rename", this, SLOT(renameSlot()) );
+    renamePlusId = popup->addAction( QIcon(":/small/rename_plus.png"), "rename by clipboard", this, SLOT(renamePlusSlot()) );
     popup->addSeparator();
-    popup->addAction( QIcon(QPixmap(filter_small_xpm)), "remove finished/canceld", this, SLOT(cleanSlot()) );
+    popup->addAction( QIcon(":/small/filter.png"), "remove finished/canceld", this, SLOT(cleanSlot()) );
     pauseId->setEnabled( false );
     resumeId->setEnabled( false );
     cancelId->setEnabled( false );
@@ -171,20 +160,17 @@ void QAjDownloadWidget::insertUser(QString downloadId, QString id, QString fileN
 
 bool QAjDownloadWidget::remove( QString id )
 {
-    QAjDownloadItem* downloadItem = removeDownload( id );
-    if ( downloadItem != NULL )
+    if( removeDownload( id ) )
     {
-        delete downloadItem;
         return true;
     }
     else
     {
         DownloadUser du = findParent( id );
-        if ( du.user != NULL )
+        if( du.user != NULL )
         {
-            du.download->removeUser( id );
             du.download->decSources( du.user->getStatus() );
-            delete du.user;
+            du.download->removeUser( id );
             return true;
         }
     }
@@ -247,15 +233,17 @@ QAjDownloadItem* QAjDownloadWidget::findDownload( QString id )
         return NULL;
 }
 
-QAjDownloadItem* QAjDownloadWidget::removeDownload( QString id )
+bool QAjDownloadWidget::removeDownload( QString id )
 {
-    QAjDownloadItem* item = NULL;
-    if (downloads.contains( id ))
+    if( downloads.contains( id ) )
     {
-        item = downloads[id];
+        // first remove it form the hashtable, than delete it
+        QAjDownloadItem* item = downloads[ id ];
         downloads.remove( id );
+        delete item;
+        return true;
     }
-    return item;
+    return false;
 }
 
 
