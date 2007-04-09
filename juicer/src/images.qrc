@@ -1,0 +1,66 @@
+<!DOCTYPE RCC>
+<RCC version="1.0">
+<qresource>
+    <file alias="splash.png">resources/splash.png</file>
+    <file alias="ok.png">resources/button_ok.png</file>
+    <file alias="configure.png">resources/configure.png</file>
+    <file alias="connect.png">resources/connect_creating.png</file>
+    <file alias="rename_plus.png">resources/editpaste.png</file>
+    <file alias="rename.png">resources/edit.png</file>
+    <file alias="filter.png">resources/emptytrash.png</file>
+    <file alias="exec.png">resources/exec.png</file>
+    <file alias="save.png">resources/filesave.png</file>
+    <file alias="find.png">resources/find.png</file>
+    <file alias="launch.png">resources/launch.png</file>
+    <file alias="network.png">resources/network.png</file>
+    <file alias="pause.png">resources/player_pause.png</file>
+    <file alias="resume.png">resources/player_play.png</file>
+    <file alias="reload.png">resources/reload.png</file>
+    <file alias="adjust.png">resources/show_table_column.png</file>
+    <file alias="cancel.png">resources/stop.png</file>
+    <file alias="add.png">resources/vcs_add.png</file>
+    <file alias="commit.png">resources/vcs_commit.png</file>
+    <file alias="remove.png">resources/vcs_remove.png</file>
+    <file alias="update.png">resources/vcs_update.png</file>
+    <file alias="wizard.png">resources/wizard.png</file>
+    <file alias="partlist.png">resources/partlist.png</file>
+    <file alias="dummy.png">resources/dummy.png</file>
+    <file alias="juicer.png">resources/juicer.png</file>
+</qresource>
+
+<qresource prefix="/small">
+    <file alias="configure.png">resources/small/configure.png</file>
+    <file alias="connect.png">resources/small/connect_creating.png</file>
+    <file alias="connected.png">resources/small/connect_established.png</file>
+    <file alias="down.png">resources/small/down.png</file>
+    <file alias="shares.png">resources/small/folder_open.png</file>
+    <file alias="ftp.png">resources/small/network_local.png</file>
+    <file alias="network.png">resources/small/network.png</file>
+    <file alias="server.png">resources/small/server.png</file>
+    <file alias="filter.png">resources/small/trashcan_empty.png</file>
+    <file alias="up.png">resources/small/up.png</file>
+    <file alias="searching.png">resources/small/viewmag.png</file>
+    <file alias="exit.png">resources/small/exit.png</file>
+    <file alias="close.png">resources/small/fileclose.png</file>
+    <file alias="windows.png">resources/small/windows.png</file>
+    <file alias="linux.png">resources/small/tux.png</file>
+    <file alias="mac.png">resources/small/mac.png</file>
+    <file alias="freebsd.png">resources/small/freebsd.png</file>
+    <file alias="netware.png">resources/small/netware.png</file>
+    <file alias="solaris.png">resources/small/solaris.png</file>
+    <file alias="resume.png">resources/small/player_play.png</file>
+    <file alias="pause.png">resources/small/player_pause.png</file>
+    <file alias="rename_plus.png">resources/small/editpaste.png</file>
+    <file alias="rename.png">resources/small/edit.png</file>
+    <file alias="cancel.png">resources/small/stop.png</file>
+    <file alias="partlist.png">resources/small/partlist.png</file>
+    <file alias="ok.png">resources/small/ok.png</file>
+    <file alias="find.png">resources/small/find.png</file>
+    <file alias="add.png">resources/small/vcs_add.png</file>
+    <file alias="commit.png">resources/small/vcs_commit.png</file>
+    <file alias="remove.png">resources/small/vcs_remove.png</file>
+    <file alias="update.png">resources/small/vcs_update.png</file>
+    <file alias="exec.png">resources/small/exec.png</file>
+    <file alias="save.png">resources/filesave.png</file>
+</qresource>
+</RCC>
