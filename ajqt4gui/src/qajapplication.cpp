@@ -19,8 +19,6 @@
  ***************************************************************************/
 #include "qajapplication.h"
 
-#include "./xpm/splash.xpm"
-
 QAjApplication::QAjApplication( int & argc, char ** argv ) : QApplication( argc, argv )
 {
     QCoreApplication::setOrganizationName("progeln.de");
@@ -69,7 +67,7 @@ void QAjApplication::start()
     QSplashScreen *splash = NULL;
     if ( lokalSettings.value( "showSplash", "true" ).toString() == "true" )
     {
-        splash = new QSplashScreen(QPixmap(splash_xpm ));
+        splash = new QSplashScreen(QPixmap(":/splash.png"));
         splash->show();
     }
 

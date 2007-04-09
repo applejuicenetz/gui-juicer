@@ -161,7 +161,6 @@ void QXMLModule::requestFinished( int id, bool error )
                     }
                 }
             }
-            modifiedDone();
         }
         else if ( root.tagName() == "settings" )
         {
@@ -172,6 +171,7 @@ void QXMLModule::requestFinished( int id, bool error )
             handleShares(root);
         }
         handlePartList(id);
+        modifiedDone();
     }
 }
 

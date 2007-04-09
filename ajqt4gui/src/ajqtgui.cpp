@@ -1028,12 +1028,10 @@ void AjQtGUI::firstModified()
 {
     if (firstModifiedCnt < 5)
     {
-        if (firstModifiedCnt == 3)
+        if (firstModifiedCnt == 4)
         {
-            this->show();
-        }
-        else if (firstModifiedCnt == 4)
-        {
+            ajDownloadWidget->updateView( true );
+            ajDownloadWidget->adjustSizeOfColumns();
             ajDownloadWidget->adjustSizeOfColumns();
             ajUploadWidget->adjustSizeOfColumns();
             ajServerWidget->adjustSizeOfColumns();
@@ -1042,6 +1040,7 @@ void AjQtGUI::firstModified()
             ajUploadWidget->sortItems( 0, Qt::AscendingOrder );
             ajServerWidget->sortItems( 0, Qt::AscendingOrder );
             ajShareWidget->sortItems( 0, Qt::AscendingOrder );
+            this->show();
         }
         firstModifiedCnt++;
     }

@@ -73,3 +73,5 @@ CONFIG += warn_on \
 TEMPLATE = app 
 QT += core gui network xml
 
+RESOURCES += images.qrc
+

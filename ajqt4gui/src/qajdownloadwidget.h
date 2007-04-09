@@ -101,7 +101,7 @@ private slots:
     void renamePlusSlot();
 
 public slots:
-    void updateView();
+    void updateView( bool force = false );
 
 signals:
     void cancel( );

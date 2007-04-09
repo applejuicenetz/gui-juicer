@@ -227,9 +227,9 @@ void QAjDownloadWidget::selectionChanged1(  bool oneSelected  )
     cancelId->setEnabled( oneSelected );
 }
 
-void QAjDownloadWidget::updateView()
+void QAjDownloadWidget::updateView( bool force )
 {
-    if ( this->isVisible() )
+    if( force || this->isVisible() )
     {
         int i;
         for (i=0; i<topLevelItemCount(); i++)
