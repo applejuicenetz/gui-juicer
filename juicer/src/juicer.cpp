@@ -890,7 +890,7 @@ void Juicer::downloadSelectionChanged( )
     saveDownloadButton->setEnabled( oneFinished );
     resumeDownloadButton->setEnabled( onePaused );
     pauseDownloadButton->setEnabled( oneActive );
-    openDownloadButton->setDisabled( oneSelected );
+    openDownloadButton->setEnabled( oneSelected );
 }
 
 void Juicer::exitCore()
