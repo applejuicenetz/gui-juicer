@@ -1209,13 +1209,13 @@ void Juicer::openDownload( QList<QTreeWidgetItem *>  items )
     QString location = lokalSettings.value( "location", "same" ).toString();
     if( location == "specific" )
     {
-        iDir = lokalSettings.value( "incomingDirSpecific", "/" ).toString() + filesystemSeparator;
-        tDir = lokalSettings.value( "tempDirSpecific", "/" ).toString() + filesystemSeparator;
+        iDir = lokalSettings.value( "incomingDirSpecific", "/" ).toString() + QDir::separator();
+        tDir = lokalSettings.value( "tempDirSpecific", "/" ).toString() + QDir::separator();
     }
     else
     {
-        iDir = incomingDir.absolutePath() + filesystemSeparator;
-        tDir = tempDir.absolutePath() + filesystemSeparator;
+        iDir = incomingDir.absolutePath() + QDir::separator();
+        tDir = tempDir.absolutePath() + QDir::separator();
     }
 
     int i;

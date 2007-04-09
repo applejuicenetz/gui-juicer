@@ -45,8 +45,9 @@
 #include <QUrl>
 #include <QFtp>
 #include <QFileInfo>
-
+#include <QDir>
 #include <QTabWidget>
+
 #include "qajdownloadwidget.h"
 #include "qajuploadwidget.h"
 #include "qajsearchwidget.h"
