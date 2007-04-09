@@ -57,7 +57,7 @@
 #include "qxmlmodule.h"
 #include "qajoptionsdialog.h"
 #include "qajlogindialog.h"
-#include "qajnetworkwidget.h"
+#include "qajnetworkdialog.h"
 #include "qconvert.h"
 #include "qajdownloaditem.h"
 
@@ -75,7 +75,7 @@ public:
     bool login();
 
     void setStatusBarText( QString downSpeed, QString upSpeed, QString credits, QString downSize, QString upSize );
-    QAjNetworkWidget *networkWidget;
+    QAjNetworkDialog *networkDialog;
     QAjDownloadWidget *ajDownloadWidget;
     QAjUploadWidget *ajUploadWidget;
     QAjSearchWidget *ajSearchWidget;
@@ -145,7 +145,7 @@ protected:
     QAction *pauseDownloadButton, *resumeDownloadButton;
     QAction *cancelDownloadButton, *clearDownloadButton,  *partListButton;
     QAction *renameDownloadButton, *renamePlusDownloadButton;
-    QAction *saveDownloadButton;
+    QAction *saveDownloadButton, *openDownloadButton;
     QAction *clipboardButton;
     QCheckBox *powerCheck;
     QAction *removeShareButton, *applyShareButton, *reloadSharedFilesButton;

@@ -19,7 +19,7 @@
  ***************************************************************************/
 #include "qconvert.h"
 
-QConvert::QConvert(QObject *parent, const char *name) : QObject( parent )
+QConvert::QConvert(QObject *parent) : QObject( parent )
 {}
 
 QConvert::~QConvert()
@@ -174,5 +174,3 @@ QString QConvert::time( long int seconds )
         time = num( hours ) + ":" + num( minutes ) + ":" + num( seconds );
     return time;
 }
-
-

@@ -100,6 +100,10 @@
 
 #define WINDOWS "1"
 #define LINUX "2"
+#define MAC "3"
+#define SOLARIS "4"
+#define FREEBSD "6"
+#define NETWARE "7"
 
 #define WINDOWS_INT 1
 #define LINUX_INT 2

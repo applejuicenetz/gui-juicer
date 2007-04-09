@@ -32,8 +32,8 @@ typedef enum { DOWN, UP, USER, SEARCH, SHARE, SHARED_FILE, GENERIC } AjItemType;
 class QAjItem : public QTreeWidgetItem
 {
 public:
-    QAjItem( AjItemType type, QTreeWidget *parent = 0, const char *name = 0 );
-    QAjItem( AjItemType type, QTreeWidgetItem *parent = 0, const char *name = 0 );
+    QAjItem( AjItemType type, QTreeWidget *parent = 0 );
+    QAjItem( AjItemType type, QTreeWidgetItem *parent = 0 );
 
     virtual ~QAjItem();
 

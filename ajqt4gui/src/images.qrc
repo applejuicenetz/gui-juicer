@@ -44,6 +44,10 @@
     <file alias="close.png">resources/small/fileclose.png</file>
     <file alias="windows.png">resources/small/windows.png</file>
     <file alias="linux.png">resources/small/tux.png</file>
+    <file alias="mac.png">resources/small/mac.png</file>
+    <file alias="freebsd.png">resources/small/freebsd.png</file>
+    <file alias="netware.png">resources/small/netware.png</file>
+    <file alias="solaris.png">resources/small/solaris.png</file>
     <file alias="resume.png">resources/small/player_play.png</file>
     <file alias="pause.png">resources/small/player_pause.png</file>
     <file alias="rename_plus.png">resources/small/editpaste.png</file>
@@ -57,5 +61,6 @@
     <file alias="remove.png">resources/small/vcs_remove.png</file>
     <file alias="update.png">resources/small/vcs_update.png</file>
     <file alias="exec.png">resources/small/exec.png</file>
+    <file alias="save.png">resources/filesave.png</file>
 </qresource>
 </RCC>

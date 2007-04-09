@@ -80,7 +80,7 @@ private:
     QAction *partListId, *renameId, *renamePlusId;
     QAction *openId;
 
-    QIcon *linuxIcon, *windowsIcon, *otherOsIcon;
+    QIcon *linuxIcon, *windowsIcon, *macIcon, *solarisIcon, *freeBsdIcon, *netwareIcon, *otherOsIcon;
 
     QHash<QString, QString> userStatusDescr;
     QHash<QString, QString> downloadStatusDescr;

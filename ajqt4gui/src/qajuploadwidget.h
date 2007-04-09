@@ -55,7 +55,7 @@ private:
 	QHash<QString, QString> uploadStatusDescr;
 	QHash<QString, QAjUploadItem*> uploads;
 
-    QIcon *linuxIcon, *windowsIcon;
+    QIcon *linuxIcon, *windowsIcon, *macIcon, *solarisIcon, *freeBsdIcon, *netwareIcon;
 };
 
 #endif

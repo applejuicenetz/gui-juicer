@@ -49,6 +49,10 @@ QAjDownloadWidget::QAjDownloadWidget( QWidget *parent, const char *name) : QAjLi
 
     linuxIcon = new QIcon(":/small/linux.png");
     windowsIcon = new QIcon(":/small/windows.png");
+    macIcon = new QIcon(":/small/mac.png");
+    solarisIcon = new QIcon(":/small/solaris.png");
+    freeBsdIcon = new QIcon(":/small/freebsd.png");
+    netwareIcon = new QIcon(":/small/netware.png");
     otherOsIcon = new QIcon();
 
     currIdRoundRobin = -1;
@@ -113,6 +117,10 @@ QAjDownloadWidget::QAjDownloadWidget( QWidget *parent, const char *name) : QAjLi
     pauseId->setEnabled( false );
     resumeId->setEnabled( false );
     cancelId->setEnabled( false );
+    partListId->setEnabled( false );
+    renameId->setEnabled( false );
+    renamePlusId->setEnabled( false );
+    openId->setEnabled( false );
     QObject::connect( this, SIGNAL( newSelection( bool ) ) , this, SLOT( selectionChanged1( bool ) ) );
 
     setIconSize( QSize( 100, 20 ) );
@@ -122,7 +130,11 @@ QAjDownloadWidget::~QAjDownloadWidget()
 {
     delete linuxIcon;
     delete windowsIcon;
+    delete macIcon;
     delete otherOsIcon;
+    delete netwareIcon;
+    delete solarisIcon;
+    delete freeBsdIcon;
 }
 
 void QAjDownloadWidget::insertDownload(QString id, QString fileName, QString status, QString size, QString ready, QString power, QString tempNumber)
@@ -153,6 +165,14 @@ void QAjDownloadWidget::insertUser(QString downloadId, QString id, QString fileN
         osIcon = linuxIcon;
     else if ( os == WINDOWS )
         osIcon = windowsIcon;
+    else if ( os == MAC )
+        osIcon = macIcon;
+    else if ( os == SOLARIS )
+        osIcon = solarisIcon;
+    else if ( os == FREEBSD )
+        osIcon = freeBsdIcon;
+    else if ( os == NETWARE )
+        osIcon = netwareIcon;
     else
         osIcon = otherOsIcon;
     downloadItem->updateUser( id, fileName, speed, status, power, queuePos, userStatusDescr[status], osIcon );

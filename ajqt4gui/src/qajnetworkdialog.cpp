@@ -1,6 +1,6 @@
 /***************************************************************************
- *   Copyright (C) 2004 by Matthias Reif                                   *
- *   matthias.reif@informatik.tu-chemnitz.de                               *
+ *   Copyright (C) 2007 by Matthias Reif   *
+ *   matthias.reif@iupr.dfki.de   *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -17,38 +17,29 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
-#ifndef QCONVERT_H
-#define QCONVERT_H
 
-#include <stdlib.h>
 
-#include <QObject>
-#include <QString>
+#include "qajnetworkdialog.h"
 
-#include "types.h"
-
-/**
-@author Matthias Reif
-*/
-class QConvert : public QObject
+QAjNetworkDialog::QAjNetworkDialog(QWidget* parent, Qt::WFlags fl) : QDialog( parent, fl ), Ui::QAjNetworkDialog()
 {
-    Q_OBJECT
-public:
-    QConvert(QObject *parent = 0);
+    setupUi(this);
+    this->setWindowIcon( QIcon(":/juicer.png") );
+}
 
-    ~QConvert();
+QAjNetworkDialog::~QAjNetworkDialog()
+{
+}
 
-    static QString num( long int num );
-    static QString bytes( QString x );
-    static QString bytes( long int x );
-    static QString bytes( double x, int precision = 2 );
-    static QString bytes( qulonglong x );
-    static QString bytes( QString x, QString y );
-    static QString bytesLong( QString x );
-    static QString bytesExtra( QString x );
-    static QString power( QString x );
-    static QString power( float power );
-    static QString time( long int seconds );
-};
 
-#endif
+/*!
+    \fn QAjNetworkDialog::setValues( QString users, QString files, QString size, QString ip, QString firewalled )
+ */
+void QAjNetworkDialog::setValues( QString users, QString files, QString size, QString ip, QString firewalled )
+{
+    this->usersLabel->setText( users );
+    this->filesLabel->setText( files );
+    this->sizeLabel->setText( size );
+    this->ipLabel->setText( ip );
+    this->firewalledLabel->setText( firewalled );
+}

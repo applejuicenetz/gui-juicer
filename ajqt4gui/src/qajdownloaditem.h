@@ -51,7 +51,7 @@ class QAjDownloadItem : public QAjItem
 {
 //Q_OBJECT
 public:
-    QAjDownloadItem( QAjListWidget *parent = 0, const char *name = 0 );
+    QAjDownloadItem( QAjListWidget *parent = 0 );
 
     ~QAjDownloadItem();
 
@@ -108,7 +108,7 @@ public:
 
     void deleteUsers();
 
-    int compare( QTreeWidgetItem * i, int col, bool ascending ) const;
+    int compare( QTreeWidgetItem * i, int col, bool ) const;
     void showWidget( const QPoint &p );
 
     QHash<QString, QAjUserItem*> users;

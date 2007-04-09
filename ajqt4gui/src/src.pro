@@ -3,7 +3,8 @@
 # Unterordner relativ zum Projektordner: ./src
 # Das Target ist eine Anwendung:  ../bin/ajqt4gui
 
-FORMS += qajoptionsdialogbase.ui 
+FORMS += qajoptionsdialogbase.ui  \
+qajnetworkdialogbase.ui
 HEADERS += ftp.h \
            global.h \
            md5class.h \
@@ -15,7 +16,6 @@ HEADERS += ftp.h \
            qajitem.h \
            qajlistwidget.h \
            qajlogindialog.h \
-           qajnetworkwidget.h \
            qajoptionsdialog.h \
            qajpartlistwidget.h \
            qajpartswidget.h \
@@ -33,7 +33,8 @@ HEADERS += ftp.h \
            qxmlmodule.h \
            types.h \
            ui_qajoptionsdialogbase.h \
-           juicer.h
+           juicer.h \
+           qajnetworkdialog.h
 SOURCES += ftp.cpp \
            main.cpp \
            md5c.c \
@@ -45,7 +46,6 @@ SOURCES += ftp.cpp \
            qajitem.cpp \
            qajlistwidget.cpp \
            qajlogindialog.cpp \
-           qajnetworkwidget.cpp \
            qajoptionsdialog.cpp \
            qajpartlistwidget.cpp \
            qajpartswidget.cpp \
@@ -61,7 +61,8 @@ SOURCES += ftp.cpp \
            qajuseritem.cpp \
            qconvert.cpp \
            qxmlmodule.cpp \
-           juicer.cpp
+           juicer.cpp \
+           qajnetworkdialog.cpp
 TARGET = ../bin/ajqt4gui 
 CONFIG += warn_on \
           qt \

@@ -281,10 +281,12 @@ void QXMLModule::handleIds( QDomNode node )
  */
 void QXMLModule::handleNetworkInfo( QDomElement e )
 {
-    juicer->networkWidget->setUsers( e.attribute("users") );
-    juicer->networkWidget->setFiles( e.attribute("files") );
-    juicer->networkWidget->setSize( QConvert::bytesLong( e.attribute("filesize")) );
-    juicer->networkWidget->setIp( e.attribute("ip") );
+    juicer->networkDialog->setValues(
+        e.attribute("users"),
+        e.attribute("files"),
+        QConvert::bytesLong( e.attribute("filesize")),
+        e.attribute("ip"),
+        e.attribute("firewalled")=="true"?"yes":"no");
     juicer->ajServerWidget->connectedWith( e.attribute("connectedwithserverid") );
     juicer->ajServerWidget->connectingTo( e.attribute("tryconnecttoserver") );
     juicer->connectedSince( e.attribute("connectedsince") );

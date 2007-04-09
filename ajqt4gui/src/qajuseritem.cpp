@@ -54,7 +54,7 @@ void QAjUserItem::setSpeed( QString newSpeedString )
 void QAjUserItem::update( QString fileName, QString speed, QString status, QString power, QString queuePos, QString statusString, QIcon* osIcon )
 {
 	this->fileName = fileName;
-	this->status = status.toInt();
+	this->status = status;
 	this->power = power;
 	this->queuePos = queuePos.toInt();
 	setSpeed( speed );

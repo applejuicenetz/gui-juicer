@@ -29,7 +29,11 @@ QAjUploadWidget::QAjUploadWidget( QWidget *parent, const char *name) : QAjListWi
 
     linuxIcon = new QIcon(":/small/linux.png");
     windowsIcon = new QIcon(":/small/windows.png");
-	
+    macIcon = new QIcon(":/small/mac.png");
+    solarisIcon = new QIcon(":/small/solaris.png");
+    freeBsdIcon = new QIcon(":/small/freebsd.png");
+    netwareIcon = new QIcon(":/small/netware.png");
+    
 	QStringList headers;
 	int i;
 	for( i=0; i<NUM_UP_COL; i++)
@@ -101,6 +105,14 @@ bool QAjUploadWidget::insertUpload(QString id, QString shareId, QString version,
             uploadItem->setIcon( OS_UP_INDEX, *windowsIcon );
         else if( os == LINUX )
             uploadItem->setIcon( OS_UP_INDEX, *linuxIcon );
+        else if( os == MAC )
+            uploadItem->setIcon( OS_UP_INDEX, *macIcon );
+        else if( os == NETWARE )
+            uploadItem->setIcon( OS_UP_INDEX, *netwareIcon );
+        else if( os == SOLARIS )
+            uploadItem->setIcon( OS_UP_INDEX, *solarisIcon );
+        else if( os == FREEBSD )
+            uploadItem->setIcon( OS_UP_INDEX, *freeBsdIcon );
     }
 
     QTreeWidgetItem* takeFromItem;

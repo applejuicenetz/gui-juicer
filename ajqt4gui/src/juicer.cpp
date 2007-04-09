@@ -57,7 +57,7 @@ Juicer::Juicer( ) : QMainWindow( )
     setCentralWidget( ajTab );
     prevTab = ajDownloadWidget;
 
-    networkWidget = new QAjNetworkWidget(NULL);
+    networkDialog = new QAjNetworkDialog( this );
     optionsDialog = new QAjOptionsDialog( this );
     optionsDialog->setSpecial( special );
 
@@ -67,7 +67,7 @@ Juicer::Juicer( ) : QMainWindow( )
     menuBar()->addMenu( file );
 
     file->addAction( QIcon(":/small/configure.png"), tr("C&onfigure"), this, SLOT( showOptions() ), QKeySequence( Qt::CTRL+Qt::Key_O ) );
-    file->addAction( QIcon(":/small/network.png"), tr("&Net Info"), this, SLOT( showNetworkInfo() ), QKeySequence( Qt::CTRL+Qt::Key_N ) );
+    file->addAction( QIcon(":/small/network.png"), tr("&Net Info"), networkDialog, SLOT( exec() ), QKeySequence( Qt::CTRL+Qt::Key_N ) );
     file->addSeparator();
     file->addAction( QIcon(":/small/exit.png"), tr("&Exit Core"), this, SLOT( exitCore() ), QKeySequence( Qt::CTRL+Qt::Key_E ) );
     file->addAction( QIcon(":/small/close.png"), tr("&Quit GUI"), qApp, SLOT( closeAllWindows() ), QKeySequence( Qt::CTRL+Qt::Key_Q ) );
@@ -187,7 +187,6 @@ Juicer::Juicer( ) : QMainWindow( )
 
 Juicer::~Juicer()
 {
-    delete networkWidget;
     delete file;
     delete help;
     delete downSpeedLabel;
@@ -246,7 +245,7 @@ void Juicer::initToolBars()
     renameDownloadButton = downloadToolBar->addAction( QIcon(":/rename.png"), "rename download", this, SLOT( renameDownload() ) );
     renamePlusDownloadButton = downloadToolBar->addAction( QIcon(":/rename_plus.png"), "rename download by clipboard", this, SLOT( renamePlusDownload() ) );
 
-    downloadToolBar->addAction( QIcon(":/exec.png"), "open download", this, SLOT( openDownload() ) );
+    openDownloadButton = downloadToolBar->addAction( QIcon(":/exec.png"), "open download", this, SLOT( openDownload() ) );
 
     clearDownloadButton = downloadToolBar->addAction( QIcon(":/filter.png"), "remove finished/canceld download", this, SLOT( cleanDownload() ) );
 
@@ -260,6 +259,7 @@ void Juicer::initToolBars()
     renameDownloadButton->setDisabled( true );
     renamePlusDownloadButton->setDisabled( true );
     saveDownloadButton->setDisabled( true );
+    openDownloadButton->setDisabled( true );
 
     downloadToolBar->addSeparator();
 
@@ -373,7 +373,7 @@ void Juicer::closeEvent( QCloseEvent* ce )
 void Juicer::about()
 {
     QMessageBox::about( this, tr("Juicer Info"),
-                        tr("appleJuice Qt GUI 0.2\n\nhttp://ajqtgui.sf.net\nhttp://www.progeln.de"));
+                        tr("Juicer \n\nhttp://ajqtgui.sf.net\nhttp://www.progeln.de"));
 }
 
 void Juicer::aboutQt()
@@ -551,8 +551,7 @@ void Juicer::gotSession()
 
 void Juicer::showNetworkInfo()
 {
-    networkWidget->resize( 300, 200 );
-    networkWidget->exec();
+    networkDialog->exec();
 }
 
 void Juicer::powerChanged( const QString& )
@@ -891,6 +890,7 @@ void Juicer::downloadSelectionChanged( )
     saveDownloadButton->setEnabled( oneFinished );
     resumeDownloadButton->setEnabled( onePaused );
     pauseDownloadButton->setEnabled( oneActive );
+    openDownloadButton->setDisabled( oneSelected );
 }
 
 void Juicer::exitCore()

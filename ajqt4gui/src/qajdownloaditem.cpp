@@ -20,7 +20,7 @@
 #include "qajdownloaditem.h"
 
 
-QAjDownloadItem::QAjDownloadItem( QAjListWidget *parent, const char *name) : QAjItem( DOWN, parent )
+QAjDownloadItem::QAjDownloadItem( QAjListWidget *parent ) : QAjItem( DOWN, parent )
 {
     int i;
     for ( i=1; i<NUM_DOWN_COL; i++ )
@@ -299,7 +299,7 @@ void QAjDownloadItem::updateView( QHash<QString, QString>* downloadStatusDescr )
 
     if ( speed > 0 )
     {
-        remainingSec = remainingSize / speed;
+        remainingSec = (long int)(remainingSize / speed);
         setText( REMAIN_TIME_DOWN_INDEX, " " + QConvert::time( remainingSec ) + " " );
     }
     else
@@ -339,7 +339,7 @@ void QAjDownloadItem::updateView( QHash<QString, QString>* downloadStatusDescr )
 }
 
 
-int QAjDownloadItem::compare( QTreeWidgetItem * i, int col, bool ascending ) const
+int QAjDownloadItem::compare( QTreeWidgetItem * i, int col, bool ) const
 {
     double a, b;
     if ( col == SIZE_DOWN_INDEX )
@@ -470,7 +470,7 @@ void QAjDownloadItem::setParts( qulonglong size, QLinkedList<Part> partList )
 bool QAjDownloadItem::operator<( const QTreeWidgetItem & other ) const
 {
     int sortIndex = treeWidget()->header()->sortIndicatorSection();
-    Qt::SortOrder sortOrder = treeWidget()->header()->sortIndicatorOrder();
+//     Qt::SortOrder sortOrder = treeWidget()->header()->sortIndicatorOrder();
 // 	QMutexLocker(&((QAjListWidget*)treeWidget())->mutex);
     QAjItem* item = (QAjItem*)&other;
     if ( item->getType() ==  DOWN )
