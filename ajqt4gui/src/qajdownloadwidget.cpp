@@ -107,6 +107,7 @@ QAjDownloadWidget::QAjDownloadWidget( QWidget *parent, const char *name) : QAjLi
     partListId = popup->addAction( QIcon(":/small/partlist.png"), "part list", this, SLOT(partListSlot()) );
     renameId = popup->addAction( QIcon(":/small/rename.png"), "rename", this, SLOT(renameSlot()) );
     renamePlusId = popup->addAction( QIcon(":/small/rename_plus.png"), "rename by clipboard", this, SLOT(renamePlusSlot()) );
+    openId = popup->addAction( QIcon(":/small/exec.png"), "open file", this, SLOT(openSlot()) );
     popup->addSeparator();
     popup->addAction( QIcon(":/small/filter.png"), "remove finished/canceld", this, SLOT(cleanSlot()) );
     pauseId->setEnabled( false );
@@ -205,12 +206,20 @@ void QAjDownloadWidget::renamePlusSlot()
 {
     renamePlus();
 }
+void QAjDownloadWidget::openSlot()
+{
+    open();
+}
 
 void QAjDownloadWidget::selectionChanged1(  bool oneSelected  )
 {
     pauseId->setEnabled( oneSelected );
     resumeId->setEnabled( oneSelected );
     cancelId->setEnabled( oneSelected );
+    partListId->setEnabled( oneSelected );
+    renameId->setEnabled( oneSelected );
+    renamePlusId->setEnabled( oneSelected );
+    openId->setEnabled( oneSelected );
 }
 
 void QAjDownloadWidget::updateView( bool force )

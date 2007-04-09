@@ -4,8 +4,7 @@
 # Das Target ist eine Anwendung:  ../bin/ajqt4gui
 
 FORMS += qajoptionsdialogbase.ui 
-HEADERS += ajqtgui.h \
-           ftp.h \
+HEADERS += ftp.h \
            global.h \
            md5class.h \
            md5.h \
@@ -33,9 +32,9 @@ HEADERS += ajqtgui.h \
            qconvert.h \
            qxmlmodule.h \
            types.h \
-           ui_qajoptionsdialogbase.h
-SOURCES += ajqtgui.cpp \
-           ftp.cpp \
+           ui_qajoptionsdialogbase.h \
+           juicer.h
+SOURCES += ftp.cpp \
            main.cpp \
            md5c.c \
            md5class.cpp \
@@ -61,7 +60,8 @@ SOURCES += ajqtgui.cpp \
            qajuploadwidget.cpp \
            qajuseritem.cpp \
            qconvert.cpp \
-           qxmlmodule.cpp
+           qxmlmodule.cpp \
+           juicer.cpp
 TARGET = ../bin/ajqt4gui 
 CONFIG += warn_on \
           qt \

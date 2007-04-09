@@ -37,41 +37,44 @@
 @author Matthias Reif
 */
 
-class AjQtGUI;
+class Juicer;
 class QXMLHandler;
 
 class QXMLModule : public QHttp
 {
-Q_OBJECT
+    Q_OBJECT
 public:
-	QXMLModule(AjQtGUI *ajQtGUI, QObject *parent = 0, const char *name = 0 );
+    QXMLModule(Juicer *juicer, QObject *parent = 0 );
 
-	~QXMLModule();
- 
-	int setHost( const QString & hostname, quint16 portnumber = 80 );
+    ~QXMLModule();
 
-	int get( QString request, QString param = "" );
-	int set( QString request, QString param = "" );
-	
-   QString session;
+    int setHost( const QString & hostname, quint16 portnumber = 80 );
 
-	void setPassword( QString password );
-	void setPasswordMD5( QString passwordMD5 ) { this->passwordMD5 = passwordMD5; }
-	
+    int get( QString request, QString param = "" );
+    int set( QString request, QString param = "" );
+
+    QString session;
+
+    void setPassword( QString password );
+    void setPasswordMD5( QString passwordMD5 )
+    {
+        this->passwordMD5 = passwordMD5;
+    }
+
 protected:
-	QString host;
-	quint16 port;
-	
-	AjQtGUI *ajQtGUI;
-	QString timeStamp;
-	QString passwordMD5;
+    QString host;
+    quint16 port;
+
+    Juicer *juicer;
+    QString timeStamp;
+    QString passwordMD5;
 
     QDomDocument doc;
 
-	QLinkedList<Part> partList;
-	qulonglong partsSize;
-	QHash<int, QString> partListRequests;
-	QHash<int, QString> partListSimpleRequests;
+    QLinkedList<Part> partList;
+    qulonglong partsSize;
+    QHash<int, QString> partListRequests;
+    QHash<int, QString> partListSimpleRequests;
 
 public slots:
     void responseHeaderReceived ( const QHttpResponseHeader & resp );

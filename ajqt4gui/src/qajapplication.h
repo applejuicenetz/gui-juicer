@@ -26,7 +26,7 @@
 
 #include "qajserversocket.h"
 #include "qajsocket.h"
-#include "ajqtgui.h"
+#include "juicer.h"
 
 /**
 @author Matthias Reif

@@ -71,14 +71,14 @@ void QAjApplication::start()
         splash->show();
     }
 
-    AjQtGUI * mw = new AjQtGUI( );
+    Juicer* juicer = new Juicer( );
     if ( splash != NULL )
     {
-        splash->finish( mw );
+        splash->finish( juicer );
         delete splash;
     }
 
-    mw->queueLinks( argList );
-    mw->setWindowTitle( "Juicer" );
+    juicer->queueLinks( argList );
+    juicer->setWindowTitle( "Juicer" );
     connect( this, SIGNAL(lastWindowClosed()), this, SLOT(quit()) );
 }

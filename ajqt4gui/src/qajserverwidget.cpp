@@ -22,6 +22,7 @@
 QAjServerWidget::QAjServerWidget( QWidget *parent, const char *name) : QAjListWidget( ID_SERVER_INDEX, parent, name )
 {
     connectedWithId = "";
+    connectingToId = "";
     setColumnCount( NUM_SERVER_COL );
     QStringList headers;
     int i;
@@ -92,6 +93,10 @@ void QAjServerWidget::insertServer( QString id, QString name, QString host, QStr
         item->setText( LASTSEEN_SERVER_INDEX, timeString );
         item->setText( TESTS_SERVER_INDEX, tests );
         item->setTextAlignment( TESTS_SERVER_INDEX, Qt::AlignRight );
+        if( id == connectedWithId )
+            item->setIcon( NAME_SERVER_INDEX, QIcon(":/small/connected.png") );
+        else if( id == connectingToId )
+            item->setIcon( NAME_SERVER_INDEX, QIcon(":/small/connect.png") );
     }
 }
 
@@ -110,7 +115,11 @@ void QAjServerWidget::findSlot()
 
 void QAjServerWidget::connectedWith( QString id )
 {
-    if ( connectedWithId != "" && servers.contains( connectedWithId ) )
+    if ( ! connectingToId.isEmpty() && servers.contains( connectingToId ) )
+    {
+        servers[ connectingToId ]->setIcon( NAME_SERVER_INDEX, QIcon() );
+    }
+    if ( ! connectedWithId.isEmpty() && servers.contains( connectedWithId ) )
     {
         servers[ connectedWithId ]->setIcon( NAME_SERVER_INDEX, QIcon() );
     }
@@ -120,6 +129,20 @@ void QAjServerWidget::connectedWith( QString id )
         connected( servers[ id ]->text( NAME_SERVER_INDEX ) );
     }
     connectedWithId = id;
+    connectingToId = "";
+}
+
+void QAjServerWidget::connectingTo( QString id )
+{
+    if ( ! connectingToId.isEmpty() && servers.contains( connectingToId ) )
+    {
+        servers[ connectingToId ]->setIcon( NAME_SERVER_INDEX, QIcon() );
+    }
+    if ( servers.contains( id ) )
+    {
+        servers[ id ]->setIcon( NAME_SERVER_INDEX, QIcon(":/small/connect.png") );
+    }
+    connectingToId = id;
 }
 
 void QAjServerWidget::selectionChanged1( bool oneSelected )

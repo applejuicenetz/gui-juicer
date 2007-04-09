@@ -17,14 +17,11 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
- 
-#include <stdio.h>
 
 #include "qajapplication.h"
-#include "ajqtgui.h"
 
 int main( int argc, char ** argv )
 {
-	QAjApplication a( argc, argv );
-	return a.exec();
+    QAjApplication a( argc, argv );
+    return a.exec();
 }

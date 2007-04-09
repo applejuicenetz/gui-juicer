@@ -32,7 +32,7 @@ class QAjSocket : public QObject
 {
 Q_OBJECT
 public:
-	QAjSocket( int appPort, QStringList* argList, QObject *parent = 0, const char *name = 0);
+	QAjSocket( int appPort, QStringList* argList, QObject *parent = 0 );
 
 	~QAjSocket();
 	
@@ -50,7 +50,7 @@ private:
 	
 public slots:
 	void connected();
-	void errorSlot( QAbstractSocket::SocketError code );
+	void errorSlot( QAbstractSocket::SocketError );
 signals:
 	void done( );
 };

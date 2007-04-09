@@ -20,11 +20,11 @@
 
 #include "qxmlmodule.h"
 
-#include "ajqtgui.h"
+#include "juicer.h"
 
-QXMLModule::QXMLModule(AjQtGUI *ajQtGUI, QObject *parent, const char *name) : QHttp()
+QXMLModule::QXMLModule( Juicer* juicer, QObject *parent ) : QHttp( parent )
 {
-    this->ajQtGUI = ajQtGUI;
+    this->juicer = juicer;
     timeStamp = "0";
     QObject::connect(this, SIGNAL(done( bool )), this, SLOT( httpDone( bool ) ) );
     QObject::connect(this, SIGNAL(requestFinished( int , bool )), this, SLOT(requestFinished(int, bool )));
@@ -111,7 +111,7 @@ void QXMLModule::requestFinished( int id, bool error )
                     }
                     else if ( e.tagName() == "information" )
                     {
-                        ajQtGUI->setStatusBarText(
+                        juicer->setStatusBarText(
                             e.attribute("downloadspeed"),
                             e.attribute("uploadspeed"),
                             e.attribute("credits"),
@@ -215,7 +215,7 @@ void QXMLModule::handleSettings( QDomElement e )
     for(shareE=e.firstChildElement("share").firstChildElement("directory");
         !shareE.isNull(); shareE = shareE.nextSiblingElement("directory"))
     {
-        ajQtGUI->ajShareWidget->insertShare(
+        juicer->ajShareWidget->insertShare(
             shareE.attribute("name"), shareE.attribute("sharemode"));
     }
 }
@@ -226,7 +226,7 @@ void QXMLModule::handleSettings( QDomElement e )
  */
 void QXMLModule::handleShare( QDomElement e )
 {
-    ajQtGUI->setUploadFilename( e.attribute("id"), e.attribute("filename") );
+    juicer->setUploadFilename( e.attribute("id"), e.attribute("filename") );
 }
 
 
@@ -281,12 +281,13 @@ void QXMLModule::handleIds( QDomNode node )
  */
 void QXMLModule::handleNetworkInfo( QDomElement e )
 {
-    ajQtGUI->networkWidget->setUsers( e.attribute("users") );
-    ajQtGUI->networkWidget->setFiles( e.attribute("files") );
-    ajQtGUI->networkWidget->setSize( QConvert::bytesLong( e.attribute("filesize")) );
-    ajQtGUI->networkWidget->setIp( e.attribute("ip") );
-    ajQtGUI->ajServerWidget->connectedWith( e.attribute("connectedwithserverid") );
-    ajQtGUI->connectedSince( e.attribute("connectedSince") );
+    juicer->networkWidget->setUsers( e.attribute("users") );
+    juicer->networkWidget->setFiles( e.attribute("files") );
+    juicer->networkWidget->setSize( QConvert::bytesLong( e.attribute("filesize")) );
+    juicer->networkWidget->setIp( e.attribute("ip") );
+    juicer->ajServerWidget->connectedWith( e.attribute("connectedwithserverid") );
+    juicer->ajServerWidget->connectingTo( e.attribute("tryconnecttoserver") );
+    juicer->connectedSince( e.attribute("connectedsince") );
 }
 
 
@@ -295,7 +296,7 @@ void QXMLModule::handleNetworkInfo( QDomElement e )
  */
 void QXMLModule::handleUpload( QDomElement e )
 {
-    if( ! ajQtGUI->ajUploadWidget->insertUpload(
+    if( ! juicer->ajUploadWidget->insertUpload(
             e.attribute("id"),
             e.attribute("shareid"),
             e.attribute("version"),
@@ -316,8 +317,8 @@ void QXMLModule::handleUpload( QDomElement e )
  */
 void QXMLModule::handleUser( QDomElement e )
 {
-//     ajQtGUI->ajDownloadWidget->mutex.lock();
-    ajQtGUI->ajDownloadWidget->insertUser(
+//     juicer->ajDownloadWidget->mutex.lock();
+    juicer->ajDownloadWidget->insertUser(
         e.attribute("downloadid"),
         e.attribute("id"),
         e.attribute("filename"),
@@ -326,7 +327,7 @@ void QXMLModule::handleUser( QDomElement e )
         e.attribute("powerdownload"),
         e.attribute("queueposition"),
         e.attribute("operatingsystem"));
-//     ajQtGUI->ajDownloadWidget->mutex.unlock();
+//     juicer->ajDownloadWidget->mutex.unlock();
 }
 
 
@@ -335,8 +336,8 @@ void QXMLModule::handleUser( QDomElement e )
  */
 void QXMLModule::handleDownload( QDomElement e )
 {
-//     ajQtGUI->ajDownloadWidget->mutex.lock();
-    ajQtGUI->ajDownloadWidget->insertDownload(
+//     juicer->ajDownloadWidget->mutex.lock();
+    juicer->ajDownloadWidget->insertDownload(
         e.attribute("id"),
         e.attribute("filename"),
         e.attribute("status"),
@@ -344,7 +345,7 @@ void QXMLModule::handleDownload( QDomElement e )
         e.attribute("ready"),
         e.attribute("powerdownload"),
         e.attribute("temporaryfilenumber"));
-//     ajQtGUI->ajDownloadWidget->mutex.unlock();
+//     juicer->ajDownloadWidget->mutex.unlock();
 }
 
 
@@ -353,7 +354,7 @@ void QXMLModule::handleDownload( QDomElement e )
  */
 void QXMLModule::handleServer( QDomElement e )
 {
-    ajQtGUI->ajServerWidget->insertServer(
+    juicer->ajServerWidget->insertServer(
         e.attribute("id"),
         e.attribute("name"),
         e.attribute("host"),
@@ -368,7 +369,7 @@ void QXMLModule::handleServer( QDomElement e )
  */
 void QXMLModule::handleSearch( QDomElement e )
 {
-    ajQtGUI->ajSearchWidget->insertSearch(
+    juicer->ajSearchWidget->insertSearch(
         e.attribute("id"),
         e.attribute("searchtext"),
         e.attribute("running"),
@@ -386,7 +387,7 @@ void QXMLModule::handleSearchEntry( QDomElement e )
     for(fileE=e.firstChildElement("filename"); !fileE.isNull(); fileE = fileE.nextSiblingElement("filename")) {
         filenames.append(fileE.attribute("name"));
     }
-    ajQtGUI->ajSearchWidget->insertSearchEntry(
+    juicer->ajSearchWidget->insertSearchEntry(
         e.attribute("id"),
         e.attribute("searchid"),
         e.attribute("size"),
@@ -400,9 +401,9 @@ void QXMLModule::handleSearchEntry( QDomElement e )
  */
 void QXMLModule::handleGeneralInformation( QDomNode node )
 {
-    ajQtGUI->setFilesystemSeparator(
+    juicer->setFilesystemSeparator(
         node.firstChildElement("filesystem").attribute("seperator"));
-    ajQtGUI->setCoreVersion(node.firstChildElement("version").text());
+    juicer->setCoreVersion(node.firstChildElement("version").text());
 }
 
 
@@ -416,12 +417,12 @@ void QXMLModule::handleRemoved( QDomElement e )
         !objectE.isNull(); objectE = objectE.nextSiblingElement("object"))
     {
         QString id = objectE.attribute("id");
-//         ajQtGUI->ajDownloadWidget->mutex.lock();
-        if ( ! ajQtGUI->ajDownloadWidget->remove( id ) )
-            if ( ! ajQtGUI->ajUploadWidget->remove( id ) )
-                if ( ! ajQtGUI->ajServerWidget->remove( id ) )
-                    ajQtGUI->ajSearchWidget->remove( id );
-//         ajQtGUI->ajDownloadWidget->mutex.unlock();
+//         juicer->ajDownloadWidget->mutex.lock();
+        if ( ! juicer->ajDownloadWidget->remove( id ) )
+            if ( ! juicer->ajUploadWidget->remove( id ) )
+                if ( ! juicer->ajServerWidget->remove( id ) )
+                    juicer->ajSearchWidget->remove( id );
+//         juicer->ajDownloadWidget->mutex.unlock();
     }
 }
 
@@ -458,7 +459,7 @@ void QXMLModule::handlePartList( int id )
     {
         if( partListRequests.contains( id ) )
         {
-            QAjDownloadItem* item = ajQtGUI->ajDownloadWidget->findDownload( partListRequests[id] );
+            QAjDownloadItem* item = juicer->ajDownloadWidget->findDownload( partListRequests[id] );
             if( item != NULL )
             {
                 item->getPartListWidget()->update( partsSize, partList );
@@ -467,7 +468,7 @@ void QXMLModule::handlePartList( int id )
         }
         else if( partListSimpleRequests.contains( id ) )
         {
-            QAjDownloadItem* item = ajQtGUI->ajDownloadWidget->findDownload( partListSimpleRequests[id] );
+            QAjDownloadItem* item = juicer->ajDownloadWidget->findDownload( partListSimpleRequests[id] );
             if ( item != NULL )
             {
                 item->setParts( partsSize, partList );

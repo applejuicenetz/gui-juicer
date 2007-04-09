@@ -40,11 +40,12 @@ public:
 	void insertServer( QString id, QString name, QString host, QString port, QString lastseen, QString tests );
 	
 	void connectedWith( QString id );
+   void connectingTo( QString id );
 	QTreeWidgetItem* findServer( QString id );
 	bool remove( QString id );
 
 private:
-	QString connectedWithId;
+	QString connectedWithId, connectingToId;
 	QAction* removeId;
 	QAction* connectId;
 	QHash<QString, QTreeWidgetItem*> servers;

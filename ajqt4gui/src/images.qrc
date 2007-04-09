@@ -56,5 +56,6 @@
     <file alias="commit.png">resources/small/vcs_commit.png</file>
     <file alias="remove.png">resources/small/vcs_remove.png</file>
     <file alias="update.png">resources/small/vcs_update.png</file>
+    <file alias="exec.png">resources/small/exec.png</file>
 </qresource>
 </RCC>

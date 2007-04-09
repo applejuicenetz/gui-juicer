@@ -76,12 +76,9 @@ private:
     QHash<QString, QAjDownloadItem*> downloads;
     int currIdRoundRobin;
 
-    QAction* pauseId;
-    QAction* resumeId;
-    QAction* cancelId;
-    QAction* partListId;
-    QAction* renameId;
-    QAction* renamePlusId;
+    QAction *pauseId, *resumeId, *cancelId;
+    QAction *partListId, *renameId, *renamePlusId;
+    QAction *openId;
 
     QIcon *linuxIcon, *windowsIcon, *otherOsIcon;
 
@@ -98,6 +95,7 @@ private slots:
     void partListSlot();
     void renameSlot();
     void renamePlusSlot();
+    void openSlot();
 
 public slots:
     void updateView( bool force = false );
@@ -110,6 +108,7 @@ signals:
     void partListRequest( );
     void rename( );
     void renamePlus( );
+    void open();
 };
 
 #endif

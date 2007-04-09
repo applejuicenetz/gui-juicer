@@ -19,7 +19,7 @@
  ***************************************************************************/
 #include "qajsocket.h"
 
-QAjSocket::QAjSocket( int appPort, QStringList* argList,  QObject *parent, const char *name) : QObject( parent )
+QAjSocket::QAjSocket( int appPort, QStringList* argList,  QObject *parent ) : QObject( parent )
 {
 	socket = new QTcpSocket( this );
 	this->appPort = appPort;
@@ -38,7 +38,7 @@ void QAjSocket::connected()
 {
 	while( argList->size() > 0 )
 	{
-		int c = socket->write( argList->front().toAscii() );
+		socket->write( argList->front().toAscii() );
 		socket->putChar('\n');
 		argList->pop_front();
 	}
@@ -47,7 +47,7 @@ void QAjSocket::connected()
 	QCoreApplication::quit();
 }
 
-void QAjSocket::errorSlot( QAbstractSocket::SocketError code )
+void QAjSocket::errorSlot( QAbstractSocket::SocketError )
 {
 	done();
 }
