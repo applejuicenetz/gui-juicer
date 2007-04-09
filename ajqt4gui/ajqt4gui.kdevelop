@@ -13,9 +13,9 @@
     <ignoreparts/>
     <projectdirectory>.</projectdirectory>
     <absoluteprojectpath>false</absoluteprojectpath>
-    <description></description>
+    <description/>
     <projectname>ajqt4gui</projectname>
-    <defaultencoding></defaultencoding>
+    <defaultencoding/>
   </general>
   <kdevfileview>
     <groups>
@@ -73,12 +73,12 @@
   </kdevdoctreeview>
   <kdevdebugger>
     <general>
-      <dbgshell></dbgshell>
+      <dbgshell/>
       <programargs/>
-      <gdbpath></gdbpath>
-      <configGdbScript></configGdbScript>
-      <runShellScript></runShellScript>
-      <runGdbScript></runGdbScript>
+      <gdbpath/>
+      <configGdbScript/>
+      <runShellScript/>
+      <runGdbScript/>
       <breakonloadinglibs>true</breakonloadinglibs>
       <separatetty>false</separatetty>
       <floatingtoolbar>false</floatingtoolbar>
@@ -92,17 +92,26 @@
   <kdevtrollproject>
     <run>
       <mainprogram>/home/remat/projekte/svn/ajqtgui/ajqt4gui/bin/ajqt4gui</mainprogram>
-      <programargs></programargs>
+      <programargs/>
       <directoryradio>executable</directoryradio>
       <customdirectory>/</customdirectory>
       <terminal>false</terminal>
       <autocompile>true</autocompile>
       <envvars/>
-      <globaldebugarguments></globaldebugarguments>
+      <globaldebugarguments/>
       <globalcwd>/home/remat/projekte/svn/ajqtgui/ajqt4gui</globalcwd>
       <useglobalprogram>false</useglobalprogram>
       <autoinstall>false</autoinstall>
       <autokdesu>false</autokdesu>
+      <runarguments>
+        <ajqt4gui/>
+      </runarguments>
+      <cwd>
+        <ajqt4gui>/home/remat/projekte/svn/ajqtgui/ajqt4gui</ajqt4gui>
+      </cwd>
+      <debugarguments>
+        <ajqt4gui/>
+      </debugarguments>
     </run>
     <general>
       <activedir>src</activedir>
@@ -112,7 +121,7 @@
       <runmultiplejobs>false</runmultiplejobs>
       <numberofjobs>1</numberofjobs>
       <dontact>false</dontact>
-      <makebin></makebin>
+      <makebin/>
       <prio>0</prio>
       <envvars/>
     </make>
@@ -121,7 +130,10 @@
       <replacePaths>false</replacePaths>
       <disableDefaultOpts>true</disableDefaultOpts>
     </qmake>
-    <subclassing/>
+    <subclassing>
+      <subclass uifile="src/qajnetworkdialogbase.ui" sourcefile="qajnetworkdialog.cpp" />
+      <subclass uifile="src/qajnetworkdialogbase.ui" sourcefile="qajnetworkdialog.h" />
+    </subclassing>
   </kdevtrollproject>
   <kdevfilecreate>
     <filetypes/>
@@ -197,7 +209,7 @@
       <includePaths>.;</includePaths>
     </codecompletion>
     <creategettersetter>
-      <prefixGet></prefixGet>
+      <prefixGet/>
       <prefixSet>set</prefixSet>
       <prefixVariable>m_,_</prefixVariable>
       <parameterName>theValue</parameterName>
