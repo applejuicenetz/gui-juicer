@@ -47,6 +47,9 @@ public:
 protected slots:
     void selectIncomingDir();
     void selectTempDir();
+    void selectIncomingDirSpecific();
+    void selectTempDirSpecific();
+    void specificRadioToggled( bool checked );
 };
 
 #endif

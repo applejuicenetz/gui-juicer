@@ -123,6 +123,7 @@ typedef struct
     QString serverURL;
     int refresh;
     QString launcher;
+    QString location, incomingDirSpecific, tempDirSpecific;
     QString ftpServer, ftpPort, ftpUser, ftpPassword, ftpDir;
 }
 AjSettings;

@@ -413,6 +413,10 @@ void Juicer::showOptions()
         lokalSettings.setValue( "refresh",  settings.refresh );
 
         lokalSettings.setValue( "launcher",  settings.launcher );
+        lokalSettings.setValue( "location",  settings.location );
+        lokalSettings.setValue( "incomingDirSpecific",  settings.incomingDirSpecific );
+        lokalSettings.setValue( "tempDirSpecific",  settings.tempDirSpecific );
+        
         lokalSettings.setValue( "ftpServer",  settings.ftpServer );
         lokalSettings.setValue( "ftpPort",  settings.ftpPort );
         lokalSettings.setValue( "ftpUser",  settings.ftpUser );
@@ -463,6 +467,10 @@ void Juicer::settingsReady( AjSettings settings )
 
         settings.launcher = lokalSettings.value( "launcher", optionsDialog->launchCombo->itemText(0)).toString();
 
+        settings.location = lokalSettings.value( "location", "same" ).toString();
+        settings.tempDirSpecific = lokalSettings.value( "tempDirSpecific", "/" ).toString();
+        settings.incomingDirSpecific = lokalSettings.value( "incomingDirSpecific", "/" ).toString();
+        
         settings.ftpServer = lokalSettings.value( "ftpServer", "localhost" ).toString();
         settings.ftpPort = lokalSettings.value( "ftpPort", "21" ).toString();
         settings.ftpUser = lokalSettings.value( "ftpUser", "anonymous" ).toString();
@@ -1196,6 +1204,20 @@ void Juicer::openDownload( QList<QTreeWidgetItem *>  items )
         args.push_back("\"\"");
     }
 
+    QString iDir, tDir;
+    // determine the path
+    QString location = lokalSettings.value( "location", "same" ).toString();
+    if( location == "specific" )
+    {
+        iDir = lokalSettings.value( "incomingDirSpecific", "/" ).toString() + filesystemSeparator;
+        tDir = lokalSettings.value( "tempDirSpecific", "/" ).toString() + filesystemSeparator;
+    }
+    else
+    {
+        iDir = incomingDir.absolutePath() + filesystemSeparator;
+        tDir = tempDir.absolutePath() + filesystemSeparator;
+    }
+
     int i;
     for (i=0; i<items.size(); i++)
     {
@@ -1206,11 +1228,11 @@ void Juicer::openDownload( QList<QTreeWidgetItem *>  items )
             QString filename;
             if( ajDownloadItem->getStatus() == DOWN_FINISHED )
             {
-                args.push_back( incomingDir.absolutePath() + filesystemSeparator + ajDownloadItem->text( FILENAME_DOWN_INDEX ) );
+                args.push_back( iDir + ajDownloadItem->text( FILENAME_DOWN_INDEX ) );
             }
             else
             {
-                args.push_back( tempDir.absolutePath() + filesystemSeparator + ajDownloadItem->getTempNumber() + ".data" );
+                args.push_back( tDir + ajDownloadItem->getTempNumber() + ".data" );
             }
             QProcess::startDetached( exec, args );
             args.pop_back();

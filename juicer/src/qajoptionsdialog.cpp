@@ -27,6 +27,11 @@ QAjOptionsDialog::QAjOptionsDialog( QWidget* parent ) : QDialog( parent )
     connect( incomingButton, SIGNAL( clicked() ), this, SLOT( selectIncomingDir() ) );
     connect( tempButton, SIGNAL( clicked() ), this, SLOT( selectTempDir() ) );
 
+    connect( incomingSpecificButton, SIGNAL( clicked() ), this, SLOT( selectIncomingDirSpecific() ) );
+    connect( tempSpecificButton, SIGNAL( clicked() ), this, SLOT( selectTempDirSpecific() ) );
+
+    connect( specificRadio, SIGNAL( toggled( bool ) ), this, SLOT( specificRadioToggled( bool ) ) );
+
     winLauncher = "Windows default";
     macLauncher = "MacOS default";
     kdeLauncher = "kfmclient (KDE)";
@@ -42,6 +47,8 @@ QAjOptionsDialog::QAjOptionsDialog( QWidget* parent ) : QDialog( parent )
     launchCombo->addItem( gnomeLauncher );
 #endif
 #endif
+
+    specificRadioToggled( false );
 }
 
 QAjOptionsDialog::~QAjOptionsDialog()
@@ -75,6 +82,14 @@ AjSettings QAjOptionsDialog::getAjSettings()
     settings.tcpPort = tcpEdit->text();
 
     settings.launcher = launchCombo->currentText();
+    if( sameComputerRadio->isChecked() )
+        settings.location = "same";
+    else if( specificRadio->isChecked() )
+        settings.location = "specific";
+    else
+        settings.location = "ftp";
+    settings.tempDirSpecific = tempSpecificEdit->text();
+    settings.incomingDirSpecific = incomingSpecificEdit->text();
 
     settings.ftpServer = ftpServerEdit->text();
     settings.ftpPort = ftpPortEdit->text();
@@ -111,6 +126,13 @@ void QAjOptionsDialog::setAjSettings( AjSettings settings )
     tcpEdit->setText( settings.tcpPort );
 
     launchCombo->setEditText( settings.launcher );
+    sameComputerRadio->setChecked( settings.location == "same" );
+    specificRadio->setChecked( settings.location == "specific" );
+    ftpRadio->setChecked( settings.location == "ftp" );
+    incomingSpecificEdit->setText( settings.incomingDirSpecific );
+    tempSpecificEdit->setText( settings.tempDirSpecific );
+
+    
 
     ftpServerEdit->setText( settings.ftpServer );
     ftpPortEdit->setText( settings.ftpPort );
@@ -133,6 +155,20 @@ void QAjOptionsDialog::selectTempDir()
         tempEdit->setText( dir );
 }
 
+void QAjOptionsDialog::selectIncomingDirSpecific()
+{
+    QString dir = QFileDialog::getExistingDirectory( this, "Choose a directory", incomingSpecificEdit->text() );
+    if( ! dir.isEmpty() )
+        incomingSpecificEdit->setText( dir );
+}
+
+void QAjOptionsDialog::selectTempDirSpecific()
+{
+    QString dir = QFileDialog::getExistingDirectory( this, "Choose a directory", tempSpecificEdit->text() );
+    if( ! dir.isEmpty() )
+        tempSpecificEdit->setText( dir );
+}
+
 /*!
     \fn QAjOptionsDialog::setSpecial( bool special )
  */
@@ -140,4 +176,18 @@ void QAjOptionsDialog::setSpecial( bool special )
 {
     if ( ! special )
         tabWidget->removeTab( 2 );
+}
+
+
+/*!
+    \fn QAjOptionsDialog::specificRadioToggled( bool checked )
+ */
+void QAjOptionsDialog::specificRadioToggled( bool checked )
+{
+    incomingSpecificEdit->setEnabled( checked );
+    tempSpecificEdit->setEnabled( checked );
+    incomingSpecificLabel->setEnabled( checked );
+    tempSpecificLabel->setEnabled( checked );
+    incomingSpecificButton->setEnabled( checked );
+    tempSpecificButton->setEnabled( checked );
 }
