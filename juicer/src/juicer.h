@@ -94,7 +94,7 @@ public:
     }
     void setCoreVersion( QString version );
     void connectedSince( QString since );
-    void queueLinks( QStringList* links );
+    void queueLinks( QStringList links );
     void setUploadFilename( QString shareId, QString filename );
 
 protected:
@@ -157,7 +157,7 @@ protected:
 
     bool special;
 
-    QStringList *queuedLinks;
+    QStringList queuedLinks;
     QDateTime zeroTime;
 
     QFtp* ftp;

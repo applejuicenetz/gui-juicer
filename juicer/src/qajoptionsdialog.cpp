@@ -27,6 +27,8 @@ QAjOptionsDialog::QAjOptionsDialog( QWidget* parent ) : QDialog( parent )
     connect( incomingButton, SIGNAL( clicked() ), this, SLOT( selectIncomingDir() ) );
     connect( tempButton, SIGNAL( clicked() ), this, SLOT( selectTempDir() ) );
 
+    connect( launcherButton, SIGNAL( clicked() ), this, SLOT( selectLauncher() ) );
+
     connect( incomingSpecificButton, SIGNAL( clicked() ), this, SLOT( selectIncomingDirSpecific() ) );
     connect( tempSpecificButton, SIGNAL( clicked() ), this, SLOT( selectTempDirSpecific() ) );
 
@@ -153,6 +155,17 @@ void QAjOptionsDialog::selectTempDir()
     QString dir = QFileDialog::getExistingDirectory( this, "Choose a directory", tempEdit->text() );
     if( ! dir.isEmpty() )
         tempEdit->setText( dir );
+}
+
+void QAjOptionsDialog::selectLauncher()
+{
+    #ifdef Q_WS_WIN
+    QString file = QFileDialog::getOpenFileName( this, "Select a executable", launchCombo->currentText(), "Executable (*.exe)" );
+    #else
+    QString file = QFileDialog::getOpenFileName( this, "Select a executable", launchCombo->currentText(), "Executable (*.exe)" );
+    #endif
+    if( ! file.isEmpty() )
+        launchCombo->setEditText( file );
 }
 
 void QAjOptionsDialog::selectIncomingDirSpecific()

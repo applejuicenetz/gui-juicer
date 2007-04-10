@@ -25,31 +25,22 @@ QAjApplication::QAjApplication( int & argc, char ** argv ) : QApplication( argc,
     QCoreApplication::setOrganizationDomain("progeln.de");
     QCoreApplication::setApplicationName("Juicer");
     setQuitOnLastWindowClosed( false );
-    if ( argc > 1 )
+    socket = NULL;
+    *argv++;
+    while (argc-- > 1)
     {
-        argList = new QStringList();
-        *argv++;
-        while (argc-- > 1)
-        {
-            argList->push_back( QString( *argv++ ) );
-        }
-        socket = new QAjSocket( APP_PORT, argList );
-        QObject::connect( (QThread*)socket, SIGNAL( done( ) ), this, SLOT( start( ) ) );
+        argList << QString( *argv++ );
     }
-    else
+    if( ! argList.isEmpty() )
     {
-        argList = NULL;
-        socket = NULL;
+        socket = new QAjSocket( APP_PORT, argList, this );
+        connect( socket, SIGNAL( error( QAbstractSocket::SocketError ) ), this, SLOT( start() ) );
     }
 }
 
 
 QAjApplication::~QAjApplication()
 {
-    if ( socket != NULL )
-        delete socket;
-    if ( argList != NULL )
-        delete argList;
 }
 
 int QAjApplication::exec()
@@ -72,13 +63,14 @@ void QAjApplication::start()
     }
 
     Juicer* juicer = new Juicer( );
+    juicer->queueLinks( argList );
+    juicer->setWindowTitle( "Juicer" );
+    setQuitOnLastWindowClosed( true );
+
     if ( splash != NULL )
     {
         splash->finish( juicer );
         delete splash;
     }
 
-    juicer->queueLinks( argList );
-    juicer->setWindowTitle( "Juicer" );
-    connect( this, SIGNAL(lastWindowClosed()), this, SLOT(quit()) );
 }

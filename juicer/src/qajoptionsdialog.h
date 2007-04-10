@@ -49,6 +49,7 @@ protected slots:
     void selectTempDir();
     void selectIncomingDirSpecific();
     void selectTempDirSpecific();
+    void selectLauncher();
     void specificRadioToggled( bool checked );
 };
 

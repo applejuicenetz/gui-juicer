@@ -19,40 +19,28 @@
  ***************************************************************************/
 #include "qajsocket.h"
 
-QAjSocket::QAjSocket( int appPort, QStringList* argList,  QObject *parent ) : QObject( parent )
+QAjSocket::QAjSocket( int appPort, QStringList argList,  QObject *parent ) : QTcpSocket( parent )
 {
-	socket = new QTcpSocket( this );
-	this->appPort = appPort;
-	this->argList = argList;
-	errorOccured = false;
-	connect( socket, SIGNAL( connected() ), this, SLOT( connected() ) );
-	connect( socket, SIGNAL( error( QAbstractSocket::SocketError ) ), this, SLOT( errorSlot( QAbstractSocket::SocketError ) ) );
+    this->appPort = appPort;
+    this->argList = argList;
+    connect( this, SIGNAL( connected() ), this, SLOT( connected() ) );
 }
 
 QAjSocket::~QAjSocket()
-{
-	delete socket;
-}
+{}
 
 void QAjSocket::connected()
 {
-	while( argList->size() > 0 )
-	{
-		socket->write( argList->front().toAscii() );
-		socket->putChar('\n');
-		argList->pop_front();
-	}
-	socket->flush();
-	socket->close();
-	QCoreApplication::quit();
-}
-
-void QAjSocket::errorSlot( QAbstractSocket::SocketError )
-{
-	done();
+    while ( ! argList.isEmpty() )
+    {
+        write( (argList.takeFirst()+"\n").toAscii() );
+    }
+    flush();
+    close();
+    QCoreApplication::quit();
 }
 
 void QAjSocket::start()
 {
-	socket->connectToHost( "localhost", appPort );
+    connectToHost( "localhost", appPort );
 }

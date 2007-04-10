@@ -44,7 +44,7 @@ public slots:
     void start();
 private:
     QAjSocket *socket;
-    QStringList* argList;
+    QStringList argList;
 };
 
 #endif

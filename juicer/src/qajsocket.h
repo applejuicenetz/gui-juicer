@@ -21,38 +21,26 @@
 #define QAJSOCKET_H
 
 #include <QTcpSocket>
-#include <QObject>
 #include <QStringList>
 #include <QCoreApplication>
 
 /**
 @author Matthias Reif
 */
-class QAjSocket : public QObject
+class QAjSocket : public QTcpSocket
 {
-Q_OBJECT
+    Q_OBJECT
 public:
-	QAjSocket( int appPort, QStringList* argList, QObject *parent = 0 );
+    QAjSocket( int appPort, QStringList argList, QObject *parent = 0 );
+    ~QAjSocket();
+    void start();
 
-	~QAjSocket();
-	
-	static const int TRYING = 0;
-	static const int CONNECTED = 1;
-	static const int REFUSED = 2;
-
-	void start();
-	
 private:
-	QTcpSocket* socket;
-	bool errorOccured;
-	int appPort;
-	QStringList* argList;
-	
-public slots:
-	void connected();
-	void errorSlot( QAbstractSocket::SocketError );
-signals:
-	void done( );
+    int appPort;
+    QStringList argList;
+
+private slots:
+    void connected();
 };
 
 #endif

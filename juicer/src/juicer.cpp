@@ -25,7 +25,6 @@ Juicer::Juicer( ) : QMainWindow( )
     // special always on in special release
     //char* mode = getenv( "AJQTGUI_MODE" );
     special = true;//( ( mode != NULL ) && ( strcmp(mode, "SPECIAL") == 0 ) );
-    queuedLinks = NULL;
     filesystemSeparator = "\\";
     zeroTime = QDateTime( QDate(1970,1,1), QTime(0,0), Qt::UTC );
 // 	progressDialog = NULL;
@@ -549,6 +548,7 @@ void Juicer::gotSession()
     connected = true;
     xml->get( "information" );
     xml->get( "settings" );
+    processQueuedLinks();
     QSettings lokalSettings;
     timerSlot();
     timer->setSingleShot( false );
@@ -1034,22 +1034,16 @@ void Juicer::linkServerLine( QString line )
 
 void Juicer::processQueuedLinks()
 {
-    if ( queuedLinks != NULL )
+    while ( ! queuedLinks.isEmpty() )
     {
-        while ( queuedLinks->size() > 0 )
-        {
-            QString link = QString( QUrl::toPercentEncoding( queuedLinks->front() ) );
-            xml->set( "processlink", "&link=" + link );
-            queuedLinks->pop_front();
-        }
+        QString link = QString( QUrl::toPercentEncoding( queuedLinks.takeFirst() ) );
+        xml->set( "processlink", "&link=" + link );
     }
 }
 
-void Juicer::queueLinks( QStringList* links )
+void Juicer::queueLinks( QStringList links )
 {
     queuedLinks = links;
-    if ( connected )
-        processQueuedLinks();
 }
 
 
