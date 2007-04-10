@@ -22,12 +22,14 @@
 
 Juicer::Juicer( ) : QMainWindow( )
 {
-    // special always on in special release
-    //char* mode = getenv( "AJQTGUI_MODE" );
-    special = true;//( ( mode != NULL ) && ( strcmp(mode, "SPECIAL") == 0 ) );
+    char* mode = getenv( "AJQTGUI_MODE" );
+#ifdef AJQTGUI_MODE_SPECIAL
+    special = true;
+#else
+    special = (( mode != NULL )) && ( strcmp(mode, "SPECIAL\0") == 0 );
+#endif
     filesystemSeparator = "\\";
     zeroTime = QDateTime( QDate(1970,1,1), QTime(0,0), Qt::UTC );
-// 	progressDialog = NULL;
 
     linkServer = new QAjServerSocket( QAjApplication::APP_PORT );
     connect( linkServer, SIGNAL( lineReady( QString ) ), this, SLOT( linkServerLine( QString ) ) );
@@ -47,18 +49,14 @@ Juicer::Juicer( ) : QMainWindow( )
     ajTab->setTabToolTip( ajTab->addTab( ajServerWidget, QIcon(":/small/server.png"), "Server" ), "searches" );
     ajTab->setTabToolTip( ajTab->addTab( ajShareWidget, QIcon(":/small/shares.png"), "Shares" ), "shares" );
 
-    if ( special )
-    {
-        ajFtpWidget = new QAjFtpWidget( NULL );
-        ajTab->setTabToolTip( ajTab->addTab( ajFtpWidget, QIcon(":/small/ftp.png"), "Ftp" ), "ftp" );
-    }
+    ajFtpWidget = new QAjFtpWidget( ajTab );
+    ajTab->setTabToolTip( ajTab->addTab( ajFtpWidget, QIcon(":/small/ftp.png"), "Ftp" ), "ftp" );
 
     setCentralWidget( ajTab );
     prevTab = ajDownloadWidget;
 
     networkDialog = new QAjNetworkDialog( this );
     optionsDialog = new QAjOptionsDialog( this );
-    optionsDialog->setSpecial( special );
 
     initToolBars();
 
@@ -171,8 +169,6 @@ Juicer::Juicer( ) : QMainWindow( )
 
     connect( ajShareWidget, SIGNAL( newSelection( bool ) ), removeShareButton, SLOT( setEnabled( bool ) ) );
 
-    connect( ajFtpWidget, SIGNAL( newSelection( bool ) ), storeFtpButton, SLOT( setEnabled( bool ) ) );
-
     connect( ajShareWidget, SIGNAL( insert() ), this, SLOT( addShare() ) );
     connect( ajShareWidget, SIGNAL( remove() ), this, SLOT( removeShare() ) );
     connect( ajShareWidget, SIGNAL( reload() ), this, SLOT( reloadShare() ) );
@@ -180,6 +176,7 @@ Juicer::Juicer( ) : QMainWindow( )
 
     connect( ftp, SIGNAL( listInfo ( QUrlInfo ) ), this->ajFtpWidget, SLOT( insert( QUrlInfo ) ) );
     connect( ajFtpWidget, SIGNAL( itemDoubleClicked ( QTreeWidgetItem*, int ) ), this, SLOT( storeFtp( ) ) );
+    connect( ajFtpWidget, SIGNAL( newSelection( bool ) ), storeFtpButton, SLOT( setEnabled( bool ) ) );
 
     login();
 }
@@ -342,7 +339,6 @@ void Juicer::initToolBars()
     ftpToolBar->addAction( QIcon(":/reload.png"), "reload files", this, SLOT( reloadFtp() ) );
     storeFtpButton = ftpToolBar->addAction( QIcon(":/save.png"), "store file", this, SLOT( storeFtp() ) );
     storeFtpButton->setDisabled( true );
-
     ftpToolBar->hide();
 
     this->setIconSize( QSize(22, 22) );
@@ -488,10 +484,6 @@ bool Juicer::login()
     ajServerWidget->clear();
     ajSearchWidget->clear();
     connected = false;
-    /*	progressDialog = new QProgressDialog( tr("please wait") + "...", "cancel", 0, 4, this );
-    	progressDialog->setMinimumDuration(0);
-    	progressDialog->setValue( 0 );
-    	connect( progressDialog, SIGNAL( canceled() ), qApp, SLOT( quit() ) );*/
     qApp->processEvents();
     xml->get( "getsession" );
     return true;
@@ -511,11 +503,6 @@ void Juicer::xmlError( int code )
     connected = false;
     timer->stop();
     partListTimer->stop();
-    /*	if( progressDialog != NULL )
-    	{
-    		delete progressDialog;
-    		progressDialog = NULL;
-    	}*/
     QSettings lokalSettings;
     QString errorString;
     if ( code == 302 )
@@ -1012,18 +999,6 @@ void Juicer::firstModified()
         }
         firstModifiedCnt++;
     }
-
-    /*	if( progressDialog != NULL )
-    	{
-    		progressDialog->setValue( progressDialog->value() + 1 );
-    		qApp->processEvents();
-    		if( progressDialog->value() == -1 )
-    		{
-    			delete progressDialog;
-    			progressDialog = NULL;
-    			ajDownloadWidget->adjustSizeOfColumns();
-    		}
-    	}*/
 }
 
 void Juicer::linkServerLine( QString line )

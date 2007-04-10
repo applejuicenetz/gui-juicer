@@ -182,15 +182,6 @@ void QAjOptionsDialog::selectTempDirSpecific()
         tempSpecificEdit->setText( dir );
 }
 
-/*!
-    \fn QAjOptionsDialog::setSpecial( bool special )
- */
-void QAjOptionsDialog::setSpecial( bool special )
-{
-    if ( ! special )
-        tabWidget->removeTab( 2 );
-}
-
 
 /*!
     \fn QAjOptionsDialog::specificRadioToggled( bool checked )

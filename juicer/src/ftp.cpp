@@ -54,9 +54,9 @@ void FTP::stateChangedSlot( int state )
     switch ( state )
     {
     case( QFtp::Connected ):
-                    break;
+        break;
     case( QFtp::LoggedIn ):
-                    getNext();
+        getNext();
         break;
     default:
         break;
@@ -81,6 +81,8 @@ void FTP::commandFinishedSlot( int id, bool error )
         downloadFinished( dstFile );
 //		QMessageBox::information ( NULL, "finished", dstFile->fileName() + " finished", QMessageBox::Ok );
         dstFile = NULL;
+        if(progressDialog->isVisible())
+            progressDialog->hide();
         getNext();
     }
 }
@@ -103,6 +105,7 @@ void FTP::run()
  */
 void FTP::dataTransferProgressSlot( qint64 done, qint64 total )
 {
+    fprintf(stderr, "%d %d\n", done, total );
     if ( dstFile != NULL )
     {
         progressDialog->setLabelText( dstFile->fileName() );

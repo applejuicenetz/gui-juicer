@@ -37,7 +37,6 @@ public:
 
     AjSettings getAjSettings();
     void setAjSettings( AjSettings settings );
-    void setSpecial( bool special );
 
     QString winLauncher;
     QString macLauncher;

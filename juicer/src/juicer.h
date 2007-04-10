@@ -153,8 +153,6 @@ protected:
     QAction *removeServerButton, *connectServerButton, *findServerButton;
     QAction *storeFtpButton;
 
-// 	QProgressDialog* progressDialog;
-
     bool special;
 
     QStringList queuedLinks;
