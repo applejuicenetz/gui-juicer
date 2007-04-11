@@ -221,7 +221,7 @@ void Juicer::initToolBars()
     ajTools->addAction( QIcon(":/configure.png"), "configure", this, SLOT( showOptions() ) )->setToolTip("configure");
     ajTools->addAction( QIcon(":/network.png"), "aj network info", this, SLOT( showNetworkInfo() ) )->setToolTip("aj network info");
 
-    ajTools->addAction( QIcon(":/adjust.png"), "adjust columns", this, SLOT( adjustColumns() ) )->setToolTip("adjust colmuns");
+    ajTools->addAction( QIcon(":/adjust.png"), "adjust columns", this, SLOT( adjustColumns() ) )->setToolTip("adjust columns");
 
     QToolBar* ajLinks = new QToolBar( "applejuice links", this );
     ajLinks->setToolTip( "applejuice links" );
