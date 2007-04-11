@@ -46,6 +46,7 @@ QAjShareWidget::QAjShareWidget( QString filesystemSeparator, QWidget *parent, co
 	setColumnHidden( ID_SHARE_INDEX, true );
 	//setColumnAlignment( MODE_SHARE_INDEX, Qt::AlignRight );
 
+   popup->setTitle( tr("S&hare") );
 	removeId = popup->addAction( QIcon(":/small/remove.png"), "remove", this, SLOT(removeSlot()) );
 	popup->addSeparator();
 	popup->addAction( QIcon(":/small/add.png"), "insert new", this, SLOT(insertSlot()) );

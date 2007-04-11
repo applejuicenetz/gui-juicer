@@ -52,7 +52,8 @@ QAjSearchWidget::QAjSearchWidget( QWidget *parent, const char *name) : QAjListWi
 
 	setColumnHidden( ID_SEARCH_INDEX, true );
 	setColumnHidden( CHECKSUM_SEARCH_INDEX, true );
-
+   
+    popup->setTitle( tr("&Search") );
 	downloadId = popup->addAction( QIcon(":/small/save.png"), "download", this, SLOT(downloadSlot()) );
 	removeId = popup->addAction( QIcon(":/small/cancel.png"), "remove", this, SLOT(removeSlot()) );
 //	popup->setItemEnabled( removeId,  false );

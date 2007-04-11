@@ -54,6 +54,7 @@ QAjServerWidget::QAjServerWidget( QWidget *parent, const char *name) : QAjListWi
 
     setColumnHidden( ID_SERVER_INDEX, true );
 
+    popup->setTitle( tr("Ser&ver") );
     connectId = popup->addAction( QIcon(":/small/connect.png"), "connect", this, SLOT(connectSlot()) );
     removeId =popup->addAction( QIcon(":/small/cancel.png"), "remove", this, SLOT(removeSlot()) );
     popup->addSeparator();

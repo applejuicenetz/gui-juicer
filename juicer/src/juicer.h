@@ -80,7 +80,9 @@ public:
     QAjDownloadWidget *ajDownloadWidget;
     QAjUploadWidget *ajUploadWidget;
     QAjSearchWidget *ajSearchWidget;
+    QWidget *ajServerMetaWidget;
     QAjServerWidget *ajServerWidget;
+    QTextEdit *ajServerWelcomeMessage;
     QAjShareWidget *ajShareWidget;
     QAjFtpWidget *ajFtpWidget;
 

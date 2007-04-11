@@ -22,12 +22,13 @@
 
 Juicer::Juicer( ) : QMainWindow( )
 {
-    char* mode = getenv( "AJQTGUI_MODE" );
 #ifdef AJQTGUI_MODE_SPECIAL
     special = true;
 #else
-    special = (( mode != NULL )) && ( strcmp(mode, "SPECIAL\0") == 0 );
+    char* mode = getenv( "AJQTGUI_MODE" );
+    special = (( mode != NULL )) && ( strcmp(mode, "SPECIAL") == 0 );
 #endif
+
     filesystemSeparator = "\\";
     zeroTime = QDateTime( QDate(1970,1,1), QTime(0,0), Qt::UTC );
 
@@ -40,13 +41,25 @@ Juicer::Juicer( ) : QMainWindow( )
     ajDownloadWidget = new QAjDownloadWidget( ajTab );
     ajUploadWidget = new QAjUploadWidget( ajTab );
     ajSearchWidget = new QAjSearchWidget( ajTab );
-    ajServerWidget = new QAjServerWidget( ajTab );
+
+    ajServerMetaWidget = new QWidget( ajTab );
+    QVBoxLayout* l = new QVBoxLayout();
+    l->setSpacing( 0 );
+    l->setMargin( 0 );
+    ajServerWidget = new QAjServerWidget( ajServerMetaWidget );
+    ajServerWelcomeMessage = new QTextEdit( ajServerMetaWidget );
+    ajServerWelcomeMessage->setReadOnly( true );
+    ajServerWelcomeMessage->adjustSize();
+    l->addWidget(ajServerWidget, 10);
+    l->addWidget(ajServerWelcomeMessage, 1);
+    ajServerMetaWidget->setLayout( l );
+
     ajShareWidget = new QAjShareWidget( filesystemSeparator, ajTab );
 
     ajTab->setTabToolTip( ajTab->addTab( ajDownloadWidget, QIcon(":/small/down.png"), "Downloads" ), "dowloads" );
     ajTab->setTabToolTip( ajTab->addTab( ajUploadWidget, QIcon(":/small/up.png"), "Uploads" ), "uploads" );
     ajTab->setTabToolTip( ajTab->addTab( ajSearchWidget, QIcon(":/small/searching.png"), "Search" ), "servers" );
-    ajTab->setTabToolTip( ajTab->addTab( ajServerWidget, QIcon(":/small/server.png"), "Server" ), "searches" );
+    ajTab->setTabToolTip( ajTab->addTab( ajServerMetaWidget, QIcon(":/small/server.png"), "Server" ), "searches" );
     ajTab->setTabToolTip( ajTab->addTab( ajShareWidget, QIcon(":/small/shares.png"), "Shares" ), "shares" );
 
     ajFtpWidget = new QAjFtpWidget( ajTab );
@@ -69,10 +82,10 @@ Juicer::Juicer( ) : QMainWindow( )
     file->addAction( QIcon(":/small/exit.png"), tr("&Exit Core"), this, SLOT( exitCore() ), QKeySequence( Qt::CTRL+Qt::Key_E ) );
     file->addAction( QIcon(":/small/close.png"), tr("&Quit GUI"), qApp, SLOT( closeAllWindows() ), QKeySequence( Qt::CTRL+Qt::Key_Q ) );
 
-    downloadMenuBar = menuBar()->addMenu( /*tr("&Download"), */ajDownloadWidget->popup );
-    serverMenuBar = menuBar()->addMenu( /*tr("&Server"), */ajServerWidget->popup );
-    shareMenuBar = menuBar()->addMenu( /*tr("&Share"), */ajShareWidget->popup );
-    searchMenuBar = menuBar()->addMenu( /*tr("&Search"),*/ ajSearchWidget->popup );
+    downloadMenuBar = menuBar()->addMenu( ajDownloadWidget->popup );
+    searchMenuBar = menuBar()->addMenu( ajSearchWidget->popup );
+    serverMenuBar = menuBar()->addMenu( ajServerWidget->popup );
+    shareMenuBar = menuBar()->addMenu( ajShareWidget->popup );
 
     menuBar()->addSeparator();
 
@@ -178,6 +191,8 @@ Juicer::Juicer( ) : QMainWindow( )
     connect( ajFtpWidget, SIGNAL( itemDoubleClicked ( QTreeWidgetItem*, int ) ), this, SLOT( storeFtp( ) ) );
     connect( ajFtpWidget, SIGNAL( newSelection( bool ) ), storeFtpButton, SLOT( setEnabled( bool ) ) );
 
+    tabChanged( ajDownloadWidget );
+    
     login();
 }
 
@@ -817,7 +832,7 @@ void Juicer::tabChanged( QWidget *tab )
         searchToolBar->show();
         searchMenuBar->setEnabled( true );
     }
-    if ( tab != ajServerWidget )
+    if ( tab != ajServerMetaWidget )
     {
         serverToolBar->hide();
         serverMenuBar->setDisabled( true );
