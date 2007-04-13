@@ -20,8 +20,7 @@
 #ifndef QAJSEARCHWIDGET_H
 #define QAJSEARCHWIDGET_H
 
-using namespace std;
-#include <map>
+#include <QHash>
 
 #include "qajlistwidget.h"
 #include "qajsearchitem.h"
@@ -35,31 +34,28 @@ using namespace std;
 */
 class QAjSearchWidget : public QAjListWidget
 {
-Q_OBJECT
+    Q_OBJECT
 public:
-    QAjSearchWidget( QWidget *parent = 0, const char *name = 0);
+    QAjSearchWidget( QWidget *parent = 0 );
 
     ~QAjSearchWidget();
 
-	void insertSearch( QString id, QString searchText, QString running, QString foundFiles );
-	void insertSearchEntry( QString id, QString searchId, QString size, QString checksum, QStringList filenames );
-	bool remove( QString id );
-	QAjSearchItem* findSearch( QString id );
-	QAjSearchItem* findSearchEntry( QString id );
+    void insertSearch( QString id, QString searchText, QString running, QString foundFiles );
+    void insertSearchEntry( QString id, QString searchId, QString size, QString checksum, QStringList filenames );
+    bool remove( QString id );
+    QAjSearchItem* findSearch( QString id );
+    QAjSearchItem* findSearchEntry( QString id );
 
 protected:
-	QAction *downloadId, *removeId;
-	map<unsigned long, QAjSearchItem*> searches;
-	map<unsigned long, QAjSearchItem*>::iterator searchesIt;
-	map<unsigned long, QAjSearchItem*> searchEntries;
-	map<unsigned long, QAjSearchItem*>::iterator searchEntriesIt;
-	
+    QHash<QString, QAjSearchItem*> searches;
+    QHash<QString, QAjSearchItem*> searchEntries;
+
 public slots:
-	void removeSlot();
-	void downloadSlot();
+    void removeSlot();
+    void downloadSlot();
 signals:
-	void remove();
-	void download();
+    void remove();
+    void download();
 };
 
 #endif

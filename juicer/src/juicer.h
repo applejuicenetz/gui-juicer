@@ -21,7 +21,6 @@
 #ifndef JUICER_H
 #define JUICER_H
 
-#include <QMainWindow>
 #include <QTimer>
 #include <QDateTime>
 #include <QLineEdit>
@@ -46,12 +45,14 @@
 #include <QFtp>
 #include <QFileInfo>
 #include <QDir>
+#include <QSplitter>
 #include <QTabWidget>
 
 #include "qajdownloadwidget.h"
 #include "qajuploadwidget.h"
 #include "qajsearchwidget.h"
 #include "qajserverwidget.h"
+#include "qajservermetawidget.h"
 #include "qajsharewidget.h"
 #include "qajftpwidget.h"
 
@@ -80,9 +81,8 @@ public:
     QAjDownloadWidget *ajDownloadWidget;
     QAjUploadWidget *ajUploadWidget;
     QAjSearchWidget *ajSearchWidget;
-    QWidget *ajServerMetaWidget;
+    QAjServerMetaWidget *ajServerMetaWidget;
     QAjServerWidget *ajServerWidget;
-    QTextEdit *ajServerWelcomeMessage;
     QAjShareWidget *ajShareWidget;
     QAjFtpWidget *ajFtpWidget;
 
@@ -226,8 +226,6 @@ private slots:
     void openDownload( QList<QTreeWidgetItem *>  items );
     void openDownload( QTreeWidgetItem *item, int );
     void openDownload();
-
-public slots:
     void adjustColumns();
 };
 

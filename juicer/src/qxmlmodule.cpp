@@ -290,7 +290,7 @@ void QXMLModule::handleNetworkInfo( QDomElement e )
     juicer->ajServerWidget->connectedWith( e.attribute("connectedwithserverid") );
     juicer->ajServerWidget->connectingTo( e.attribute("tryconnecttoserver") );
     juicer->connectedSince( e.attribute("connectedsince") );
-    juicer->ajServerWelcomeMessage->setText( e.firstChildElement("welcomemessage").text().trimmed() );
+    juicer->ajServerMetaWidget->welcomeMessage->setHtml( e.firstChildElement("welcomemessage").text().trimmed() );
 }
 
 

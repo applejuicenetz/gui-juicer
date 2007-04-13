@@ -19,7 +19,7 @@
  ***************************************************************************/
 #include "qajuploadwidget.h"
 
-QAjUploadWidget::QAjUploadWidget( QWidget *parent, const char *name) : QAjListWidget( ID_UP_INDEX, parent, name)
+QAjUploadWidget::QAjUploadWidget( QWidget *parent ) : QAjListWidget( ID_UP_INDEX, parent )
 {
 	uploadStatusDescr["1"] = "active";
 	uploadStatusDescr["2"] = "queueing";

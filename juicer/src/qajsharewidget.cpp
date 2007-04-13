@@ -19,126 +19,123 @@
  ***************************************************************************/
 #include "qajsharewidget.h"
 
-QAjShareWidget::QAjShareWidget( QString filesystemSeparator, QWidget *parent, const char *name) : QAjListWidget( ID_SHARE_INDEX, parent, name )
+QAjShareWidget::QAjShareWidget( QString filesystemSeparator, QWidget *parent ) : QAjListWidget( ID_SHARE_INDEX, parent )
 {
-	this->filesystemSeparator = filesystemSeparator;
-	setColumnCount( NUM_SHARE_COL );
-	QStringList headers;
-	int i;
-	for( i=0; i<NUM_SHARE_COL; i++)
-	{
-		switch(i)
-		{
-			case ID_SHARE_INDEX:
-				headers.append( tr("id") );
-				break;
-			case PATH_SHARE_INDEX:
-				headers.append( tr("path") );
-				break;
-			case MODE_SHARE_INDEX:
-				headers.append( tr("recursive") );
-				break;
-		}
-	}
-	setHeaderLabels( headers );
+    this->filesystemSeparator = filesystemSeparator;
+    setColumnCount( NUM_SHARE_COL );
+    QStringList headers;
+    int i;
+    for ( i=0; i<NUM_SHARE_COL; i++)
+    {
+        switch (i)
+        {
+        case ID_SHARE_INDEX:
+            headers.append( tr("id") );
+            break;
+        case PATH_SHARE_INDEX:
+            headers.append( tr("path") );
+            break;
+        case MODE_SHARE_INDEX:
+            headers.append( tr("recursive") );
+            break;
+        }
+    }
+    setHeaderLabels( headers );
 
-	//setColumnWidthMode(ID_SHARE_INDEX, Q3ListView::Manual );
-	setColumnHidden( ID_SHARE_INDEX, true );
-	//setColumnAlignment( MODE_SHARE_INDEX, Qt::AlignRight );
+    setColumnHidden( ID_SHARE_INDEX, true );
 
-   popup->setTitle( tr("S&hare") );
-	removeId = popup->addAction( QIcon(":/small/remove.png"), "remove", this, SLOT(removeSlot()) );
-	popup->addSeparator();
-	popup->addAction( QIcon(":/small/add.png"), "insert new", this, SLOT(insertSlot()) );
-	popup->addAction( QIcon(":/small/update.png"), "reload shared files", this, SLOT(reloadSlot()) );
-   popup->addAction( QIcon(":/small/commit.png"), "commit changes", this, SLOT(commitSlot()) );
-	removeId->setEnabled( false );
-	
-	connect( this, SIGNAL( newSelection( bool ) ) , this, SLOT( newSelection( bool ) ) );
+    popup->setTitle( tr("S&hare") );
+    removeId = popup->addAction( QIcon(":/small/remove.png"), "remove", this, SLOT(removeSlot()) );
+    popup->addSeparator();
+    popup->addAction( QIcon(":/small/add.png"), "insert new", this, SLOT(insertSlot()) );
+    popup->addAction( QIcon(":/small/update.png"), "reload shared files", this, SLOT(reloadSlot()) );
+    popup->addAction( QIcon(":/small/commit.png"), "commit changes", this, SLOT(commitSlot()) );
+    removeId->setEnabled( false );
+
+    connect( this, SIGNAL( newSelection( bool ) ) , this, SLOT( newSelection( bool ) ) );
 }
 
 
 QAjShareWidget::~QAjShareWidget()
-{
-}
+{}
 
 void QAjShareWidget::insertShare( QString path, QString shareMode )
 {
-	if( !path.endsWith( filesystemSeparator ) )
-		path += filesystemSeparator;
-	QAjShareItem *item = new QAjShareItem( this );
-	item->path = path;
-	item->setText( PATH_SHARE_INDEX, path );
-	item->setIcon( PATH_SHARE_INDEX, QIcon(":/small/shares.png") );
-	if( shareMode == "subdirectory" )
-	{
-		item->recursiv = "true";
-		item->setIcon( MODE_SHARE_INDEX, QIcon(":/small/ok.png") );
-	}
-	else
-	{
-		item->recursiv = "false";
-		item->setIcon( MODE_SHARE_INDEX, QIcon(":/small/cancel.png") );
-	}
+    if ( !path.endsWith( filesystemSeparator ) )
+        path += filesystemSeparator;
+    QAjShareItem *item = new QAjShareItem( this );
+    item->path = path;
+    item->setText( PATH_SHARE_INDEX, path );
+    item->setIcon( PATH_SHARE_INDEX, QIcon(":/small/shares.png") );
+    if ( shareMode == "subdirectory" )
+    {
+        item->recursiv = "true";
+        item->setIcon( MODE_SHARE_INDEX, QIcon(":/small/ok.png") );
+    }
+    else
+    {
+        item->recursiv = "false";
+        item->setIcon( MODE_SHARE_INDEX, QIcon(":/small/cancel.png") );
+    }
 }
 
 void QAjShareWidget::insertSlot()
 {
-	insert();
+    insert();
 }
 void QAjShareWidget::removeSlot()
 {
-	remove();
+    remove();
 }
 void QAjShareWidget::reloadSlot()
 {
-	reload();
+    reload();
 }
 void QAjShareWidget::commitSlot()
 {
-	commit();
+    commit();
 }
 
 void QAjShareWidget::newSelection( bool oneSelected )
 {
-	removeId->setEnabled( oneSelected );
+    removeId->setEnabled( oneSelected );
 }
 
 void QAjShareWidget::insertDirList( QTreeWidgetItem* parent, QStringList* dirList )
 {
-	if( dirList->size() <= 0 )
-		return;
-	if( dirList->size() == 1 )
-	{
-		QAjItem* newItem = new QAjItem( SHARED_FILE, parent );
-		newItem->setFlags( Qt::ItemIsEnabled );
-		parent->addChild( newItem );
-		newItem->setText( PATH_SHARE_INDEX, dirList->front() );
-	}
-	else
-	{
-		QTreeWidgetItem* currChild = parent->child( 0 );
-		int i = 1;
-		while( ( currChild != NULL ) && ( currChild->text( PATH_SHARE_INDEX ) != dirList->front() ) )
-		{
-			currChild = parent->child( i++ );
-		}
-		// nicht gefunden
-		if( currChild == NULL )
-		{
-			QAjItem* newItem = new QAjItem( SHARED_FILE, parent );
-			newItem->setFlags( Qt::ItemIsEnabled );
-			parent->addChild( newItem );
-			newItem->setText( PATH_SHARE_INDEX, dirList->front() );
-			newItem->setIcon( PATH_SHARE_INDEX, QIcon(":/small/shares.png") );
-			dirList->pop_front();
-			insertDirList( newItem, dirList );
-		}
-		else
-		{
-			dirList->pop_front();
-			insertDirList( currChild, dirList );
-		}
-	}
+    if ( dirList->size() <= 0 )
+        return;
+    if ( dirList->size() == 1 )
+    {
+        QAjItem* newItem = new QAjItem( SHARED_FILE, parent );
+        newItem->setFlags( Qt::ItemIsEnabled );
+        parent->addChild( newItem );
+        newItem->setText( PATH_SHARE_INDEX, dirList->front() );
+    }
+    else
+    {
+        QTreeWidgetItem* currChild = parent->child( 0 );
+        int i = 1;
+        while ( ( currChild != NULL ) && ( currChild->text( PATH_SHARE_INDEX ) != dirList->front() ) )
+        {
+            currChild = parent->child( i++ );
+        }
+        // nicht gefunden
+        if ( currChild == NULL )
+        {
+            QAjItem* newItem = new QAjItem( SHARED_FILE, parent );
+            newItem->setFlags( Qt::ItemIsEnabled );
+            parent->addChild( newItem );
+            newItem->setText( PATH_SHARE_INDEX, dirList->front() );
+            newItem->setIcon( PATH_SHARE_INDEX, QIcon(":/small/shares.png") );
+            dirList->pop_front();
+            insertDirList( newItem, dirList );
+        }
+        else
+        {
+            dirList->pop_front();
+            insertDirList( currChild, dirList );
+        }
+    }
 }
 

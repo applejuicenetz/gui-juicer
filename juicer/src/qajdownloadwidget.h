@@ -41,18 +41,11 @@
 
 class QAjDownloadItem;
 
-typedef struct
-{
-    QAjDownloadItem* download;
-    QAjUserItem* user;
-}
-DownloadUser;
-
 class QAjDownloadWidget : public QAjListWidget
 {
     Q_OBJECT
 public:
-    QAjDownloadWidget( QWidget *parent = 0, const char *name = 0);
+    QAjDownloadWidget( QWidget *parent = 0 );
 
     ~QAjDownloadWidget();
 

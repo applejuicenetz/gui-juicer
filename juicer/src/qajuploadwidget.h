@@ -28,32 +28,30 @@
 #include "qconvert.h"
 #include "types.h"
 
-#define NUM_UPLOAD_STATES 8
-
 /**
 @author Matthias Reif
 */
 class QAjUploadWidget : public QAjListWidget
 {
-Q_OBJECT
+    Q_OBJECT
 public:
-	QAjUploadWidget( QWidget *parent = 0, const char *name = 0 );
+    QAjUploadWidget( QWidget *parent = 0 );
 
-	~QAjUploadWidget();
+    ~QAjUploadWidget();
 
-	bool insertUpload( QString id, QString shareId, QString version, QString os, QString status, QString directState, QString priority, QString nick, QString speed );
-	
-	bool remove( QString id );
+    bool insertUpload( QString id, QString shareId, QString version, QString os, QString status, QString directState, QString priority, QString nick, QString speed );
+
+    bool remove( QString id );
     void setFilename( QString shareId, QString filename );
 
-	QTreeWidgetItem *activeUpload;
-	QTreeWidgetItem *queuedUpload;
-	QTreeWidgetItem *otherUpload;
+    QTreeWidgetItem *activeUpload;
+    QTreeWidgetItem *queuedUpload;
+    QTreeWidgetItem *otherUpload;
 private:
-	QAjUploadItem* findUpload( QString id );
-	bool isOtherUpload( QString status );
-	QHash<QString, QString> uploadStatusDescr;
-	QHash<QString, QAjUploadItem*> uploads;
+    QAjUploadItem* findUpload( QString id );
+    bool isOtherUpload( QString status );
+    QHash<QString, QString> uploadStatusDescr;
+    QHash<QString, QAjUploadItem*> uploads;
 
     QIcon *linuxIcon, *windowsIcon, *macIcon, *solarisIcon, *freeBsdIcon, *netwareIcon;
 };

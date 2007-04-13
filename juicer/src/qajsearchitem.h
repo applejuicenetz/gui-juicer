@@ -20,8 +20,7 @@
 #ifndef QAJSEARCHITEM_H
 #define QAJSEARCHITEM_H
 
-using namespace std;
-#include <map>
+#include <QHash>
 
 #include "qajitem.h"
 #include "types.h"
@@ -33,18 +32,18 @@ class QAjSearchItem : public QAjItem
 {
 public:
     QAjSearchItem( QTreeWidget* parent );
-	 QAjSearchItem( QTreeWidgetItem* parent );
+    QAjSearchItem( QTreeWidgetItem* parent );
 
-	~QAjSearchItem();
-	
-	int compare( QTreeWidgetItem * i, int col, bool ascending ) const;
-	QAjSearchItem* find( int id );
-	
-	int hits;
-	int entriesCount;
-	QString size;
+    ~QAjSearchItem();
 
-	map<int, QAjSearchItem*> results;
+    int compare( QTreeWidgetItem * i, int col, bool ) const;
+    QAjSearchItem* find( QString id );
+
+    int hits;
+    int entriesCount;
+    QString size;
+
+    QHash<QString, QAjSearchItem*> results;
 
 };
 

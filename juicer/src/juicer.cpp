@@ -31,6 +31,7 @@ Juicer::Juicer( ) : QMainWindow( )
 
     filesystemSeparator = "\\";
     zeroTime = QDateTime( QDate(1970,1,1), QTime(0,0), Qt::UTC );
+    QSettings lokalSettings;
 
     linkServer = new QAjServerSocket( QAjApplication::APP_PORT );
     connect( linkServer, SIGNAL( lineReady( QString ) ), this, SLOT( linkServerLine( QString ) ) );
@@ -42,17 +43,10 @@ Juicer::Juicer( ) : QMainWindow( )
     ajUploadWidget = new QAjUploadWidget( ajTab );
     ajSearchWidget = new QAjSearchWidget( ajTab );
 
-    ajServerMetaWidget = new QWidget( ajTab );
-    QVBoxLayout* l = new QVBoxLayout();
-    l->setSpacing( 0 );
-    l->setMargin( 0 );
+
+    ajServerMetaWidget = new QAjServerMetaWidget( ajTab );
     ajServerWidget = new QAjServerWidget( ajServerMetaWidget );
-    ajServerWelcomeMessage = new QTextEdit( ajServerMetaWidget );
-    ajServerWelcomeMessage->setReadOnly( true );
-    ajServerWelcomeMessage->adjustSize();
-    l->addWidget(ajServerWidget, 10);
-    l->addWidget(ajServerWelcomeMessage, 1);
-    ajServerMetaWidget->setLayout( l );
+    ajServerMetaWidget->setServerWidget( ajServerWidget );
 
     ajShareWidget = new QAjShareWidget( filesystemSeparator, ajTab );
 
@@ -113,7 +107,6 @@ Juicer::Juicer( ) : QMainWindow( )
     statusBar()->addPermanentWidget( upSizeLabel );
     statusBar()->addPermanentWidget( creditsLabel );
 
-    QSettings lokalSettings;
     lokalSettings.beginGroup( "MainWindow" );
     resize( lokalSettings.value( "size", QSize(1000, 600) ).toSize() );
     move( lokalSettings.value( "pos", QPoint(100, 100) ).toPoint() );
@@ -377,6 +370,10 @@ void Juicer::closeEvent( QCloseEvent* ce )
     lokalSettings.setValue( "size", size() );
     lokalSettings.setValue( "pos", pos() );
     lokalSettings.endGroup();
+    #if QT_VERSION < 0x040300
+    lokalSettings.setValue( "welcomePos", ajServerMetaWidget->dockWidgetArea(ajServerMetaWidget->dock) );
+    #endif
+    lokalSettings.setValue( "welcomeVisible", ajServerMetaWidget->dock->enabled );
     ce->accept();
 }
 

@@ -19,7 +19,7 @@
  ***************************************************************************/
 #include "qajdownloadwidget.h"
 
-QAjDownloadWidget::QAjDownloadWidget( QWidget *parent, const char *name) : QAjListWidget( ID_DOWN_INDEX, parent, name)
+QAjDownloadWidget::QAjDownloadWidget( QWidget *parent ) : QAjListWidget( ID_DOWN_INDEX, parent )
 {
     userStatusDescr["1"] = QObject::tr("unasked ");
     userStatusDescr["2"] = QObject::tr("try to connect ");

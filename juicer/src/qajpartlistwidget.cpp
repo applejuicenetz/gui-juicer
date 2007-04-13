@@ -21,41 +21,38 @@
 
 QAjPartListWidget::QAjPartListWidget( QWidget *parent, const char *name ) : QWidget( parent )
 {
-	this->setWindowIcon( QIcon(":/juicer.png") );
-	this->setFixedSize( 600, 280 );
-	paintWidget = new QAjPartsWidget( this );
-	
-	filesizeLabel = new QLabel(this);
-	filesizeLabel->move( paintWidget->x(), paintWidget->y() + paintWidget->height() + 20 );
-	filesizeLabel->resize( 100 , 30 );
-	filesizeLabel->hide();
-	readyLabel = new QLabel(this);
-	readyLabel->move( paintWidget->x() + 30, paintWidget->y() + paintWidget->height() + 20 );
-	readyLabel->resize( 120 , 30 );
-	availableLabel = new QLabel(this);
-	availableLabel->move( paintWidget->x() + 180, paintWidget->y() + paintWidget->height() + 20 );
-	availableLabel->resize( 120 , 30 );
-	missingLabel = new QLabel(this);
-	missingLabel->move( paintWidget->x() + 330, paintWidget->y() + paintWidget->height() + 20 );
-	missingLabel->resize( 120 , 30 );
-	
-	okButton = new QPushButton( this );
-	okButton->setText("OK");
-	okButton->adjustSize();
-	okButton->move( paintWidget->x() + paintWidget->width() - okButton->width(), paintWidget->y() + paintWidget->height() + 20 );
-	
-	connect( okButton, SIGNAL( clicked() ), this, SLOT( hide() ) );
-	
-	timer = new QTimer( this );
-	id = "";
+    this->setWindowIcon( QIcon(":/juicer.png") );
+    this->setFixedSize( 600, 280 );
+    paintWidget = new QAjPartsWidget( this );
+
+    filesizeLabel = new QLabel(this);
+    filesizeLabel->move( paintWidget->x(), paintWidget->y() + paintWidget->height() + 20 );
+    filesizeLabel->resize( 100 , 30 );
+    filesizeLabel->hide();
+    readyLabel = new QLabel(this);
+    readyLabel->move( paintWidget->x() + 30, paintWidget->y() + paintWidget->height() + 20 );
+    readyLabel->resize( 120 , 30 );
+    availableLabel = new QLabel(this);
+    availableLabel->move( paintWidget->x() + 180, paintWidget->y() + paintWidget->height() + 20 );
+    availableLabel->resize( 120 , 30 );
+    missingLabel = new QLabel(this);
+    missingLabel->move( paintWidget->x() + 330, paintWidget->y() + paintWidget->height() + 20 );
+    missingLabel->resize( 120 , 30 );
+
+    okButton = new QPushButton( this );
+    okButton->setText("OK");
+    okButton->adjustSize();
+    okButton->move( paintWidget->x() + paintWidget->width() - okButton->width(), paintWidget->y() + paintWidget->height() + 20 );
+
+    connect( okButton, SIGNAL( clicked() ), this, SLOT( hide() ) );
+
+    timer = new QTimer( this );
+    id = "";
 }
 
 
 QAjPartListWidget::~QAjPartListWidget()
-{
-	delete paintWidget;
-	delete timer;
-}
+{}
 
 
 /*!
@@ -63,25 +60,25 @@ QAjPartListWidget::~QAjPartListWidget()
  */
 void QAjPartListWidget::update( qulonglong size, QLinkedList<Part> partList )
 {
-	if( !isVisible() )
-	{
-		move( QCursor::pos() - QPoint( width()/2, height()/2 ) );
-		show();
-	}
+    if ( !isVisible() )
+    {
+        move( QCursor::pos() - QPoint( width()/2, height()/2 ) );
+        show();
+    }
 
-	if( ! timer->isActive() )
-		timer->start( 5000 );
+    if ( ! timer->isActive() )
+        timer->start( 5000 );
 
-	this->size = size;
-	this->partList = partList;
-   Part closePart;
-   closePart.fromPosition = size;
-   closePart.type = -10;
-	this->partList.push_back( closePart );
+    this->size = size;
+    this->partList = partList;
+    Part closePart;
+    closePart.fromPosition = size;
+    closePart.type = -10;
+    this->partList.push_back( closePart );
 
-	paintWidget->update( size, this->partList );
-	paintWidget->repaint();
-	repaint();
+    paintWidget->update( size, this->partList );
+    paintWidget->repaint();
+    repaint();
 }
 
 
@@ -90,21 +87,21 @@ void QAjPartListWidget::update( qulonglong size, QLinkedList<Part> partList )
  */
 void QAjPartListWidget::paintEvent( QPaintEvent* )
 {
-	QPainter painter;
-	painter.begin( this );
+    QPainter painter;
+    painter.begin( this );
 
-	painter.fillRect( paintWidget->x(), paintWidget->y() + paintWidget->height() + 20, 20, 20, QBrush(QColor(0, 220,0)) );
-	
-	painter.fillRect( paintWidget->x() + 150, paintWidget->y() + paintWidget->height() + 20, 20, 20, QBrush(QColor(0,0,220)) );
-	
-	painter.fillRect( paintWidget->x() + 300, paintWidget->y() + paintWidget->height() + 20, 20, 20, QBrush(QColor(240,0,0)) );
+    painter.fillRect( paintWidget->x(), paintWidget->y() + paintWidget->height() + 20, 20, 20, QBrush(QColor(0, 220,0)) );
 
-	painter.end();
+    painter.fillRect( paintWidget->x() + 150, paintWidget->y() + paintWidget->height() + 20, 20, 20, QBrush(QColor(0,0,220)) );
 
-	readyLabel->setText( QString::number( paintWidget->ready, 'f', 2 ) + "% finished" );
-	availableLabel->setText( QString::number( paintWidget->available, 'f', 2 ) + "% seen" );
-	missingLabel->setText( QString::number( paintWidget->missing, 'f', 2 ) + "% not seen" );
-	
+    painter.fillRect( paintWidget->x() + 300, paintWidget->y() + paintWidget->height() + 20, 20, 20, QBrush(QColor(240,0,0)) );
+
+    painter.end();
+
+    readyLabel->setText( QString::number( paintWidget->ready, 'f', 2 ) + "% finished" );
+    availableLabel->setText( QString::number( paintWidget->available, 'f', 2 ) + "% seen" );
+    missingLabel->setText( QString::number( paintWidget->missing, 'f', 2 ) + "% not seen" );
+
 }
 
 
@@ -113,7 +110,7 @@ void QAjPartListWidget::paintEvent( QPaintEvent* )
  */
 void QAjPartListWidget::setFilename( QString filename )
 {
-	setWindowTitle( "Juicer - " + filename );
+    setWindowTitle( "Juicer - " + filename );
 }
 
 
@@ -122,5 +119,5 @@ void QAjPartListWidget::setFilename( QString filename )
  */
 void QAjPartListWidget::setId( QString id )
 {
-	this->id = id;
+    this->id = id;
 }

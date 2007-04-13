@@ -38,36 +38,36 @@
 */
 class QAjPartListWidget : public QWidget
 {
-Q_OBJECT
+    Q_OBJECT
 public:
-	QAjPartListWidget( QWidget *parent = 0, const char *name = 0 );
+    QAjPartListWidget( QWidget *parent = 0, const char *name = 0 );
 
-	~QAjPartListWidget();
-	void update( qulonglong size, QLinkedList<Part> partList );
-	void setFilename( QString filename );
-	void setId( QString id );
+    ~QAjPartListWidget();
+    void update( qulonglong size, QLinkedList<Part> partList );
+    void setFilename( QString filename );
+    void setId( QString id );
 protected:
-	QString id;
-	QAjPartsWidget* paintWidget;
-	qulonglong size;
-	
-	double ready;
-	double available;
-	double missing;
-	
-	QLinkedList<Part> partList;
-	
+    QString id;
+    QAjPartsWidget* paintWidget;
+    qulonglong size;
+
+    double ready;
+    double available;
+    double missing;
+
+    QLinkedList<Part> partList;
+
 protected:
-	void paintEvent( QPaintEvent* );
-	
-	QLabel* filesizeLabel;
-	QLabel* readyLabel;
-	QLabel* availableLabel;
-	QLabel* missingLabel;
-	
-	QPushButton* okButton;
-	
-	QTimer* timer;
+    void paintEvent( QPaintEvent* );
+
+    QLabel* filesizeLabel;
+    QLabel* readyLabel;
+    QLabel* availableLabel;
+    QLabel* missingLabel;
+
+    QPushButton* okButton;
+
+    QTimer* timer;
 };
 
 #endif

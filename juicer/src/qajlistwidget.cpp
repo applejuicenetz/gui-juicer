@@ -19,7 +19,7 @@
  ***************************************************************************/
 #include "qajlistwidget.h"
 
-QAjListWidget::QAjListWidget( int idIndex, QWidget *parent, const char *name ) : QTreeWidget( parent )
+QAjListWidget::QAjListWidget( int idIndex, QWidget *parent ) : QTreeWidget( parent )
 {
     this->idIndex = idIndex;
     changed = false;

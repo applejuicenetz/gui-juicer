@@ -97,7 +97,7 @@ AjSettings QAjOptionsDialog::getAjSettings()
     settings.ftpPort = ftpPortEdit->text();
     settings.ftpUser = ftpUserEdit->text();
     settings.ftpPassword = ftpPasswordEdit->text();
-    settings.ftpDir = ftpDirEdit->text();
+    settings.ftpDir = ftpInDirEdit->text();
 
     return settings;
 }
@@ -140,7 +140,7 @@ void QAjOptionsDialog::setAjSettings( AjSettings settings )
     ftpPortEdit->setText( settings.ftpPort );
     ftpUserEdit->setText( settings.ftpUser );
     ftpPasswordEdit->setText( settings.ftpPassword );
-    ftpDirEdit->setText( settings.ftpDir );
+    ftpInDirEdit->setText( settings.ftpDir );
 }
 
 void QAjOptionsDialog::selectIncomingDir()

@@ -70,7 +70,7 @@
     </rect>
    </property>
    <property name="currentIndex" >
-    <number>0</number>
+    <number>2</number>
    </property>
    <widget class="QWidget" name="tab" >
     <attribute name="title" >
@@ -79,8 +79,8 @@
     <widget class="QWidget" name="layoutWidget" >
      <property name="geometry" >
       <rect>
-       <x>11</x>
-       <y>14</y>
+       <x>10</x>
+       <y>10</y>
        <width>351</width>
        <height>365</height>
       </rect>
@@ -410,13 +410,13 @@
     <attribute name="title" >
      <string>Launching</string>
     </attribute>
-    <widget class="QWidget" name="layoutWidget" >
+    <widget class="QWidget" name="" >
      <property name="geometry" >
       <rect>
-       <x>14</x>
-       <y>18</y>
+       <x>11</x>
+       <y>11</y>
        <width>351</width>
-       <height>271</height>
+       <height>301</height>
       </rect>
      </property>
      <layout class="QVBoxLayout" >
@@ -470,13 +470,13 @@
         <property name="title" >
          <string>Location of files</string>
         </property>
-        <widget class="QWidget" name="layoutWidget" >
+        <widget class="QWidget" name="" >
          <property name="geometry" >
           <rect>
-           <x>10</x>
-           <y>22</y>
+           <x>11</x>
+           <y>23</y>
            <width>321</width>
-           <height>201</height>
+           <height>234</height>
           </rect>
          </property>
          <layout class="QVBoxLayout" >
@@ -554,6 +554,13 @@
             </property>
            </widget>
           </item>
+          <item>
+           <widget class="QPushButton" name="jumpFtpButton" >
+            <property name="text" >
+             <string>jump to ftp settings</string>
+            </property>
+           </widget>
+          </item>
          </layout>
         </widget>
        </widget>
@@ -565,13 +572,13 @@
     <attribute name="title" >
      <string>Ftp</string>
     </attribute>
-    <widget class="QWidget" name="widget" >
+    <widget class="QWidget" name="" >
      <property name="geometry" >
       <rect>
        <x>10</x>
        <y>10</y>
        <width>351</width>
-       <height>151</height>
+       <height>182</height>
       </rect>
      </property>
      <layout class="QGridLayout" >
@@ -581,13 +588,10 @@
       <property name="spacing" >
        <number>6</number>
       </property>
-      <item row="0" column="1" >
-       <widget class="QLineEdit" name="ftpServerEdit" />
-      </item>
-      <item row="1" column="0" >
-       <widget class="QLabel" name="label_18" >
+      <item row="3" column="0" >
+       <widget class="QLabel" name="label_20" >
         <property name="text" >
-         <string>Port:</string>
+         <string>Password:</string>
         </property>
        </widget>
       </item>
@@ -598,10 +602,13 @@
         </property>
        </widget>
       </item>
-      <item row="3" column="1" >
-       <widget class="QLineEdit" name="ftpPasswordEdit" >
-        <property name="echoMode" >
-         <enum>QLineEdit::Password</enum>
+      <item row="2" column="1" >
+       <widget class="QLineEdit" name="ftpUserEdit" />
+      </item>
+      <item row="1" column="0" >
+       <widget class="QLabel" name="label_18" >
+        <property name="text" >
+         <string>Port:</string>
         </property>
        </widget>
       </item>
@@ -612,28 +619,38 @@
         </property>
        </widget>
       </item>
-      <item row="2" column="1" >
-       <widget class="QLineEdit" name="ftpUserEdit" />
+      <item row="3" column="1" >
+       <widget class="QLineEdit" name="ftpPasswordEdit" >
+        <property name="echoMode" >
+         <enum>QLineEdit::Password</enum>
+        </property>
+       </widget>
       </item>
-      <item row="3" column="0" >
-       <widget class="QLabel" name="label_20" >
+      <item row="5" column="1" >
+       <widget class="QLineEdit" name="ftpTmpEdit" />
+      </item>
+      <item row="4" column="0" >
+       <widget class="QLabel" name="label_21" >
         <property name="text" >
-         <string>Password:</string>
+         <string>Incoming Directory:</string>
         </property>
        </widget>
       </item>
       <item row="1" column="1" >
        <widget class="QLineEdit" name="ftpPortEdit" />
       </item>
-      <item row="4" column="1" >
-       <widget class="QLineEdit" name="ftpDirEdit" />
-      </item>
-      <item row="4" column="0" >
-       <widget class="QLabel" name="label_21" >
+      <item row="5" column="0" >
+       <widget class="QLabel" name="label_23" >
         <property name="text" >
-         <string>Directory:</string>
+         <string>Temporary Directory:</string>
         </property>
        </widget>
+      </item>
+      <item row="4" column="1" >
+       <widget class="QLineEdit" name="ftpInDirEdit" />
+      </item>
+      <item row="0" column="1" >
+       <widget class="QLineEdit" name="ftpServerEdit" />
       </item>
      </layout>
     </widget>
@@ -668,7 +685,7 @@
   <tabstop>ftpPortEdit</tabstop>
   <tabstop>ftpUserEdit</tabstop>
   <tabstop>ftpPasswordEdit</tabstop>
-  <tabstop>ftpDirEdit</tabstop>
+  <tabstop>ftpInDirEdit</tabstop>
  </tabstops>
  <resources/>
  <connections>

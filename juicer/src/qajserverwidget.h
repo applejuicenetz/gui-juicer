@@ -31,35 +31,35 @@
 */
 class QAjServerWidget : public QAjListWidget
 {
-Q_OBJECT
+    Q_OBJECT
 public:
-	QAjServerWidget( QWidget *parent = 0, const char *name = 0);
+    QAjServerWidget( QWidget *parent = 0 );
 
-	~QAjServerWidget();
-	
-	void insertServer( QString id, QString name, QString host, QString port, QString lastseen, QString tests );
-	
-	void connectedWith( QString id );
-   void connectingTo( QString id );
-	QTreeWidgetItem* findServer( QString id );
-	bool remove( QString id );
+    ~QAjServerWidget();
+
+    void insertServer( QString id, QString name, QString host, QString port, QString lastseen, QString tests );
+
+    void connectedWith( QString id );
+    void connectingTo( QString id );
+    QTreeWidgetItem* findServer( QString id );
+    bool remove( QString id );
 
 private:
-	QString connectedWithId, connectingToId;
-	QAction* removeId;
-	QAction* connectId;
-	QHash<QString, QTreeWidgetItem*> servers;
+    QString connectedWithId, connectingToId;
+    QAction* removeId;
+    QAction* connectId;
+    QHash<QString, QTreeWidgetItem*> servers;
 
 public slots:
-	void selectionChanged1( bool isOneSelected );
-	void removeSlot();
-	void connectSlot();
-	void findSlot();
+    void selectionChanged1( bool isOneSelected );
+    void removeSlot();
+    void connectSlot();
+    void findSlot();
 signals:
-	void remove();
-	void connect();
-	void find();
-	void connected( QString server );
+    void remove();
+    void connect();
+    void find();
+    void connected( QString server );
 };
 
 #endif

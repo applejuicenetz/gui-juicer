@@ -1,6 +1,6 @@
 /***************************************************************************
- *   Copyright (C) 2004 by Matthias Reif                                   *
- *   matthias.reif@informatik.tu-chemnitz.de                               *
+ *   Copyright (C) 2007 by Matthias Reif   *
+ *   matthias.reif@informatik.tu-chemnitz.de   *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -17,37 +17,52 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
-#ifndef QAJITEM_H
-#define QAJITEM_H
+#ifndef QAJSERVERMETAWIDGET_H
+#define QAJSERVERMETAWIDGET_H
 
-#include <QTreeWidget>
+#include <QtGlobal>
+#include <QMainWindow>
+#include <QWidget>
+#include <QDockWidget>
+#include <QSettings>
+#include <QTextEdit>
 
-typedef enum { DOWN, UP, USER, SEARCH, SHARE, SHARED_FILE, GENERIC } AjItemType;
+#include "qajserverwidget.h"
 
 /**
-@author Matthias Reif
+	@author Matthias Reif <matthias.reif@informatik.tu-chemnitz.de>
 */
-class QAjItem : public QTreeWidgetItem
+class QAjServerMetaWidget : public QMainWindow
 {
+Q_OBJECT
 public:
-    QAjItem( AjItemType type, QTreeWidget *parent = 0 );
-    QAjItem( AjItemType type, QTreeWidgetItem *parent = 0 );
+    QAjServerMetaWidget(QWidget *parent = 0);
 
-    virtual ~QAjItem();
+    ~QAjServerMetaWidget();
+    void setServerWidget(QAjServerWidget* serverWidget);
 
-    QString getStatus()
+    QAjServerWidget* serverWidget;
+    QTextEdit *welcomeMessage;
+    QAction* showWelcomeAction;
+
+    class AjDockWidget : public QDockWidget
     {
-        return status;
-    }
-    void setStatus( QString newStatus )
-    {
-        status = newStatus;
-    }
-    int getType();
+    public:
+        AjDockWidget(QString title, QAjServerMetaWidget* parent)
+            : QDockWidget(title, parent) {enabled = false;}
+        bool enabled;
+    protected:
+        void closeEvent( QCloseEvent * event )
+        {
+            enabled = false;
+            ((QAjServerMetaWidget*)this->parentWidget())->showWelcomeAction->setChecked(false);
+            QWidget::closeEvent( event );
+        }
+    } *dock;
 
-protected:
-    AjItemType type;
-    QString status;
+private slots:
+    void welcomeDockLocationChanged( Qt::DockWidgetArea area );
+    void dockVisibleSlot( bool visible );
 };
 
 #endif

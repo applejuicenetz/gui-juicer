@@ -19,7 +19,7 @@
  ***************************************************************************/
 #include "qajserverwidget.h"
 
-QAjServerWidget::QAjServerWidget( QWidget *parent, const char *name) : QAjListWidget( ID_SERVER_INDEX, parent, name )
+QAjServerWidget::QAjServerWidget( QWidget *parent ) : QAjListWidget( ID_SERVER_INDEX, parent )
 {
     connectedWithId = "";
     connectingToId = "";
@@ -171,4 +171,3 @@ bool QAjServerWidget::remove( QString id )
     }
     return false;
 }
-

@@ -21,56 +21,52 @@
 
 QAjSearchItem::QAjSearchItem( QTreeWidget* parent ) : QAjItem( SEARCH, parent)
 {
-	hits = 0;
-	entriesCount = 0;
-	setTextAlignment( SIZE_SEARCH_INDEX, Qt::AlignRight );
-	setTextAlignment( COUNT_SEARCH_INDEX, Qt::AlignRight );
+    hits = 0;
+    entriesCount = 0;
+    setTextAlignment( SIZE_SEARCH_INDEX, Qt::AlignRight );
+    setTextAlignment( COUNT_SEARCH_INDEX, Qt::AlignRight );
 }
 
 QAjSearchItem::QAjSearchItem( QTreeWidgetItem* parent ) : QAjItem( SEARCH, parent)
 {
-	hits = 0;
-	entriesCount = 0;
-	setTextAlignment( SIZE_SEARCH_INDEX, Qt::AlignRight );
-	setTextAlignment( COUNT_SEARCH_INDEX, Qt::AlignRight );
+    hits = 0;
+    entriesCount = 0;
+    setTextAlignment( SIZE_SEARCH_INDEX, Qt::AlignRight );
+    setTextAlignment( COUNT_SEARCH_INDEX, Qt::AlignRight );
 }
 
 QAjSearchItem::~QAjSearchItem()
+{}
+
+int QAjSearchItem::compare( QTreeWidgetItem* i, int col, bool ) const
 {
+    if ( col == SIZE_SEARCH_INDEX )
+    {
+        qulonglong a = size.toULongLong();
+        qulonglong b = ((QAjSearchItem*)i)->size.toULongLong();
+        if ( a > b )
+            return 1;
+        else if ( a < b )
+            return -1;
+        else
+            return 0;
+    }
+    else
+    {
+        if ( text( col ) > i->text( col ) )
+            return 1;
+        else if ( text( col ) < i->text( col ) )
+            return -1;
+        else
+            return 0;
+    }
 }
 
-int QAjSearchItem::compare( QTreeWidgetItem* i, int col, bool ascending ) const
+QAjSearchItem* QAjSearchItem::find( QString id )
 {
-	if( col == SIZE_SEARCH_INDEX )
-	{
-		qulonglong a = size.toULongLong();
-		qulonglong b = ((QAjSearchItem*)i)->size.toULongLong();
-		if( a > b )
-			return 1;
-		else if( a < b )
-			return -1;
-		else
-			return 0;
-	}
-	else
-	{
-		if( text( col ) > i->text( col ) )
-			return 1;
-		else if( text( col ) < i->text( col ) )
-			return -1;
-		else
-			return 0;
-		//return QTreeWidgetItem::compare( i, col, ascending );
-	}
-}
-
-QAjSearchItem* QAjSearchItem::find( int id )
-{
-	map<int, QAjSearchItem*>::iterator resultsIt;
-	resultsIt = results.find( id );
-	if( resultsIt == results.end() )
-		return NULL;
-	else
-		return resultsIt->second;
+    if ( results.contains( id ) )
+        return results[ id ];
+    else
+        return NULL;
 }
 

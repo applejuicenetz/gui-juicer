@@ -116,8 +116,9 @@
 
 #include <QString>
 
-typedef struct
+class AjSettings
 {
+    public:
     QString nick, password, coreAddress, tcpPort, xmlPort, incomingDir, tempDir, autoconnect, savePassword, showSplash;
     QString maxDown, maxUp, maxCon, maxSlot, maxSources, maxNewCon, allowBrowse;
     QString serverURL;
@@ -125,14 +126,22 @@ typedef struct
     QString launcher;
     QString location, incomingDirSpecific, tempDirSpecific;
     QString ftpServer, ftpPort, ftpUser, ftpPassword, ftpDir;
-}
-AjSettings;
+};
 
-typedef struct
+class Part
 {
+    public:
     qulonglong fromPosition;
     int type;
-}
-Part;
+};
+
+class QAjDownloadItem;
+class QAjUserItem;
+class DownloadUser
+{
+    public:
+    QAjDownloadItem* download;
+    QAjUserItem* user;
+};
 
 #endif

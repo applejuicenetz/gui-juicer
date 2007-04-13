@@ -29,31 +29,31 @@
 */
 class QAjShareWidget : public QAjListWidget
 {
-Q_OBJECT
+    Q_OBJECT
 public:
-	QAjShareWidget( QString filesystemSeparator, QWidget *parent = 0, const char *name = 0);
+    QAjShareWidget( QString filesystemSeparator, QWidget *parent = 0 );
 
-	~QAjShareWidget();
+    ~QAjShareWidget();
 
-	void insertShare( QString path, QString shareMode );
-	QAction* removeId;
+    void insertShare( QString path, QString shareMode );
+    QAction* removeId;
 
 protected:
-	void insertDirList( QTreeWidgetItem* parent, QStringList* dirList );
-	QString filesystemSeparator;
+    void insertDirList( QTreeWidgetItem* parent, QStringList* dirList );
+    QString filesystemSeparator;
 
 private slots:
-	void newSelection( bool oneSelected);
-	void insertSlot();
-	void removeSlot();
-	void reloadSlot();
-   void commitSlot();
+    void newSelection( bool oneSelected);
+    void insertSlot();
+    void removeSlot();
+    void reloadSlot();
+    void commitSlot();
 
 signals:
-	void insert();
-	void remove();
-	void reload();
-   void commit();
+    void insert();
+    void remove();
+    void reload();
+    void commit();
 };
 
 #endif
