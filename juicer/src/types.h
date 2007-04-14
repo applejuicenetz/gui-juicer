@@ -30,7 +30,7 @@
 #define NEW_UPLOAD "-1"
 
 // download col managment
-#define NUM_DOWN_COL 12
+#define NUM_DOWN_COL 11
 #define FILENAME_DOWN_INDEX 0
 #define SOURCES_DOWN_INDEX 1
 #define SPEED_DOWN_INDEX 2
@@ -42,14 +42,12 @@
 #define REMAIN_SIZE_DOWN_INDEX 8
 #define REMAIN_TIME_DOWN_INDEX 9
 #define MISSING_DOWN_INDEX 10
-#define ID_DOWN_INDEX NUM_DOWN_COL - 1
 // user col managmet
-#define NUM_USER_COL 3
+#define NUM_USER_COL 2
 #define STATUS_USER_INDEX 0
 #define POWER_USER_INDEX 1
-#define ID_USER_INDEX NUM_USER_COL - 1
 // upload col managmet
-#define NUM_UP_COL 9
+#define NUM_UP_COL 7
 #define FILENAME_UP_INDEX 0
 #define NICK_UP_INDEX 1
 #define SPEED_UP_INDEX 2
@@ -57,37 +55,29 @@
 #define PRIORITY_UP_INDEX 4
 #define OS_UP_INDEX 5
 #define DIRECTSTATE_UP_INDEX 6
-#define SHAREID_UP_INDEX NUM_UP_COL - 2
-#define ID_UP_INDEX NUM_UP_COL - 1
 // search col managmet
-#define NUM_SEARCH_COL 5
+#define NUM_SEARCH_COL 3
 #define TEXT_SEARCH_INDEX 0
 #define SIZE_SEARCH_INDEX 1
 #define COUNT_SEARCH_INDEX 2
-#define CHECKSUM_SEARCH_INDEX 3
-#define ID_SEARCH_INDEX NUM_SEARCH_COL - 1
 // sever col managment
-#define NUM_SERVER_COL 6
+#define NUM_SERVER_COL 5
 #define NAME_SERVER_INDEX 0
 #define HOST_SERVER_INDEX 1
 #define PORT_SERVER_INDEX 2
 #define LASTSEEN_SERVER_INDEX 3
 #define TESTS_SERVER_INDEX 4
-#define ID_SERVER_INDEX NUM_SERVER_COL - 1
 // share col managment
-#define NUM_SHARE_COL 3
+#define NUM_SHARE_COL 2
 #define PATH_SHARE_INDEX 0
 #define MODE_SHARE_INDEX 1
-#define ID_SHARE_INDEX NUM_SHARE_COL - 1
 // shared files col managment
-#define NUM_SHARED_FILES_COL 2
+#define NUM_SHARED_FILES_COL 1
 #define FILENAME_SHARED_FILES_INDEX 0
-#define ID_SHARED_FILES_INDEX NUM_SHARE_COL - 1
 // ftp col management
-#define NUM_FTP_COL 3
+#define NUM_FTP_COL 2
 #define FILENAME_FTP_INDEX 0
 #define SIZE_FTP_INDEX 1
-#define ID_FTP_INDEX NUM_FTP_COL - 1
 
 
 #define ONE_DAY 86400

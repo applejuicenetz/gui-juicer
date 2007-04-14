@@ -1,6 +1,6 @@
 /***************************************************************************
- *   Copyright (C) 2004 by Matthias Reif                                   *
- *   matthias.reif@informatik.tu-chemnitz.de                               *
+ *   Copyright (C) 2007 by Matthias Reif   *
+ *   matthias.reif@informatik.tu-chemnitz.de   *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -17,21 +17,30 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
-#include "qajitem.h"
+#include "qajincomingwidget.h"
 
-QAjItem::QAjItem( QTreeWidget *parent, QString id ) : QTreeWidgetItem( parent )
+QAjIncomingWidget::QAjIncomingWidget(QWidget *parent) : QAjListWidget( parent )
 {
-    this->id = id;
-    status = "-1";
+    QStringList headers;
+    int i;
+    for ( i=0; i<NUM_FTP_COL; i++)
+    {
+        switch (i)
+        {
+        case FILENAME_FTP_INDEX:
+            headers.append( tr("filename") );
+            break;
+        case SIZE_FTP_INDEX:
+            headers.append( tr("size") );
+            break;
+        }
+    }
+    setHeaderLabels( headers );
 }
 
-QAjItem::QAjItem( QTreeWidgetItem *parent, QString id ) : QTreeWidgetItem( parent )
+
+QAjIncomingWidget::~QAjIncomingWidget()
 {
-    this->id = id;
-    status = "-1";
 }
 
-
-QAjItem::~QAjItem()
-{}
 

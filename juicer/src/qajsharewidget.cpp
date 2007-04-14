@@ -19,7 +19,7 @@
  ***************************************************************************/
 #include "qajsharewidget.h"
 
-QAjShareWidget::QAjShareWidget( QString filesystemSeparator, QWidget *parent ) : QAjListWidget( ID_SHARE_INDEX, parent )
+QAjShareWidget::QAjShareWidget( QString filesystemSeparator, QWidget *parent ) : QAjListWidget( parent )
 {
     this->filesystemSeparator = filesystemSeparator;
     setColumnCount( NUM_SHARE_COL );
@@ -29,9 +29,6 @@ QAjShareWidget::QAjShareWidget( QString filesystemSeparator, QWidget *parent ) :
     {
         switch (i)
         {
-        case ID_SHARE_INDEX:
-            headers.append( tr("id") );
-            break;
         case PATH_SHARE_INDEX:
             headers.append( tr("path") );
             break;
@@ -41,8 +38,6 @@ QAjShareWidget::QAjShareWidget( QString filesystemSeparator, QWidget *parent ) :
         }
     }
     setHeaderLabels( headers );
-
-    setColumnHidden( ID_SHARE_INDEX, true );
 
     popup->setTitle( tr("S&hare") );
     removeId = popup->addAction( QIcon(":/small/remove.png"), "remove", this, SLOT(removeSlot()) );
@@ -67,16 +62,11 @@ void QAjShareWidget::insertShare( QString path, QString shareMode )
     item->path = path;
     item->setText( PATH_SHARE_INDEX, path );
     item->setIcon( PATH_SHARE_INDEX, QIcon(":/small/shares.png") );
-    if ( shareMode == "subdirectory" )
-    {
-        item->recursiv = "true";
+
+    if( (item->recursive=(shareMode == "subdirectory")) )
         item->setIcon( MODE_SHARE_INDEX, QIcon(":/small/ok.png") );
-    }
     else
-    {
-        item->recursiv = "false";
         item->setIcon( MODE_SHARE_INDEX, QIcon(":/small/cancel.png") );
-    }
 }
 
 void QAjShareWidget::insertSlot()
@@ -107,7 +97,7 @@ void QAjShareWidget::insertDirList( QTreeWidgetItem* parent, QStringList* dirLis
         return;
     if ( dirList->size() == 1 )
     {
-        QAjItem* newItem = new QAjItem( SHARED_FILE, parent );
+        QAjItem* newItem = new QAjItem( parent );
         newItem->setFlags( Qt::ItemIsEnabled );
         parent->addChild( newItem );
         newItem->setText( PATH_SHARE_INDEX, dirList->front() );
@@ -123,7 +113,7 @@ void QAjShareWidget::insertDirList( QTreeWidgetItem* parent, QStringList* dirLis
         // nicht gefunden
         if ( currChild == NULL )
         {
-            QAjItem* newItem = new QAjItem( SHARED_FILE, parent );
+            QAjItem* newItem = new QAjItem( parent );
             newItem->setFlags( Qt::ItemIsEnabled );
             parent->addChild( newItem );
             newItem->setText( PATH_SHARE_INDEX, dirList->front() );

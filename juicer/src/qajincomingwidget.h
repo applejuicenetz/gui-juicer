@@ -1,6 +1,6 @@
 /***************************************************************************
- *   Copyright (C) 2004 by Matthias Reif                                   *
- *   matthias.reif@informatik.tu-chemnitz.de                               *
+ *   Copyright (C) 2007 by Matthias Reif   *
+ *   matthias.reif@informatik.tu-chemnitz.de   *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -17,21 +17,22 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
-#include "qajitem.h"
+#ifndef QAJINCOMINGWIDGET_H
+#define QAJINCOMINGWIDGET_H
 
-QAjItem::QAjItem( QTreeWidget *parent, QString id ) : QTreeWidgetItem( parent )
+#include "qajlistwidget.h"
+
+/**
+	@author Matthias Reif <matthias.reif@informatik.tu-chemnitz.de>
+*/
+class QAjIncomingWidget : public QAjListWidget
 {
-    this->id = id;
-    status = "-1";
-}
+Q_OBJECT
+public:
+    QAjIncomingWidget(QWidget *parent = 0);
 
-QAjItem::QAjItem( QTreeWidgetItem *parent, QString id ) : QTreeWidgetItem( parent )
-{
-    this->id = id;
-    status = "-1";
-}
+    ~QAjIncomingWidget();
 
+};
 
-QAjItem::~QAjItem()
-{}
-
+#endif

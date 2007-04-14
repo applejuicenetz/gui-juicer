@@ -50,6 +50,7 @@ public:
 private:
     QAjUploadItem* findUpload( QString id );
     bool isOtherUpload( QString status );
+    void setFilename( QTreeWidgetItem* uploadState, QString shareId, QString filename );
     QHash<QString, QString> uploadStatusDescr;
     QHash<QString, QAjUploadItem*> uploads;
 

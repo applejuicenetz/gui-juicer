@@ -19,7 +19,7 @@
  ***************************************************************************/
 #include "qajsearchwidget.h"
 
-QAjSearchWidget::QAjSearchWidget( QWidget *parent ) : QAjListWidget( ID_SERVER_INDEX, parent )
+QAjSearchWidget::QAjSearchWidget( QWidget *parent ) : QAjListWidget( parent )
 {
     setColumnCount( NUM_SEARCH_COL );
     QStringList headers;
@@ -28,9 +28,6 @@ QAjSearchWidget::QAjSearchWidget( QWidget *parent ) : QAjListWidget( ID_SERVER_I
     {
         switch (i)
         {
-        case ID_SEARCH_INDEX:
-            headers.append( tr("id") );
-            break;
         case TEXT_SEARCH_INDEX:
             headers.append( tr("search") );
             break;
@@ -40,18 +37,12 @@ QAjSearchWidget::QAjSearchWidget( QWidget *parent ) : QAjListWidget( ID_SERVER_I
         case COUNT_SEARCH_INDEX:
             headers.append( tr("hits") );
             break;
-        case CHECKSUM_SEARCH_INDEX:
-            headers.append( tr("MD5 checksum") );
-            break;
         }
     }
     setHeaderLabels( headers );
     header()->resizeSection( TEXT_SEARCH_INDEX, 300 );
     header()->resizeSection( SIZE_SEARCH_INDEX, 100 );
     header()->resizeSection( COUNT_SEARCH_INDEX, 50 );
-
-    setColumnHidden( ID_SEARCH_INDEX, true );
-    setColumnHidden( CHECKSUM_SEARCH_INDEX, true );
 
     popup->setTitle( tr("&Search") );
     popup->addAction( QIcon(":/small/save.png"), "download", this, SLOT(downloadSlot()) );
@@ -66,9 +57,8 @@ void QAjSearchWidget::insertSearch( QString id, QString searchText, QString runn
     QAjSearchItem *item = findSearch( id );
     if ( item == NULL )
     {
-        item = new QAjSearchItem( this );
+        item = new QAjSearchItem( id, this );
         searches[id] = item;
-        item->setText( ID_SEARCH_INDEX, id );
         item->setText( TEXT_SEARCH_INDEX, searchText );
         item->setText( COUNT_SEARCH_INDEX, "0" );
     }
@@ -85,21 +75,18 @@ void QAjSearchWidget::insertSearchEntry( QString id, QString searchId, QString s
     QAjSearchItem *searchItem = findSearch( searchId );
     if ( searchItem == NULL )
     {
-        searchItem = new QAjSearchItem( this );
+        searchItem = new QAjSearchItem( searchId, this );
         searches[searchId] = searchItem;
-        searchItem->setText( ID_SEARCH_INDEX, searchId );
     }
 
     if ( searchItem->entriesCount < MAX_SEARCH_ENTRIES )
     {
-        if ( searchItem->find( id ) == NULL )
+        if ( searchItem->findSearchEntry( id ) == NULL )
         {
-            QAjSearchItem *searchEntryItem = new QAjSearchItem( searchItem );
-            searchItem->results[ id ] = searchEntryItem;
+            QAjSearchEntryItem *searchEntryItem = new QAjSearchEntryItem( id, searchItem, checksum, size, searchItem );
+            searchItem->entries[ id ] = searchEntryItem;
             searchEntries[ id ] = searchEntryItem;
-            searchEntryItem->setText( ID_SEARCH_INDEX, id );
             searchEntryItem->setText( SIZE_SEARCH_INDEX, QConvert::bytes(size) );
-            searchEntryItem->setText( CHECKSUM_SEARCH_INDEX, checksum );
             QStringListIterator it(filenames);
             while (it.hasNext())
             {
@@ -108,13 +95,12 @@ void QAjSearchWidget::insertSearchEntry( QString id, QString searchId, QString s
                 {
                     searchEntryItem->setText( TEXT_SEARCH_INDEX, filename);
                 }
-                else
+/*                else
                 {
-                    QAjSearchItem *searchSubEntryItem = new QAjSearchItem( searchEntryItem );
+                    QAjSearchItem *searchSubEntryItem = new QAjSearchItem( id, searchEntryItem );
                     searchSubEntryItem->setText( TEXT_SEARCH_INDEX, filename);
-                }
+                }*/
             }
-            searchEntryItem->size = size;
             searchItem->hits++;
             searchItem->setText( COUNT_SEARCH_INDEX, QString::number(searchItem->hits) );
             searchItem->entriesCount++;
@@ -122,26 +108,52 @@ void QAjSearchWidget::insertSearchEntry( QString id, QString searchId, QString s
     }
 }
 
-bool QAjSearchWidget::remove( QString id )
+bool QAjSearchWidget::removeSearch( QString id )
 {
     QAjSearchItem* item = findSearch( id );
     if( item != NULL )
     {
         searches.remove( id );
+
+        // -- delete all corresponding search entries --
+        QList<QString> entryIds = item->entries.keys();
+        while(!entryIds.isEmpty())
+        {
+            QString entryId = entryIds.takeFirst();
+            searchEntries.remove( entryId );
+            delete item->entries[ entryId ];
+        }
+
         delete item;
         return true;
     }
-    else
+    return false;
+}
+
+
+bool QAjSearchWidget::removeSearchEntry( QString id )
+{
+    QAjSearchEntryItem* item = findSearchEntry( id );
+    if( item != NULL )
     {
-        item = findSearchEntry( id );
-        if ( item != NULL )
-        {
-            searchEntries.remove( id );
-            delete item;
-            return true;
-        }
+        searchEntries.remove( id );
+        // -- delete this entry in the parent search
+        item->search->entries.remove( id );
+        delete item;
+        return true;
     }
     return false;
+}
+
+
+bool QAjSearchWidget::remove( QString id )
+{
+    if(removeSearch( id ))
+        return true;
+    else if(removeSearchEntry( id ))
+        return true;
+    else
+        return false;
 }
 
 void QAjSearchWidget::removeSlot()
@@ -162,7 +174,7 @@ QAjSearchItem* QAjSearchWidget::findSearch( QString id )
         return NULL;
 }
 
-QAjSearchItem* QAjSearchWidget::findSearchEntry( QString id )
+QAjSearchEntryItem* QAjSearchWidget::findSearchEntry( QString id )
 {
     if (searchEntries.contains( id ))
         return searchEntries[ id ];

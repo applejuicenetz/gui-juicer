@@ -29,10 +29,10 @@
 class QAjUploadItem : public QAjItem
 {
 public:
-    QAjUploadItem( QTreeWidgetItem *parent = 0);
-
+    QAjUploadItem( QString id, QString shareId, QTreeWidgetItem *parent );
     ~QAjUploadItem();
 
+    QString shareId;
 };
 
 #endif

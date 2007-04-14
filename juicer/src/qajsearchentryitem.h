@@ -1,6 +1,6 @@
 /***************************************************************************
- *   Copyright (C) 2004 by Matthias Reif                                   *
- *   matthias.reif@informatik.tu-chemnitz.de                               *
+ *   Copyright (C) 2007 by Matthias Reif   *
+ *   matthias.reif@informatik.tu-chemnitz.de   *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -17,21 +17,29 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
+#ifndef QAJSEARCHENTRYITEM_H
+#define QAJSEARCHENTRYITEM_H
+
 #include "qajitem.h"
 
-QAjItem::QAjItem( QTreeWidget *parent, QString id ) : QTreeWidgetItem( parent )
+class QAjSearchItem;
+
+/**
+	@author Matthias Reif <matthias.reif@informatik.tu-chemnitz.de>
+*/
+class QAjSearchEntryItem : public QAjItem
 {
-    this->id = id;
-    status = "-1";
-}
+public:
+    QAjSearchEntryItem( QString id, QAjSearchItem* search, QString checksum, QString size, QTreeWidget* parent );
+    QAjSearchEntryItem( QString id, QAjSearchItem* search, QString checksum, QString size, QTreeWidgetItem* parent );
 
-QAjItem::QAjItem( QTreeWidgetItem *parent, QString id ) : QTreeWidgetItem( parent )
-{
-    this->id = id;
-    status = "-1";
-}
+    ~QAjSearchEntryItem();
 
+    QString checksum;
+    QString size;
+    QAjSearchItem* search;
 
-QAjItem::~QAjItem()
-{}
+    int compare( QTreeWidgetItem * i, int col, bool ) const;
+};
 
+#endif

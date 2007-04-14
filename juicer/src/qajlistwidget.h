@@ -38,7 +38,7 @@ class QAjListWidget : public QTreeWidget
 {
     Q_OBJECT
 public:
-    QAjListWidget( int idIndex, QWidget *parent = 0 );
+    QAjListWidget( QWidget *parent = 0 );
 
     ~QAjListWidget();
 
@@ -53,13 +53,13 @@ public:
 
     QMenu *popup;
     void adjustSizeOfColumns();
+    QList<QAjItem *> selectedAjItems () const;
 
     QMutex mutex;
 protected:
     bool isOneSelected();
     bool changed;
     QAjItem *popupItem;
-    int idIndex;
 
 private slots:
     void selectionChanged();

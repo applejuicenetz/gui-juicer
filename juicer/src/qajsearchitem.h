@@ -23,6 +23,7 @@
 #include <QHash>
 
 #include "qajitem.h"
+#include "qajsearchentryitem.h"
 #include "types.h"
 
 /**
@@ -31,19 +32,17 @@
 class QAjSearchItem : public QAjItem
 {
 public:
-    QAjSearchItem( QTreeWidget* parent );
-    QAjSearchItem( QTreeWidgetItem* parent );
+    QAjSearchItem( QString id, QTreeWidget* parent );
+    QAjSearchItem( QString id, QTreeWidgetItem* parent );
 
     ~QAjSearchItem();
 
-    int compare( QTreeWidgetItem * i, int col, bool ) const;
-    QAjSearchItem* find( QString id );
+    QAjSearchEntryItem* findSearchEntry( QString id );
 
     int hits;
     int entriesCount;
-    QString size;
 
-    QHash<QString, QAjSearchItem*> results;
+    QHash<QString, QAjSearchEntryItem*> entries;
 
 };
 

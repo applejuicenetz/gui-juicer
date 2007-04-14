@@ -19,13 +19,13 @@
  ***************************************************************************/
 #include "qajuploadwidget.h"
 
-QAjUploadWidget::QAjUploadWidget( QWidget *parent ) : QAjListWidget( ID_UP_INDEX, parent )
+QAjUploadWidget::QAjUploadWidget( QWidget *parent ) : QAjListWidget( parent )
 {
-	uploadStatusDescr["1"] = "active";
-	uploadStatusDescr["2"] = "queueing";
-	uploadStatusDescr["5"] = "connecting";
-	uploadStatusDescr["6"] = "connecting indirect";
-	uploadStatusDescr["7"] = "connection failed";
+    uploadStatusDescr["1"] = "active";
+    uploadStatusDescr["2"] = "queueing";
+    uploadStatusDescr["5"] = "connecting";
+    uploadStatusDescr["6"] = "connecting indirect";
+    uploadStatusDescr["7"] = "connection failed";
 
     linuxIcon = new QIcon(":/small/linux.png");
     windowsIcon = new QIcon(":/small/windows.png");
@@ -33,85 +33,73 @@ QAjUploadWidget::QAjUploadWidget( QWidget *parent ) : QAjListWidget( ID_UP_INDEX
     solarisIcon = new QIcon(":/small/solaris.png");
     freeBsdIcon = new QIcon(":/small/freebsd.png");
     netwareIcon = new QIcon(":/small/netware.png");
-    
-	QStringList headers;
-	int i;
-	for( i=0; i<NUM_UP_COL; i++)
-	{
-		switch(i)
-		{
-			case ID_UP_INDEX:
-				headers.append( tr("id") );
-				break;
-			case SHAREID_UP_INDEX:
-				headers.append( tr("share id") );
-				break;
-			case FILENAME_UP_INDEX:
-				headers.append( tr("filename") );
-				break;
-			case SPEED_UP_INDEX:
-				headers.append( tr("speed") );
-				break;
-			case STATUS_UP_INDEX:
-				headers.append( tr("status") );
-				break;
-			case PRIORITY_UP_INDEX:
-				headers.append( tr("priority") );
-				break;
-			case NICK_UP_INDEX:
-				headers.append( tr("nick") );
-				break;
-			case OS_UP_INDEX:
-				headers.append( tr("os") );
-				break;
-			case DIRECTSTATE_UP_INDEX:
-				headers.append( tr("direct state") );
-				break;
-		}
-	}
-	setHeaderLabels( headers );
-	
-	setColumnHidden( ID_UP_INDEX, true );
-	setColumnHidden( SHAREID_UP_INDEX, true);
-	
-	activeUpload = new QTreeWidgetItem( this );
-	activeUpload->setText( FILENAME_UP_INDEX, "1. active" );
-	queuedUpload = new QTreeWidgetItem( this );
-	queuedUpload->setText( FILENAME_UP_INDEX, "2. queueing" );
-	otherUpload = new QTreeWidgetItem( this );
-	otherUpload->setText( FILENAME_UP_INDEX, "3. other" );
-	
-	expandItem( activeUpload );
+
+    QStringList headers;
+    int i;
+    for ( i=0; i<NUM_UP_COL; i++)
+    {
+        switch (i)
+        {
+        case FILENAME_UP_INDEX:
+            headers.append( tr("filename") );
+            break;
+        case SPEED_UP_INDEX:
+            headers.append( tr("speed") );
+            break;
+        case STATUS_UP_INDEX:
+            headers.append( tr("status") );
+            break;
+        case PRIORITY_UP_INDEX:
+            headers.append( tr("priority") );
+            break;
+        case NICK_UP_INDEX:
+            headers.append( tr("nick") );
+            break;
+        case OS_UP_INDEX:
+            headers.append( tr("os") );
+            break;
+        case DIRECTSTATE_UP_INDEX:
+            headers.append( tr("direct state") );
+            break;
+        }
+    }
+    setHeaderLabels( headers );
+
+    activeUpload = new QTreeWidgetItem( this );
+    activeUpload->setText( FILENAME_UP_INDEX, "1. active" );
+    queuedUpload = new QTreeWidgetItem( this );
+    queuedUpload->setText( FILENAME_UP_INDEX, "2. queueing" );
+    otherUpload = new QTreeWidgetItem( this );
+    otherUpload->setText( FILENAME_UP_INDEX, "3. other" );
+
+    expandItem( activeUpload );
 }
 
 
 QAjUploadWidget::~QAjUploadWidget()
-{
-}
+{}
 
 bool QAjUploadWidget::insertUpload(QString id, QString shareId, QString version, QString os, QString status, QString directState, QString priority, QString nick, QString speed)
 {
     QAjUploadItem *uploadItem = findUpload( id );
 
-    if( uploadItem == NULL )
+    if ( uploadItem == NULL )
     {
-        uploadItem = new QAjUploadItem( NULL );
+        uploadItem = new QAjUploadItem( id, shareId, 0 );
         uploads[ id ] = uploadItem;
-        uploadItem->setText( ID_UP_INDEX, id);
-        uploadItem->setText( SHAREID_UP_INDEX, shareId);
         uploadItem->setText( NICK_UP_INDEX, nick );
         uploadItem->setText( FILENAME_UP_INDEX, "" );
-        if( os == WINDOWS )
+        if ( os == WINDOWS )
             uploadItem->setIcon( OS_UP_INDEX, *windowsIcon );
-        else if( os == LINUX )
+        else if ( os == LINUX )
             uploadItem->setIcon( OS_UP_INDEX, *linuxIcon );
-        else if( os == MAC )
+        else if ( os == MAC )
             uploadItem->setIcon( OS_UP_INDEX, *macIcon );
-        else if( os == NETWARE )
+        else if ( os == NETWARE )
             uploadItem->setIcon( OS_UP_INDEX, *netwareIcon );
-        else if( os == SOLARIS )
+        else if ( os == SOLARIS )
             uploadItem->setIcon( OS_UP_INDEX, *solarisIcon );
-        else if( os == FREEBSD )
+        else if ( os == FREEBSD )
             uploadItem->setIcon( OS_UP_INDEX, *freeBsdIcon );
     }
 
@@ -120,25 +108,25 @@ bool QAjUploadWidget::insertUpload(QString id, QString shareId, QString version,
 
     QString oldStatus = uploadItem->getStatus();
 
-    if( ( oldStatus != status ) && ( !isOtherUpload( oldStatus ) || !isOtherUpload( status ) ) )
+    if ( ( oldStatus != status ) && ( !isOtherUpload( oldStatus ) || !isOtherUpload( status ) ) )
     {
-        if( oldStatus == NEW_UPLOAD )
+        if ( oldStatus == NEW_UPLOAD )
             takeFromItem = NULL;
-        else if( oldStatus == ACTIVE_UPLOAD )
+        else if ( oldStatus == ACTIVE_UPLOAD )
             takeFromItem = activeUpload;
-        else if( oldStatus == QUEUEING_UPLOAD )
+        else if ( oldStatus == QUEUEING_UPLOAD )
             takeFromItem = queuedUpload;
         else
             takeFromItem = otherUpload;
 
-        if( status == ACTIVE_UPLOAD )
+        if ( status == ACTIVE_UPLOAD )
             insertIntoItem = activeUpload;
-        else if( status == QUEUEING_UPLOAD )
+        else if ( status == QUEUEING_UPLOAD )
             insertIntoItem = queuedUpload;
         else
             insertIntoItem = otherUpload;
 
-        if( takeFromItem != NULL )
+        if ( takeFromItem != NULL )
             takeFromItem->takeChild( takeFromItem->indexOfChild( uploadItem ) );
         insertIntoItem->insertChild( 0, uploadItem );
     }
@@ -155,7 +143,7 @@ bool QAjUploadWidget::insertUpload(QString id, QString shareId, QString version,
 bool QAjUploadWidget::remove( QString id )
 {
     QTreeWidgetItem *item = findUpload( id );
-    if( item != NULL )
+    if ( item != NULL )
     {
         uploads.remove( id );
         delete item;
@@ -166,12 +154,12 @@ bool QAjUploadWidget::remove( QString id )
 
 bool QAjUploadWidget::isOtherUpload( QString status )
 {
-	return ( ( status != ACTIVE_UPLOAD ) && ( status != QUEUEING_UPLOAD ) && ( status != NEW_UPLOAD) );
+    return ( ( status != ACTIVE_UPLOAD ) && ( status != QUEUEING_UPLOAD ) && ( status != NEW_UPLOAD) );
 }
 
 QAjUploadItem* QAjUploadWidget::findUpload( QString id )
 {
-    if( uploads.contains( id ) )
+    if ( uploads.contains( id ) )
         return uploads[ id ];
     else
         return NULL;
@@ -183,27 +171,22 @@ QAjUploadItem* QAjUploadWidget::findUpload( QString id )
  */
 void QAjUploadWidget::setFilename( QString shareId, QString filename )
 {
+    setFilename(activeUpload, shareId, filename);
+    setFilename(queuedUpload, shareId, filename);
+    setFilename(otherUpload, shareId, filename);
+}
+
+
+/*!
+    \fn QAjUploadWidget::setFilename( QTreeWidgetItem* uploadState, QString shareId, QString filename )
+ */
+void QAjUploadWidget::setFilename( QTreeWidgetItem* uploadState, QString shareId, QString filename )
+{
     int i;
-    for(i=0;i<activeUpload->childCount(); i++)
+    for( i=0; i<uploadState->childCount(); i++ )
     {
-        QTreeWidgetItem* item = activeUpload->child(i);
-        if( item->text( SHAREID_UP_INDEX ) == shareId )
-        {
-            item->setText( FILENAME_UP_INDEX, filename );
-        }
-    }
-    for(i=0;i<queuedUpload->childCount(); i++)
-    {
-        QTreeWidgetItem* item = queuedUpload->child(i);
-        if( item->text( SHAREID_UP_INDEX ) == shareId )
-        {
-            item->setText( FILENAME_UP_INDEX, filename );
-        }
-    }
-    for(i=0;i<otherUpload->childCount(); i++)
-    {
-        QTreeWidgetItem* item = otherUpload->child(i);
-        if( item->text( SHAREID_UP_INDEX ) == shareId )
+        QAjUploadItem* item = (QAjUploadItem*)uploadState->child(i);
+        if( item != NULL && item->shareId == shareId )
         {
             item->setText( FILENAME_UP_INDEX, filename );
         }

@@ -32,29 +32,44 @@
 class QAjUserItem : public QAjItem
 {
 public:
-	QAjUserItem( QTreeWidget *parent );
-	QAjUserItem( QTreeWidgetItem *parent );
+    QAjUserItem( QString id, QTreeWidget *parent );
+    QAjUserItem( QString id, QTreeWidgetItem *parent );
 
-	~QAjUserItem();
-	
-	void update( QString fileName, QString speed, QString status, QString power, QString queuePos, QString statusString, QIcon* osIcon );
-	
-	void setSpeed( QString newSpeedString );
-	
-	int getSpeedDif() { return speedDif; }
-	int getSpeed() { return speed; }
-	int getQueuePos() { return queuePos; }
-	QString getId() { return id; }
-	QString getPower() { return power; }
+    ~QAjUserItem();
+
+    void update( QString fileName, QString speed, QString status, QString power, QString queuePos, QString statusString, QIcon* osIcon );
+
+    void setSpeed( QString newSpeedString );
+
+    int getSpeedDif()
+    {
+        return speedDif;
+    }
+    int getSpeed()
+    {
+        return speed;
+    }
+    int getQueuePos()
+    {
+        return queuePos;
+    }
+    QString getId()
+    {
+        return id;
+    }
+    QString getPower()
+    {
+        return power;
+    }
 private:
-	void init();
+    void init();
 protected:
-	int speed, newSpeed, speedDif;
-	QString id;
-	int queuePos;
-	QString power;
-	QString fileName;
-	bool fileNameSet;
+    int speed, newSpeed, speedDif;
+    QString id;
+    int queuePos;
+    QString power;
+    QString fileName;
+    bool fileNameSet;
 };
 
 #endif

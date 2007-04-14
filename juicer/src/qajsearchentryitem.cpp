@@ -1,6 +1,6 @@
 /***************************************************************************
- *   Copyright (C) 2004 by Matthias Reif                                   *
- *   matthias.reif@informatik.tu-chemnitz.de                               *
+ *   Copyright (C) 2007 by Matthias Reif   *
+ *   matthias.reif@informatik.tu-chemnitz.de   *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -17,21 +17,49 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
-#include "qajitem.h"
+#include "qajsearchentryitem.h"
 
-QAjItem::QAjItem( QTreeWidget *parent, QString id ) : QTreeWidgetItem( parent )
+#include "qajsearchitem.h"
+
+QAjSearchEntryItem::QAjSearchEntryItem( QString id, QAjSearchItem* search, QString checksum, QString size, QTreeWidget* parent ) : QAjItem( parent, id )
 {
-    this->id = id;
-    status = "-1";
+    this->search = search;
+    this->checksum = checksum;
+    this->size = size;
 }
 
-QAjItem::QAjItem( QTreeWidgetItem *parent, QString id ) : QTreeWidgetItem( parent )
+QAjSearchEntryItem::QAjSearchEntryItem( QString id, QAjSearchItem* search, QString checksum, QString size, QTreeWidgetItem* parent ) : QAjItem( parent, id )
 {
-    this->id = id;
-    status = "-1";
+    this->search = search;
+    this->checksum = checksum;
+    this->size = size;
 }
 
+QAjSearchEntryItem::~QAjSearchEntryItem()
+{
+}
 
-QAjItem::~QAjItem()
-{}
+int QAjSearchEntryItem::compare( QTreeWidgetItem* i, int col, bool ) const
+{
+    if ( col == SIZE_SEARCH_INDEX )
+    {
+        qulonglong a = size.toULongLong();
+        qulonglong b = ((QAjSearchEntryItem*)i)->size.toULongLong();
+        if ( a > b )
+            return 1;
+        else if ( a < b )
+            return -1;
+        else
+            return 0;
+    }
+    else
+    {
+        if ( text( col ) > i->text( col ) )
+            return 1;
+        else if ( text( col ) < i->text( col ) )
+            return -1;
+        else
+            return 0;
+    }
+}
 

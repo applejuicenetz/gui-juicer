@@ -25,6 +25,7 @@
 #include <time.h>
 
 #include "qajlistwidget.h"
+#include "qajserveritem.h"
 
 /**
 @author Matthias Reif
@@ -41,14 +42,14 @@ public:
 
     void connectedWith( QString id );
     void connectingTo( QString id );
-    QTreeWidgetItem* findServer( QString id );
+    QAjServerItem* findServer( QString id );
     bool remove( QString id );
 
 private:
     QString connectedWithId, connectingToId;
     QAction* removeId;
     QAction* connectId;
-    QHash<QString, QTreeWidgetItem*> servers;
+    QHash<QString, QAjServerItem*> servers;
 
 public slots:
     void selectionChanged1( bool isOneSelected );

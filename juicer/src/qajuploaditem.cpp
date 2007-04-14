@@ -19,8 +19,9 @@
  ***************************************************************************/
 #include "qajuploaditem.h"
 
-QAjUploadItem::QAjUploadItem(QTreeWidgetItem *parent) : QAjItem(UP, parent)
+QAjUploadItem::QAjUploadItem( QString id, QString shareId, QTreeWidgetItem *parent ) : QAjItem( parent, id )
 {
+    this->shareId = shareId;
     status = NEW_UPLOAD;
 }
 

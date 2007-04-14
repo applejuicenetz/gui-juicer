@@ -20,7 +20,7 @@
 #include "qajdownloaditem.h"
 
 
-QAjDownloadItem::QAjDownloadItem( QAjListWidget *parent ) : QAjItem( DOWN, parent )
+QAjDownloadItem::QAjDownloadItem( QString id, QAjListWidget *parent ) : QAjItem( parent, id )
 {
     int i;
     for ( i=1; i<NUM_DOWN_COL; i++ )
@@ -42,15 +42,15 @@ QAjDownloadItem::QAjDownloadItem( QAjListWidget *parent ) : QAjItem( DOWN, paren
     setText( SPEED_DOWN_INDEX, QString("0 b/s") );
     setText( REMAIN_TIME_DOWN_INDEX, QString( "n.a." ) );
 
-    activeSourcesItem = new QAjItem( GENERIC, this );
+    activeSourcesItem = new QAjItem( this );
     activeSourcesItem->setText(FILENAME_DOWN_INDEX, QObject::tr("1. active"));
     activeSourcesItem->setFlags( Qt::ItemIsEnabled );
 
-    queuedSourcesItem = new QAjItem( GENERIC, this );
+    queuedSourcesItem = new QAjItem( this );
     queuedSourcesItem->setText(FILENAME_DOWN_INDEX, QObject::tr("2. queueing"));
     queuedSourcesItem->setFlags( Qt::ItemIsEnabled );
 
-    otherSourcesItem = new QAjItem( GENERIC, this );
+    otherSourcesItem = new QAjItem( this );
     otherSourcesItem->setText(FILENAME_DOWN_INDEX, QObject::tr("3. others"));
     otherSourcesItem->setFlags( Qt::ItemIsEnabled );
 
@@ -181,11 +181,11 @@ void QAjDownloadItem::updateUser( QString id, QString fileName, QString speed, Q
     if ( userItem == NULL )
     {
         if ( status == ACTIVE_SOURCE )
-            userItem = new QAjUserItem( activeSourcesItem );
+            userItem = new QAjUserItem( id, activeSourcesItem );
         else if ( status == QUEUED_SOURCE )
-            userItem = new QAjUserItem( queuedSourcesItem );
+            userItem = new QAjUserItem( id, queuedSourcesItem );
         else
-            userItem = new QAjUserItem( otherSourcesItem );
+            userItem = new QAjUserItem( id, otherSourcesItem );
         users[ id ] = userItem;
     }
     else
@@ -473,7 +473,7 @@ bool QAjDownloadItem::operator<( const QTreeWidgetItem & other ) const
 //     Qt::SortOrder sortOrder = treeWidget()->header()->sortIndicatorOrder();
 // 	QMutexLocker(&((QAjListWidget*)treeWidget())->mutex);
     QAjItem* item = (QAjItem*)&other;
-    if ( item->getType() ==  DOWN )
+//     if ( item->getType() ==  DOWN )
     {
         QAjDownloadItem* downItem = (QAjDownloadItem*)item;
         switch ( sortIndex )
@@ -498,9 +498,9 @@ bool QAjDownloadItem::operator<( const QTreeWidgetItem & other ) const
             return this->text( sortIndex ) < other.text( sortIndex );
         }
     }
-    else
-    {
-        return this->text( sortIndex ) < other.text( sortIndex );
-        return false;
-    }
+//     else
+//     {
+//         return this->text( sortIndex ) < other.text( sortIndex );
+//         return false;
+//     }
 }

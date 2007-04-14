@@ -102,7 +102,6 @@ public:
 protected:
     void initToolBars();
     void closeEvent( QCloseEvent* );
-    QString getSelectedDownloads();
     void processQueuedLinks();
 
     QString password;
@@ -223,8 +222,6 @@ private slots:
     void storeDownload();
     void reloadFtp();
     void storeFtp();
-    void openDownload( QList<QTreeWidgetItem *>  items );
-    void openDownload( QTreeWidgetItem *item, int );
     void openDownload();
     void adjustColumns();
 };

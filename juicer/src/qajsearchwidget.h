@@ -24,6 +24,7 @@
 
 #include "qajlistwidget.h"
 #include "qajsearchitem.h"
+#include "qajsearchentryitem.h"
 #include "types.h"
 #include "qconvert.h"
 
@@ -44,11 +45,13 @@ public:
     void insertSearchEntry( QString id, QString searchId, QString size, QString checksum, QStringList filenames );
     bool remove( QString id );
     QAjSearchItem* findSearch( QString id );
-    QAjSearchItem* findSearchEntry( QString id );
+    QAjSearchEntryItem* findSearchEntry( QString id );
 
 protected:
+    bool removeSearch( QString id );
+    bool removeSearchEntry( QString id );
     QHash<QString, QAjSearchItem*> searches;
-    QHash<QString, QAjSearchItem*> searchEntries;
+    QHash<QString, QAjSearchEntryItem*> searchEntries;
 
 public slots:
     void removeSlot();

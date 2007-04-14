@@ -19,7 +19,7 @@
  ***************************************************************************/
 #include "qajdownloadwidget.h"
 
-QAjDownloadWidget::QAjDownloadWidget( QWidget *parent ) : QAjListWidget( ID_DOWN_INDEX, parent )
+QAjDownloadWidget::QAjDownloadWidget( QWidget *parent ) : QAjListWidget( parent )
 {
     userStatusDescr["1"] = QObject::tr("unasked ");
     userStatusDescr["2"] = QObject::tr("try to connect ");
@@ -62,9 +62,6 @@ QAjDownloadWidget::QAjDownloadWidget( QWidget *parent ) : QAjListWidget( ID_DOWN
     {
         switch (i)
         {
-        case ID_DOWN_INDEX:
-            headers.append( tr("id") );
-            break;
         case FILENAME_DOWN_INDEX:
             headers.append( tr("filename") );
             break;
@@ -101,8 +98,6 @@ QAjDownloadWidget::QAjDownloadWidget( QWidget *parent ) : QAjListWidget( ID_DOWN
         }
     }
     setHeaderLabels( headers );
-
-    setColumnHidden( ID_DOWN_INDEX, true );
 
     popup->setTitle( tr("&Download") );
     pauseId = popup->addAction( QIcon(":/small/pause.png"), "pause", this, SLOT(pauseSlot()) );
@@ -142,9 +137,8 @@ void QAjDownloadWidget::insertDownload(QString id, QString fileName, QString sta
     QAjDownloadItem *downloadItem = findDownload( id );
     if ( downloadItem == NULL )
     {
-        downloadItem = new QAjDownloadItem( this );
+        downloadItem = new QAjDownloadItem( id, this );
         downloads[ id ] = downloadItem;
-        downloadItem->setText( ID_DOWN_INDEX, id );
     }
     downloadItem->update( fileName, status, size, ready, power, tempNumber );
 }
@@ -155,9 +149,8 @@ void QAjDownloadWidget::insertUser(QString downloadId, QString id, QString fileN
     QAjDownloadItem *downloadItem = findDownload( downloadId );
     if ( downloadItem == NULL )
     {
-        downloadItem = new QAjDownloadItem( this );
+        downloadItem = new QAjDownloadItem( downloadId, this );
         downloads[ downloadId ] = downloadItem;
-        downloadItem->setText( ID_DOWN_INDEX, downloadId );
         downloadItem->setText( FILENAME_DOWN_INDEX, fileName );
     }
     QIcon *osIcon;
@@ -300,7 +293,7 @@ QString QAjDownloadWidget::getNextIdRoundRobin()
         return "";
     currIdRoundRobin ++;
     currIdRoundRobin %= topLevelItemCount();
-    return topLevelItem( currIdRoundRobin )->text( ID_DOWN_INDEX );
+    return ((QAjDownloadItem*)topLevelItem( currIdRoundRobin ))->getId();
 }
 
 

@@ -51,7 +51,7 @@ class QAjDownloadItem : public QAjItem
 {
 //Q_OBJECT
 public:
-    QAjDownloadItem( QAjListWidget *parent = 0 );
+    QAjDownloadItem( QString id, QAjListWidget *parent = 0 );
 
     ~QAjDownloadItem();
 

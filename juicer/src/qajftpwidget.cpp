@@ -18,9 +18,8 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 #include "qajftpwidget.h"
-#include "iostream.h"
 
-QAjFtpWidget::QAjFtpWidget( QWidget *parent ) : QAjListWidget( ID_FTP_INDEX, parent )
+QAjFtpWidget::QAjFtpWidget( QWidget *parent ) : QAjListWidget( parent )
 {
     QStringList headers;
     int i;
@@ -28,9 +27,6 @@ QAjFtpWidget::QAjFtpWidget( QWidget *parent ) : QAjListWidget( ID_FTP_INDEX, par
     {
         switch (i)
         {
-        case ID_FTP_INDEX:
-            headers.append( tr("id") );
-            break;
         case FILENAME_FTP_INDEX:
             headers.append( tr("filename") );
             break;
@@ -40,7 +36,6 @@ QAjFtpWidget::QAjFtpWidget( QWidget *parent ) : QAjListWidget( ID_FTP_INDEX, par
         }
     }
     setHeaderLabels( headers );
-    setColumnHidden( ID_FTP_INDEX, true );
 }
 
 
@@ -55,7 +50,7 @@ void QAjFtpWidget::insert( QUrlInfo info )
 {
     if ( info.isFile() )
     {
-        QAjItem *item = new QAjItem( GENERIC, this );
+        QAjItem *item = new QAjItem( this );
         item->setText( FILENAME_FTP_INDEX, info.name() );
         item->setText( SIZE_FTP_INDEX, QConvert::bytes( (double)info.size() ) );
         adjustSizeOfColumns();

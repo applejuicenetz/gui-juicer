@@ -35,7 +35,10 @@ HEADERS += ftp.h \
            ui_qajoptionsdialogbase.h \
            juicer.h \
            qajnetworkdialog.h \
-           qajservermetawidget.h
+           qajservermetawidget.h \
+           qajincomingwidget.h \
+           qajsearchentryitem.h \
+           qajserveritem.h
 SOURCES += ftp.cpp \
            main.cpp \
            md5c.c \
@@ -64,7 +67,10 @@ SOURCES += ftp.cpp \
            qxmlmodule.cpp \
            juicer.cpp \
            qajnetworkdialog.cpp \
-           qajservermetawidget.cpp
+           qajservermetawidget.cpp \
+           qajincomingwidget.cpp \
+           qajsearchentryitem.cpp \
+           qajserveritem.cpp
 CONFIG += warn_on \
           qt \
           x11 \

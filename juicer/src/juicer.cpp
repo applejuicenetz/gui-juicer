@@ -588,21 +588,21 @@ void Juicer::maxPowerDownload()
 
 void Juicer::processSelected( QString request, QString para )
 {
-    QList<QTreeWidgetItem *>  selectedItems = ajDownloadWidget->selectedItems();
+    QList<QAjItem *>  selectedItems = ajDownloadWidget->selectedAjItems();
     int i;
     for ( i=0; i<selectedItems.size(); i++ )
     {
-        xml->set( request, para + "&id=" + selectedItems.at(i)->text(ID_DOWN_INDEX) );
+        xml->set( request, para + "&id=" + selectedItems[i]->getId() );
     }
 }
 
 void Juicer::requestSelected( QString request, QString para )
 {
-    QList<QTreeWidgetItem *>  selectedItems = ajDownloadWidget->selectedItems();
+    QList<QAjItem *>  selectedItems = ajDownloadWidget->selectedAjItems();
     int i;
     for ( i=0; i<selectedItems.size(); i++ )
     {
-        xml->get( request, para + "&id=" + selectedItems.at(i)->text(ID_DOWN_INDEX) );
+        xml->get( request, para + "&id=" + selectedItems[i]->getId() );
     }
 }
 
@@ -621,17 +621,17 @@ void Juicer::processClipboard()
 
 void Juicer::downloadSearch()
 {
-    QList<QTreeWidgetItem *>  selectedItems = ajSearchWidget->selectedItems();
+    QList<QAjItem *>  selectedItems = ajSearchWidget->selectedAjItems();
     int i;
     for ( i=0; i<selectedItems.size(); i++ )
     {
-        if ( selectedItems.at(i)->text( CHECKSUM_SEARCH_INDEX ) != "" )
+        QAjSearchEntryItem *searchEntryItem = ajSearchWidget->findSearchEntry( selectedItems[i]->getId() );
+        if( searchEntryItem != NULL )
         {
-            QAjSearchItem *searchItem = (QAjSearchItem*)selectedItems.at(i);
             QString link = "ajfsp://file|";
-            link += searchItem->text( TEXT_SEARCH_INDEX );
-            link += "|" + searchItem->text( CHECKSUM_SEARCH_INDEX );
-            link += "|" + searchItem->size + "/";
+            link += searchEntryItem->text( TEXT_SEARCH_INDEX );
+            link += "|" + searchEntryItem->checksum;
+            link += "|" + searchEntryItem->size + "/";
             link = QString( QUrl::toPercentEncoding(link) );
             xml->set( "processlink", "&link=" +link );
         }
@@ -669,7 +669,7 @@ void Juicer::renameDownload()
     QString oldFilename;
     QString newFilename;
     bool ok;
-    QList<QTreeWidgetItem *>  selectedItems = ajDownloadWidget->selectedItems();
+    QList<QAjItem *>  selectedItems = ajDownloadWidget->selectedAjItems();
     int i;
     for ( i=0; i<selectedItems.size(); i++ )
     {
@@ -678,7 +678,7 @@ void Juicer::renameDownload()
         newFilename = QString( QUrl::toPercentEncoding( newFilename ) );
         if ( ok && !newFilename.isEmpty() )
         {
-            xml->set( "renamedownload", "&id=" + selectedItems.at(i)->text( ID_DOWN_INDEX ) + "&name=" + newFilename );
+            xml->set( "renamedownload", "&id=" + selectedItems[i]->getId() + "&name=" + newFilename );
         }
     }
 }
@@ -688,7 +688,7 @@ void Juicer::renamePlusDownload()
     QString oldFilename;
     QString newFilename;
     QString newFilenameBase = qApp->clipboard()->text( QClipboard::Clipboard );
-    QList<QTreeWidgetItem *>  selectedItems = ajDownloadWidget->selectedItems();
+    QList<QAjItem *>  selectedItems = ajDownloadWidget->selectedAjItems();
     int i;
     for ( i=0; i<selectedItems.size(); i++ )
     {
@@ -706,7 +706,7 @@ void Juicer::renamePlusDownload()
         newFilename = QString( QUrl::toPercentEncoding( newFilename ) );
         if (!newFilename.isEmpty())
         {
-            xml->set( "renamedownload", "&id=" + selectedItems[i]->text( ID_DOWN_INDEX ) + "&name=" + newFilename );
+            xml->set( "renamedownload", "&id=" + selectedItems[i]->getId() + "&name=" + newFilename );
         }
     }
 }
@@ -714,20 +714,20 @@ void Juicer::renamePlusDownload()
 
 void Juicer::removeServer()
 {
-    QList<QTreeWidgetItem *>  selectedItems = ajServerWidget->selectedItems();
+    QList<QAjItem *>  selectedItems = ajServerWidget->selectedAjItems();
     int i;
     for ( i=0; i<selectedItems.size(); i++ )
     {
-        xml->set( "removeserver", "&id=" + selectedItems.at(i)->text(ID_SERVER_INDEX) );
+        xml->set( "removeserver", "&id=" + selectedItems[i]->getId() );
     }
 }
 
 void Juicer::connectServer()
 {
-    QList<QTreeWidgetItem *>  selectedItems = ajServerWidget->selectedItems();
+    QList<QAjItem *>  selectedItems = ajServerWidget->selectedAjItems();
     if ( ! selectedItems.empty() )
     {
-        xml->set( "serverlogin", "&id=" + selectedItems.first()->text(ID_SERVER_INDEX) );
+        xml->set( "serverlogin", "&id=" + selectedItems.first()->getId() );
     }
 }
 
@@ -772,7 +772,8 @@ void Juicer::applyShare()
         if ( item->flags() & Qt::ItemIsEnabled )
         {
             sharesString += "&sharedirectory" + QString::number(cnt) + "=" + item->text( PATH_SHARE_INDEX );
-            sharesString += "&sharesub" + QString::number(cnt) + "=" + ((QAjShareItem*)item)->recursiv;
+            sharesString += "&sharesub" + QString::number(cnt) + "=";
+            sharesString += ((QAjShareItem*)item)->recursive?"true":"false";
             cnt++;
         }
     }
@@ -781,21 +782,6 @@ void Juicer::applyShare()
     xml->get( "settings" );
     ajShareWidget->setChanged( false );
     applyShareButton->setDisabled( true );
-}
-
-QString Juicer::getSelectedDownloads()
-{
-    QString ids = "";
-    QList<QTreeWidgetItem *>  selectedItems = ajDownloadWidget->selectedItems();
-    int i;
-    for ( i=0; i<selectedItems.size(); i++ )
-    {
-        if ( i == 0 )
-            ids += "&id=" + selectedItems.at(i)->text(ID_DOWN_INDEX);
-        else
-            ids += "&id" + QString::number(i) + "=" + selectedItems.at(i)->text(ID_DOWN_INDEX);
-    }
-    return ids;
 }
 
 void Juicer::tabChanged( QWidget *tab )
@@ -921,7 +907,7 @@ void Juicer::cancelSearch()
     int i;
     for ( i=0; i<selectedItems.size(); i++ )
     {
-        xml->set( "cancelsearch", "&id=" + selectedItems.at(i)->text( ID_SEARCH_INDEX ));
+        xml->set( "cancelsearch", "&id=" + ((QAjSearchItem*)selectedItems[i])->getId() );
     }
 }
 
@@ -1155,9 +1141,9 @@ void Juicer::storeFtp()
 }
 
 /*!
-    \fn Juicer::openDownload( QList<QTreeWidgetItem *>  items )
+    \fn Juicer::openDownload()
  */
-void Juicer::openDownload( QList<QTreeWidgetItem *>  items )
+void Juicer::openDownload()
 {
     QSettings lokalSettings;
     QString launcher = lokalSettings.value( "launcher", optionsDialog->launchCombo->itemText(0)).toString().simplified();
@@ -1199,45 +1185,24 @@ void Juicer::openDownload( QList<QTreeWidgetItem *>  items )
         tDir = tempDir.absolutePath() + QDir::separator();
     }
 
+    QList<QAjItem*> items = ajDownloadWidget->selectedAjItems();
     int i;
     for (i=0; i<items.size(); i++)
     {
-        QAjItem* ajItem = (QAjItem*)items[i];
-        if (ajItem->getType() == DOWN)
+        QAjDownloadItem* ajDownloadItem = (QAjDownloadItem*)items[i];
+        if( ajDownloadItem->getStatus() == DOWN_FINISHED )
         {
-            QAjDownloadItem* ajDownloadItem = (QAjDownloadItem*)ajItem;
-            QString filename;
-            if( ajDownloadItem->getStatus() == DOWN_FINISHED )
-            {
-                args.push_back( iDir + ajDownloadItem->text( FILENAME_DOWN_INDEX ) );
-            }
-            else
-            {
-                args.push_back( tDir + ajDownloadItem->getTempNumber() + ".data" );
-            }
-            QProcess::startDetached( exec, args );
-            args.pop_back();
+            args.push_back( iDir + ajDownloadItem->text( FILENAME_DOWN_INDEX ) );
         }
+        else
+        {
+            args.push_back( tDir + ajDownloadItem->getTempNumber() + ".data" );
+        }
+        QProcess::startDetached( exec, args );
+        args.pop_back();
     }
 }
 
-/*!
-    \fn Juicer::openDownload( QTreeWidgetItem *item, int )
- */
-void Juicer::openDownload( QTreeWidgetItem *item, int )
-{
-    QList<QTreeWidgetItem *> items;
-    items << item;
-    openDownload( items );
-}
-
-/*!
-    \fn Juicer::openDownload()
- */
-void Juicer::openDownload()
-{
-    openDownload( ajDownloadWidget->selectedItems() );
-}
 
 /*!
     \fn Juicer::setUploadFilename( QString shareId, QString filename )

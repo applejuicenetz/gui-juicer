@@ -19,7 +19,7 @@
  ***************************************************************************/
 #include "qajsearchitem.h"
 
-QAjSearchItem::QAjSearchItem( QTreeWidget* parent ) : QAjItem( SEARCH, parent)
+QAjSearchItem::QAjSearchItem( QString id, QTreeWidget* parent ) : QAjItem( parent, id )
 {
     hits = 0;
     entriesCount = 0;
@@ -27,7 +27,7 @@ QAjSearchItem::QAjSearchItem( QTreeWidget* parent ) : QAjItem( SEARCH, parent)
     setTextAlignment( COUNT_SEARCH_INDEX, Qt::AlignRight );
 }
 
-QAjSearchItem::QAjSearchItem( QTreeWidgetItem* parent ) : QAjItem( SEARCH, parent)
+QAjSearchItem::QAjSearchItem( QString id, QTreeWidgetItem* parent ) : QAjItem( parent, id )
 {
     hits = 0;
     entriesCount = 0;
@@ -38,34 +38,10 @@ QAjSearchItem::QAjSearchItem( QTreeWidgetItem* parent ) : QAjItem( SEARCH, paren
 QAjSearchItem::~QAjSearchItem()
 {}
 
-int QAjSearchItem::compare( QTreeWidgetItem* i, int col, bool ) const
+QAjSearchEntryItem* QAjSearchItem::findSearchEntry( QString id )
 {
-    if ( col == SIZE_SEARCH_INDEX )
-    {
-        qulonglong a = size.toULongLong();
-        qulonglong b = ((QAjSearchItem*)i)->size.toULongLong();
-        if ( a > b )
-            return 1;
-        else if ( a < b )
-            return -1;
-        else
-            return 0;
-    }
-    else
-    {
-        if ( text( col ) > i->text( col ) )
-            return 1;
-        else if ( text( col ) < i->text( col ) )
-            return -1;
-        else
-            return 0;
-    }
-}
-
-QAjSearchItem* QAjSearchItem::find( QString id )
-{
-    if ( results.contains( id ) )
-        return results[ id ];
+    if ( entries.contains( id ) )
+        return entries[ id ];
     else
         return NULL;
 }

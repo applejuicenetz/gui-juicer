@@ -19,7 +19,7 @@
  ***************************************************************************/
 #include "qajserverwidget.h"
 
-QAjServerWidget::QAjServerWidget( QWidget *parent ) : QAjListWidget( ID_SERVER_INDEX, parent )
+QAjServerWidget::QAjServerWidget( QWidget *parent ) : QAjListWidget( parent )
 {
     connectedWithId = "";
     connectingToId = "";
@@ -30,9 +30,6 @@ QAjServerWidget::QAjServerWidget( QWidget *parent ) : QAjListWidget( ID_SERVER_I
     {
         switch (i)
         {
-        case ID_SERVER_INDEX:
-            headers.append( tr("id") );
-            break;
         case NAME_SERVER_INDEX:
             headers.append( tr("name") );
             break;
@@ -52,8 +49,6 @@ QAjServerWidget::QAjServerWidget( QWidget *parent ) : QAjListWidget( ID_SERVER_I
     }
     setHeaderLabels( headers );
 
-    setColumnHidden( ID_SERVER_INDEX, true );
-
     popup->setTitle( tr("Ser&ver") );
     connectId = popup->addAction( QIcon(":/small/connect.png"), "connect", this, SLOT(connectSlot()) );
     removeId =popup->addAction( QIcon(":/small/cancel.png"), "remove", this, SLOT(removeSlot()) );
@@ -70,7 +65,7 @@ QAjServerWidget::~QAjServerWidget()
 
 void QAjServerWidget::insertServer( QString id, QString name, QString host, QString port, QString lastseen, QString tests )
 {
-    QTreeWidgetItem *item = findServer( id );
+    QAjServerItem *item = findServer( id );
     if ( item == NULL )
     {
         lastseen = lastseen.left(lastseen.length()-3);
@@ -85,9 +80,8 @@ void QAjServerWidget::insertServer( QString id, QString name, QString host, QStr
         timeString += " ";
         timeString += QConvert::num( time2->tm_hour ) + ":";
         timeString += QConvert::num( time2->tm_min );
-        item = new QTreeWidgetItem( this );
+        item = new QAjServerItem( id, this );
         servers[ id ] = item;
-        item->setText( ID_SERVER_INDEX, id );
         item->setText( NAME_SERVER_INDEX, name );
         item->setText( HOST_SERVER_INDEX, host );
         item->setText( PORT_SERVER_INDEX, port );
@@ -152,7 +146,7 @@ void QAjServerWidget::selectionChanged1( bool oneSelected )
     connectId->setEnabled( oneSelected );
 }
 
-QTreeWidgetItem* QAjServerWidget::findServer( QString id )
+QAjServerItem* QAjServerWidget::findServer( QString id )
 {
     if ( servers.contains( id ) )
         return servers[ id ];

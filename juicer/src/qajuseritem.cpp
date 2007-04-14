@@ -19,57 +19,57 @@
  ***************************************************************************/
 #include "qajuseritem.h"
 
-QAjUserItem::QAjUserItem( QTreeWidget *parent ) : QAjItem(USER, parent)
+QAjUserItem::QAjUserItem( QString id, QTreeWidget *parent ) : QAjItem( parent, id )
 {
-	init();
+    init();
 }
 
-QAjUserItem::QAjUserItem( QTreeWidgetItem *parent ) : QAjItem(USER, parent)
+QAjUserItem::QAjUserItem( QString id, QTreeWidgetItem *parent ) : QAjItem( parent, id )
 {
-	init();
+    init();
 }
 
 QAjUserItem::~QAjUserItem()
-{
-}
+{}
 
 void QAjUserItem::init()
 {
-	speed = 0;
-	fileNameSet = false;
-	status = NEW_SOURCE;
+    speed = 0;
+    fileNameSet = false;
+    status = NEW_SOURCE;
+    setFlags( Qt::ItemIsEnabled );
 }
 
 void QAjUserItem::setSpeed( QString newSpeedString )
 {
-	newSpeed = newSpeedString.toInt();
-	speedDif = newSpeed - speed;
-	speed = newSpeed;
-	if( status == ACTIVE_SOURCE )
-		setText( SPEED_DOWN_INDEX, QConvert::bytes(newSpeedString) + "/s" );
-	else
-		setText( SPEED_DOWN_INDEX, "" );
+    newSpeed = newSpeedString.toInt();
+    speedDif = newSpeed - speed;
+    speed = newSpeed;
+    if ( status == ACTIVE_SOURCE )
+        setText( SPEED_DOWN_INDEX, QConvert::bytes(newSpeedString) + "/s" );
+    else
+        setText( SPEED_DOWN_INDEX, "" );
 }
 
 void QAjUserItem::update( QString fileName, QString speed, QString status, QString power, QString queuePos, QString statusString, QIcon* osIcon )
 {
-	this->fileName = fileName;
-	this->status = status;
-	this->power = power;
-	this->queuePos = queuePos.toInt();
-	setSpeed( speed );
-	
-	if( this->status == QUEUED_SOURCE )  // queueing? print position
-		statusString += " (" + queuePos + ")";
-	setText( STATUS_DOWN_INDEX,  statusString );
-	setText( POWER_DOWN_INDEX,  QConvert::power( power ) );
-	if( !fileNameSet && !fileName.isEmpty() )
-	{
-		setText( FILENAME_DOWN_INDEX, fileName );
-		fileNameSet = true;
-	}
-   if( this->icon(SOURCES_DOWN_INDEX).isNull() )
-   {
-		setIcon( SOURCES_DOWN_INDEX, *osIcon );
-	}
+    this->fileName = fileName;
+    this->status = status;
+    this->power = power;
+    this->queuePos = queuePos.toInt();
+    setSpeed( speed );
+
+    if ( this->status == QUEUED_SOURCE ) // queueing? print position
+        statusString += " (" + queuePos + ")";
+    setText( STATUS_DOWN_INDEX,  statusString );
+    setText( POWER_DOWN_INDEX,  QConvert::power( power ) );
+    if ( !fileNameSet && !fileName.isEmpty() )
+    {
+        setText( FILENAME_DOWN_INDEX, fileName );
+        fileNameSet = true;
+    }
+    if ( this->icon(SOURCES_DOWN_INDEX).isNull() )
+    {
+        setIcon( SOURCES_DOWN_INDEX, *osIcon );
+    }
 }

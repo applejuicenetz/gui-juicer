@@ -19,9 +19,8 @@
  ***************************************************************************/
 #include "qajlistwidget.h"
 
-QAjListWidget::QAjListWidget( int idIndex, QWidget *parent ) : QTreeWidget( parent )
+QAjListWidget::QAjListWidget( QWidget *parent ) : QTreeWidget( parent )
 {
-    this->idIndex = idIndex;
     changed = false;
     setContextMenuPolicy( Qt::CustomContextMenu );
 
@@ -65,4 +64,18 @@ void QAjListWidget::adjustSizeOfColumns()
     int i;
     for ( i=0; i<this->columnCount(); i++ )
         resizeColumnToContents( i );
+}
+
+
+/*!
+    \fn QAjListWidget::selectedAjItems () const
+ */
+QList<QAjItem *> QAjListWidget::selectedAjItems () const
+{
+    QList<QAjItem*> ajItems;
+    QList<QTreeWidgetItem*> items = QTreeWidget::selectedItems();
+    while(!items.isEmpty()) {
+        ajItems << (QAjItem*)items.takeFirst();
+    }
+    return ajItems;
 }

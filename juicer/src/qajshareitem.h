@@ -30,11 +30,11 @@
 class QAjShareItem : public QAjItem
 {
 public:
-	QAjShareItem( QTreeWidget* parent = 0);
+    QAjShareItem( QTreeWidget* parent );
 
-	virtual ~QAjShareItem();
-	QString recursiv;
-	QString path;
+    virtual ~QAjShareItem();
+    bool recursive;
+    QString path;
 };
 
 #endif

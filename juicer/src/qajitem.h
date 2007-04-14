@@ -22,16 +22,14 @@
 
 #include <QTreeWidget>
 
-typedef enum { DOWN, UP, USER, SEARCH, SHARE, SHARED_FILE, GENERIC } AjItemType;
-
 /**
 @author Matthias Reif
 */
 class QAjItem : public QTreeWidgetItem
 {
 public:
-    QAjItem( AjItemType type, QTreeWidget *parent = 0 );
-    QAjItem( AjItemType type, QTreeWidgetItem *parent = 0 );
+    QAjItem( QTreeWidget *parent, QString id="generic" );
+    QAjItem( QTreeWidgetItem *parent, QString id="generic" );
 
     virtual ~QAjItem();
 
@@ -43,11 +41,15 @@ public:
     {
         status = newStatus;
     }
-    int getType();
+
+    QString getId()
+    {
+        return id;
+    }
 
 protected:
-    AjItemType type;
     QString status;
+    QString id;
 };
 
 #endif
