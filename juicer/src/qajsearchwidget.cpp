@@ -19,7 +19,7 @@
  ***************************************************************************/
 #include "qajsearchwidget.h"
 
-QAjSearchWidget::QAjSearchWidget( QWidget *parent ) : QAjListWidget( parent )
+QAjSearchWidget::QAjSearchWidget( QXMLModule* xml, QWidget *parent ) : QAjListWidget( xml, parent )
 {
     setColumnCount( NUM_SEARCH_COL );
     QStringList headers;
@@ -47,10 +47,37 @@ QAjSearchWidget::QAjSearchWidget( QWidget *parent ) : QAjListWidget( parent )
     popup->setTitle( tr("&Search") );
     popup->addAction( QIcon(":/small/save.png"), "download", this, SLOT(downloadSlot()) );
     popup->addAction( QIcon(":/small/cancel.png"), "remove", this, SLOT(removeSlot()) );
+
+    connect( this, SIGNAL( itemDoubleClicked ( QTreeWidgetItem *, int ) ), this, SLOT( downloadSlot() ) );
+
+    initToolBar();
 }
 
 QAjSearchWidget::~QAjSearchWidget()
 {}
+
+
+/*!
+    \fn QAjSearchWidget::initToolBar()
+ */
+void QAjSearchWidget::initToolBar()
+{
+    toolBar = new QToolBar( "search operations", this );
+
+    toolBar->addAction( QIcon(":/save.png"), "download", this, SLOT( downloadSlot() ) );
+    toolBar->addAction( QIcon(":/cancel.png"), "cancel search", this, SLOT( removeSlot() ) );
+
+    toolBar->addSeparator();
+
+    searchLabel = new QLabel( toolBar );
+    searchLabel->setText( "search for:" );
+    toolBar->addWidget( searchLabel );
+    searchEdit = new QLineEdit(toolBar );
+    searchEdit->setMinimumWidth( 200 );
+    toolBar->addWidget( searchEdit );
+    connect( searchEdit, SIGNAL( returnPressed() ), this, SLOT( searchSlot() ) );
+    searchButton = toolBar->addAction( "search", this, SLOT( searchSlot() )  );
+}
 
 void QAjSearchWidget::insertSearch( QString id, QString searchText, QString running, QString foundFiles )
 {
@@ -156,14 +183,42 @@ bool QAjSearchWidget::remove( QString id )
         return false;
 }
 
+
+void QAjSearchWidget::searchSlot()
+{
+    QString text( QUrl::toPercentEncoding( searchEdit->text() ) );
+    xml->set( "search", "&search=" + text );
+    searchEdit->clear();
+}
+
+
 void QAjSearchWidget::removeSlot()
 {
-    remove();
+    QList<QTreeWidgetItem *>  selectedItems = QTreeWidget::selectedItems();
+    int i;
+    for ( i=0; i<selectedItems.size(); i++ )
+    {
+        xml->set( "cancelsearch", "&id=" + ((QAjSearchItem*)selectedItems[i])->getId() );
+    }
 }
 
 void QAjSearchWidget::downloadSlot()
 {
-    download();
+    QList<QAjItem *>  selectedItems = selectedAjItems();
+    int i;
+    for ( i=0; i<selectedItems.size(); i++ )
+    {
+        QAjSearchEntryItem *searchEntryItem = findSearchEntry( selectedItems[i]->getId() );
+        if( searchEntryItem != NULL )
+        {
+            QString link = "ajfsp://file|";
+            link += searchEntryItem->text( TEXT_SEARCH_INDEX );
+            link += "|" + searchEntryItem->checksum;
+            link += "|" + searchEntryItem->size + "/";
+            link = QString( QUrl::toPercentEncoding(link) );
+            xml->set( "processlink", "&link=" +link );
+        }
+    }
 }
 
 QAjSearchItem* QAjSearchWidget::findSearch( QString id )

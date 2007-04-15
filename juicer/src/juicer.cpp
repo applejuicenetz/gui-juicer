@@ -22,13 +22,6 @@
 
 Juicer::Juicer( ) : QMainWindow( )
 {
-#ifdef AJQTGUI_MODE_SPECIAL
-    special = true;
-#else
-    char* mode = getenv( "AJQTGUI_MODE" );
-    special = (( mode != NULL )) && ( strcmp(mode, "SPECIAL") == 0 );
-#endif
-
     filesystemSeparator = "\\";
     zeroTime = QDateTime( QDate(1970,1,1), QTime(0,0), Qt::UTC );
     QSettings lokalSettings;
@@ -39,16 +32,16 @@ Juicer::Juicer( ) : QMainWindow( )
     setWindowIcon(QIcon(":/juicer.png"));
 
     QTabWidget* ajTab = new QTabWidget(this);
-    ajDownloadWidget = new QAjDownloadWidget( ajTab );
-    ajUploadWidget = new QAjUploadWidget( ajTab );
-    ajSearchWidget = new QAjSearchWidget( ajTab );
+    ajDownloadWidget = new QAjDownloadWidget( xml, ajTab );
+    ajUploadWidget = new QAjUploadWidget( xml, ajTab );
+    ajSearchWidget = new QAjSearchWidget( xml, ajTab );
 
 
     ajServerMetaWidget = new QAjServerMetaWidget( ajTab );
-    ajServerWidget = new QAjServerWidget( ajServerMetaWidget );
+    ajServerWidget = new QAjServerWidget( xml, ajServerMetaWidget );
     ajServerMetaWidget->setServerWidget( ajServerWidget );
 
-    ajShareWidget = new QAjShareWidget( filesystemSeparator, ajTab );
+    ajShareWidget = new QAjShareWidget( filesystemSeparator, xml, ajTab );
 
     ajTab->setTabToolTip( ajTab->addTab( ajDownloadWidget, QIcon(":/small/down.png"), "Downloads" ), "dowloads" );
     ajTab->setTabToolTip( ajTab->addTab( ajUploadWidget, QIcon(":/small/up.png"), "Uploads" ), "uploads" );
@@ -56,8 +49,8 @@ Juicer::Juicer( ) : QMainWindow( )
     ajTab->setTabToolTip( ajTab->addTab( ajServerMetaWidget, QIcon(":/small/server.png"), "Server" ), "searches" );
     ajTab->setTabToolTip( ajTab->addTab( ajShareWidget, QIcon(":/small/shares.png"), "Shares" ), "shares" );
 
-    ajFtpWidget = new QAjFtpWidget( ajTab );
-    ajTab->setTabToolTip( ajTab->addTab( ajFtpWidget, QIcon(":/small/ftp.png"), "Ftp" ), "ftp" );
+    ajIncomingWidget = new QAjIncomingWidget( xml, ajTab );
+    ajTab->setTabToolTip( ajTab->addTab( ajIncomingWidget, QIcon(":/small/ftp.png"), "Incoming" ), "Incoming" );
 
     setCentralWidget( ajTab );
     prevTab = ajDownloadWidget;
@@ -88,7 +81,7 @@ Juicer::Juicer( ) : QMainWindow( )
     help->addAction( tr("&About"), this, SLOT(about()), QKeySequence( Qt::Key_F1  ) );
     help->addAction( tr("About &Qt"), this, SLOT(aboutQt()) );
     help->addSeparator();
-// 	help->addAction( tr("What's &This"), this, SLOT(whatsThis()), QKeySequence( Qt::SHIFT+Qt::Key_F1 ) );
+
     menuBar()->addMenu( help );
 
     downSpeedLabel = new QLabel(this);
@@ -119,9 +112,6 @@ Juicer::Juicer( ) : QMainWindow( )
     connect( xml, SIGNAL( modifiedDone( ) ), ajDownloadWidget, SLOT( updateView( ) ) );
     connect( xml, SIGNAL( modifiedDone( ) ), this, SLOT( firstModified() ) );
 
-    serverHttp = new QHttp();
-    connect( serverHttp, SIGNAL( requestFinished ( int , bool ) ), this, SLOT( gotServer( int , bool ) ) );
-
     connected = false;
     password = lokalSettings.value( "password" ).toString();
     // no password in local file? => ask for it
@@ -142,69 +132,20 @@ Juicer::Juicer( ) : QMainWindow( )
     xml->setHost( lokalSettings.value("coreAddress", "localhost").toString(),
                   lokalSettings.value("/progeln.de/Juicer/xmlPort", 9851).toInt() );
 
-    ftp = new QFtp();
-
-    timer = new QTimer( this );
+     timer = new QTimer( this );
     connect( timer, SIGNAL( timeout() ), this, SLOT( timerSlot() ) );
     partListTimer = new QTimer( this );
     connect( partListTimer, SIGNAL( timeout() ), this, SLOT( partListTimerSlot() ) );
 
-    connect( ajDownloadWidget, SIGNAL( pause() ), this, SLOT( pauseDownload() ) );
-    connect( ajDownloadWidget, SIGNAL( resume() ), this, SLOT( resumeDownload() ) );
-    connect( ajDownloadWidget, SIGNAL( cancel() ), this, SLOT( cancelDownload() ) );
-    connect( ajDownloadWidget, SIGNAL( clean() ), this, SLOT( cleanDownload() ) );
-    connect( ajDownloadWidget, SIGNAL( partListRequest() ), this, SLOT( partListRequest() ) );
-    connect( ajDownloadWidget, SIGNAL( rename() ), this, SLOT( renameDownload() ) );
-    connect( ajDownloadWidget, SIGNAL( renamePlus() ), this, SLOT( renamePlusDownload() ) );
-    connect( ajDownloadWidget, SIGNAL( open() ), this, SLOT( openDownload() ) );
-
-    connect( ajServerWidget, SIGNAL( remove() ), this, SLOT( removeServer() ) );
-    connect( ajServerWidget, SIGNAL( connect() ), this, SLOT( connectServer() ) );
-    connect( ajServerWidget, SIGNAL( find() ), this, SLOT( findServer() ) );
-
-    connect( ajSearchWidget, SIGNAL( remove() ), this, SLOT( cancelSearch() ) );
-    connect( ajSearchWidget, SIGNAL( download() ), this, SLOT( downloadSearch() ) );
-    connect( ajSearchWidget, SIGNAL( itemDoubleClicked ( QTreeWidgetItem *, int ) ), this, SLOT( downloadSearch() ) );
-    
     connect( ajTab, SIGNAL( currentChanged( QWidget* ) ), this, SLOT( tabChanged( QWidget* ) ) );
 
-    connect( ajDownloadWidget, SIGNAL( itemSelectionChanged( ) ), this, SLOT( downloadSelectionChanged( ) ) );
-
-    connect( ajServerWidget, SIGNAL( newSelection( bool ) ), connectServerButton, SLOT( setEnabled( bool ) ) );
-    connect( ajServerWidget, SIGNAL( newSelection( bool ) ), removeServerButton, SLOT( setEnabled( bool ) ) );
-
-    connect( ajShareWidget, SIGNAL( newSelection( bool ) ), removeShareButton, SLOT( setEnabled( bool ) ) );
-
-    connect( ajShareWidget, SIGNAL( insert() ), this, SLOT( addShare() ) );
-    connect( ajShareWidget, SIGNAL( remove() ), this, SLOT( removeShare() ) );
-    connect( ajShareWidget, SIGNAL( reload() ), this, SLOT( reloadShare() ) );
-    connect( ajShareWidget, SIGNAL( commit() ), this, SLOT( applyShare() ) );
-
-    connect( ftp, SIGNAL( listInfo ( QUrlInfo ) ), this->ajFtpWidget, SLOT( insert( QUrlInfo ) ) );
-    connect( ajFtpWidget, SIGNAL( itemDoubleClicked ( QTreeWidgetItem*, int ) ), this, SLOT( storeFtp( ) ) );
-    connect( ajFtpWidget, SIGNAL( newSelection( bool ) ), storeFtpButton, SLOT( setEnabled( bool ) ) );
-
     tabChanged( ajDownloadWidget );
-    
+
     login();
 }
 
 Juicer::~Juicer()
-{
-    delete file;
-    delete help;
-    delete downSpeedLabel;
-    delete upSpeedLabel;
-    delete creditsLabel;
-    delete downSizeLabel;
-    delete upSizeLabel;
-    delete coreVersionLabel;
-    delete connectedLabel;
-    delete xml;
-    delete serverHttp;
-    delete timer;
-    delete partListTimer;
-}
+{}
 
 void Juicer::initToolBars()
 {
@@ -233,133 +174,18 @@ void Juicer::initToolBars()
 
     ajLinks->addAction( QIcon(":/ok.png"), "process link", this, SLOT( processLink() ) );
 
-// DOWNLOAD TOOLBAR
-
-    downloadToolBar = new QToolBar( "download operations", this );
-
-    pauseDownloadButton = downloadToolBar->addAction( QIcon(":/pause.png"), "pause download", this, SLOT( pauseDownload() ) );
-    pauseDownloadButton->setToolTip( "pause download" );
-
-    resumeDownloadButton = downloadToolBar->addAction( QIcon(":/resume.png"), "resume download", this, SLOT( resumeDownload() ) );
-    resumeDownloadButton->setToolTip( "resume download" );
-
-    cancelDownloadButton = downloadToolBar->addAction( QIcon(":/cancel.png"), "cancel download", this, SLOT( cancelDownload() ) );
-
-    partListButton = downloadToolBar->addAction( QIcon(":/partlist.png"), "show part list", this, SLOT( partListRequest() ) );
-    renameDownloadButton = downloadToolBar->addAction( QIcon(":/rename.png"), "rename download", this, SLOT( renameDownload() ) );
-    renamePlusDownloadButton = downloadToolBar->addAction( QIcon(":/rename_plus.png"), "rename download by clipboard", this, SLOT( renamePlusDownload() ) );
-
-    openDownloadButton = downloadToolBar->addAction( QIcon(":/exec.png"), "open download", this, SLOT( openDownload() ) );
-
-    clearDownloadButton = downloadToolBar->addAction( QIcon(":/filter.png"), "remove finished/canceld download", this, SLOT( cleanDownload() ) );
-
-    saveDownloadButton = downloadToolBar->addAction( QIcon(":/save.png"), "store file", this, SLOT( storeDownload() ) );
-
-
-    pauseDownloadButton->setDisabled( true );
-    resumeDownloadButton->setDisabled( true );
-    cancelDownloadButton->setDisabled( true );
-    partListButton->setDisabled( true );
-    renameDownloadButton->setDisabled( true );
-    renamePlusDownloadButton->setDisabled( true );
-    saveDownloadButton->setDisabled( true );
-    openDownloadButton->setDisabled( true );
-
-    downloadToolBar->addSeparator();
-
-    powerCheck = new QCheckBox( downloadToolBar );
-    powerCheck->setText( tr("Power Download:") );
-    powerCheck->setChecked( false );
-    powerCheck->adjustSize();
-    downloadToolBar->addWidget( powerCheck );
-
-    powerSpin = new QDoubleSpinBox( downloadToolBar );
-    powerSpin->setRange( 2.2, 50.0 );
-    powerSpin->setSingleStep( 0.1 );
-    powerSpin->setDecimals( 1 );
-    downloadToolBar->addWidget( powerSpin );
-
-    //connect( powerEdit, SIGNAL( returnPressed() ), this, SLOT( applyPowerDownload() ) );
-    connect( powerSpin, SIGNAL( valueChanged( const QString&) ), this, SLOT( powerChanged( const  QString& ) ) );
-    connect( powerSpin, SIGNAL( valueChanged( double ) ), this, SLOT( powerChanged( double ) ) );
-
-    powerOkButton = downloadToolBar->addAction( QIcon(":/ok.png"), "apply power download", this, SLOT( applyPowerDownload() ) );
-
-    powerMaxButton = downloadToolBar->addAction( QIcon(":/launch.png"), "set all downloads to 1:50", this, SLOT( maxPowerDownload() )  );
-    powerMaxButton->setVisible( special );
-
-// UPLOAD TOOLBAR
-
-    uploadToolBar = new QToolBar( "upload operations", this );
-
-    uploadToolBar->addAction( QIcon(":/dummy.png"), "" )->setDisabled( true );
-    uploadToolBar->hide();
-
-// SEARCH TOOLBAR
-
-    searchToolBar = new QToolBar( "search operations", this );
-
-    searchToolBar->addAction( QIcon(":/save.png"), "download", this, SLOT( downloadSearch() ) );
-    searchToolBar->addAction( QIcon(":/cancel.png"), "cancel search", this, SLOT( cancelSearch() ) );
-
-    searchToolBar->addSeparator();
-
-    ajSearchLabel = new QLabel( searchToolBar );
-    ajSearchLabel->setText( "search for:" );
-    searchToolBar->addWidget( ajSearchLabel );
-    ajSearchEdit = new QLineEdit( searchToolBar );
-    ajSearchEdit->setMinimumWidth( 200 );
-    searchToolBar->addWidget( ajSearchEdit );
-    connect( ajSearchEdit, SIGNAL( returnPressed() ), this, SLOT( search() ) );
-    ajSearchButton = searchToolBar->addAction( "search", this, SLOT( search() )  );
-
-    searchToolBar->hide();
-
-// SERVER TOOLBAR
-
-    serverToolBar = new QToolBar( "server operations", this );
-
-    connectServerButton = serverToolBar->addAction( QIcon(":/connect.png"), "connect to this server", this, SLOT( connectServer() ) );
-    removeServerButton = serverToolBar->addAction( QIcon(":/cancel.png"), "remove server", this, SLOT( removeServer() ) );
-    findServerButton = serverToolBar->addAction( QIcon(":/find.png"), "find server", this, SLOT( findServer() ) );
-
-    removeServerButton->setDisabled( true );
-    connectServerButton->setDisabled( true );
-    serverToolBar->hide();
-
-// SHARE TOOLBAR
-
-    shareToolBar = new QToolBar( "share operations", this );
-
-    shareToolBar->addAction( QIcon(":/add.png"), "add share", this, SLOT( addShare() ) );
-    removeShareButton = shareToolBar->addAction( QIcon(":/remove.png"), "remove share", this, SLOT( removeShare() ) );
-    reloadSharedFilesButton = shareToolBar->addAction( QIcon(":/update.png"), "reload shared files", this, SLOT( reloadShare() ) );
-    applyShareButton = shareToolBar->addAction( QIcon(":/commit.png"), "commit changes to the core", this, SLOT( applyShare() ) );
-    applyShareButton->setDisabled( true );
-    removeShareButton->setDisabled( true );
-
-    
-
-    shareToolBar->hide();
-
-    // FTP TOOLBAR
-    ftpToolBar = new QToolBar( "ftp operations", this );
-    ftpToolBar->addAction( QIcon(":/reload.png"), "reload files", this, SLOT( reloadFtp() ) );
-    storeFtpButton = ftpToolBar->addAction( QIcon(":/save.png"), "store file", this, SLOT( storeFtp() ) );
-    storeFtpButton->setDisabled( true );
-    ftpToolBar->hide();
 
     this->setIconSize( QSize(22, 22) );
     this->addToolBar( ajTools );
     this->addToolBar( ajLinks );
     this->addToolBarBreak( );
-    downloadToolBar->setIconSize( QSize(22, 22) );
-    this->addToolBar( downloadToolBar );
-    this->addToolBar( uploadToolBar );
-    this->addToolBar( searchToolBar );
-    this->addToolBar( serverToolBar );
-    this->addToolBar( shareToolBar );
-    this->addToolBar( ftpToolBar );
+    ajDownloadWidget->toolBar->setIconSize( QSize(22, 22) );
+    this->addToolBar( ajDownloadWidget->toolBar );
+    this->addToolBar( ajUploadWidget->toolBar );
+    this->addToolBar( ajSearchWidget->toolBar );
+    this->addToolBar( ajServerWidget->toolBar );
+    this->addToolBar( ajShareWidget->toolBar );
+    this->addToolBar( ajIncomingWidget->toolBar );
 
 }
 
@@ -423,12 +249,14 @@ void Juicer::showOptions()
         lokalSettings.setValue( "location",  settings.location );
         lokalSettings.setValue( "incomingDirSpecific",  settings.incomingDirSpecific );
         lokalSettings.setValue( "tempDirSpecific",  settings.tempDirSpecific );
-        
-        lokalSettings.setValue( "ftpServer",  settings.ftpServer );
-        lokalSettings.setValue( "ftpPort",  settings.ftpPort );
-        lokalSettings.setValue( "ftpUser",  settings.ftpUser );
-        lokalSettings.setValue( "ftpPassword",  settings.ftpPassword );
-        lokalSettings.setValue( "ftpDir",  settings.ftpDir );
+
+        lokalSettings.beginGroup( "ftp" );
+        lokalSettings.setValue( "server",  settings.ftpServer );
+        lokalSettings.setValue( "port",  settings.ftpPort );
+        lokalSettings.setValue( "user",  settings.ftpUser );
+        lokalSettings.setValue( "password",  settings.ftpPassword );
+        lokalSettings.setValue( "dir",  settings.ftpDir );
+        lokalSettings.endGroup();
 
         timer->stop();
         timer->setSingleShot( false );
@@ -461,8 +289,7 @@ void Juicer::showOptions()
 
 void Juicer::settingsReady( AjSettings settings )
 {
-    tempDir = QFileInfo( settings.tempDir );
-    incomingDir = QFileInfo( settings.incomingDir );
+    ajDownloadWidget->setDirs( QFileInfo( settings.tempDir ), QFileInfo( settings.incomingDir ) );
     if ( optionsDialog != NULL )
     {
         QSettings lokalSettings;
@@ -477,12 +304,14 @@ void Juicer::settingsReady( AjSettings settings )
         settings.location = lokalSettings.value( "location", "same" ).toString();
         settings.tempDirSpecific = lokalSettings.value( "tempDirSpecific", "/" ).toString();
         settings.incomingDirSpecific = lokalSettings.value( "incomingDirSpecific", "/" ).toString();
-        
-        settings.ftpServer = lokalSettings.value( "ftpServer", "localhost" ).toString();
-        settings.ftpPort = lokalSettings.value( "ftpPort", "21" ).toString();
-        settings.ftpUser = lokalSettings.value( "ftpUser", "anonymous" ).toString();
-        settings.ftpPassword = lokalSettings.value( "ftpPassword", "" ).toString();
-        settings.ftpDir = lokalSettings.value( "ftpDir", "/" ).toString();
+
+        lokalSettings.beginGroup("ftp");
+        settings.ftpServer = lokalSettings.value( "server", "localhost" ).toString();
+        settings.ftpPort = lokalSettings.value( "port", "21" ).toString();
+        settings.ftpUser = lokalSettings.value( "user", "anonymous" ).toString();
+        settings.ftpPassword = lokalSettings.value( "password", "" ).toString();
+        settings.ftpDir = lokalSettings.value( "dir", "/" ).toString();
+        lokalSettings.endGroup();
 
         optionsDialog->setAjSettings( settings );
     }
@@ -561,50 +390,6 @@ void Juicer::showNetworkInfo()
     networkDialog->exec();
 }
 
-void Juicer::powerChanged( const QString& )
-{
-    powerCheck->setChecked( true );
-}
-
-void Juicer::applyPowerDownload()
-{
-    float value;
-    if ( powerCheck->isChecked() )
-        value = powerSpin->value();
-    else
-        value = 1.0;
-    processSelected( "setpowerdownload", "&Powerdownload=" + QConvert::power( value ) );
-}
-
-void Juicer::maxPowerDownload()
-{
-    QList<QString> ids = ajDownloadWidget->getIds();
-    int i;
-    for ( i=0; i<ids.size(); i++ )
-    {
-        xml->set( "setpowerdownload", "&Powerdownload="+QConvert::power( 50 )+"&id="+ids[i] );
-    }
-}
-
-void Juicer::processSelected( QString request, QString para )
-{
-    QList<QAjItem *>  selectedItems = ajDownloadWidget->selectedAjItems();
-    int i;
-    for ( i=0; i<selectedItems.size(); i++ )
-    {
-        xml->set( request, para + "&id=" + selectedItems[i]->getId() );
-    }
-}
-
-void Juicer::requestSelected( QString request, QString para )
-{
-    QList<QAjItem *>  selectedItems = ajDownloadWidget->selectedAjItems();
-    int i;
-    for ( i=0; i<selectedItems.size(); i++ )
-    {
-        xml->get( request, para + "&id=" + selectedItems[i]->getId() );
-    }
-}
 
 void Juicer::processLink()
 {
@@ -619,271 +404,25 @@ void Juicer::processClipboard()
     xml->set( "processlink", "&link=" + link );
 }
 
-void Juicer::downloadSearch()
-{
-    QList<QAjItem *>  selectedItems = ajSearchWidget->selectedAjItems();
-    int i;
-    for ( i=0; i<selectedItems.size(); i++ )
-    {
-        QAjSearchEntryItem *searchEntryItem = ajSearchWidget->findSearchEntry( selectedItems[i]->getId() );
-        if( searchEntryItem != NULL )
-        {
-            QString link = "ajfsp://file|";
-            link += searchEntryItem->text( TEXT_SEARCH_INDEX );
-            link += "|" + searchEntryItem->checksum;
-            link += "|" + searchEntryItem->size + "/";
-            link = QString( QUrl::toPercentEncoding(link) );
-            xml->set( "processlink", "&link=" +link );
-        }
-    }
-}
-
-void Juicer::cancelDownload()
-{
-    if ( QMessageBox::question( this, "Confirm", "Do you realy want to cancel this download(s)?", QMessageBox::No, QMessageBox::Yes ) == QMessageBox::Yes )
-    {
-        processSelected( "canceldownload" );
-    }
-}
-
-void Juicer::cleanDownload()
-{
-    xml->set( "cleandownloadlist" );
-}
-void Juicer::pauseDownload()
-{
-    processSelected( "pausedownload" );
-}
-void Juicer::resumeDownload()
-{
-    processSelected( "resumedownload" );
-}
-
-void Juicer::partListRequest( )
-{
-    requestSelected( "downloadpartlist" );
-}
-
-void Juicer::renameDownload()
-{
-    QString oldFilename;
-    QString newFilename;
-    bool ok;
-    QList<QAjItem *>  selectedItems = ajDownloadWidget->selectedAjItems();
-    int i;
-    for ( i=0; i<selectedItems.size(); i++ )
-    {
-        oldFilename = selectedItems[i]->text( FILENAME_DOWN_INDEX );
-        newFilename = QInputDialog::getText( this, "rename download", "enter new filename for " + oldFilename, QLineEdit::Normal, oldFilename, &ok );
-        newFilename = QString( QUrl::toPercentEncoding( newFilename ) );
-        if ( ok && !newFilename.isEmpty() )
-        {
-            xml->set( "renamedownload", "&id=" + selectedItems[i]->getId() + "&name=" + newFilename );
-        }
-    }
-}
-
-void Juicer::renamePlusDownload()
-{
-    QString oldFilename;
-    QString newFilename;
-    QString newFilenameBase = qApp->clipboard()->text( QClipboard::Clipboard );
-    QList<QAjItem *>  selectedItems = ajDownloadWidget->selectedAjItems();
-    int i;
-    for ( i=0; i<selectedItems.size(); i++ )
-    {
-        oldFilename = selectedItems[i]->text( FILENAME_DOWN_INDEX );
-        newFilename = newFilenameBase;
-        if (selectedItems.size() > 1)
-        {
-            newFilename += "_" + QString::number(i+1);
-        }
-        QStringList s = oldFilename.split(".");
-        if (s.size() > 1)
-        {
-            newFilename += "." + s[s.size() - 1];
-        }
-        newFilename = QString( QUrl::toPercentEncoding( newFilename ) );
-        if (!newFilename.isEmpty())
-        {
-            xml->set( "renamedownload", "&id=" + selectedItems[i]->getId() + "&name=" + newFilename );
-        }
-    }
-}
-
-
-void Juicer::removeServer()
-{
-    QList<QAjItem *>  selectedItems = ajServerWidget->selectedAjItems();
-    int i;
-    for ( i=0; i<selectedItems.size(); i++ )
-    {
-        xml->set( "removeserver", "&id=" + selectedItems[i]->getId() );
-    }
-}
-
-void Juicer::connectServer()
-{
-    QList<QAjItem *>  selectedItems = ajServerWidget->selectedAjItems();
-    if ( ! selectedItems.empty() )
-    {
-        xml->set( "serverlogin", "&id=" + selectedItems.first()->getId() );
-    }
-}
-
-void Juicer::addShare()
-{
-    QString dir = QFileDialog::getExistingDirectory( this, "Choose a directory" );
-    if ( dir != "" )
-    {
-        int result = QMessageBox::question( this, "question", "Share subdirectories?", QMessageBox::Yes, QMessageBox::No );
-        QString mode;
-        if ( result == QMessageBox::Yes )
-            mode = "subdirectory";
-        else
-            mode = "directory";
-        ajShareWidget->insertShare( dir, mode );
-    }
-    ajShareWidget->setChanged();
-    applyShareButton->setEnabled( true );
-}
-
-void Juicer::removeShare()
-{
-    QList<QTreeWidgetItem *>  selectedItems = ajShareWidget->selectedItems();
-    int i;
-    for ( i=0; i<selectedItems.size(); i++ )
-    {
-        //delete it.current();
-        selectedItems.at(i)->setFlags( 0 );
-    }
-    ajShareWidget->setChanged();
-    applyShareButton->setEnabled( true );
-}
-
-void Juicer::applyShare()
-{
-    QString sharesString;
-    int i;
-    int cnt = 1;
-    for ( i=0; i<ajShareWidget->topLevelItemCount() ; i++)
-    {
-        QTreeWidgetItem* item = ajShareWidget->topLevelItem( i );
-        if ( item->flags() & Qt::ItemIsEnabled )
-        {
-            sharesString += "&sharedirectory" + QString::number(cnt) + "=" + item->text( PATH_SHARE_INDEX );
-            sharesString += "&sharesub" + QString::number(cnt) + "=";
-            sharesString += ((QAjShareItem*)item)->recursive?"true":"false";
-            cnt++;
-        }
-    }
-    sharesString = "&countshares=" + QString::number( cnt-1 );
-    xml->set( "setsettings", sharesString );
-    xml->get( "settings" );
-    ajShareWidget->setChanged( false );
-    applyShareButton->setDisabled( true );
-}
 
 void Juicer::tabChanged( QWidget *tab )
 {
     QSettings lokalSettings;
-    if ( tab != ajDownloadWidget )
-    {
-        downloadToolBar->hide();
-        downloadMenuBar->setDisabled( true );
-    }
-    else
-    {
-        downloadToolBar->show();
-        downloadMenuBar->setEnabled( true );
-    }
-    if ( tab != ajUploadWidget )
-    {
-        uploadToolBar->hide();
-    }
-    else
-    {
-        uploadToolBar->show();
-    }
-    if ( tab != ajSearchWidget )
-    {
-        searchToolBar->hide();
-        searchMenuBar->setDisabled( true );
-    }
-    else
-    {
-        searchToolBar->show();
-        searchMenuBar->setEnabled( true );
-    }
-    if ( tab != ajServerMetaWidget )
-    {
-        serverToolBar->hide();
-        serverMenuBar->setDisabled( true );
-    }
-    else
-    {
-        serverToolBar->show();
-        serverMenuBar->setEnabled( true );
-    }
-    if ( tab != ajShareWidget )
-    {
-        shareToolBar->hide();
-        shareMenuBar->setDisabled( true );
-    }
-    else
-    {
-        shareToolBar->show();
-        shareMenuBar->setEnabled( true );
-    }
-    if ( (prevTab == ajShareWidget) && ( ajShareWidget->wasChanged() ) )
+    ajDownloadWidget->setActive( tab == ajDownloadWidget );
+    ajUploadWidget->setActive( tab == ajUploadWidget );
+    ajSearchWidget->setActive( tab == ajSearchWidget );
+    ajServerWidget->setActive( tab == ajServerWidget );
+    ajShareWidget->setActive( tab == ajShareWidget );
+    ajIncomingWidget->setActive( tab == ajIncomingWidget );
+
+    if ( (prevTab == ajShareWidget) && ( ajShareWidget->changed ) )
     {
         if ( QMessageBox::question( this, "question", "You've changed your shares.\nDo you want to transfer it to the core?", QMessageBox::Yes, QMessageBox::No ) == QMessageBox::Yes)
         {
-            applyShare();
+            ajShareWidget->commitSlot();
         }
     }
-    if ( tab != ajFtpWidget )
-    {
-        ftpToolBar->hide();
-    }
-    else
-    {
-        ftpToolBar->show();
-        reloadFtp();
-    }
     prevTab = tab;
-}
-
-void Juicer::downloadSelectionChanged( )
-{
-    bool oneSelected = false;
-    bool onePaused = false;
-    bool oneActive = false;
-    bool oneFinished = false;
-
-    QList<QTreeWidgetItem *>  selectedItems = ajDownloadWidget->selectedItems();
-    int i;
-    for ( i=0; i<selectedItems.size(); i++ )
-    {
-        oneSelected = true;
-        QAjDownloadItem *downloadItem = (QAjDownloadItem*)selectedItems.at(i);
-        if ( downloadItem->getStatus() == DOWN_PAUSED )
-            onePaused = true;
-        if ( ( downloadItem->getStatus() == DOWN_SEARCHING ) || ( downloadItem->getStatus() == DOWN_LOADING ) )
-            oneActive = true;
-        if ( downloadItem->getStatus() == DOWN_FINISHED )
-            oneFinished = true;
-        if ( oneSelected && onePaused && oneActive && oneFinished )
-            break;
-    }
-    cancelDownloadButton->setEnabled( oneSelected );
-    partListButton->setEnabled( oneSelected );
-    renameDownloadButton->setEnabled( oneSelected );
-    renamePlusDownloadButton->setEnabled( oneSelected );
-    saveDownloadButton->setEnabled( oneFinished );
-    resumeDownloadButton->setEnabled( onePaused );
-    pauseDownloadButton->setEnabled( oneActive );
-    openDownloadButton->setEnabled( oneSelected );
 }
 
 void Juicer::exitCore()
@@ -892,71 +431,6 @@ void Juicer::exitCore()
     {
         xml->set( "exitcore" );
     }
-}
-
-void Juicer::search()
-{
-    QString text( QUrl::toPercentEncoding( ajSearchEdit->text() ) );
-    xml->set( "search", "&search=" + text );
-    ajSearchEdit->clear();
-}
-
-void Juicer::cancelSearch()
-{
-    QList<QTreeWidgetItem *>  selectedItems = ajSearchWidget->selectedItems();
-    int i;
-    for ( i=0; i<selectedItems.size(); i++ )
-    {
-        xml->set( "cancelsearch", "&id=" + ((QAjSearchItem*)selectedItems[i])->getId() );
-    }
-}
-
-void Juicer::findServer()
-{
-    QSettings lokalSettings;
-    QString serverURL = lokalSettings.value( "serverURL", "http://www.applejuicenet.de/18.0.html" ).toString();
-
-    QString host;
-    if ( serverURL.indexOf( "http://", 0, Qt::CaseInsensitive ) == 0 )
-        host = serverURL.section( '/', 2, 2);
-    else
-        host = serverURL.section( '/', 0, 0);
-
-    printf("get server from: %s\n", host.toLatin1().data() );
-
-    serverHttp->setHost( host );
-    serverHttp->get( serverURL );
-}
-
-void Juicer::gotServer( int , bool error )
-{
-    if ( error )
-    {
-        QMessageBox::critical( NULL, "error", "Could not fetch server source." , QMessageBox::Abort, QMessageBox::Cancel );
-    }
-    else
-    {
-        QString data( serverHttp->readAll() );
-        // TODO: use regular expressions
-        int begin, start, end;
-        begin = 0;
-        QString link;
-        // while we found an ajfsp server link
-        while ( ( start = data.indexOf( "ajfsp://server|", begin, Qt::CaseInsensitive ) ) != -1 )
-        {
-            end = data.indexOf( "/", start + 15 );
-            link = QString( QUrl::toPercentEncoding( data.mid(start, end - start +1) ) );
-            xml->set( "processlink", "&link=" + link );
-            begin = end;
-        }
-    }
-}
-
-void Juicer::reloadShare()
-{
-    ajShareWidget->clear();
-    xml->get( "settings" );
-    xml->get( "share" );
 }
 
 void Juicer::setCoreVersion( QString version )
@@ -1021,205 +495,11 @@ void Juicer::queueLinks( QStringList links )
 
 
 /*!
-    \fn Juicer::powerChanged( double )
- */
-void Juicer::powerChanged( double )
-{
-    applyPowerDownload();
-}
-
-void Juicer::storeDownload()
-{
-    FTP* ftp = NULL;
-    QString filename, localDir;
-    QList<QTreeWidgetItem *>  selectedItems = ajDownloadWidget->selectedItems();
-
-    QSettings lokalSettings;
-    QString server = lokalSettings.value( "ftpServer", "localhost" ).toString();
-    int port = lokalSettings.value( "ftpPort", "21" ).toInt();
-    QString user = lokalSettings.value( "ftpUser", "anonymous" ).toString();
-    QString password = lokalSettings.value( "ftpPassword", "" ).toString();
-    QString dir = lokalSettings.value( "ftpDir", "/" ).toString();
-    if ( ! dir.endsWith( '/' ) )
-    {
-        dir += '/';
-    }
-    ftp = new FTP( server, port, user, password, true, this );
-
-    int i;
-    for ( i=0; i<selectedItems.size(); i++ )
-    {
-        filename = selectedItems.at(i)->text( FILENAME_DOWN_INDEX );
-        localDir = QFileDialog::getExistingDirectory( this, "save \"" + filename + "\" + to" );
-        if ( localDir != "" )
-        {
-            if ( ! localDir.endsWith( QDir::separator() ) )
-            {
-                localDir += QDir::separator();
-            }
-            QFile* dstFile = new QFile( localDir + filename );
-            if ( ! dstFile->exists() )
-            {
-                dstFile->open( QIODevice::WriteOnly );
-                ftp->add( dir + filename, dstFile );
-            }
-        }
-    }
-    ftp->start();
-}
-
-
-/*!
-    \fn Juicer::reloadFtp()
- */
-void Juicer::reloadFtp()
-{
-    ajFtpWidget->clear();
-
-    QSettings lokalSettings;
-    QString server = lokalSettings.value( "ftpServer", "localhost" ).toString();
-    int port = lokalSettings.value( "ftpPort", "21" ).toInt();
-    QString user = lokalSettings.value( "ftpUser", "anonymous" ).toString();
-    QString password = lokalSettings.value( "ftpPassword", "" ).toString();
-    QString dir = lokalSettings.value( "ftpDir", "/" ).toString();
-
-    if ( ftp->state() != QFtp::Unconnected )
-    {
-        ftp->close();
-    }
-    ftp->connectToHost( server, port );
-    ftp->login( user, password );
-    ftp->setTransferMode( QFtp::Passive );
-    ftp->list( dir );
-}
-
-
-/*!
-    \fn Juicer::storeFtp()
- */
-void Juicer::storeFtp()
-{
-    QString filename, localDir;
-    QList<QTreeWidgetItem *>  selectedItems = ajFtpWidget->selectedItems();
-
-    QSettings lokalSettings;
-    QString server = lokalSettings.value( "ftpServer", "localhost" ).toString();
-    int port = lokalSettings.value( "ftpPort", "21" ).toInt();
-    QString user = lokalSettings.value( "ftpUser", "anonymous" ).toString();
-    QString password = lokalSettings.value( "ftpPassword", "" ).toString();
-    QString dir = lokalSettings.value( "ftpDir", "/" ).toString();
-    if ( ! dir.endsWith( '/' ) )
-    {
-        dir += '/';
-    }
-    FTP* ftp = new FTP( server, port, user, password, true, this );
-
-    int i;
-    for ( i=0; i<selectedItems.size(); i++ )
-    {
-        filename = selectedItems.at(i)->text( FILENAME_FTP_INDEX );
-        localDir = QFileDialog::getExistingDirectory( this, "save \"" + filename + "\" + to" );
-        if ( localDir != "" )
-        {
-            if ( ! localDir.endsWith( QDir::separator() ) )
-            {
-                localDir += QDir::separator();
-            }
-            QFile* dstFile = new QFile( localDir + filename );
-            if ( ! dstFile->exists() )
-            {
-                dstFile->open( QIODevice::WriteOnly );
-                ftp->add( dir + filename, dstFile );
-            }
-            else
-            {
-                QMessageBox::critical( this, "error", "\"" + dstFile->fileName() + "\" already exists", QMessageBox::Ok, QMessageBox::NoButton );
-            }
-        }
-    }
-    ftp->start();
-}
-
-/*!
-    \fn Juicer::openDownload()
- */
-void Juicer::openDownload()
-{
-    QSettings lokalSettings;
-    QString launcher = lokalSettings.value( "launcher", optionsDialog->launchCombo->itemText(0)).toString().simplified();
-    QStringList args = launcher.split(" ");
-
-    QString exec = args.takeFirst();
-    if ( launcher == optionsDialog->kdeLauncher )
-    {
-        args.removeFirst();
-        args.push_front("exec");
-    }
-    else if ( launcher == optionsDialog->gnomeLauncher )
-    {
-        args.removeFirst();
-    }
-    else if ( launcher == optionsDialog->macLauncher )
-    {
-        exec = "open";
-        args.clear();
-    }
-    else if ( launcher == optionsDialog->winLauncher )
-    {
-        exec = "start";
-        args.clear();
-        args.push_back("\"\"");
-    }
-
-    QString iDir, tDir;
-    // determine the path
-    QString location = lokalSettings.value( "location", "same" ).toString();
-    if( location == "specific" )
-    {
-        iDir = lokalSettings.value( "incomingDirSpecific", "/" ).toString() + QDir::separator();
-        tDir = lokalSettings.value( "tempDirSpecific", "/" ).toString() + QDir::separator();
-    }
-    else
-    {
-        iDir = incomingDir.absolutePath() + QDir::separator();
-        tDir = tempDir.absolutePath() + QDir::separator();
-    }
-
-    QList<QAjItem*> items = ajDownloadWidget->selectedAjItems();
-    int i;
-    for (i=0; i<items.size(); i++)
-    {
-        QAjDownloadItem* ajDownloadItem = (QAjDownloadItem*)items[i];
-        if( ajDownloadItem->getStatus() == DOWN_FINISHED )
-        {
-            args.push_back( iDir + ajDownloadItem->text( FILENAME_DOWN_INDEX ) );
-        }
-        else
-        {
-            args.push_back( tDir + ajDownloadItem->getTempNumber() + ".data" );
-        }
-        QProcess::startDetached( exec, args );
-        args.pop_back();
-    }
-}
-
-
-/*!
     \fn Juicer::setUploadFilename( QString shareId, QString filename )
  */
 void Juicer::setUploadFilename( QString shareId, QString filename )
 {
-    QFileInfo fileInfo(filename);
-    if (tempDir.absolutePath() == fileInfo.absolutePath())
-    {
-        QAjDownloadItem* item = ajDownloadWidget->findDownloadByTempNum( fileInfo.baseName() );
-        if ( item != NULL )
-            ajUploadWidget->setFilename( shareId, item->text( FILENAME_DOWN_INDEX ) );
-    }
-    else
-    {
-        ajUploadWidget->setFilename( shareId, fileInfo.fileName() );
-    }
+    ajUploadWidget->setFilename( shareId, ajDownloadWidget->findDownloadByTempNum( QFileInfo(filename) ) );
 }
 
 

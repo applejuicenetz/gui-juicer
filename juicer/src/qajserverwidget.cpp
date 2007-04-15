@@ -19,7 +19,7 @@
  ***************************************************************************/
 #include "qajserverwidget.h"
 
-QAjServerWidget::QAjServerWidget( QWidget *parent ) : QAjListWidget( parent )
+QAjServerWidget::QAjServerWidget( QXMLModule* xml, QWidget *parent ) : QAjListWidget( xml, parent )
 {
     connectedWithId = "";
     connectingToId = "";
@@ -57,6 +57,11 @@ QAjServerWidget::QAjServerWidget( QWidget *parent ) : QAjListWidget( parent )
     removeId->setEnabled( false );
     connectId->setEnabled( false );
     QObject::connect( this, SIGNAL( newSelection( bool ) ) , this, SLOT( selectionChanged1( bool ) ) );
+
+    serverHttp = new QHttp( this );
+    QObject::connect( serverHttp, SIGNAL( requestFinished ( int , bool ) ), this, SLOT( gotServer( int , bool ) ) );
+
+    initToolBar();
 }
 
 
@@ -97,15 +102,38 @@ void QAjServerWidget::insertServer( QString id, QString name, QString host, QStr
 
 void QAjServerWidget::removeSlot()
 {
-    remove();
+    QList<QAjItem *>  selectedItems = selectedAjItems();
+    int i;
+    for ( i=0; i<selectedItems.size(); i++ )
+    {
+        xml->set( "removeserver", "&id=" + selectedItems[i]->getId() );
+    }
 }
+
 void QAjServerWidget::connectSlot()
 {
-    connect();
+    QList<QAjItem *>  selectedItems = selectedAjItems();
+    if ( ! selectedItems.empty() )
+    {
+        xml->set( "serverlogin", "&id=" + selectedItems.first()->getId() );
+    }
 }
+
 void QAjServerWidget::findSlot()
 {
-    find();
+    QSettings lokalSettings;
+    QString serverURL = lokalSettings.value( "serverURL", "http://www.applejuicenet.de/18.0.html" ).toString();
+
+    QString host;
+    if ( serverURL.indexOf( "http://", 0, Qt::CaseInsensitive ) == 0 )
+        host = serverURL.section( '/', 2, 2);
+    else
+        host = serverURL.section( '/', 0, 0);
+
+    printf("get server from: %s\n", host.toLatin1().data() );
+
+    serverHttp->setHost( host );
+    serverHttp->get( serverURL );
 }
 
 void QAjServerWidget::connectedWith( QString id )
@@ -164,4 +192,44 @@ bool QAjServerWidget::remove( QString id )
         return true;
     }
     return false;
+}
+
+
+/*!
+    \fn QAjServerWidget::initToolBar()
+ */
+void QAjServerWidget::initToolBar()
+{
+    toolBar = new QToolBar( "server operations", this );
+
+    connectButton = toolBar->addAction( QIcon(":/connect.png"), "connect to this server", this, SLOT( connectSlot() ) );
+    removeButton = toolBar->addAction( QIcon(":/cancel.png"), "remove server", this, SLOT( removeSlot() ) );
+    findButton = toolBar->addAction( QIcon(":/find.png"), "find server", this, SLOT( findSlot() ) );
+
+    removeButton->setDisabled( true );
+    connectButton->setDisabled( true );
+}
+
+void QAjServerWidget::gotServer( int , bool error )
+{
+    if ( error )
+    {
+        QMessageBox::critical( NULL, "error", "Could not fetch server source." , QMessageBox::Abort, QMessageBox::Cancel );
+    }
+    else
+    {
+        QString data( serverHttp->readAll() );
+        // TODO: use regular expressions
+        int begin, start, end;
+        begin = 0;
+        QString link;
+        // while we found an ajfsp server link
+        while ( ( start = data.indexOf( "ajfsp://server|", begin, Qt::CaseInsensitive ) ) != -1 )
+        {
+            end = data.indexOf( "/", start + 15 );
+            link = QString( QUrl::toPercentEncoding( data.mid(start, end - start +1) ) );
+            xml->set( "processlink", "&link=" + link );
+            begin = end;
+        }
+    }
 }

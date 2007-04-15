@@ -22,6 +22,7 @@
 
 #include <QObject>
 #include <QFtp>
+#include <QSettings>
 #include <QThread>
 #include <QStringList>
 #include <QDir>
@@ -44,6 +45,7 @@ class FTP : public QThread
     Q_OBJECT
 public:
     FTP( QString host, int port, QString user, QString password, bool binary, QObject *parent = 0 );
+    FTP( QObject *parent = 0 );
     ~FTP();
     void getNext();
     void add( QString srcFilename, QFile* dstFile );

@@ -27,11 +27,20 @@
 #include <QHash>
 #include <QList>
 #include <QIcon>
+#include <QSettings>
+#include <QFileDialog>
+#include <QCheckBox>
+#include <QDoubleSpinBox>
+#include <QInputDialog>
+#include <QApplication>
+#include <QClipboard>
 
 #include "qajlistwidget.h"
 #include "qajdownloaditem.h"
 #include "qajuseritem.h"
 #include "qconvert.h"
+#include "ftp.h"
+#include "qajoptionsdialog.h"
 
 #include "types.h"
 
@@ -45,7 +54,7 @@ class QAjDownloadWidget : public QAjListWidget
 {
     Q_OBJECT
 public:
-    QAjDownloadWidget( QWidget *parent = 0 );
+    QAjDownloadWidget( QXMLModule* xml, QWidget *parent = 0 );
 
     ~QAjDownloadWidget();
 
@@ -58,26 +67,34 @@ public:
     DownloadUser findParent( QString id );
 
     QString getNextIdRoundRobin();
-    QList<QString> getIds()
-    {
-        return downloads.keys();
-    }
-    QAjDownloadItem* findDownloadByTempNum( QString tempNum );
+    QString findDownloadByTempNum( QFileInfo tempFile );
+    void initToolBar();
+    void setDirs( QFileInfo tmpDir, QFileInfo inDir );
+
+    QAction *powerUpButton, *powerDownButton, *powerOkButton, *powerMaxButton;
+    QAction *pauseDownloadButton, *resumeDownloadButton;
+    QAction *cancelDownloadButton, *clearDownloadButton,  *partListButton;
+    QAction *renameDownloadButton, *renamePlusDownloadButton;
+    QAction *openDownloadButton;
+
+    QDoubleSpinBox* powerSpin;
+    QCheckBox *powerCheck;
 
 private:
 
     QHash<QString, QAjDownloadItem*> downloads;
     int currIdRoundRobin;
 
-    QAction *pauseId, *resumeId, *cancelId;
-    QAction *partListId, *renameId, *renamePlusId;
-    QAction *openId;
+    QAction *pausePopup, *resumePopup, *cancelPopup;
+    QAction *partListPopup, *renamePopup, *renamePlusPopup;
+    QAction *openPopup;
 
     QIcon *linuxIcon, *windowsIcon, *macIcon, *solarisIcon, *freeBsdIcon, *netwareIcon, *otherOsIcon;
 
     QHash<QString, QString> userStatusDescr;
     QHash<QString, QString> downloadStatusDescr;
 
+    QFileInfo tempDir, incomingDir;
 
 private slots:
     void selectionChanged1( bool oneSelected );
@@ -90,18 +107,16 @@ private slots:
     void renamePlusSlot();
     void openSlot();
 
+    void processSelected( QString request, QString para = "" );
+    void requestSelected( QString request, QString para = "" );
+    void applyPowerDownload();
+    void maxPowerDownload();
+
+
 public slots:
     void updateView( bool force = false );
+    void storeDownloadFtp();
 
-signals:
-    void cancel( );
-    void clean( );
-    void pause( );
-    void resume( );
-    void partListRequest( );
-    void rename( );
-    void renamePlus( );
-    void open();
 };
 
 #endif

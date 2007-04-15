@@ -19,9 +19,10 @@
  ***************************************************************************/
 #include "qajsharewidget.h"
 
-QAjShareWidget::QAjShareWidget( QString filesystemSeparator, QWidget *parent ) : QAjListWidget( parent )
+QAjShareWidget::QAjShareWidget( QString filesystemSeparator, QXMLModule* xml, QWidget *parent ) : QAjListWidget( xml, parent )
 {
     this->filesystemSeparator = filesystemSeparator;
+    changed = false;
     setColumnCount( NUM_SHARE_COL );
     QStringList headers;
     int i;
@@ -48,11 +49,30 @@ QAjShareWidget::QAjShareWidget( QString filesystemSeparator, QWidget *parent ) :
     removeId->setEnabled( false );
 
     connect( this, SIGNAL( newSelection( bool ) ) , this, SLOT( newSelection( bool ) ) );
+
+    initToolBar();
 }
 
 
 QAjShareWidget::~QAjShareWidget()
 {}
+
+
+/*!
+    \fn QAjShareWidget::initToolBar()
+ */
+void QAjShareWidget::initToolBar()
+{
+    toolBar = new QToolBar( "share operations", this );
+
+    toolBar->addAction( QIcon(":/add.png"), "add share", this, SLOT( insertSlot() ) );
+    removeButton = toolBar->addAction( QIcon(":/remove.png"), "remove share", this, SLOT( removeSlot() ) );
+    reloadButton = toolBar->addAction( QIcon(":/update.png"), "reload shared files", this, SLOT( reloadSlot() ) );
+    applyButton = toolBar->addAction( QIcon(":/commit.png"), "commit changes to the core", this, SLOT( commitSlot() ) );
+    applyButton->setDisabled( true );
+    removeButton->setDisabled( true );
+}
+
 
 void QAjShareWidget::insertShare( QString path, QString shareMode )
 {
@@ -71,19 +91,62 @@ void QAjShareWidget::insertShare( QString path, QString shareMode )
 
 void QAjShareWidget::insertSlot()
 {
-    insert();
+    QString dir = QFileDialog::getExistingDirectory( this, "Choose a directory" );
+    if ( dir != "" )
+    {
+        int result = QMessageBox::question( this, "question", "Share subdirectories?", QMessageBox::Yes, QMessageBox::No );
+        QString mode;
+        if ( result == QMessageBox::Yes )
+            mode = "subdirectory";
+        else
+            mode = "directory";
+        insertShare( dir, mode );
+    }
+    changed = true;
+    applyButton->setEnabled( true );
 }
+
 void QAjShareWidget::removeSlot()
 {
-    remove();
+    QList<QTreeWidgetItem *>  selectedItems = QTreeWidget::selectedItems();
+    int i;
+    for ( i=0; i<selectedItems.size(); i++ )
+    {
+        //delete it.current();
+        selectedItems[i]->setFlags( 0 );
+    }
+    changed = true;
+    applyButton->setEnabled( true );
 }
+
 void QAjShareWidget::reloadSlot()
 {
-    reload();
+    clear();
+    xml->get( "settings" );
+    xml->get( "share" );
 }
+
 void QAjShareWidget::commitSlot()
 {
-    commit();
+    QString sharesString;
+    int i;
+    int cnt = 1;
+    for ( i=0; i<topLevelItemCount() ; i++)
+    {
+        QTreeWidgetItem* item = topLevelItem( i );
+        if ( item->flags() & Qt::ItemIsEnabled )
+        {
+            sharesString += "&sharedirectory" + QString::number(cnt) + "=" + item->text( PATH_SHARE_INDEX );
+            sharesString += "&sharesub" + QString::number(cnt) + "=";
+            sharesString += ((QAjShareItem*)item)->recursive?"true":"false";
+            cnt++;
+        }
+    }
+    sharesString = "&countshares=" + QString::number( cnt-1 );
+    xml->set( "setsettings", sharesString );
+    xml->get( "settings" );
+    changed = false;
+    applyButton->setEnabled( false );
 }
 
 void QAjShareWidget::newSelection( bool oneSelected )
@@ -128,4 +191,3 @@ void QAjShareWidget::insertDirList( QTreeWidgetItem* parent, QStringList* dirLis
         }
     }
 }
-

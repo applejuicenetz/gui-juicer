@@ -104,6 +104,24 @@
 #define DOWN_SEARCHING "0"
 #define DOWN_LOADING "-1"
 
+#ifdef Q_WS_WIN
+    #define DEFAULT_LAUNCHER WIN_LAUNCHER
+#else
+#ifdef Q_WS_MAC
+    #define DEFAULT_LAUNCHER MAC_LAUNCHER
+#else
+    #define DEFAULT_LAUNCHER KDE_LAUNCHER
+#endif
+#endif
+
+
+#define WIN_LAUNCHER "Windows default"
+#define MAC_LAUNCHER "MacOS default"
+#define KDE_LAUNCHER "kfmclient (KDE)"
+#define GNOME_LAUNCHER "gnome-open (Gnome)"
+
+
+
 #include <QString>
 
 class AjSettings

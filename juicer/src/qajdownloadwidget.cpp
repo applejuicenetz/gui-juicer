@@ -19,7 +19,7 @@
  ***************************************************************************/
 #include "qajdownloadwidget.h"
 
-QAjDownloadWidget::QAjDownloadWidget( QWidget *parent ) : QAjListWidget( parent )
+QAjDownloadWidget::QAjDownloadWidget( QXMLModule* xml, QWidget *parent ) : QAjListWidget( xml, parent )
 {
     userStatusDescr["1"] = QObject::tr("unasked ");
     userStatusDescr["2"] = QObject::tr("try to connect ");
@@ -100,25 +100,27 @@ QAjDownloadWidget::QAjDownloadWidget( QWidget *parent ) : QAjListWidget( parent 
     setHeaderLabels( headers );
 
     popup->setTitle( tr("&Download") );
-    pauseId = popup->addAction( QIcon(":/small/pause.png"), "pause", this, SLOT(pauseSlot()) );
-    resumeId = popup->addAction( QIcon(":/small/resume.png"), "resume", this, SLOT(resumeSlot()) );
-    cancelId = popup->addAction( QIcon(":/small/cancel.png"), "cancel", this, SLOT(cancelSlot()) );
-    partListId = popup->addAction( QIcon(":/small/partlist.png"), "part list", this, SLOT(partListSlot()) );
-    renameId = popup->addAction( QIcon(":/small/rename.png"), "rename", this, SLOT(renameSlot()) );
-    renamePlusId = popup->addAction( QIcon(":/small/rename_plus.png"), "rename by clipboard", this, SLOT(renamePlusSlot()) );
-    openId = popup->addAction( QIcon(":/small/exec.png"), "open file", this, SLOT(openSlot()) );
+    pausePopup = popup->addAction( QIcon(":/small/pause.png"), "pause", this, SLOT(pauseSlot()) );
+    resumePopup = popup->addAction( QIcon(":/small/resume.png"), "resume", this, SLOT(resumeSlot()) );
+    cancelPopup = popup->addAction( QIcon(":/small/cancel.png"), "cancel", this, SLOT(cancelSlot()) );
+    partListPopup = popup->addAction( QIcon(":/small/partlist.png"), "part list", this, SLOT(partListSlot()) );
+    renamePopup = popup->addAction( QIcon(":/small/rename.png"), "rename", this, SLOT(renameSlot()) );
+    renamePlusPopup = popup->addAction( QIcon(":/small/rename_plus.png"), "rename by clipboard", this, SLOT(renamePlusSlot()) );
+    openPopup = popup->addAction( QIcon(":/small/exec.png"), "open file", this, SLOT(openSlot()) );
     popup->addSeparator();
     popup->addAction( QIcon(":/small/filter.png"), "remove finished/canceld", this, SLOT(cleanSlot()) );
-    pauseId->setEnabled( false );
-    resumeId->setEnabled( false );
-    cancelId->setEnabled( false );
-    partListId->setEnabled( false );
-    renameId->setEnabled( false );
-    renamePlusId->setEnabled( false );
-    openId->setEnabled( false );
+    pausePopup->setEnabled( false );
+    resumePopup->setEnabled( false );
+    cancelPopup->setEnabled( false );
+    partListPopup->setEnabled( false );
+    renamePopup->setEnabled( false );
+    renamePlusPopup->setEnabled( false );
+    openPopup->setEnabled( false );
     QObject::connect( this, SIGNAL( newSelection( bool ) ) , this, SLOT( selectionChanged1( bool ) ) );
 
     setIconSize( QSize( 100, 20 ) );
+
+    initToolBar();
 }
 
 QAjDownloadWidget::~QAjDownloadWidget()
@@ -131,6 +133,70 @@ QAjDownloadWidget::~QAjDownloadWidget()
     delete solarisIcon;
     delete freeBsdIcon;
 }
+
+/*!
+    \fn QAjDownloadWidget::initToolBar()
+ */
+void QAjDownloadWidget::initToolBar()
+{
+    toolBar = new QToolBar( "download operations", this );
+
+    pauseDownloadButton = toolBar->addAction( QIcon(":/pause.png"), "pause download", this, SLOT( pauseSlot() ) );
+    pauseDownloadButton->setToolTip( "pause download" );
+
+    resumeDownloadButton = toolBar->addAction( QIcon(":/resume.png"), "resume download", this, SLOT( resumeSlot() ) );
+    resumeDownloadButton->setToolTip( "resume download" );
+
+    cancelDownloadButton = toolBar->addAction( QIcon(":/cancel.png"), "cancel download", this, SLOT( cancelSlot() ) );
+
+    partListButton = toolBar->addAction( QIcon(":/partlist.png"), "show part list", this, SLOT( partListSlot() ) );
+    renameDownloadButton = toolBar->addAction( QIcon(":/rename.png"), "rename download", this, SLOT( renameSlot() ) );
+    renamePlusDownloadButton = toolBar->addAction( QIcon(":/rename_plus.png"), "rename download by clipboard", this, SLOT( renamePlusSlot() ) );
+
+    openDownloadButton = toolBar->addAction( QIcon(":/exec.png"), "open download", this, SLOT( openSlot() ) );
+
+    clearDownloadButton = toolBar->addAction( QIcon(":/filter.png"), "remove finished/canceld download", this, SLOT( cleanSlot() ) );
+
+    pauseDownloadButton->setDisabled( true );
+    resumeDownloadButton->setDisabled( true );
+    cancelDownloadButton->setDisabled( true );
+    partListButton->setDisabled( true );
+    renameDownloadButton->setDisabled( true );
+    renamePlusDownloadButton->setDisabled( true );
+    openDownloadButton->setDisabled( true );
+
+    toolBar->addSeparator();
+
+    powerCheck = new QCheckBox( toolBar );
+    powerCheck->setText( tr("Power Download:") );
+    powerCheck->setChecked( false );
+    powerCheck->adjustSize();
+    toolBar->addWidget( powerCheck );
+
+    powerSpin = new QDoubleSpinBox( toolBar );
+    powerSpin->setRange( 2.2, 50.0 );
+    powerSpin->setSingleStep( 0.1 );
+    powerSpin->setDecimals( 1 );
+    toolBar->addWidget( powerSpin );
+
+    //connect( powerEdit, SIGNAL( returnPressed() ), this, SLOT( applyPowerDownload() ) );
+    connect( powerSpin, SIGNAL( valueChanged( const QString&) ), this, SLOT( applyPowerDownload() ) );
+    connect( powerSpin, SIGNAL( valueChanged( double ) ), this, SLOT( applyPowerDownload() ) );
+
+    powerOkButton = toolBar->addAction( QIcon(":/ok.png"), "apply power download", this, SLOT( applyPowerDownload() ) );
+
+    powerMaxButton = toolBar->addAction( QIcon(":/launch.png"), "set all downloads to 1:50", this, SLOT( maxPowerDownload() )  );
+
+    #ifdef AJQTGUI_MODE_SPECIAL
+        bool special = true;
+    #else
+        char* mode = getenv( "AJQTGUI_MODE" );
+        bool special = (( mode != NULL )) && ( strcmp(mode, "SPECIAL") == 0 );
+    #endif
+
+    powerMaxButton->setVisible( special );
+}
+
 
 void QAjDownloadWidget::insertDownload(QString id, QString fileName, QString status, QString size, QString ready, QString power, QString tempNumber)
 {
@@ -193,46 +259,179 @@ bool QAjDownloadWidget::remove( QString id )
 
 void QAjDownloadWidget::cancelSlot()
 {
-    cancel();
+    if ( QMessageBox::question( this, "Confirm", "Do you realy want to cancel this download(s)?", QMessageBox::No, QMessageBox::Yes ) == QMessageBox::Yes )
+    {
+        processSelected( "canceldownload" );
+    }
 }
+
 void QAjDownloadWidget::cleanSlot()
 {
-    clean();
+    xml->set( "cleandownloadlist" );
 }
+
 void QAjDownloadWidget::resumeSlot()
 {
-    resume();
+    processSelected( "resumedownload" );
 }
+
 void QAjDownloadWidget::pauseSlot()
 {
-    pause();
+    processSelected( "pausedownload" );
 }
+
 void QAjDownloadWidget::partListSlot()
 {
-    partListRequest();
+    requestSelected( "downloadpartlist" );
 }
+
 void QAjDownloadWidget::renameSlot()
 {
-    rename();
+    QString oldFilename;
+    QString newFilename;
+    bool ok;
+    QList<QAjItem *>  selectedItems = selectedAjItems();
+    int i;
+    for ( i=0; i<selectedItems.size(); i++ )
+    {
+        oldFilename = selectedItems[i]->text( FILENAME_DOWN_INDEX );
+        newFilename = QInputDialog::getText( this, "rename download", "enter new filename for " + oldFilename, QLineEdit::Normal, oldFilename, &ok );
+        newFilename = QString( QUrl::toPercentEncoding( newFilename ) );
+        if ( ok && !newFilename.isEmpty() )
+        {
+            xml->set( "renamedownload", "&id=" + selectedItems[i]->getId() + "&name=" + newFilename );
+        }
+    }
 }
+
 void QAjDownloadWidget::renamePlusSlot()
 {
-    renamePlus();
+    QString oldFilename;
+    QString newFilename;
+    QString newFilenameBase = qApp->clipboard()->text( QClipboard::Clipboard );
+    QList<QAjItem *>  selectedItems = selectedAjItems();
+    int i;
+    for ( i=0; i<selectedItems.size(); i++ )
+    {
+        oldFilename = selectedItems[i]->text( FILENAME_DOWN_INDEX );
+        newFilename = newFilenameBase;
+        if (selectedItems.size() > 1)
+        {
+            newFilename += "_" + QString::number(i+1);
+        }
+        QStringList s = oldFilename.split(".");
+        if (s.size() > 1)
+        {
+            newFilename += "." + s[s.size() - 1];
+        }
+        newFilename = QString( QUrl::toPercentEncoding( newFilename ) );
+        if (!newFilename.isEmpty())
+        {
+            xml->set( "renamedownload", "&id=" + selectedItems[i]->getId() + "&name=" + newFilename );
+        }
+    }
 }
+
 void QAjDownloadWidget::openSlot()
 {
-    open();
+    QSettings lokalSettings;
+    QString launcher = lokalSettings.value( "launcher", DEFAULT_LAUNCHER ).toString().simplified();
+    QStringList args = launcher.split(" ");
+
+    QString exec = args.takeFirst();
+    if ( launcher == KDE_LAUNCHER )
+    {
+        args.removeFirst();
+        args.push_front("exec");
+    }
+    else if ( launcher == GNOME_LAUNCHER )
+    {
+        args.removeFirst();
+    }
+    else if ( launcher == MAC_LAUNCHER )
+    {
+        exec = "open";
+        args.clear();
+    }
+    else if ( launcher == WIN_LAUNCHER )
+    {
+        exec = "start";
+        args.clear();
+        args.push_back("\"\"");
+    }
+
+    QString iDir, tDir;
+    // determine the path
+    QString location = lokalSettings.value( "location", "same" ).toString();
+    if( location == "specific" )
+    {
+        iDir = lokalSettings.value( "incomingDirSpecific", "/" ).toString() + QDir::separator();
+        tDir = lokalSettings.value( "tempDirSpecific", "/" ).toString() + QDir::separator();
+    }
+    else if( location == "same" )
+    {
+        iDir = incomingDir.absolutePath() + QDir::separator();
+        tDir = tempDir.absolutePath() + QDir::separator();
+    }
+    else // ftp
+    {
+        // TODO
+        return;
+    }
+
+    QList<QAjItem*> items = selectedAjItems();
+    int i;
+    for (i=0; i<items.size(); i++)
+    {
+        QAjDownloadItem* ajDownloadItem = (QAjDownloadItem*)items[i];
+        if( ajDownloadItem->getStatus() == DOWN_FINISHED )
+        {
+            args.push_back( iDir + ajDownloadItem->text( FILENAME_DOWN_INDEX ) );
+        }
+        else
+        {
+            args.push_back( tDir + ajDownloadItem->getTempNumber() + ".data" );
+        }
+        QProcess::startDetached( exec, args );
+        args.pop_back();
+    }
 }
 
 void QAjDownloadWidget::selectionChanged1(  bool oneSelected  )
 {
-    pauseId->setEnabled( oneSelected );
-    resumeId->setEnabled( oneSelected );
-    cancelId->setEnabled( oneSelected );
-    partListId->setEnabled( oneSelected );
-    renameId->setEnabled( oneSelected );
-    renamePlusId->setEnabled( oneSelected );
-    openId->setEnabled( oneSelected );
+    pausePopup->setEnabled( oneSelected );
+    resumePopup->setEnabled( oneSelected );
+    cancelPopup->setEnabled( oneSelected );
+    partListPopup->setEnabled( oneSelected );
+    renamePopup->setEnabled( oneSelected );
+    renamePlusPopup->setEnabled( oneSelected );
+    openPopup->setEnabled( oneSelected );
+
+    bool onePaused = false;
+    bool oneActive = false;
+    bool oneFinished = false;
+
+    QList<QAjItem *>  selectedItems = selectedAjItems();
+    int i;
+    for ( i=0; i<selectedItems.size(); i++ )
+    {
+        QAjItem* downloadItem = selectedItems[i];
+        if ( downloadItem->getStatus() == DOWN_PAUSED )
+            onePaused = true;
+        if ( ( downloadItem->getStatus() == DOWN_SEARCHING ) || ( downloadItem->getStatus() == DOWN_LOADING ) )
+            oneActive = true;
+        if ( downloadItem->getStatus() == DOWN_FINISHED )
+            oneFinished = true;
+        if ( onePaused && oneActive && oneFinished )
+            break;
+    }
+    cancelDownloadButton->setEnabled( oneSelected );
+    partListButton->setEnabled( oneSelected );
+    renameDownloadButton->setEnabled( oneSelected );
+    renamePlusDownloadButton->setEnabled( oneSelected );
+    resumeDownloadButton->setEnabled( onePaused );
+    pauseDownloadButton->setEnabled( oneActive );
+    openDownloadButton->setEnabled( oneSelected );
 }
 
 void QAjDownloadWidget::updateView( bool force )
@@ -298,17 +497,112 @@ QString QAjDownloadWidget::getNextIdRoundRobin()
 
 
 /*!
-    \fn QAjDownloadWidget::findDownloadByTempNum( QString tempNum )
+    \fn QAjDownloadWidget::findDownloadByTempNum( QFileInfo tempFile )
  */
-QAjDownloadItem* QAjDownloadWidget::findDownloadByTempNum( QString tempNum )
+QString QAjDownloadWidget::findDownloadByTempNum( QFileInfo tempFile )
 {
-    QAjDownloadItem* item;
-    int i;
-    for ( i=0; i<topLevelItemCount(); i++ )
+    if (tempDir.absolutePath() == tempFile.absolutePath())
     {
-        item = (QAjDownloadItem*)topLevelItem(i);
-        if ( item->getTempNumber() == tempNum )
-            return item;
+        QString tempNum = tempFile.baseName();
+        QAjDownloadItem* item;
+        int i;
+        for ( i=0; i<topLevelItemCount(); i++ )
+        {
+            item = (QAjDownloadItem*)topLevelItem(i);
+            if ( item->getTempNumber() == tempNum )
+                return item->text( FILENAME_DOWN_INDEX );
+        }
     }
-    return NULL;
+    return tempFile.fileName();
+}
+
+void QAjDownloadWidget::storeDownloadFtp()
+{
+    FTP* ftp = NULL;
+    QString filename, localDir;
+    QList<QTreeWidgetItem *>  selectedItems = this->selectedItems();
+
+    QSettings lokalSettings;
+    lokalSettings.beginGroup("ftp");
+    QString dir = lokalSettings.value( "dir", "/" ).toString();
+    lokalSettings.endGroup();
+
+    if ( ! dir.endsWith( '/' ) )
+    {
+        dir += '/';
+    }
+    ftp = new FTP( this );
+
+    int i;
+    for ( i=0; i<selectedItems.size(); i++ )
+    {
+        filename = selectedItems.at(i)->text( FILENAME_DOWN_INDEX );
+        localDir = QFileDialog::getExistingDirectory( this, "save \"" + filename + "\" + to" );
+        if ( localDir != "" )
+        {
+            if ( ! localDir.endsWith( QDir::separator() ) )
+            {
+                localDir += QDir::separator();
+            }
+            QFile* dstFile = new QFile( localDir + filename );
+            if ( ! dstFile->exists() )
+            {
+                dstFile->open( QIODevice::WriteOnly );
+                ftp->add( dir + filename, dstFile );
+            }
+        }
+    }
+    ftp->start();
+}
+
+void QAjDownloadWidget::processSelected( QString request, QString para )
+{
+    QList<QAjItem *>  selectedItems = selectedAjItems();
+    int i;
+    for ( i=0; i<selectedItems.size(); i++ )
+    {
+        xml->set( request, para + "&id=" + selectedItems[i]->getId() );
+    }
+}
+
+void QAjDownloadWidget::requestSelected( QString request, QString para )
+{
+    QList<QAjItem *>  selectedItems = selectedAjItems();
+    int i;
+    for ( i=0; i<selectedItems.size(); i++ )
+    {
+        xml->get( request, para + "&id=" + selectedItems[i]->getId() );
+    }
+}
+
+void QAjDownloadWidget::applyPowerDownload()
+{
+    float value;
+    if ( powerCheck->isChecked() )
+        value = powerSpin->value();
+    else
+        value = 1.0;
+    processSelected( "setpowerdownload", "&Powerdownload=" + QConvert::power( value ) );
+}
+
+
+void QAjDownloadWidget::maxPowerDownload()
+{
+    QList<QString> ids = downloads.keys();
+    int i;
+    for ( i=0; i<ids.size(); i++ )
+    {
+        xml->set( "setpowerdownload", "&Powerdownload="+QConvert::power( 50 )+"&id="+ids[i] );
+    }
+}
+
+
+
+/*!
+    \fn QAjDownloadWidget::setDirs( QFileInfo tmpDir, QFileInfo inDir )
+ */
+void QAjDownloadWidget::setDirs( QFileInfo tmpDir, QFileInfo inDir )
+{
+    this->tempDir = tmpDir;
+    this->incomingDir = inDir;
 }

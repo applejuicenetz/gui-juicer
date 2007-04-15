@@ -19,7 +19,7 @@
  ***************************************************************************/
 #include "qajuploadwidget.h"
 
-QAjUploadWidget::QAjUploadWidget( QWidget *parent ) : QAjListWidget( parent )
+QAjUploadWidget::QAjUploadWidget( QXMLModule* xml, QWidget *parent ) : QAjListWidget( xml, parent )
 {
     uploadStatusDescr["1"] = "active";
     uploadStatusDescr["2"] = "queueing";
@@ -73,11 +73,25 @@ QAjUploadWidget::QAjUploadWidget( QWidget *parent ) : QAjListWidget( parent )
     otherUpload->setText( FILENAME_UP_INDEX, "3. other" );
 
     expandItem( activeUpload );
+
+    initToolBar();
 }
 
 
 QAjUploadWidget::~QAjUploadWidget()
 {}
+
+
+/*!
+    \fn QAjUploadWidget::initToolBar()
+ */
+void QAjUploadWidget::initToolBar()
+{
+    toolBar = new QToolBar( "upload operations", this );
+    toolBar->addAction( QIcon(":/dummy.png"), "" )->setDisabled( true );
+    toolBar->hide();
+}
+
 
 bool QAjUploadWidget::insertUpload(QString id, QString shareId, QString version, QString os, QString status, QString directState, QString priority, QString nick, QString speed)
 {
@@ -192,3 +206,4 @@ void QAjUploadWidget::setFilename( QTreeWidgetItem* uploadState, QString shareId
         }
     }
 }
+

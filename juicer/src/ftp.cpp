@@ -39,6 +39,18 @@ FTP::FTP( QString host, int port, QString user, QString password, bool binary, Q
     connect( progressDialog, SIGNAL( canceled() ), this, SLOT( abort() ) );
 }
 
+FTP::FTP( QObject *parent ) : QThread( parent )
+{
+    QSettings lokalSettings;
+    lokalSettings.beginGroup("ftp");
+    host = lokalSettings.value( "server", "localhost" ).toString();
+    port = lokalSettings.value( "port", "21" ).toInt();
+    user = lokalSettings.value( "user", "anonymous" ).toString();
+    password = lokalSettings.value( "password", "" ).toString();
+    lokalSettings.endGroup();
+    binary = true;
+}
+
 FTP::~FTP()
 {
     ftp->close();

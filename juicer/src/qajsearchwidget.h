@@ -21,6 +21,8 @@
 #define QAJSEARCHWIDGET_H
 
 #include <QHash>
+#include <QLabel>
+#include <QLineEdit>
 
 #include "qajlistwidget.h"
 #include "qajsearchitem.h"
@@ -37,7 +39,7 @@ class QAjSearchWidget : public QAjListWidget
 {
     Q_OBJECT
 public:
-    QAjSearchWidget( QWidget *parent = 0 );
+    QAjSearchWidget( QXMLModule* xml, QWidget *parent = 0 );
 
     ~QAjSearchWidget();
 
@@ -46,6 +48,7 @@ public:
     bool remove( QString id );
     QAjSearchItem* findSearch( QString id );
     QAjSearchEntryItem* findSearchEntry( QString id );
+    void initToolBar();
 
 protected:
     bool removeSearch( QString id );
@@ -53,12 +56,15 @@ protected:
     QHash<QString, QAjSearchItem*> searches;
     QHash<QString, QAjSearchEntryItem*> searchEntries;
 
-public slots:
+    QLabel *searchLabel;
+    QLineEdit *searchEdit;
+    QAction *searchButton;
+
+
+private slots:
     void removeSlot();
     void downloadSlot();
-signals:
-    void remove();
-    void download();
+    void searchSlot();
 };
 
 #endif

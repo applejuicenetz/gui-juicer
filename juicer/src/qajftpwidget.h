@@ -32,7 +32,7 @@ class QAjFtpWidget : public QAjListWidget
 {
     Q_OBJECT
 public:
-    QAjFtpWidget( QWidget *parent = 0 );
+    QAjFtpWidget( QXMLModule* xml, QWidget *parent = 0 );
 
     ~QAjFtpWidget();
 

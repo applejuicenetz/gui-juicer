@@ -35,7 +35,7 @@ class QAjUploadWidget : public QAjListWidget
 {
     Q_OBJECT
 public:
-    QAjUploadWidget( QWidget *parent = 0 );
+    QAjUploadWidget( QXMLModule* xml, QWidget *parent = 0 );
 
     ~QAjUploadWidget();
 
@@ -43,6 +43,7 @@ public:
 
     bool remove( QString id );
     void setFilename( QString shareId, QString filename );
+    void initToolBar();
 
     QTreeWidgetItem *activeUpload;
     QTreeWidgetItem *queuedUpload;

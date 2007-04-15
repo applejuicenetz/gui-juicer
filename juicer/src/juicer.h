@@ -22,6 +22,7 @@
 #define JUICER_H
 
 #include <QTimer>
+#include <QMessageBox>
 #include <QDateTime>
 #include <QLineEdit>
 #include <QTextEdit>
@@ -42,7 +43,6 @@
 #include <QToolButton>
 #include <QFileDialog>
 #include <QUrl>
-#include <QFtp>
 #include <QFileInfo>
 #include <QDir>
 #include <QSplitter>
@@ -54,7 +54,7 @@
 #include "qajserverwidget.h"
 #include "qajservermetawidget.h"
 #include "qajsharewidget.h"
-#include "qajftpwidget.h"
+#include "qajincomingwidget.h"
 
 #include "qxmlmodule.h"
 #include "qajoptionsdialog.h"
@@ -65,8 +65,6 @@
 
 #include "qajserversocket.h"
 #include "qajapplication.h"
-
-#include "ftp.h"
 
 class Juicer: public QMainWindow
 {
@@ -84,7 +82,7 @@ public:
     QAjServerMetaWidget *ajServerMetaWidget;
     QAjServerWidget *ajServerWidget;
     QAjShareWidget *ajShareWidget;
-    QAjFtpWidget *ajFtpWidget;
+    QAjIncomingWidget *ajIncomingWidget;
 
     void setFilesystemSeparator( QString separator )
     {
@@ -114,7 +112,6 @@ protected:
     QAjOptionsDialog *optionsDialog;
     QXMLModule *xml;
 
-    QHttp *serverHttp;
     QAjServerSocket *linkServer;
 
     QLabel *ajAddressLabel;
@@ -132,35 +129,17 @@ protected:
     QLabel *coreVersionLabel;
     QLabel *connectedLabel;
 
-    QToolBar *downloadToolBar, *uploadToolBar, *searchToolBar, *serverToolBar, *shareToolBar, *ftpToolBar;
-
-    QLabel *ajSearchLabel;
-    QLineEdit *ajSearchEdit;
-    QAction *ajSearchButton;
-
     QAction *downloadMenuBar, *serverMenuBar, *shareMenuBar, *searchMenuBar;
+
+    QAction *clipboardButton;
 
     bool connected;
 
-    QDoubleSpinBox* powerSpin;
-    QAction *powerUpButton, *powerDownButton, *powerOkButton, *powerMaxButton;
-    QAction *pauseDownloadButton, *resumeDownloadButton;
-    QAction *cancelDownloadButton, *clearDownloadButton,  *partListButton;
-    QAction *renameDownloadButton, *renamePlusDownloadButton;
-    QAction *saveDownloadButton, *openDownloadButton;
-    QAction *clipboardButton;
-    QCheckBox *powerCheck;
-    QAction *removeShareButton, *applyShareButton, *reloadSharedFilesButton;
-    QAction *removeServerButton, *connectServerButton, *findServerButton;
-    QAction *storeFtpButton;
-
-    bool special;
+    QAction *openIncomingButton;
 
     QStringList queuedLinks;
     QDateTime zeroTime;
 
-    QFtp* ftp;
-    QFileInfo tempDir, incomingDir;
     int firstModifiedCnt;
 
 private slots:
@@ -175,54 +154,17 @@ private slots:
     void xmlError( int code );
     void gotSession();
 
-    void processSelected( QString request, QString para = "" );
-    void requestSelected( QString request, QString para = "" );
-
-    void powerChanged(const QString& );
-    void applyPowerDownload();
-    void maxPowerDownload();
-
-    void cancelDownload();
-    void cleanDownload();
-    void resumeDownload();
-    void pauseDownload();
-    void partListRequest();
-    void renameDownload();
-    void renamePlusDownload();
-
-    void removeServer();
-    void connectServer();
-
     void processLink();
     void processClipboard();
-    void downloadSearch();
-
-    void addShare();
-    void removeShare();
-    void applyShare();
 
     void tabChanged( QWidget *tab );
-    void downloadSelectionChanged( );
 
     void exitCore();
-
-    void search();
-    void cancelSearch();
-
-    void findServer();
-    void gotServer( int id, bool error );
-
-    void reloadShare();
 
     void firstModified();
 
     void linkServerLine( QString line );
-    void powerChanged( double );
 
-    void storeDownload();
-    void reloadFtp();
-    void storeFtp();
-    void openDownload();
     void adjustColumns();
 };
 

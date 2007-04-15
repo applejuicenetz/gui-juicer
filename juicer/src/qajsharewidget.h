@@ -21,6 +21,8 @@
 #define QAJSHAREWIDGET_H
 
 #include <QStringList>
+#include <QFileDialog>
+#include <QMessageBox>
 #include "qajlistwidget.h"
 #include "qajshareitem.h"
 
@@ -31,23 +33,28 @@ class QAjShareWidget : public QAjListWidget
 {
     Q_OBJECT
 public:
-    QAjShareWidget( QString filesystemSeparator, QWidget *parent = 0 );
+    QAjShareWidget( QString filesystemSeparator, QXMLModule* xml, QWidget *parent = 0 );
 
     ~QAjShareWidget();
 
     void insertShare( QString path, QString shareMode );
+    void initToolBar();
     QAction* removeId;
+    bool changed;
+
+public slots:
+    void commitSlot();
 
 protected:
     void insertDirList( QTreeWidgetItem* parent, QStringList* dirList );
     QString filesystemSeparator;
+    QAction *removeButton, *applyButton, *reloadButton;
 
 private slots:
     void newSelection( bool oneSelected);
     void insertSlot();
     void removeSlot();
     void reloadSlot();
-    void commitSlot();
 
 signals:
     void insert();

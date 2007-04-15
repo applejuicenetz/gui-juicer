@@ -20,7 +20,11 @@
 #ifndef QAJINCOMINGWIDGET_H
 #define QAJINCOMINGWIDGET_H
 
+#include <QSettings>
+#include <QFileDialog>
+
 #include "qajlistwidget.h"
+#include "ftp.h"
 
 /**
 	@author Matthias Reif <matthias.reif@informatik.tu-chemnitz.de>
@@ -29,10 +33,14 @@ class QAjIncomingWidget : public QAjListWidget
 {
 Q_OBJECT
 public:
-    QAjIncomingWidget(QWidget *parent = 0);
+    QAjIncomingWidget( QXMLModule* xml, QWidget *parent = 0 );
 
     ~QAjIncomingWidget();
+    void initToolBar();
 
+public slots:
+    void storeFtp();
+    void reloadFtp();
 };
 
 #endif

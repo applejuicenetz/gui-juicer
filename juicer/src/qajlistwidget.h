@@ -24,12 +24,14 @@
 #include <QTreeWidget>
 #include <QTreeWidgetItem>
 #include <QMenu>
+#include <QToolBar>
 #include <QMutex>
 #include <QMutexLocker>
 
 #include "qconvert.h"
 #include "qajitem.h"
 #include "types.h"
+#include "qxmlmodule.h"
 
 /**
 @author Matthias Reif
@@ -38,28 +40,21 @@ class QAjListWidget : public QTreeWidget
 {
     Q_OBJECT
 public:
-    QAjListWidget( QWidget *parent = 0 );
+    QAjListWidget( QXMLModule* xml, QWidget *parent = 0 );
 
     ~QAjListWidget();
 
-    bool wasChanged()
-    {
-        return changed;
-    }
-    void setChanged( bool changed = true )
-    {
-        this->changed = changed;
-    }
-
     QMenu *popup;
+    QToolBar* toolBar;
     void adjustSizeOfColumns();
     QList<QAjItem *> selectedAjItems () const;
+    void setActive( bool active );
 
     QMutex mutex;
 protected:
     bool isOneSelected();
-    bool changed;
     QAjItem *popupItem;
+    QXMLModule* xml;
 
 private slots:
     void selectionChanged();

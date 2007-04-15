@@ -34,21 +34,9 @@ QAjOptionsDialog::QAjOptionsDialog( QWidget* parent ) : QDialog( parent )
 
     connect( specificRadio, SIGNAL( toggled( bool ) ), this, SLOT( specificRadioToggled( bool ) ) );
 
-    winLauncher = "Windows default";
-    macLauncher = "MacOS default";
-    kdeLauncher = "kfmclient (KDE)";
-    gnomeLauncher = "gnome-open (Gnome)";
-
-#ifdef Q_WS_WIN
-    launchCombo->addItem( winLauncher );
-#else
-#ifdef Q_WS_MAC
-    launchCombo->addItem( macLauncher );
-#else
-    launchCombo->addItem( kdeLauncher );
-    launchCombo->addItem( gnomeLauncher );
-#endif
-#endif
+    launchCombo->addItem( DEFAULT_LAUNCHER );
+    if( QString(DEFAULT_LAUNCHER) == QString(KDE_LAUNCHER) )
+        launchCombo->addItem( GNOME_LAUNCHER );
 
     specificRadioToggled( false );
 }

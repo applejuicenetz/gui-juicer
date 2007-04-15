@@ -19,12 +19,13 @@
  ***************************************************************************/
 #include "qajlistwidget.h"
 
-QAjListWidget::QAjListWidget( QWidget *parent ) : QTreeWidget( parent )
+QAjListWidget::QAjListWidget( QXMLModule* xml, QWidget *parent ) : QTreeWidget( parent )
 {
-    changed = false;
+    this->xml = xml;
     setContextMenuPolicy( Qt::CustomContextMenu );
 
     popup = new QMenu( this );
+    toolBar = NULL;
 
     setSelectionBehavior( QAbstractItemView::SelectRows );
     setSelectionMode( QAbstractItemView::ExtendedSelection );
@@ -78,4 +79,15 @@ QList<QAjItem *> QAjListWidget::selectedAjItems () const
         ajItems << (QAjItem*)items.takeFirst();
     }
     return ajItems;
+}
+
+
+/*!
+    \fn QAjListWidget::setActive( bool active )
+ */
+void QAjListWidget::setActive( bool active )
+{
+    popup->setEnabled( active );
+    if( toolBar != NULL )
+        toolBar->setVisible( active );
 }

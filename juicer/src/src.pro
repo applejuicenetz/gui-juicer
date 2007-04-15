@@ -75,7 +75,7 @@ CONFIG += warn_on \
           qt \
           x11 \
           stl \
-          release
+          debug
 TEMPLATE = app 
 QT += core gui network xml
 

@@ -21,6 +21,9 @@
 #define QAJSERVERWIDGET_H
 
 #include <QHash>
+#include <QHttp>
+#include <QSettings>
+#include <QMessageBox>
 
 #include <time.h>
 
@@ -34,7 +37,7 @@ class QAjServerWidget : public QAjListWidget
 {
     Q_OBJECT
 public:
-    QAjServerWidget( QWidget *parent = 0 );
+    QAjServerWidget( QXMLModule* xml, QWidget *parent = 0 );
 
     ~QAjServerWidget();
 
@@ -44,18 +47,23 @@ public:
     void connectingTo( QString id );
     QAjServerItem* findServer( QString id );
     bool remove( QString id );
+    void initToolBar();
 
 private:
     QString connectedWithId, connectingToId;
     QAction* removeId;
     QAction* connectId;
     QHash<QString, QAjServerItem*> servers;
+    QAction *removeButton, *connectButton, *findButton;
 
-public slots:
+    QHttp *serverHttp;
+
+private slots:
     void selectionChanged1( bool isOneSelected );
     void removeSlot();
     void connectSlot();
     void findSlot();
+    void gotServer( int id, bool error );
 signals:
     void remove();
     void connect();

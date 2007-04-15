@@ -19,7 +19,7 @@
  ***************************************************************************/
 #include "qajftpwidget.h"
 
-QAjFtpWidget::QAjFtpWidget( QWidget *parent ) : QAjListWidget( parent )
+QAjFtpWidget::QAjFtpWidget( QXMLModule* xml, QWidget *parent ) : QAjListWidget( xml, parent )
 {
     QStringList headers;
     int i;

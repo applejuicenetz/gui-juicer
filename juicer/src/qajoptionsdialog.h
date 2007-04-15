@@ -38,10 +38,7 @@ public:
     AjSettings getAjSettings();
     void setAjSettings( AjSettings settings );
 
-    QString winLauncher;
-    QString macLauncher;
-    QString kdeLauncher;
-    QString gnomeLauncher;
+    QString defaultLauncher;
 
 protected slots:
     void selectIncomingDir();
