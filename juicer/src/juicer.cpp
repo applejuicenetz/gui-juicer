@@ -31,6 +31,8 @@ Juicer::Juicer( ) : QMainWindow( )
 
     setWindowIcon(QIcon(":/juicer.png"));
 
+    xml = new QXMLModule( this );
+
     QTabWidget* ajTab = new QTabWidget(this);
     ajDownloadWidget = new QAjDownloadWidget( xml, ajTab );
     ajUploadWidget = new QAjUploadWidget( xml, ajTab );
@@ -105,7 +107,6 @@ Juicer::Juicer( ) : QMainWindow( )
     move( lokalSettings.value( "pos", QPoint(100, 100) ).toPoint() );
     lokalSettings.endGroup();
 
-    xml = new QXMLModule( this );
     connect( xml, SIGNAL( settingsReady( AjSettings ) ), this, SLOT( settingsReady( AjSettings ) ) );
     connect( xml, SIGNAL( error( int ) ), this, SLOT( xmlError( int ) ) );
     connect( xml, SIGNAL( gotSession() ), this, SLOT( gotSession() ) );
