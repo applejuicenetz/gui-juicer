@@ -412,7 +412,7 @@ void Juicer::tabChanged( QWidget *tab )
     ajDownloadWidget->setActive( tab == ajDownloadWidget );
     ajUploadWidget->setActive( tab == ajUploadWidget );
     ajSearchWidget->setActive( tab == ajSearchWidget );
-    ajServerWidget->setActive( tab == ajServerWidget );
+    ajServerWidget->setActive( tab == ajServerMetaWidget );
     ajShareWidget->setActive( tab == ajShareWidget );
     ajIncomingWidget->setActive( tab == ajIncomingWidget );
 
