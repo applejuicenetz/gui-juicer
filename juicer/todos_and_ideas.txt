@@ -4,10 +4,11 @@ TODOs
 - make all sortings work correctly
 - optionaly fetch new servers on startup
 - finish the incoming view
-- make opening of downloads work (incl. incoming view and ftp)
-- fix and test login behaviour, especially aver connection lost, starting core during gui running, ...
+- make opening of downloads work via ftp
+- fix and test login behaviour, especially after connection lost, starting
+  core during the gui running, ...
 - bring the popup menu of the incoming view to the same status as it's tool bar
-- fix column adjustment when first gui started with links as arguments
+- fix column adjustment when first gui instance started with links as arguments
 - fix enable and disable of server tool bar
 
 Ideas
@@ -17,3 +18,6 @@ Ideas
 - nicer options dialog, maybe with some icons and/or in kontrolcenter style
 - own icons at all
 - make incoming view browseable, including some basic file operations (e.g. delete, copy, move, ...)
+  - warn/permit deletion of 'new' files
+- warn/permit re-login if faster than 30minutes
+- creation of (user specific) aj-links
