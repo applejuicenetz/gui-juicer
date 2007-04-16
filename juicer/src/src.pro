@@ -12,7 +12,6 @@ HEADERS += ftp.h \
            qajapplication.h \
            qajdownloaditem.h \
            qajdownloadwidget.h \
-           qajftpwidget.h \
            qajitem.h \
            qajlistwidget.h \
            qajlogindialog.h \
@@ -46,7 +45,6 @@ SOURCES += ftp.cpp \
            qajapplication.cpp \
            qajdownloaditem.cpp \
            qajdownloadwidget.cpp \
-           qajftpwidget.cpp \
            qajitem.cpp \
            qajlistwidget.cpp \
            qajlogindialog.cpp \

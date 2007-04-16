@@ -291,6 +291,7 @@ void Juicer::showOptions()
 void Juicer::settingsReady( AjSettings settings )
 {
     ajDownloadWidget->setDirs( QFileInfo( settings.tempDir ), QFileInfo( settings.incomingDir ) );
+    ajIncomingWidget->setDir( settings.incomingDir );
     if ( optionsDialog != NULL )
     {
         QSettings lokalSettings;
@@ -423,6 +424,10 @@ void Juicer::tabChanged( QWidget *tab )
             ajShareWidget->commitSlot();
         }
     }
+
+    if(tab == ajIncomingWidget)
+        ajIncomingWidget->reload();
+
     prevTab = tab;
 }
 
@@ -517,4 +522,43 @@ void Juicer::adjustColumns()
         ajServerWidget->adjustSizeOfColumns();
     if ( ajShareWidget->isVisible() )
         ajShareWidget->adjustSizeOfColumns();
+}
+
+
+/*!
+    \fn Juicer::getExec()
+ */
+QStringList Juicer::getExec()
+{
+    QSettings lokalSettings;
+    QString launcher = lokalSettings.value( "launcher", DEFAULT_LAUNCHER ).toString().simplified();
+
+    QStringList args;
+    if ( launcher == KDE_LAUNCHER )
+    {
+        args.clear();
+        args << "kfmclient";
+        args << "exec";
+    }
+    else if ( launcher == GNOME_LAUNCHER )
+    {
+        args.clear();
+        args << "gnome-open";
+    }
+    else if ( launcher == MAC_LAUNCHER )
+    {
+        args.clear();
+        args << "open";
+    }
+    else if ( launcher == WIN_LAUNCHER )
+    {
+        args.clear();
+        args << "start";
+        args << "\"\"";
+    }
+    else
+    {
+        args << launcher.split(" ");
+    }
+    return args;
 }

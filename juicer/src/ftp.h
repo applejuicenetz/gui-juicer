@@ -30,12 +30,7 @@
 #include <QMessageBox>
 #include <QProgressDialog>
 
-typedef struct
-{
-    QString srcFile;
-    QFile* dstFile;
-}
-StoreInfo;
+#include "types.h"
 
 /**
 	@author Matthias Reif <matthias.reif@informatik.tu-chemnitz.de>

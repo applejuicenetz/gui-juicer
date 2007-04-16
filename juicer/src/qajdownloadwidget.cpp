@@ -19,6 +19,8 @@
  ***************************************************************************/
 #include "qajdownloadwidget.h"
 
+#include "juicer.h"
+
 QAjDownloadWidget::QAjDownloadWidget( QXMLModule* xml, QWidget *parent ) : QAjListWidget( xml, parent )
 {
     userStatusDescr["1"] = QObject::tr("unasked ");
@@ -334,34 +336,12 @@ void QAjDownloadWidget::renamePlusSlot()
 
 void QAjDownloadWidget::openSlot()
 {
-    QSettings lokalSettings;
-    QString launcher = lokalSettings.value( "launcher", DEFAULT_LAUNCHER ).toString().simplified();
-    QStringList args = launcher.split(" ");
-
+    QStringList args = Juicer::getExec();
     QString exec = args.takeFirst();
-    if ( launcher == KDE_LAUNCHER )
-    {
-        args.removeFirst();
-        args.push_front("exec");
-    }
-    else if ( launcher == GNOME_LAUNCHER )
-    {
-        args.removeFirst();
-    }
-    else if ( launcher == MAC_LAUNCHER )
-    {
-        exec = "open";
-        args.clear();
-    }
-    else if ( launcher == WIN_LAUNCHER )
-    {
-        exec = "start";
-        args.clear();
-        args.push_back("\"\"");
-    }
 
     QString iDir, tDir;
     // determine the path
+    QSettings lokalSettings;
     QString location = lokalSettings.value( "location", "same" ).toString();
     if( location == "specific" )
     {

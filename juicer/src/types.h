@@ -21,6 +21,12 @@
 #ifndef TYPES_H_12345678901
 #define TYPES_H_12345678901
 
+#define DOWN_PAUSED "18"
+#define DOWN_FINISHED "14"
+#define DOWN_CANCELD "17"
+#define DOWN_SEARCHING "0"
+#define DOWN_LOADING "-1"
+
 #define ACTIVE_SOURCE "7"
 #define QUEUED_SOURCE "5"
 #define NEW_SOURCE "-1"
@@ -95,15 +101,6 @@
 #define FREEBSD "6"
 #define NETWARE "7"
 
-#define WINDOWS_INT 1
-#define LINUX_INT 2
-
-#define DOWN_PAUSED "18"
-#define DOWN_FINISHED "14"
-#define DOWN_CANCELD "17"
-#define DOWN_SEARCHING "0"
-#define DOWN_LOADING "-1"
-
 #ifdef Q_WS_WIN
     #define DEFAULT_LAUNCHER WIN_LAUNCHER
 #else
@@ -120,9 +117,8 @@
 #define KDE_LAUNCHER "kfmclient (KDE)"
 #define GNOME_LAUNCHER "gnome-open (Gnome)"
 
-
-
 #include <QString>
+#include <QFile>
 
 class AjSettings
 {
@@ -151,5 +147,13 @@ class DownloadUser
     QAjDownloadItem* download;
     QAjUserItem* user;
 };
+
+class StoreInfo
+{
+    public:
+    QString srcFile;
+    QFile* dstFile;
+};
+
 
 #endif

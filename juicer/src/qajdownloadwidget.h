@@ -48,7 +48,7 @@
 @author Matthias Reif
 */
 
-class QAjDownloadItem;
+class Juicer;
 
 class QAjDownloadWidget : public QAjListWidget
 {

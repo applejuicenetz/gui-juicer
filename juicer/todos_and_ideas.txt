@@ -5,7 +5,8 @@ TODOs
 - optionaly fetch new servers on startup
 - finish the incoming view
 - make opening of downloads work (incl. incoming view and ftp)
-
+- fix and test login behaviour, especially aver connection lost, starting core during gui running, ...
+- bring the popup menu of the incoming view to the same status as it's tool bar
 
 Ideas
 =====
@@ -13,3 +14,4 @@ Ideas
 - offer an auto-align functionality
 - nicer options dialog, maybe with some icons and/or in kontrolcenter style
 - own icons at all
+- make incoming view browseable, including some basic file operations (e.g. delete, copy, move, ...)

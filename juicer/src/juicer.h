@@ -97,6 +97,8 @@ public:
     void queueLinks( QStringList links );
     void setUploadFilename( QString shareId, QString filename );
 
+    static QStringList getExec();
+
 protected:
     void initToolBars();
     void closeEvent( QCloseEvent* );

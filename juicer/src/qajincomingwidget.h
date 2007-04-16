@@ -26,6 +26,8 @@
 #include "qajlistwidget.h"
 #include "ftp.h"
 
+class Juicer;
+
 /**
 	@author Matthias Reif <matthias.reif@informatik.tu-chemnitz.de>
 */
@@ -37,10 +39,19 @@ public:
 
     ~QAjIncomingWidget();
     void initToolBar();
+    void setDir( QString dir );
 
-public slots:
+private:
+    QString dir;
+    QAction *reloadButton, *openButton;
     void storeFtp();
     void reloadFtp();
+    QFtp* ftp;
+
+public slots:
+    void reload();
+    void open();
+    void insert( QUrlInfo info );
 };
 
 #endif
