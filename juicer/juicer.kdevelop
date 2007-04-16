@@ -170,7 +170,6 @@
     <general>
       <activedir>src</activedir>
     </general>
-    <subclassing/>
     <make>
       <abortonerror>true</abortonerror>
       <runmultiplejobs>false</runmultiplejobs>
@@ -185,6 +184,7 @@
       <replacePaths>false</replacePaths>
       <disableDefaultOpts>true</disableDefaultOpts>
     </qmake>
+    <subclassing/>
   </kdevtrollproject>
   <workspace>
     <openfiles/>

@@ -8,6 +8,7 @@ TODOs
 - fix and test login behaviour, especially aver connection lost, starting core during gui running, ...
 - bring the popup menu of the incoming view to the same status as it's tool bar
 - fix column adjustment when first gui started with links as arguments
+- fix enable and disable of server tool bar
 
 Ideas
 =====
