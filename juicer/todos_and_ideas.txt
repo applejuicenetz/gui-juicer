@@ -1,0 +1,15 @@
+TODOs
+=====
+
+- make all sortings work correctly
+- optionaly fetch new server on startup
+- finish the incoming view
+- get opening of downloads work (incl. incoming view and ftp)
+
+
+Ideas
+=====
+
+- offer an auto-align funtionality
+- nicer options dialog, maybe with some icons and/or in kontrolcenter style
+- own icons at all
