@@ -26,22 +26,25 @@ QAjIncomingWidget::QAjIncomingWidget( QXMLModule* xml, QWidget *parent ) : QAjLi
 
     QStringList headers;
     int i;
-    for ( i=0; i<NUM_FTP_COL; i++)
+    for ( i=0; i<NUM_INCOMING_COL; i++)
     {
         switch (i)
         {
-        case FILENAME_FTP_INDEX:
+        case FILENAME_INCOMING_INDEX:
             headers.append( tr("filename") );
             break;
-        case SIZE_FTP_INDEX:
+        case SIZE_INCOMING_INDEX:
             headers.append( tr("size") );
+            break;
+        case DATE_INCOMING_INDEX:
+            headers.append( tr("last modified") );
             break;
         }
     }
     setHeaderLabels( headers );
 
     ftp = new QFtp( this );
-//     ftp = new FTP( );
+//     ftp = new INCOMING( );
      connect( ftp, SIGNAL( listInfo ( QUrlInfo ) ), this, SLOT( insert( QUrlInfo ) ) );
      connect( this, SIGNAL( itemDoubleClicked ( QTreeWidgetItem*, int ) ), this, SLOT( open() ) );
 //     connect( ajFtpWidget, SIGNAL( newSelection( bool ) ), storeFtpButton, SLOT( setEnabled( bool ) ) );
@@ -115,7 +118,7 @@ void QAjIncomingWidget::storeFtp()
     int i;
     for ( i=0; i<selectedItems.size(); i++ )
     {
-        filename = selectedItems.at(i)->text( FILENAME_FTP_INDEX );
+        filename = selectedItems.at(i)->text( FILENAME_INCOMING_INDEX );
         localDir = QFileDialog::getExistingDirectory( this, "save \"" + filename + "\" + to" );
         if ( localDir != "" )
         {
@@ -172,8 +175,9 @@ void QAjIncomingWidget::reload()
             for(i=0; i<list.size(); i++)
             {
                 QAjItem* item = new QAjItem( this );
-                item->setText(FILENAME_FTP_INDEX, list[i].fileName());
-                item->setText(SIZE_FTP_INDEX, QConvert::bytes((double)list[i].size(), 2));
+                item->setText(FILENAME_INCOMING_INDEX, list[i].fileName());
+                item->setText(SIZE_INCOMING_INDEX, QConvert::bytes((double)list[i].size(), 2));
+                item->setText(DATE_INCOMING_INDEX, list[i].lastModified().toLocalTime().toString() );
                 this->addTopLevelItem( item );
             }
         }
@@ -221,7 +225,7 @@ void QAjIncomingWidget::open()
     int i;
     for (i=0; i<items.size(); i++)
     {
-        args <<  actDir + items[i]->text( FILENAME_FTP_INDEX );
+        args <<  actDir + items[i]->text( FILENAME_INCOMING_INDEX );
         QProcess::startDetached( exec, args );
         args.removeLast();
     }
@@ -235,8 +239,9 @@ void QAjIncomingWidget::insert( QUrlInfo info )
     if ( info.isFile() || info.isDir() )
     {
         QAjItem *item = new QAjItem( this );
-        item->setText( FILENAME_FTP_INDEX, info.name() );
-        item->setText( SIZE_FTP_INDEX, QConvert::bytes( (double)info.size(), 2 ) );
+        item->setText( FILENAME_INCOMING_INDEX, info.name() );
+        item->setText( SIZE_INCOMING_INDEX, QConvert::bytes( (double)info.size(), 2 ) );
+        item->setText( DATE_INCOMING_INDEX, info.lastModified().toLocalTime().toString() );
         adjustSizeOfColumns();
     }
 }
