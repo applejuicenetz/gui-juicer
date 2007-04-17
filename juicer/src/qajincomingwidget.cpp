@@ -23,7 +23,6 @@
 
 QAjIncomingWidget::QAjIncomingWidget( QXMLModule* xml, QWidget *parent ) : QAjListWidget( xml, parent )
 {
-
     QStringList headers;
     int i;
     for ( i=0; i<NUM_INCOMING_COL; i++)
@@ -44,10 +43,9 @@ QAjIncomingWidget::QAjIncomingWidget( QXMLModule* xml, QWidget *parent ) : QAjLi
     setHeaderLabels( headers );
 
     ftp = new QFtp( this );
-//     ftp = new INCOMING( );
-     connect( ftp, SIGNAL( listInfo ( QUrlInfo ) ), this, SLOT( insert( QUrlInfo ) ) );
-     connect( this, SIGNAL( itemDoubleClicked ( QTreeWidgetItem*, int ) ), this, SLOT( open() ) );
-//     connect( ajFtpWidget, SIGNAL( newSelection( bool ) ), storeFtpButton, SLOT( setEnabled( bool ) ) );
+
+    connect( ftp, SIGNAL( listInfo ( QUrlInfo ) ), this, SLOT( insert( QUrlInfo ) ) );
+    connect( this, SIGNAL( itemDoubleClicked ( QTreeWidgetItem*, int ) ), this, SLOT( open() ) );
 
     initToolBar();
 }

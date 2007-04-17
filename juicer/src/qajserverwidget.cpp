@@ -68,6 +68,23 @@ QAjServerWidget::QAjServerWidget( QXMLModule* xml, QWidget *parent ) : QAjListWi
 QAjServerWidget::~QAjServerWidget()
 {}
 
+
+/*!
+    \fn QAjServerWidget::initToolBar()
+ */
+void QAjServerWidget::initToolBar()
+{
+    toolBar = new QToolBar( "server operations", this );
+
+    connectButton = toolBar->addAction( QIcon(":/connect.png"), "connect to this server", this, SLOT( connectSlot() ) );
+    removeButton = toolBar->addAction( QIcon(":/cancel.png"), "remove server", this, SLOT( removeSlot() ) );
+    findButton = toolBar->addAction( QIcon(":/find.png"), "find server", this, SLOT( findSlot() ) );
+
+    removeButton->setEnabled( false );
+    connectButton->setEnabled( false );
+}
+
+
 void QAjServerWidget::insertServer( QString id, QString name, QString host, QString port, QString lastseen, QString tests )
 {
     QAjServerItem *item = findServer( id );
@@ -172,6 +189,8 @@ void QAjServerWidget::selectionChanged1( bool oneSelected )
 {
     removeId->setEnabled( oneSelected );
     connectId->setEnabled( oneSelected );
+    removeButton->setEnabled( oneSelected );
+    connectButton->setEnabled( oneSelected );
 }
 
 QAjServerItem* QAjServerWidget::findServer( QString id )
@@ -192,22 +211,6 @@ bool QAjServerWidget::remove( QString id )
         return true;
     }
     return false;
-}
-
-
-/*!
-    \fn QAjServerWidget::initToolBar()
- */
-void QAjServerWidget::initToolBar()
-{
-    toolBar = new QToolBar( "server operations", this );
-
-    connectButton = toolBar->addAction( QIcon(":/connect.png"), "connect to this server", this, SLOT( connectSlot() ) );
-    removeButton = toolBar->addAction( QIcon(":/cancel.png"), "remove server", this, SLOT( removeSlot() ) );
-    findButton = toolBar->addAction( QIcon(":/find.png"), "find server", this, SLOT( findSlot() ) );
-
-    removeButton->setDisabled( true );
-    connectButton->setDisabled( true );
 }
 
 void QAjServerWidget::gotServer( int , bool error )
