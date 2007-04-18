@@ -339,52 +339,52 @@ void QAjDownloadItem::updateView( QHash<QString, QString>* downloadStatusDescr )
 }
 
 
-int QAjDownloadItem::compare( QTreeWidgetItem * i, int col, bool ) const
-{
-    double a, b;
-    if ( col == SIZE_DOWN_INDEX )
-    {
-        a = size;
-        b = ((QAjDownloadItem*)i)->getSize();
-    }
-    else if ( col == FINISHED_SIZE_DOWN_INDEX )
-    {
-        a = ready;
-        b = ((QAjDownloadItem*)i)->getReady();
-    }
-    else if ( col == REMAIN_SIZE_DOWN_INDEX )
-    {
-        a = remainingSize;
-        b = ((QAjDownloadItem*)i)->getRemainingSize();
-    }
-    else if ( col == SPEED_DOWN_INDEX )
-    {
-        a = speed;
-        b = ((QAjDownloadItem*)i)->getSpeed();
-    }
-    else if ( col == FINISHED_DOWN_INDEX )
-    {
-        a = percent;
-        b = ((QAjDownloadItem*)i)->getPercent();
-    }
-    else
-    {
-        if ( text( col ) > i->text(col) )
-            return 1;
-        else if ( text( col ) < i->text(col) )
-            return -1;
-        else
-            return 0;
-        //return QTreeWidgetItem::compare( i, col, ascending );
-    }
-
-    if ( a > b )
-        return 1;
-    else if ( a < b )
-        return -1;
-    else
-        return 0;
-}
+// int QAjDownloadItem::compare( QTreeWidgetItem * i, int col, bool ) const
+// {
+//     double a, b;
+//     if ( col == SIZE_DOWN_INDEX )
+//     {
+//         a = size;
+//         b = ((QAjDownloadItem*)i)->getSize();
+//     }
+//     else if ( col == FINISHED_SIZE_DOWN_INDEX )
+//     {
+//         a = ready;
+//         b = ((QAjDownloadItem*)i)->getReady();
+//     }
+//     else if ( col == REMAIN_SIZE_DOWN_INDEX )
+//     {
+//         a = remainingSize;
+//         b = ((QAjDownloadItem*)i)->getRemainingSize();
+//     }
+//     else if ( col == SPEED_DOWN_INDEX )
+//     {
+//         a = speed;
+//         b = ((QAjDownloadItem*)i)->getSpeed();
+//     }
+//     else if ( col == FINISHED_DOWN_INDEX )
+//     {
+//         a = percent;
+//         b = ((QAjDownloadItem*)i)->getPercent();
+//     }
+//     else
+//     {
+//         if ( text( col ) > i->text(col) )
+//             return 1;
+//         else if ( text( col ) < i->text(col) )
+//             return -1;
+//         else
+//             return 0;
+//         //return QTreeWidgetItem::compare( i, col, ascending );
+//     }
+// 
+//     if ( a > b )
+//         return 1;
+//     else if ( a < b )
+//         return -1;
+//     else
+//         return 0;
+// }
 
 void QAjDownloadItem::showWidget( const QPoint & p )
 {

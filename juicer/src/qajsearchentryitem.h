@@ -39,7 +39,9 @@ public:
     QString size;
     QAjSearchItem* search;
 
-    int compare( QTreeWidgetItem * i, int col, bool ) const;
+    virtual bool operator<( const QTreeWidgetItem & other ) const;
+
+//     int compare( QTreeWidgetItem * i, int col, bool ) const;
 };
 
 #endif

@@ -46,3 +46,25 @@ QAjSearchEntryItem* QAjSearchItem::findSearchEntry( QString id )
         return NULL;
 }
 
+bool QAjSearchItem::operator<( const QTreeWidgetItem & other ) const
+{
+    int sortIndex = treeWidget()->header()->sortIndicatorSection();
+
+
+    QAjItem* item = (QAjItem*)&other;
+    {
+        QAjSearchItem* searchItem = (QAjSearchItem*)item;
+        switch ( sortIndex )
+        {
+        case TEXT_SEARCH_INDEX:
+            return this->text( TEXT_SEARCH_INDEX ) < other.text( TEXT_SEARCH_INDEX );
+//         case SIZE_SEARCH_INDEX:
+//             return size < ->getHits();
+        case COUNT_SEARCH_INDEX:
+            return this->hits < searchItem->getHits();
+        default:
+            return this->text( sortIndex ) < other.text( sortIndex );
+        }
+    }
+
+}

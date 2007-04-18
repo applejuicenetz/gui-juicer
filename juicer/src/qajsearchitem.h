@@ -21,6 +21,7 @@
 #define QAJSEARCHITEM_H
 
 #include <QHash>
+#include <QHeaderView>
 
 #include "qajitem.h"
 #include "qajsearchentryitem.h"
@@ -43,6 +44,13 @@ public:
     int entriesCount;
 
     QHash<QString, QAjSearchEntryItem*> entries;
+
+    virtual bool operator<( const QTreeWidgetItem & other ) const;
+
+    int getHits() const
+    {
+      return hits;
+    }
 
 };
 

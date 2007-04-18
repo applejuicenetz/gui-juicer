@@ -108,7 +108,7 @@ public:
 
     void deleteUsers();
 
-    int compare( QTreeWidgetItem * i, int col, bool ) const;
+//     int compare( QTreeWidgetItem * i, int col, bool ) const;
     void showWidget( const QPoint &p );
 
     QHash<QString, QAjUserItem*> users;

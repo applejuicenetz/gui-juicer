@@ -47,12 +47,13 @@ public:
 
     QTreeWidgetItem *activeUpload;
     QTreeWidgetItem *queuedUpload;
-    QTreeWidgetItem *otherUpload;
+//     QTreeWidgetItem *otherUpload;
 private:
     QAjUploadItem* findUpload( QString id );
     bool isOtherUpload( QString status );
     void setFilename( QTreeWidgetItem* uploadState, QString shareId, QString filename );
     QHash<QString, QString> uploadStatusDescr;
+    QHash<QString, QString> uploadDirectStateDescr;
     QHash<QString, QAjUploadItem*> uploads;
 
     QIcon *linuxIcon, *windowsIcon, *macIcon, *solarisIcon, *freeBsdIcon, *netwareIcon;

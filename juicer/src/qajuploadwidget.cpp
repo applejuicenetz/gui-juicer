@@ -23,9 +23,10 @@ QAjUploadWidget::QAjUploadWidget( QXMLModule* xml, QWidget *parent ) : QAjListWi
 {
     uploadStatusDescr["1"] = "active";
     uploadStatusDescr["2"] = "queueing";
-    uploadStatusDescr["5"] = "connecting";
-    uploadStatusDescr["6"] = "connecting indirect";
-    uploadStatusDescr["7"] = "connection failed";
+
+    uploadDirectStateDescr["0"] = "not connected";
+    uploadDirectStateDescr["1"] = "direct connection";
+    uploadDirectStateDescr["2"] = "passive connection";
 
     linuxIcon = new QIcon(":/small/linux.png");
     windowsIcon = new QIcon(":/small/windows.png");
@@ -69,8 +70,8 @@ QAjUploadWidget::QAjUploadWidget( QXMLModule* xml, QWidget *parent ) : QAjListWi
     activeUpload->setText( FILENAME_UP_INDEX, "1. active" );
     queuedUpload = new QTreeWidgetItem( this );
     queuedUpload->setText( FILENAME_UP_INDEX, "2. queueing" );
-    otherUpload = new QTreeWidgetItem( this );
-    otherUpload->setText( FILENAME_UP_INDEX, "3. other" );
+//     otherUpload = new QTreeWidgetItem( this );
+//     otherUpload->setText( FILENAME_UP_INDEX, "3. other" );
 
     expandItem( activeUpload );
 
@@ -130,15 +131,15 @@ bool QAjUploadWidget::insertUpload(QString id, QString shareId, QString version,
             takeFromItem = activeUpload;
         else if ( oldStatus == QUEUEING_UPLOAD )
             takeFromItem = queuedUpload;
-        else
-            takeFromItem = otherUpload;
+//         else
+//             takeFromItem = otherUpload;
 
         if ( status == ACTIVE_UPLOAD )
             insertIntoItem = activeUpload;
         else if ( status == QUEUEING_UPLOAD )
             insertIntoItem = queuedUpload;
-        else
-            insertIntoItem = otherUpload;
+//         else
+//             insertIntoItem = otherUpload;
 
         if ( takeFromItem != NULL )
             takeFromItem->takeChild( takeFromItem->indexOfChild( uploadItem ) );
@@ -149,6 +150,7 @@ bool QAjUploadWidget::insertUpload(QString id, QString shareId, QString version,
 
     uploadItem->setText(SPEED_UP_INDEX, QConvert::bytes(speed) + "/s" );
     uploadItem->setText(STATUS_UP_INDEX, uploadStatusDescr[status]);
+    uploadItem->setText(DIRECTSTATE_UP_INDEX, uploadDirectStateDescr[directState]);
     uploadItem->setText(PRIORITY_UP_INDEX, priority );
 
     return ( uploadItem->text( FILENAME_UP_INDEX ) != "" );
@@ -187,7 +189,7 @@ void QAjUploadWidget::setFilename( QString shareId, QString filename )
 {
     setFilename(activeUpload, shareId, filename);
     setFilename(queuedUpload, shareId, filename);
-    setFilename(otherUpload, shareId, filename);
+//     setFilename(otherUpload, shareId, filename);
 }
 
 
