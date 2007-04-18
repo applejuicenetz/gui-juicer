@@ -10,6 +10,7 @@ TODOs
 - bring the popup menu of the incoming view to the same status as it's tool bar
 - fix column adjustment when first gui instance started with links as arguments
 x fix enable and disable of server tool bar
+- fix windows connection lost
 
 Ideas
 =====
@@ -20,4 +21,4 @@ Ideas
 - make incoming view browseable, including some basic file operations (e.g. delete, copy, move, ...)
   - warn/permit deletion of 'new' files
 - warn/permit re-login if faster than 30minutes
-- creation of (user specific) aj-links
+- get aj links from share (and from the current downloads)

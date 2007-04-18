@@ -63,6 +63,7 @@ protected:
     QLabel* filesizeLabel;
     QLabel* readyLabel;
     QLabel* availableLabel;
+    QLabel* lessSourcesLabel;
     QLabel* missingLabel;
 
     QPushButton* okButton;

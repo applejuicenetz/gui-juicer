@@ -32,23 +32,24 @@ class QAjPartsWidget : public QWidget
 {
 Q_OBJECT
 public:
-	QAjPartsWidget(QWidget *parent = 0, const char *name = 0);
+  QAjPartsWidget(QWidget *parent = 0, const char *name = 0);
 
-	~QAjPartsWidget();
-	void update( qulonglong size, QLinkedList<Part> partList );
+  ~QAjPartsWidget();
+  void update( qulonglong size, QLinkedList<Part> partList );
 
-	double ready;
-	double available;
-	double missing;
+  double ready;
+  double available;
+  double lessSources;
+  double missing;
 
 protected:
-	void paintEvent( QPaintEvent* );
-	qulonglong size;
-	QLinkedList<Part> partList;
-	static const int BLOCK_ROWS = 6;
-	int blockHeight;
-	int numPixels;
-	float pixelPerByte;
+  void paintEvent( QPaintEvent* );
+  qulonglong size;
+  QLinkedList<Part> partList;
+  static const int BLOCK_ROWS = 6;
+  int blockHeight;
+  int numPixels;
+  float pixelPerByte;
 
 };
 

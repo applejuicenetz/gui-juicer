@@ -22,7 +22,7 @@
 QAjPartListWidget::QAjPartListWidget( QWidget *parent, const char *name ) : QWidget( parent )
 {
     this->setWindowIcon( QIcon(":/juicer.png") );
-    this->setFixedSize( 600, 280 );
+    this->setFixedSize( 600, 300 );
     paintWidget = new QAjPartsWidget( this );
 
     filesizeLabel = new QLabel(this);
@@ -35,6 +35,9 @@ QAjPartListWidget::QAjPartListWidget( QWidget *parent, const char *name ) : QWid
     availableLabel = new QLabel(this);
     availableLabel->move( paintWidget->x() + 180, paintWidget->y() + paintWidget->height() + 20 );
     availableLabel->resize( 120 , 30 );
+    lessSourcesLabel = new QLabel(this);
+    lessSourcesLabel->move( paintWidget->x() + 180, paintWidget->y() + 27 + paintWidget->height() + 20 );
+    lessSourcesLabel->resize( 190 , 30 );
     missingLabel = new QLabel(this);
     missingLabel->move( paintWidget->x() + 330, paintWidget->y() + paintWidget->height() + 20 );
     missingLabel->resize( 120 , 30 );
@@ -94,12 +97,15 @@ void QAjPartListWidget::paintEvent( QPaintEvent* )
 
     painter.fillRect( paintWidget->x() + 150, paintWidget->y() + paintWidget->height() + 20, 20, 20, QBrush(QColor(0,0,220)) );
 
+    painter.fillRect( paintWidget->x() + 150, paintWidget->y() + 30 + paintWidget->height() + 20, 20, 20, QBrush(QColor(220,220,0)) );
+
     painter.fillRect( paintWidget->x() + 300, paintWidget->y() + paintWidget->height() + 20, 20, 20, QBrush(QColor(240,0,0)) );
 
     painter.end();
 
     readyLabel->setText( QString::number( paintWidget->ready, 'f', 2 ) + "% finished" );
     availableLabel->setText( QString::number( paintWidget->available, 'f', 2 ) + "% seen" );
+    lessSourcesLabel->setText( QString::number( paintWidget->lessSources, 'f', 2 ) + "% less than 5 sources" );
     missingLabel->setText( QString::number( paintWidget->missing, 'f', 2 ) + "% not seen" );
 
 }
