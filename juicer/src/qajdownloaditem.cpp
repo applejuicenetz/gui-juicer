@@ -339,53 +339,6 @@ void QAjDownloadItem::updateView( QHash<QString, QString>* downloadStatusDescr )
 }
 
 
-// int QAjDownloadItem::compare( QTreeWidgetItem * i, int col, bool ) const
-// {
-//     double a, b;
-//     if ( col == SIZE_DOWN_INDEX )
-//     {
-//         a = size;
-//         b = ((QAjDownloadItem*)i)->getSize();
-//     }
-//     else if ( col == FINISHED_SIZE_DOWN_INDEX )
-//     {
-//         a = ready;
-//         b = ((QAjDownloadItem*)i)->getReady();
-//     }
-//     else if ( col == REMAIN_SIZE_DOWN_INDEX )
-//     {
-//         a = remainingSize;
-//         b = ((QAjDownloadItem*)i)->getRemainingSize();
-//     }
-//     else if ( col == SPEED_DOWN_INDEX )
-//     {
-//         a = speed;
-//         b = ((QAjDownloadItem*)i)->getSpeed();
-//     }
-//     else if ( col == FINISHED_DOWN_INDEX )
-//     {
-//         a = percent;
-//         b = ((QAjDownloadItem*)i)->getPercent();
-//     }
-//     else
-//     {
-//         if ( text( col ) > i->text(col) )
-//             return 1;
-//         else if ( text( col ) < i->text(col) )
-//             return -1;
-//         else
-//             return 0;
-//         //return QTreeWidgetItem::compare( i, col, ascending );
-//     }
-// 
-//     if ( a > b )
-//         return 1;
-//     else if ( a < b )
-//         return -1;
-//     else
-//         return 0;
-// }
-
 void QAjDownloadItem::showWidget( const QPoint & p )
 {
     if ( partListWidget == NULL )
@@ -470,37 +423,26 @@ void QAjDownloadItem::setParts( qulonglong size, QLinkedList<Part> partList )
 bool QAjDownloadItem::operator<( const QTreeWidgetItem & other ) const
 {
     int sortIndex = treeWidget()->header()->sortIndicatorSection();
-//     Qt::SortOrder sortOrder = treeWidget()->header()->sortIndicatorOrder();
-// 	QMutexLocker(&((QAjListWidget*)treeWidget())->mutex);
-    QAjItem* item = (QAjItem*)&other;
-//     if ( item->getType() ==  DOWN )
+    QAjDownloadItem* downItem = (QAjDownloadItem*)&other;
+    switch ( sortIndex )
     {
-        QAjDownloadItem* downItem = (QAjDownloadItem*)item;
-        switch ( sortIndex )
-        {
-        case FILENAME_DOWN_INDEX:
-            return this->text( FILENAME_DOWN_INDEX ) < other.text( FILENAME_DOWN_INDEX );
-        case SIZE_DOWN_INDEX:
-            return size < downItem->getSize();
-        case FINISHED_SIZE_DOWN_INDEX:
-            return ready < downItem->getReady();
-        case REMAIN_SIZE_DOWN_INDEX:
-            return remainingSize < downItem->getRemainingSize();
-        case REMAIN_TIME_DOWN_INDEX:
-            return remainingSec < downItem->getRemainingSec();
-        case SPEED_DOWN_INDEX:
-            return this->speed < downItem->getSpeed();
-        case MISSING_DOWN_INDEX:
-            return this->missing < downItem->getMissing();
-        case FINISHED_DOWN_INDEX:
-            return this->finished < downItem->getFinished();
-        default:
-            return this->text( sortIndex ) < other.text( sortIndex );
-        }
+    case FILENAME_DOWN_INDEX:
+        return this->text( FILENAME_DOWN_INDEX ) < other.text( FILENAME_DOWN_INDEX );
+    case SIZE_DOWN_INDEX:
+        return size < downItem->getSize();
+    case FINISHED_SIZE_DOWN_INDEX:
+        return ready < downItem->getReady();
+    case REMAIN_SIZE_DOWN_INDEX:
+        return remainingSize < downItem->getRemainingSize();
+    case REMAIN_TIME_DOWN_INDEX:
+        return remainingSec < downItem->getRemainingSec();
+    case SPEED_DOWN_INDEX:
+        return this->speed < downItem->getSpeed();
+    case MISSING_DOWN_INDEX:
+        return this->missing < downItem->getMissing();
+    case FINISHED_DOWN_INDEX:
+        return this->finished < downItem->getFinished();
+    default:
+        return this->text( sortIndex ) < other.text( sortIndex );
     }
-//     else
-//     {
-//         return this->text( sortIndex ) < other.text( sortIndex );
-//         return false;
-//     }
 }

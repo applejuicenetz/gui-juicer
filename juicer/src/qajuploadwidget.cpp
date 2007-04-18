@@ -70,8 +70,6 @@ QAjUploadWidget::QAjUploadWidget( QXMLModule* xml, QWidget *parent ) : QAjListWi
     activeUpload->setText( FILENAME_UP_INDEX, "1. active" );
     queuedUpload = new QTreeWidgetItem( this );
     queuedUpload->setText( FILENAME_UP_INDEX, "2. queueing" );
-//     otherUpload = new QTreeWidgetItem( this );
-//     otherUpload->setText( FILENAME_UP_INDEX, "3. other" );
 
     expandItem( activeUpload );
 
@@ -131,15 +129,11 @@ bool QAjUploadWidget::insertUpload(QString id, QString shareId, QString version,
             takeFromItem = activeUpload;
         else if ( oldStatus == QUEUEING_UPLOAD )
             takeFromItem = queuedUpload;
-//         else
-//             takeFromItem = otherUpload;
 
         if ( status == ACTIVE_UPLOAD )
             insertIntoItem = activeUpload;
         else if ( status == QUEUEING_UPLOAD )
             insertIntoItem = queuedUpload;
-//         else
-//             insertIntoItem = otherUpload;
 
         if ( takeFromItem != NULL )
             takeFromItem->takeChild( takeFromItem->indexOfChild( uploadItem ) );
@@ -189,7 +183,6 @@ void QAjUploadWidget::setFilename( QString shareId, QString filename )
 {
     setFilename(activeUpload, shareId, filename);
     setFilename(queuedUpload, shareId, filename);
-//     setFilename(otherUpload, shareId, filename);
 }
 
 

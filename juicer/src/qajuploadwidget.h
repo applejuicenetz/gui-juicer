@@ -47,7 +47,7 @@ public:
 
     QTreeWidgetItem *activeUpload;
     QTreeWidgetItem *queuedUpload;
-//     QTreeWidgetItem *otherUpload;
+
 private:
     QAjUploadItem* findUpload( QString id );
     bool isOtherUpload( QString status );

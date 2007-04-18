@@ -465,7 +465,6 @@ void Juicer::firstModified()
         {
             ajDownloadWidget->updateView( true );
             ajDownloadWidget->adjustSizeOfColumns();
-            ajDownloadWidget->adjustSizeOfColumns();
             ajUploadWidget->adjustSizeOfColumns();
             ajServerWidget->adjustSizeOfColumns();
             ajShareWidget->adjustSizeOfColumns();

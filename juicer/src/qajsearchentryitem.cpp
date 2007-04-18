@@ -39,45 +39,15 @@ QAjSearchEntryItem::~QAjSearchEntryItem()
 {
 }
 
-// int QAjSearchEntryItem::compare( QTreeWidgetItem* i, int col, bool ) const
-// {
-//     if ( col == SIZE_SEARCH_INDEX )
-//     {
-//         qulonglong a = size.toULongLong();
-//         qulonglong b = ((QAjSearchEntryItem*)i)->size.toULongLong();
-//         if ( a > b )
-//             return 1;
-//         else if ( a < b )
-//             return -1;
-//         else
-//             return 0;
-//     }
-//     else
-//     {
-//         if ( text( col ) > i->text( col ) )
-//             return 1;
-//         else if ( text( col ) < i->text( col ) )
-//             return -1;
-//         else
-//             return 0;
-//     }
-// }
-
 bool QAjSearchEntryItem::operator<( const QTreeWidgetItem & other ) const
 {
     int sortIndex = treeWidget()->header()->sortIndicatorSection();
-
-
-    QAjItem* item = (QAjItem*)&other;
+    QAjSearchEntryItem* searchItem = (QAjSearchEntryItem*)&other;
+    switch ( sortIndex )
     {
-        QAjSearchEntryItem* searchItem = (QAjSearchEntryItem*)item;
-        switch ( sortIndex )
-        {
-        case SIZE_SEARCH_INDEX:
-            return this->size.toULongLong() < searchItem->size.toULongLong();
-        default:
-            return this->text( sortIndex ) < other.text( sortIndex );
-        }
+    case SIZE_SEARCH_INDEX:
+        return this->size.toULongLong() < searchItem->size.toULongLong();
+    default:
+        return this->text( sortIndex ) < other.text( sortIndex );
     }
-
 }
