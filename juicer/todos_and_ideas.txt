@@ -11,6 +11,8 @@ TODOs
 - fix column adjustment when first gui instance started with links as arguments
 x fix enable and disable of server tool bar
 - fix windows connection lost
+- show copy progress
+- renaming of file via input dialog in storeFtp() of incomingWidget if file already exists
 
 Ideas
 =====
@@ -22,3 +24,4 @@ Ideas
   - warn/permit deletion of 'new' files
 - warn/permit re-login if faster than 30minutes
 - get aj links from share (and from the current downloads)
+- system tray icon

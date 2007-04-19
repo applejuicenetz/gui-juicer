@@ -64,6 +64,7 @@ void QAjIncomingWidget::initToolBar()
     toolBar = new QToolBar( "incoming operations", this );
     reloadButton = toolBar->addAction( QIcon(":/reload.png"), "reload", this, SLOT( reload() ) );
     openButton = toolBar->addAction( QIcon(":/exec.png"), "open", this, SLOT( open() ) );
+    saveButton = toolBar->addAction( QIcon(":/save.png"), "save/copy", this, SLOT( save() ) );
 }
 
 /*!
@@ -90,6 +91,54 @@ void QAjIncomingWidget::reloadFtp()
     ftp->login( user, password );
     ftp->setTransferMode( QFtp::Passive );
     ftp->list( dir );
+}
+
+
+/*!
+    \fn QAjIncomingWidget::save()
+ */
+void QAjIncomingWidget::save()
+{
+    QString actDir;
+    // determine the path
+    QSettings lokalSettings;
+    QString location = lokalSettings.value( "location", "same" ).toString();
+    if(location == "ftp")
+    {
+        storeFtp();
+    }
+    else
+    {
+        if( location == "specific" )
+        {
+            actDir = lokalSettings.value( "incomingDirSpecific", "/" ).toString() + QDir::separator();
+        }
+        else if( location == "same" )
+        {
+            actDir = this->dir + QDir::separator();
+        }
+        QList<QAjItem*> items = selectedAjItems();
+        int i;
+        for( i=0; i<items.size(); i++ )
+        {
+            QString newDir = QFileDialog::getExistingDirectory(this, "copy to", actDir)
+                    + QDir::separator();
+            if(!newDir.isEmpty())
+            {
+                QString newFilename = items[i]->text( FILENAME_INCOMING_INDEX );
+                while(!newFilename.isEmpty() && QFile::exists(newDir + newFilename))
+                {
+                    newFilename = QInputDialog::getText(this, "file already exists",
+                            "filename", QLineEdit::Normal, items[i]->text( FILENAME_INCOMING_INDEX ));
+                }
+                if(!newFilename.isEmpty())
+                {
+                    (new CopyThread(actDir + items[i]->text( FILENAME_INCOMING_INDEX ),
+                                newDir + newFilename))->start();
+                }
+            }
+        }
+    }
 }
 
 

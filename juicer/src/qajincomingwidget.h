@@ -22,6 +22,7 @@
 
 #include <QSettings>
 #include <QFileDialog>
+#include <QMessageBox>
 
 #include "qajlistwidget.h"
 #include "ftp.h"
@@ -43,7 +44,7 @@ public:
 
 private:
     QString dir;
-    QAction *reloadButton, *openButton;
+    QAction *reloadButton, *openButton, *saveButton;
     void storeFtp();
     void reloadFtp();
     QFtp* ftp;
@@ -51,7 +52,27 @@ private:
 public slots:
     void reload();
     void open();
+    void save();
     void insert( QUrlInfo info );
+
+private:
+    class CopyThread : public QThread
+    {
+        public:
+        CopyThread(QString oldFilename, QString newFilename)
+        {
+            this->oldFilename = oldFilename;
+            this->newFilename = newFilename;
+        }
+        QString oldFilename, newFilename;
+        void run()
+        {
+            if(!QFile::copy(oldFilename, newFilename))
+            {
+                QMessageBox::critical(NULL, "error", "copy process failed");
+            }
+        }
+    };
 };
 
 #endif
