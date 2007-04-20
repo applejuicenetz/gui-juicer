@@ -26,31 +26,37 @@ QAjOptionsDialog::QAjOptionsDialog( QWidget* parent ) : QDialog( parent )
 
     IconWidget* l = new IconWidget(":/options/core.png", "Core", listWidget);
     QListWidgetItem* item = new QListWidgetItem(listWidget);
+    item->setFlags( Qt::ItemIsSelectable | Qt::ItemIsEnabled );
     item->setSizeHint(l->size());
     listWidget->setItemWidget(item, l);
 
     l = new IconWidget(":/options/limits.png", "Limits", listWidget);
     item = new QListWidgetItem(listWidget);
+    item->setFlags( Qt::ItemIsSelectable | Qt::ItemIsEnabled );
     item->setSizeHint(l->size());
     listWidget->setItemWidget(item, l);
 
     l = new IconWidget(":/options/appearance.png", "Appearance", listWidget);
     item = new QListWidgetItem(listWidget);
+    item->setFlags( Qt::ItemIsSelectable | Qt::ItemIsEnabled );
     item->setSizeHint(l->size());
     listWidget->setItemWidget(item, l);
 
     l = new IconWidget(":/options/behaviour.png", "Behaviour", listWidget);
     item = new QListWidgetItem(listWidget);
+    item->setFlags( Qt::ItemIsSelectable | Qt::ItemIsEnabled );
     item->setSizeHint(l->size());
     listWidget->setItemWidget(item, l);
 
     l = new IconWidget(":/options/launching.png", "Launching", listWidget);
     item = new QListWidgetItem(listWidget);
+    item->setFlags( Qt::ItemIsSelectable | Qt::ItemIsEnabled );
     item->setSizeHint(l->size());
     listWidget->setItemWidget(item, l);
 
     l = new IconWidget(":/options/ftp.png", "FTP", listWidget);
     item = new QListWidgetItem(listWidget);
+    item->setFlags( Qt::ItemIsSelectable | Qt::ItemIsEnabled );
     item->setSizeHint(l->size());
     listWidget->setItemWidget(item, l);
 

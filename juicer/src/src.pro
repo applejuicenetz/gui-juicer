@@ -31,7 +31,6 @@ HEADERS += ftp.h \
            qconvert.h \
            qxmlmodule.h \
            types.h \
-           ui_qajoptionsdialogbase.h \
            juicer.h \
            qajnetworkdialog.h \
            qajservermetawidget.h \

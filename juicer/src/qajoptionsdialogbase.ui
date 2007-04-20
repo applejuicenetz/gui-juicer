@@ -877,6 +877,9 @@
    <property name="autoScroll" >
     <bool>false</bool>
    </property>
+   <property name="selectionBehavior" >
+    <enum>QAbstractItemView::SelectRows</enum>
+   </property>
   </widget>
  </widget>
  <tabstops>
