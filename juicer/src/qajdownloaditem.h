@@ -56,7 +56,7 @@ public:
     ~QAjDownloadItem();
 
     void moveItem( QAjUserItem *userItem, QString oldStatus );
-    void update( QString fileName, QString status, QString size, QString ready, QString power, QString tempNumber );
+    void update( QString hash, QString fileName, QString status, QString size, QString ready, QString power, QString tempNumber );
     void updateUser( QString id, QString fileName, QString speed, QString status, QString power, QString queuePos, QString statusString, QIcon *osIcon );
 
     void decSources( QString type );
@@ -64,6 +64,8 @@ public:
 
     QAjUserItem* findUser( QString id );
     void removeUser( QString id );
+
+    QString getLinkAJFSP();
 
     QTreeWidgetItem* activeSourcesItem;
     QTreeWidgetItem* queuedSourcesItem;
@@ -164,6 +166,9 @@ protected:
     int width, height;
     double missing;
     long int remainingSec;
+
+    QString hash;
+    QString fileName;
 
     bool finishedChanged;
     bool first;

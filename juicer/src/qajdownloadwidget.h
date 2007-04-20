@@ -58,7 +58,7 @@ public:
 
     ~QAjDownloadWidget();
 
-    void insertDownload(QString id, QString fileName, QString status, QString size, QString ready, QString power, QString tempNumber);
+    void insertDownload(QString id, QString hash, QString fileName, QString status, QString size, QString ready, QString power, QString tempNumber);
     void insertUser(QString downloadId, QString id, QString fileName, QString speed, QString status, QString power, QString queuePos, QString os);
     bool remove( QString id );
 
@@ -106,6 +106,7 @@ private slots:
     void renameSlot();
     void renamePlusSlot();
     void openSlot();
+    void linkSlot();
 
     void processSelected( QString request, QString para = "" );
     void requestSelected( QString request, QString para = "" );

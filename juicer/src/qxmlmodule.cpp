@@ -342,6 +342,7 @@ void QXMLModule::handleDownload( QDomElement e )
 //     juicer->ajDownloadWidget->mutex.lock();
     juicer->ajDownloadWidget->insertDownload(
         e.attribute("id"),
+        e.attribute("hash"),
         e.attribute("filename"),
         e.attribute("status"),
         e.attribute("size"),

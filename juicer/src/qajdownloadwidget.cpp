@@ -109,6 +109,7 @@ QAjDownloadWidget::QAjDownloadWidget( QXMLModule* xml, QWidget *parent ) : QAjLi
     renamePopup = popup->addAction( QIcon(":/small/rename.png"), "rename", this, SLOT(renameSlot()) );
     renamePlusPopup = popup->addAction( QIcon(":/small/rename_plus.png"), "rename by clipboard", this, SLOT(renamePlusSlot()) );
     openPopup = popup->addAction( QIcon(":/small/exec.png"), "open file", this, SLOT(openSlot()) );
+    openPopup = popup->addAction( QIcon(":/small/exec.png"), "get AJFSP link", this, SLOT(linkSlot()) );
     popup->addSeparator();
     popup->addAction( QIcon(":/small/filter.png"), "remove finished/canceld", this, SLOT(cleanSlot()) );
     pausePopup->setEnabled( false );
@@ -200,7 +201,7 @@ void QAjDownloadWidget::initToolBar()
 }
 
 
-void QAjDownloadWidget::insertDownload(QString id, QString fileName, QString status, QString size, QString ready, QString power, QString tempNumber)
+void QAjDownloadWidget::insertDownload(QString id, QString hash, QString fileName, QString status, QString size, QString ready, QString power, QString tempNumber)
 {
     QAjDownloadItem *downloadItem = findDownload( id );
     if ( downloadItem == NULL )
@@ -208,7 +209,7 @@ void QAjDownloadWidget::insertDownload(QString id, QString fileName, QString sta
         downloadItem = new QAjDownloadItem( id, this );
         downloads[ id ] = downloadItem;
     }
-    downloadItem->update( fileName, status, size, ready, power, tempNumber );
+    downloadItem->update( hash, fileName, status, size, ready, power, tempNumber );
 }
 
 
@@ -375,6 +376,20 @@ void QAjDownloadWidget::openSlot()
         QProcess::startDetached( exec, args );
         args.pop_back();
     }
+}
+
+void QAjDownloadWidget::linkSlot() {
+
+    QString message;
+
+    QList<QAjItem *>  selectedItems = selectedAjItems();
+    for ( int i = 0; i < selectedItems.size(); i++ ) {
+        QAjDownloadItem* ajDownloadItem = (QAjDownloadItem*)selectedItems[i];
+        message.append( ajDownloadItem->getLinkAJFSP() );
+        if( (selectedItems.size() -i) > 1 ) message.append("\n\n");
+    }
+
+    QMessageBox::information( this, tr("ajfsp link"), message);
 }
 
 void QAjDownloadWidget::selectionChanged1(  bool oneSelected  )
@@ -586,3 +601,4 @@ void QAjDownloadWidget::setDirs( QFileInfo tmpDir, QFileInfo inDir )
     this->tempDir = tmpDir;
     this->incomingDir = inDir;
 }
+
