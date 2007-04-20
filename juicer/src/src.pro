@@ -37,8 +37,7 @@ HEADERS += ftp.h \
            qajservermetawidget.h \
            qajincomingwidget.h \
            qajsearchentryitem.h \
-           qajserveritem.h \
-           icondelegate.h
+           qajserveritem.h
 SOURCES += ftp.cpp \
            main.cpp \
            md5c.c \
@@ -69,8 +68,7 @@ SOURCES += ftp.cpp \
            qajservermetawidget.cpp \
            qajincomingwidget.cpp \
            qajsearchentryitem.cpp \
-           qajserveritem.cpp \
-           icondelegate.cpp
+           qajserveritem.cpp
 CONFIG += warn_on \
           qt \
           x11 \
