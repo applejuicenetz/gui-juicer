@@ -23,6 +23,7 @@
 #include <QHash>
 #include <QLabel>
 #include <QLineEdit>
+#include <QMessageBox>
 
 #include "qajlistwidget.h"
 #include "qajsearchitem.h"
@@ -65,6 +66,7 @@ private slots:
     void removeSlot();
     void downloadSlot();
     void searchSlot();
+    void linkSlot();
 };
 
 #endif

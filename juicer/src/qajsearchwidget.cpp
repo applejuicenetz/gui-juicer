@@ -47,6 +47,7 @@ QAjSearchWidget::QAjSearchWidget( QXMLModule* xml, QWidget *parent ) : QAjListWi
     popup->setTitle( tr("&Search") );
     popup->addAction( QIcon(":/small/save.png"), "download", this, SLOT(downloadSlot()) );
     popup->addAction( QIcon(":/small/cancel.png"), "remove", this, SLOT(removeSlot()) );
+    popup->addAction( QIcon(":/small/exec.png"), "get ajfsp link", this, SLOT(linkSlot()) );
 
     connect( this, SIGNAL( itemDoubleClicked ( QTreeWidgetItem *, int ) ), this, SLOT( downloadSlot() ) );
 
@@ -219,6 +220,29 @@ void QAjSearchWidget::downloadSlot()
             xml->set( "processlink", "&link=" +link );
         }
     }
+}
+
+void QAjSearchWidget::linkSlot()
+{
+    QString link;
+
+    QList<QAjItem *>  selectedItems = selectedAjItems();
+    int i;
+    for ( i=0; i<selectedItems.size(); i++ )
+    {
+        QAjSearchEntryItem *searchEntryItem = findSearchEntry( selectedItems[i]->getId() );
+        if( searchEntryItem != NULL )
+        {
+            link += "ajfsp://file|";
+            link += searchEntryItem->text( TEXT_SEARCH_INDEX );
+            link += "|" + searchEntryItem->checksum;
+            link += "|" + searchEntryItem->size + "/";
+        }
+
+        if ( (selectedItems.size() -i) > 1 ) link += "\n\n";
+    }
+
+    QMessageBox::information( this, tr("ajfsp link"), link);
 }
 
 QAjSearchItem* QAjSearchWidget::findSearch( QString id )
