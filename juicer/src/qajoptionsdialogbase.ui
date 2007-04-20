@@ -5,8 +5,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>421</width>
-    <height>503</height>
+    <width>513</width>
+    <height>435</height>
    </rect>
   </property>
   <property name="windowTitle" >
@@ -15,9 +15,9 @@
   <widget class="QWidget" name="layoutWidget" >
    <property name="geometry" >
     <rect>
-     <x>20</x>
-     <y>451</y>
-     <width>381</width>
+     <x>10</x>
+     <y>390</y>
+     <width>491</width>
      <height>33</height>
     </rect>
    </property>
@@ -57,32 +57,60 @@
     </item>
    </layout>
   </widget>
-  <widget class="QTabWidget" name="tabWidget" >
-   <property name="enabled" >
-    <bool>true</bool>
-   </property>
+  <widget class="QStackedWidget" name="stackedWidget" >
    <property name="geometry" >
     <rect>
-     <x>20</x>
-     <y>20</y>
-     <width>381</width>
-     <height>421</height>
+     <x>140</x>
+     <y>9</y>
+     <width>371</width>
+     <height>361</height>
     </rect>
+   </property>
+   <property name="frameShape" >
+    <enum>QFrame::NoFrame</enum>
    </property>
    <property name="currentIndex" >
     <number>0</number>
    </property>
-   <widget class="QWidget" name="tab" >
-    <attribute name="title" >
-     <string>Common</string>
-    </attribute>
-    <widget class="QWidget" name="layoutWidget" >
+   <widget class="QWidget" name="Core" >
+    <widget class="QLabel" name="label_24" >
      <property name="geometry" >
       <rect>
        <x>10</x>
        <y>10</y>
+       <width>43</width>
+       <height>25</height>
+      </rect>
+     </property>
+     <property name="font" >
+      <font>
+       <pointsize>14</pointsize>
+      </font>
+     </property>
+     <property name="text" >
+      <string>Core</string>
+     </property>
+    </widget>
+    <widget class="Line" name="line" >
+     <property name="geometry" >
+      <rect>
+       <x>10</x>
+       <y>30</y>
        <width>351</width>
-       <height>365</height>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="orientation" >
+      <enum>Qt::Horizontal</enum>
+     </property>
+    </widget>
+    <widget class="QWidget" name="layoutWidget" >
+     <property name="geometry" >
+      <rect>
+       <x>10</x>
+       <y>50</y>
+       <width>351</width>
+       <height>304</height>
       </rect>
      </property>
      <layout class="QVBoxLayout" >
@@ -100,13 +128,6 @@
         <property name="spacing" >
          <number>6</number>
         </property>
-        <item row="5" column="2" >
-         <widget class="QToolButton" name="incomingButton" >
-          <property name="text" >
-           <string>...</string>
-          </property>
-         </widget>
-        </item>
         <item row="2" column="0" >
          <widget class="QLabel" name="label_3" >
           <property name="text" >
@@ -114,86 +135,16 @@
           </property>
          </widget>
         </item>
-        <item row="6" column="2" >
-         <widget class="QToolButton" name="tempButton" >
-          <property name="text" >
-           <string>...</string>
-          </property>
-         </widget>
-        </item>
-        <item row="3" column="1" >
-         <widget class="QLineEdit" name="coreEdit" />
-        </item>
-        <item row="1" column="0" >
-         <widget class="QLabel" name="label_2" >
-          <property name="text" >
-           <string>New Password:</string>
-          </property>
-         </widget>
-        </item>
-        <item row="7" column="0" >
-         <widget class="QLabel" name="label_8" >
-          <property name="text" >
-           <string>Server Source:</string>
-          </property>
-         </widget>
-        </item>
-        <item row="8" column="0" >
-         <widget class="QLabel" name="label_9" >
-          <property name="text" >
-           <string>Refresh:</string>
-          </property>
-         </widget>
-        </item>
-        <item row="7" column="1" >
-         <widget class="QLineEdit" name="serverEdit" />
-        </item>
-        <item row="3" column="0" >
-         <widget class="QLabel" name="label_4" >
-          <property name="text" >
-           <string>Core Address:</string>
-          </property>
-         </widget>
-        </item>
-        <item row="0" column="0" >
-         <widget class="QLabel" name="label" >
-          <property name="text" >
-           <string>Nick:</string>
-          </property>
-         </widget>
-        </item>
-        <item row="4" column="1" >
+        <item row="4" column="1" colspan="2" >
          <widget class="QLineEdit" name="xmlEdit" />
         </item>
         <item row="5" column="1" >
          <widget class="QLineEdit" name="incomingEdit" />
         </item>
-        <item row="6" column="1" >
-         <widget class="QLineEdit" name="tempEdit" />
-        </item>
-        <item row="1" column="1" >
-         <widget class="QLineEdit" name="passwordEdit" />
-        </item>
-        <item row="5" column="0" >
-         <widget class="QLabel" name="label_6" >
+        <item row="7" column="0" >
+         <widget class="QLabel" name="label_16" >
           <property name="text" >
-           <string>Incoming Directory:</string>
-          </property>
-         </widget>
-        </item>
-        <item row="8" column="1" >
-         <widget class="QSpinBox" name="refreshSpin" >
-          <property name="maximumSize" >
-           <size>
-            <width>100</width>
-            <height>16777215</height>
-           </size>
-          </property>
-          <property name="suffix" >
-           <string>sec.</string>
-          </property>
-          <property name="minimum" >
-           <number>1</number>
+           <string>TCP Port:</string>
           </property>
          </widget>
         </item>
@@ -204,8 +155,18 @@
           </property>
          </widget>
         </item>
-        <item row="2" column="1" >
-         <widget class="QLineEdit" name="retypeEdit" />
+        <item row="1" column="1" colspan="2" >
+         <widget class="QLineEdit" name="passwordEdit" />
+        </item>
+        <item row="3" column="1" colspan="2" >
+         <widget class="QLineEdit" name="coreEdit" />
+        </item>
+        <item row="5" column="2" >
+         <widget class="QToolButton" name="incomingButton" >
+          <property name="text" >
+           <string>...</string>
+          </property>
+         </widget>
         </item>
         <item row="4" column="0" >
          <widget class="QLabel" name="label_5" >
@@ -214,56 +175,111 @@
           </property>
          </widget>
         </item>
-        <item row="0" column="1" >
+        <item row="0" column="0" >
+         <widget class="QLabel" name="label" >
+          <property name="text" >
+           <string>Nick:</string>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="0" >
+         <widget class="QLabel" name="label_2" >
+          <property name="text" >
+           <string>New Password:</string>
+          </property>
+         </widget>
+        </item>
+        <item row="7" column="1" colspan="2" >
+         <widget class="QLineEdit" name="tcpEdit" />
+        </item>
+        <item row="6" column="1" >
+         <widget class="QLineEdit" name="tempEdit" />
+        </item>
+        <item row="5" column="0" >
+         <widget class="QLabel" name="label_6" >
+          <property name="text" >
+           <string>Incoming Directory:</string>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="1" colspan="2" >
+         <widget class="QLineEdit" name="retypeEdit" />
+        </item>
+        <item row="6" column="2" >
+         <widget class="QToolButton" name="tempButton" >
+          <property name="text" >
+           <string>...</string>
+          </property>
+         </widget>
+        </item>
+        <item row="3" column="0" >
+         <widget class="QLabel" name="label_4" >
+          <property name="text" >
+           <string>Core Address:</string>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="1" colspan="2" >
          <widget class="QLineEdit" name="nickEdit" />
         </item>
        </layout>
       </item>
       <item>
-       <layout class="QVBoxLayout" >
-        <property name="margin" >
-         <number>0</number>
+       <widget class="QCheckBox" name="autoConnect" >
+        <property name="text" >
+         <string>automatically connect to servers</string>
         </property>
-        <property name="spacing" >
-         <number>6</number>
+       </widget>
+      </item>
+      <item>
+       <widget class="QCheckBox" name="savePassword" >
+        <property name="text" >
+         <string>save core password</string>
         </property>
-        <item>
-         <widget class="QCheckBox" name="autoConnect" >
-          <property name="text" >
-           <string>automatically connect to servers</string>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QCheckBox" name="savePassword" >
-          <property name="text" >
-           <string>save core password</string>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QCheckBox" name="showSplash" >
-          <property name="text" >
-           <string>show splash screen on startup</string>
-          </property>
-         </widget>
-        </item>
-       </layout>
+       </widget>
       </item>
      </layout>
     </widget>
    </widget>
-   <widget class="QWidget" name="tab_2" >
-    <attribute name="title" >
-     <string>Network</string>
-    </attribute>
-    <widget class="QWidget" name="widget" >
+   <widget class="QWidget" name="Limits" >
+    <widget class="QLabel" name="label_25" >
      <property name="geometry" >
       <rect>
        <x>10</x>
        <y>10</y>
+       <width>55</width>
+       <height>25</height>
+      </rect>
+     </property>
+     <property name="font" >
+      <font>
+       <pointsize>14</pointsize>
+      </font>
+     </property>
+     <property name="text" >
+      <string>Limits</string>
+     </property>
+    </widget>
+    <widget class="Line" name="line_2" >
+     <property name="geometry" >
+      <rect>
+       <x>10</x>
+       <y>30</y>
        <width>351</width>
-       <height>213</height>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="orientation" >
+      <enum>Qt::Horizontal</enum>
+     </property>
+    </widget>
+    <widget class="QWidget" name="layoutWidget_2" >
+     <property name="geometry" >
+      <rect>
+       <x>10</x>
+       <y>50</y>
+       <width>341</width>
+       <height>182</height>
       </rect>
      </property>
      <layout class="QGridLayout" >
@@ -273,41 +289,8 @@
       <property name="spacing" >
        <number>6</number>
       </property>
-      <item row="2" column="1" >
-       <widget class="QSpinBox" name="slotSpin" >
-        <property name="alignment" >
-         <set>Qt::AlignRight</set>
-        </property>
-        <property name="suffix" >
-         <string> kByte/s</string>
-        </property>
-        <property name="maximum" >
-         <number>9999</number>
-        </property>
-       </widget>
-      </item>
       <item row="3" column="1" >
        <widget class="QSpinBox" name="sourcesSpin" >
-        <property name="alignment" >
-         <set>Qt::AlignRight</set>
-        </property>
-        <property name="suffix" >
-         <string/>
-        </property>
-        <property name="maximum" >
-         <number>9999</number>
-        </property>
-       </widget>
-      </item>
-      <item row="5" column="0" >
-       <widget class="QLabel" name="label_15" >
-        <property name="text" >
-         <string>Max. New Connections:</string>
-        </property>
-       </widget>
-      </item>
-      <item row="4" column="1" >
-       <widget class="QSpinBox" name="connectionsSpin" >
         <property name="alignment" >
          <set>Qt::AlignRight</set>
         </property>
@@ -333,8 +316,12 @@
         </property>
        </widget>
       </item>
-      <item row="6" column="1" >
-       <widget class="QLineEdit" name="tcpEdit" />
+      <item row="2" column="0" >
+       <widget class="QLabel" name="label_12" >
+        <property name="text" >
+         <string>Max. Speed Per Slot:</string>
+        </property>
+       </widget>
       </item>
       <item row="1" column="1" >
        <widget class="QSpinBox" name="upSpin" >
@@ -349,30 +336,10 @@
         </property>
        </widget>
       </item>
-      <item row="2" column="0" >
-       <widget class="QLabel" name="label_12" >
+      <item row="5" column="0" >
+       <widget class="QLabel" name="label_15" >
         <property name="text" >
-         <string>Max. Speed Per Slot:</string>
-        </property>
-       </widget>
-      </item>
-      <item row="6" column="0" >
-       <widget class="QLabel" name="label_16" >
-        <property name="text" >
-         <string>TCP Port:</string>
-        </property>
-       </widget>
-      </item>
-      <item row="5" column="1" >
-       <widget class="QSpinBox" name="newSpin" >
-        <property name="alignment" >
-         <set>Qt::AlignRight</set>
-        </property>
-        <property name="suffix" >
-         <string> per 10 seconds</string>
-        </property>
-        <property name="maximum" >
-         <number>9999</number>
+         <string>Max. New Connections:</string>
         </property>
        </widget>
       </item>
@@ -383,10 +350,16 @@
         </property>
        </widget>
       </item>
-      <item row="3" column="0" >
-       <widget class="QLabel" name="label_13" >
-        <property name="text" >
-         <string>Max. Sources Per File:</string>
+      <item row="2" column="1" >
+       <widget class="QSpinBox" name="slotSpin" >
+        <property name="alignment" >
+         <set>Qt::AlignRight</set>
+        </property>
+        <property name="suffix" >
+         <string> kByte/s</string>
+        </property>
+        <property name="maximum" >
+         <number>9999</number>
         </property>
        </widget>
       </item>
@@ -403,18 +376,226 @@
         </property>
        </widget>
       </item>
+      <item row="4" column="1" >
+       <widget class="QSpinBox" name="connectionsSpin" >
+        <property name="alignment" >
+         <set>Qt::AlignRight</set>
+        </property>
+        <property name="suffix" >
+         <string/>
+        </property>
+        <property name="maximum" >
+         <number>9999</number>
+        </property>
+       </widget>
+      </item>
+      <item row="5" column="1" >
+       <widget class="QSpinBox" name="newSpin" >
+        <property name="alignment" >
+         <set>Qt::AlignRight</set>
+        </property>
+        <property name="suffix" >
+         <string> per 10 seconds</string>
+        </property>
+        <property name="maximum" >
+         <number>9999</number>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="0" >
+       <widget class="QLabel" name="label_13" >
+        <property name="text" >
+         <string>Max. Sources Per File:</string>
+        </property>
+       </widget>
+      </item>
      </layout>
     </widget>
    </widget>
-   <widget class="QWidget" name="tab_3" >
-    <attribute name="title" >
-     <string>Launching</string>
-    </attribute>
+   <widget class="QWidget" name="Appearance" >
+    <widget class="QCheckBox" name="showSplash" >
+     <property name="geometry" >
+      <rect>
+       <x>10</x>
+       <y>50</y>
+       <width>217</width>
+       <height>22</height>
+      </rect>
+     </property>
+     <property name="text" >
+      <string>show splash screen on startup</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_26" >
+     <property name="geometry" >
+      <rect>
+       <x>10</x>
+       <y>10</y>
+       <width>108</width>
+       <height>25</height>
+      </rect>
+     </property>
+     <property name="font" >
+      <font>
+       <pointsize>14</pointsize>
+      </font>
+     </property>
+     <property name="text" >
+      <string>Appearance</string>
+     </property>
+    </widget>
+    <widget class="Line" name="line_3" >
+     <property name="geometry" >
+      <rect>
+       <x>10</x>
+       <y>30</y>
+       <width>351</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="orientation" >
+      <enum>Qt::Horizontal</enum>
+     </property>
+    </widget>
+   </widget>
+   <widget class="QWidget" name="Behaviour" >
+    <widget class="QLabel" name="label_27" >
+     <property name="geometry" >
+      <rect>
+       <x>10</x>
+       <y>10</y>
+       <width>94</width>
+       <height>25</height>
+      </rect>
+     </property>
+     <property name="font" >
+      <font>
+       <pointsize>14</pointsize>
+      </font>
+     </property>
+     <property name="text" >
+      <string>Behaviour</string>
+     </property>
+    </widget>
+    <widget class="Line" name="line_4" >
+     <property name="geometry" >
+      <rect>
+       <x>10</x>
+       <y>30</y>
+       <width>351</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="orientation" >
+      <enum>Qt::Horizontal</enum>
+     </property>
+    </widget>
     <widget class="QWidget" name="layoutWidget" >
      <property name="geometry" >
       <rect>
-       <x>11</x>
-       <y>11</y>
+       <x>10</x>
+       <y>50</y>
+       <width>351</width>
+       <height>88</height>
+      </rect>
+     </property>
+     <layout class="QVBoxLayout" >
+      <property name="margin" >
+       <number>0</number>
+      </property>
+      <property name="spacing" >
+       <number>6</number>
+      </property>
+      <item>
+       <layout class="QGridLayout" >
+        <property name="margin" >
+         <number>0</number>
+        </property>
+        <property name="spacing" >
+         <number>6</number>
+        </property>
+        <item row="0" column="1" >
+         <widget class="QSpinBox" name="refreshSpin" >
+          <property name="maximumSize" >
+           <size>
+            <width>100</width>
+            <height>16777215</height>
+           </size>
+          </property>
+          <property name="suffix" >
+           <string>sec.</string>
+          </property>
+          <property name="minimum" >
+           <number>1</number>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="1" >
+         <widget class="QLineEdit" name="serverEdit" />
+        </item>
+        <item row="0" column="0" >
+         <widget class="QLabel" name="label_9" >
+          <property name="text" >
+           <string>Refresh:</string>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="0" >
+         <widget class="QLabel" name="label_8" >
+          <property name="text" >
+           <string>Server Source:</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <widget class="QCheckBox" name="checkBox" >
+        <property name="text" >
+         <string>fetch new servers on startup</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </widget>
+   <widget class="QWidget" name="Launching" >
+    <widget class="QLabel" name="label_28" >
+     <property name="geometry" >
+      <rect>
+       <x>10</x>
+       <y>10</y>
+       <width>95</width>
+       <height>25</height>
+      </rect>
+     </property>
+     <property name="font" >
+      <font>
+       <pointsize>14</pointsize>
+      </font>
+     </property>
+     <property name="text" >
+      <string>Launching</string>
+     </property>
+    </widget>
+    <widget class="Line" name="line_5" >
+     <property name="geometry" >
+      <rect>
+       <x>10</x>
+       <y>30</y>
+       <width>351</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="orientation" >
+      <enum>Qt::Horizontal</enum>
+     </property>
+    </widget>
+    <widget class="QWidget" name="layoutWidget" >
+     <property name="geometry" >
+      <rect>
+       <x>10</x>
+       <y>50</y>
        <width>351</width>
        <height>301</height>
       </rect>
@@ -568,15 +749,43 @@
      </layout>
     </widget>
    </widget>
-   <widget class="QWidget" name="ftp_tab" >
-    <attribute name="title" >
-     <string>Ftp</string>
-    </attribute>
-    <widget class="QWidget" name="layoutWidget" >
+   <widget class="QWidget" name="Ftp" >
+    <widget class="QLabel" name="label_29" >
      <property name="geometry" >
       <rect>
        <x>10</x>
        <y>10</y>
+       <width>35</width>
+       <height>25</height>
+      </rect>
+     </property>
+     <property name="font" >
+      <font>
+       <pointsize>14</pointsize>
+      </font>
+     </property>
+     <property name="text" >
+      <string>FTP</string>
+     </property>
+    </widget>
+    <widget class="Line" name="line_6" >
+     <property name="geometry" >
+      <rect>
+       <x>10</x>
+       <y>30</y>
+       <width>351</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="orientation" >
+      <enum>Qt::Horizontal</enum>
+     </property>
+    </widget>
+    <widget class="QWidget" name="layoutWidget" >
+     <property name="geometry" >
+      <rect>
+       <x>10</x>
+       <y>50</y>
        <width>351</width>
        <height>182</height>
       </rect>
@@ -656,11 +865,23 @@
     </widget>
    </widget>
   </widget>
+  <widget class="QListWidget" name="listWidget" >
+   <property name="geometry" >
+    <rect>
+     <x>10</x>
+     <y>20</y>
+     <width>121</width>
+     <height>361</height>
+    </rect>
+   </property>
+   <property name="autoScroll" >
+    <bool>false</bool>
+   </property>
+  </widget>
  </widget>
  <tabstops>
   <tabstop>okButton</tabstop>
   <tabstop>cancelButton</tabstop>
-  <tabstop>tabWidget</tabstop>
   <tabstop>nickEdit</tabstop>
   <tabstop>passwordEdit</tabstop>
   <tabstop>retypeEdit</tabstop>
@@ -674,12 +895,6 @@
   <tabstop>refreshSpin</tabstop>
   <tabstop>autoConnect</tabstop>
   <tabstop>savePassword</tabstop>
-  <tabstop>downSpin</tabstop>
-  <tabstop>upSpin</tabstop>
-  <tabstop>slotSpin</tabstop>
-  <tabstop>sourcesSpin</tabstop>
-  <tabstop>connectionsSpin</tabstop>
-  <tabstop>newSpin</tabstop>
   <tabstop>tcpEdit</tabstop>
   <tabstop>ftpServerEdit</tabstop>
   <tabstop>ftpPortEdit</tabstop>

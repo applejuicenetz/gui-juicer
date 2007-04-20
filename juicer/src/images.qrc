@@ -65,4 +65,14 @@
     <file alias="save.png">resources/filesave.png</file>
     <file alias="text_block.png">resources/small/text_block.png</file>
 </qresource>
+
+<qresource prefix="/options">
+    <file alias="core.png">resources/options/superkaramba.png</file>
+    <file alias="behaviour.png">resources/options/kcmsystem.png</file>
+    <file alias="appearance.png">resources/options/fonts.png</file>
+    <file alias="launching.png">resources/options/launch.png</file>
+    <file alias="ftp.png">resources/options/network_local.png</file>
+    <file alias="limits.png">resources/options/player_playlist.png</file>
+</qresource>
+
 </RCC>

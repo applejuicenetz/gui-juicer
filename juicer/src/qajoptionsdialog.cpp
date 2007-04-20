@@ -23,6 +23,38 @@
 QAjOptionsDialog::QAjOptionsDialog( QWidget* parent ) : QDialog( parent )
 {
     setupUi( this );
+
+    IconWidget* l = new IconWidget(":/options/core.png", "Core", listWidget);
+    QListWidgetItem* item = new QListWidgetItem(listWidget);
+    item->setSizeHint(l->size());
+    listWidget->setItemWidget(item, l);
+
+    l = new IconWidget(":/options/limits.png", "Limits", listWidget);
+    item = new QListWidgetItem(listWidget);
+    item->setSizeHint(l->size());
+    listWidget->setItemWidget(item, l);
+
+    l = new IconWidget(":/options/appearance.png", "Appearance", listWidget);
+    item = new QListWidgetItem(listWidget);
+    item->setSizeHint(l->size());
+    listWidget->setItemWidget(item, l);
+
+    l = new IconWidget(":/options/behaviour.png", "Behaviour", listWidget);
+    item = new QListWidgetItem(listWidget);
+    item->setSizeHint(l->size());
+    listWidget->setItemWidget(item, l);
+
+    l = new IconWidget(":/options/launching.png", "Launching", listWidget);
+    item = new QListWidgetItem(listWidget);
+    item->setSizeHint(l->size());
+    listWidget->setItemWidget(item, l);
+
+    l = new IconWidget(":/options/ftp.png", "FTP", listWidget);
+    item = new QListWidgetItem(listWidget);
+    item->setSizeHint(l->size());
+    listWidget->setItemWidget(item, l);
+
+
     this->setWindowIcon( QIcon(":/juicer.png") );
     connect( incomingButton, SIGNAL( clicked() ), this, SLOT( selectIncomingDir() ) );
     connect( tempButton, SIGNAL( clicked() ), this, SLOT( selectTempDir() ) );
@@ -39,6 +71,10 @@ QAjOptionsDialog::QAjOptionsDialog( QWidget* parent ) : QDialog( parent )
         launchCombo->addItem( GNOME_LAUNCHER );
 
     specificRadioToggled( false );
+
+    connect( listWidget, SIGNAL(currentRowChanged( int ) ), stackedWidget , SLOT(setCurrentIndex( int ) ) );
+
+    listWidget->setCurrentRow( 0 );
 }
 
 QAjOptionsDialog::~QAjOptionsDialog()
@@ -121,8 +157,6 @@ void QAjOptionsDialog::setAjSettings( AjSettings settings )
     ftpRadio->setChecked( settings.location == "ftp" );
     incomingSpecificEdit->setText( settings.incomingDirSpecific );
     tempSpecificEdit->setText( settings.tempDirSpecific );
-
-    
 
     ftpServerEdit->setText( settings.ftpServer );
     ftpPortEdit->setText( settings.ftpPort );

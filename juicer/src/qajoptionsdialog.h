@@ -40,6 +40,28 @@ public:
 
     QString defaultLauncher;
 
+    class IconWidget : public QWidget
+    {
+      public:
+        IconWidget(QString icon, QString text, QWidget* parent = 0) : QWidget(parent)
+        {
+            iconLabel = new QLabel(this);
+            iconLabel->setPixmap(QPixmap(icon));
+            iconLabel->setMinimumSize(QSize(32,32));
+
+            textLabel = new QLabel(text, this);
+            textLabel->adjustSize();
+
+            QVBoxLayout *layout = new QVBoxLayout;
+            layout->addWidget(iconLabel, 0, Qt::AlignHCenter);
+            layout->addWidget(textLabel, 0, Qt::AlignHCenter);
+
+            this->setLayout(layout);
+            this->adjustSize();
+        }
+        QLabel *iconLabel, *textLabel;
+    };
+
 protected slots:
     void selectIncomingDir();
     void selectTempDir();
