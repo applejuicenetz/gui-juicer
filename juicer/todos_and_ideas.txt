@@ -16,6 +16,7 @@ x fix enable and disable of server tool bar
 - add enabling and disabling of the toolbarbuttons of the incomng view
 - new icon for get ajfsp link
 - double click at the server widget connects to the according server
+- fix adding shares again to the share list when opening the options dialog
 
 Ideas
 =====
