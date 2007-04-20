@@ -213,14 +213,10 @@ void QAjDownloadItem::update( QString hash, QString fileName, QString status, QS
     }
     double readyNew = ready.toDouble();//ULongLong();
 
-    // hash number and filename for recovering the ajfsp link
+    // save hash number for recovering the ajfsp link
     if ( this->hash.isEmpty() )
     {
         this->hash = hash;
-    }
-    if ( this->fileName.isEmpty() )
-    {
-        this->fileName = fileName;
     }
 
     if ( status == DOWN_FINISHED )
@@ -464,11 +460,12 @@ QString QAjDownloadItem::getLinkAJFSP() {
 //     fileSize.setNum( this->size );
 
     ajfspLink.append("ajfsp://file|");
-    ajfspLink.append(this->fileName);
+    ajfspLink.append(this->text(0)/*this->fileName*/);
     ajfspLink.append("|");
     ajfspLink.append(this->hash);
     ajfspLink.append("|");
     ajfspLink.append(fileSize);
+    ajfspLink.append("/");
 
     return ajfspLink;
 }

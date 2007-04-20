@@ -168,7 +168,6 @@ protected:
     long int remainingSec;
 
     QString hash;
-    QString fileName;
 
     bool finishedChanged;
     bool first;
