@@ -76,6 +76,7 @@ public:
     QAction *cancelDownloadButton, *clearDownloadButton,  *partListButton;
     QAction *renameDownloadButton, *renamePlusDownloadButton;
     QAction *openDownloadButton;
+    QAction *copyLinkButton;
 
     QDoubleSpinBox* powerSpin;
     QCheckBox *powerCheck;
@@ -88,6 +89,7 @@ private:
     QAction *pausePopup, *resumePopup, *cancelPopup;
     QAction *partListPopup, *renamePopup, *renamePlusPopup;
     QAction *openPopup;
+    QAction *copyLinkPopup;
 
     QIcon *linuxIcon, *windowsIcon, *macIcon, *solarisIcon, *freeBsdIcon, *netwareIcon, *otherOsIcon;
 

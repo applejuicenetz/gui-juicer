@@ -45,11 +45,17 @@ QAjSearchWidget::QAjSearchWidget( QXMLModule* xml, QWidget *parent ) : QAjListWi
     header()->resizeSection( COUNT_SEARCH_INDEX, 50 );
 
     popup->setTitle( tr("&Search") );
-    popup->addAction( QIcon(":/small/save.png"), "download", this, SLOT(downloadSlot()) );
-    popup->addAction( QIcon(":/small/cancel.png"), "remove", this, SLOT(removeSlot()) );
-    popup->addAction( QIcon(":/small/exec.png"), "get ajfsp link", this, SLOT(linkSlot()) );
+    downloadButton = popup->addAction( QIcon(":/small/save.png"), "download", this, SLOT(downloadSlot()) );
+    removeButton = popup->addAction( QIcon(":/small/cancel.png"), "remove", this, SLOT(removeSlot()) );
+    copyLinkButton = popup->addAction( QIcon(":/small/text_block.png"), "copy ajfsp link to clipboard", this, SLOT(linkSlot()) );
+
+    downloadButton->setDisabled( true );
+    removeButton->setDisabled( true );
+    copyLinkButton->setDisabled( true );
+
 
     connect( this, SIGNAL( itemDoubleClicked ( QTreeWidgetItem *, int ) ), this, SLOT( downloadSlot() ) );
+    QObject::connect( this, SIGNAL( newSelection( bool ) ) , this, SLOT( selectionChanged( bool ) ) );
 
     initToolBar();
 }
@@ -65,8 +71,13 @@ void QAjSearchWidget::initToolBar()
 {
     toolBar = new QToolBar( "search operations", this );
 
-    toolBar->addAction( QIcon(":/save.png"), "download", this, SLOT( downloadSlot() ) );
-    toolBar->addAction( QIcon(":/cancel.png"), "cancel search", this, SLOT( removeSlot() ) );
+    downloadPopup = toolBar->addAction( QIcon(":/save.png"), "download", this, SLOT( downloadSlot() ) );
+    removePopup = toolBar->addAction( QIcon(":/cancel.png"), "cancel search", this, SLOT( removeSlot() ) );
+    copyLinkPopup = toolBar->addAction( QIcon(":/text_block.png"), "copy ajfsp link to clipboard", this, SLOT( linkSlot() ) );
+
+    downloadPopup->setDisabled( true );
+    removePopup->setDisabled( true );
+    copyLinkPopup->setDisabled( true );
 
     toolBar->addSeparator();
 
@@ -222,27 +233,47 @@ void QAjSearchWidget::downloadSlot()
     }
 }
 
+void QAjSearchWidget::selectionChanged(  bool oneSelected  )
+{
+
+    QList<QAjItem *>  selectedItems = selectedAjItems();
+    QAjSearchEntryItem *searchEntryItem = findSearchEntry( selectedItems[0]->getId() );
+    if( searchEntryItem != NULL )
+    {
+        downloadButton->setEnabled( oneSelected );
+        removeButton->setEnabled( oneSelected );
+        copyLinkButton->setEnabled( oneSelected );
+        downloadPopup->setEnabled( oneSelected );
+        removePopup->setEnabled( oneSelected );
+        copyLinkPopup->setEnabled( oneSelected );
+    }
+    else {
+        downloadButton->setEnabled( false );
+        removeButton->setEnabled( false );
+        copyLinkButton->setEnabled( false );
+        downloadPopup->setEnabled( false );
+        removePopup->setEnabled( false );
+        copyLinkPopup->setEnabled( false );
+    }
+
+}
+
 void QAjSearchWidget::linkSlot()
 {
     QString link;
 
     QList<QAjItem *>  selectedItems = selectedAjItems();
-    int i;
-    for ( i=0; i<selectedItems.size(); i++ )
-    {
-        QAjSearchEntryItem *searchEntryItem = findSearchEntry( selectedItems[i]->getId() );
-        if( searchEntryItem != NULL )
-        {
-            link += "ajfsp://file|";
-            link += searchEntryItem->text( TEXT_SEARCH_INDEX );
-            link += "|" + searchEntryItem->checksum;
-            link += "|" + searchEntryItem->size + "/";
-        }
 
-        if ( (selectedItems.size() -i) > 1 ) link += "\n\n";
+    QAjSearchEntryItem *searchEntryItem = findSearchEntry( selectedItems[0]->getId() );
+    if( searchEntryItem != NULL )
+    {
+        link += "ajfsp://file|";
+        link += searchEntryItem->text( TEXT_SEARCH_INDEX );
+        link += "|" + searchEntryItem->checksum;
+        link += "|" + searchEntryItem->size + "/";
     }
 
-    QMessageBox::information( this, tr("ajfsp link"), link);
+    QApplication::clipboard()->setText(link);
 }
 
 QAjSearchItem* QAjSearchWidget::findSearch( QString id )

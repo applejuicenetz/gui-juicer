@@ -23,7 +23,9 @@
 #include <QHash>
 #include <QLabel>
 #include <QLineEdit>
-#include <QMessageBox>
+// #include <QMessageBox>
+#include <QApplication>
+#include <QClipboard>
 
 #include "qajlistwidget.h"
 #include "qajsearchitem.h"
@@ -52,6 +54,10 @@ public:
     void initToolBar();
 
 protected:
+
+    QAction *downloadButton, *removeButton, *copyLinkButton;
+    QAction *downloadPopup, *removePopup, *copyLinkPopup;
+
     bool removeSearch( QString id );
     bool removeSearchEntry( QString id );
     QHash<QString, QAjSearchItem*> searches;
@@ -67,6 +73,7 @@ private slots:
     void downloadSlot();
     void searchSlot();
     void linkSlot();
+    void selectionChanged(  bool oneSelected  );
 };
 
 #endif

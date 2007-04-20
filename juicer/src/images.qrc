@@ -26,6 +26,7 @@
     <file alias="partlist.png">resources/partlist.png</file>
     <file alias="dummy.png">resources/dummy.png</file>
     <file alias="juicer.png">resources/juicer.png</file>
+    <file alias="text_block.png">resources/text_block.png</file>
 </qresource>
 
 <qresource prefix="/small">
@@ -62,5 +63,6 @@
     <file alias="update.png">resources/small/vcs_update.png</file>
     <file alias="exec.png">resources/small/exec.png</file>
     <file alias="save.png">resources/filesave.png</file>
+    <file alias="text_block.png">resources/small/text_block.png</file>
 </qresource>
 </RCC>
