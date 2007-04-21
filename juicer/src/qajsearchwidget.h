@@ -56,7 +56,6 @@ public:
 protected:
 
     QAction *downloadButton, *removeButton, *copyLinkButton;
-    QAction *downloadPopup, *removePopup, *copyLinkPopup;
 
     bool removeSearch( QString id );
     bool removeSearchEntry( QString id );
@@ -74,6 +73,8 @@ private slots:
     void searchSlot();
     void linkSlot();
     void selectionChanged( bool oneSelected );
+private:
+    void initPopup();
 };
 
 #endif

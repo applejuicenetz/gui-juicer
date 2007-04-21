@@ -47,12 +47,11 @@ public:
     void connectingTo( QString id );
     QAjServerItem* findServer( QString id );
     bool remove( QString id );
-    void initToolBar();
 
 private:
+    void initToolBar();
+    void initPopup();
     QString connectedWithId, connectingToId;
-    QAction* removeId;
-    QAction* connectId;
     QHash<QString, QAjServerItem*> servers;
     QAction *removeButton, *connectButton, *findButton;
 

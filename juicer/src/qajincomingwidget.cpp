@@ -49,6 +49,7 @@ QAjIncomingWidget::QAjIncomingWidget( QXMLModule* xml, QWidget *parent ) : QAjLi
     connect( this, SIGNAL( itemDoubleClicked ( QTreeWidgetItem*, int ) ), this, SLOT( open() ) );
 
     initToolBar();
+    initPopup();
     selectionChanged( false );
 }
 
@@ -64,9 +65,10 @@ QAjIncomingWidget::~QAjIncomingWidget()
 void QAjIncomingWidget::initToolBar()
 {
     toolBar = new QToolBar( "incoming operations", this );
-    reloadButton = toolBar->addAction( QIcon(":/reload.png"), "reload", this, SLOT( reload() ) );
-    openButton = toolBar->addAction( QIcon(":/exec.png"), "open", this, SLOT( open() ) );
-    saveButton = toolBar->addAction( QIcon(":/save.png"), "save/copy", this, SLOT( save() ) );
+    openButton = toolBar->addAction( QIcon(":/exec.png"), tr("open"), this, SLOT( open() ) );
+    saveButton = toolBar->addAction( QIcon(":/save.png"), tr("copy"), this, SLOT( save() ) );
+    toolBar->addSeparator();
+    reloadButton = toolBar->addAction( QIcon(":/reload.png"), tr("reload"), this, SLOT( reload() ) );
 }
 
 /*!
@@ -168,7 +170,7 @@ void QAjIncomingWidget::storeFtp()
     for ( i=0; i<selectedItems.size(); i++ )
     {
         filename = selectedItems.at(i)->text( FILENAME_INCOMING_INDEX );
-        localDir = QFileDialog::getExistingDirectory( this, "save \"" + filename + "\" + to" );
+        localDir = QFileDialog::getExistingDirectory( this, tr("save")+"\"" + filename + "\" "+tr("to") );
         if ( localDir != "" )
         {
             if ( ! localDir.endsWith( QDir::separator() ) )
@@ -183,7 +185,7 @@ void QAjIncomingWidget::storeFtp()
             }
             else
             {
-                QMessageBox::critical( this, "error", "\"" + dstFile->fileName() + "\" already exists", QMessageBox::Ok, QMessageBox::NoButton );
+                QMessageBox::critical( this, tr("error"), "\"" + dstFile->fileName() + "\" "+tr("already exists"), QMessageBox::Ok, QMessageBox::NoButton );
             }
         }
     }
@@ -266,7 +268,7 @@ void QAjIncomingWidget::open()
     }
     else // ftp
     {
-        QMessageBox::information(this, "open file", "opening via ftp currently not supported");
+        QMessageBox::information(this, tr("open file"), tr("opening via ftp currently not supported"));
         return;
     }
 
@@ -304,4 +306,17 @@ void QAjIncomingWidget::selectionChanged( bool oneSelected )
 {
     openButton->setEnabled( oneSelected );
     saveButton->setEnabled( oneSelected );
+}
+
+
+/*!
+    \fn QAjIncomingWidget::initPopup()
+ */
+void QAjIncomingWidget::initPopup()
+{
+    popup->setTitle( tr("Incoming") );
+    popup->addAction( openButton );
+    popup->addAction( saveButton );
+    popup->addSeparator();
+    popup->addAction( reloadButton );
 }

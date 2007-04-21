@@ -44,15 +44,11 @@ QAjSearchWidget::QAjSearchWidget( QXMLModule* xml, QWidget *parent ) : QAjListWi
     header()->resizeSection( SIZE_SEARCH_INDEX, 100 );
     header()->resizeSection( COUNT_SEARCH_INDEX, 50 );
 
-    popup->setTitle( tr("&Search") );
-    downloadButton = popup->addAction( QIcon(":/small/save.png"), "download", this, SLOT(downloadSlot()) );
-    removeButton = popup->addAction( QIcon(":/small/cancel.png"), "remove", this, SLOT(removeSlot()) );
-    copyLinkButton = popup->addAction( QIcon(":/small/text_block.png"), "copy ajfsp link to clipboard", this, SLOT(linkSlot()) );
-
     connect( this, SIGNAL( itemDoubleClicked ( QTreeWidgetItem *, int ) ), this, SLOT( downloadSlot() ) );
     QObject::connect( this, SIGNAL( newSelection( bool ) ) , this, SLOT( selectionChanged( bool ) ) );
 
     initToolBar();
+    initPopup();
     selectionChanged( false );
 }
 
@@ -67,9 +63,9 @@ void QAjSearchWidget::initToolBar()
 {
     toolBar = new QToolBar( "search operations", this );
 
-    downloadPopup = toolBar->addAction( QIcon(":/save.png"), "download", this, SLOT( downloadSlot() ) );
-    removePopup = toolBar->addAction( QIcon(":/cancel.png"), "cancel search", this, SLOT( removeSlot() ) );
-    copyLinkPopup = toolBar->addAction( QIcon(":/text_block.png"), "copy ajfsp link to clipboard", this, SLOT( linkSlot() ) );
+    downloadButton = toolBar->addAction( QIcon(":/save.png"), "download", this, SLOT( downloadSlot() ) );
+    removeButton = toolBar->addAction( QIcon(":/cancel.png"), "cancel search", this, SLOT( removeSlot() ) );
+    copyLinkButton = toolBar->addAction( QIcon(":/text_block.png"), "copy ajfsp link to clipboard", this, SLOT( linkSlot() ) );
 
     toolBar->addSeparator();
 
@@ -242,9 +238,6 @@ void QAjSearchWidget::selectionChanged( bool oneSelected )
     downloadButton->setEnabled( entrySelected );
     removeButton->setEnabled( searchSelected );
     copyLinkButton->setEnabled( entrySelected );
-    downloadPopup->setEnabled( entrySelected );
-    removePopup->setEnabled( searchSelected );
-    copyLinkPopup->setEnabled( entrySelected );
 }
 
 void QAjSearchWidget::linkSlot()
@@ -279,4 +272,16 @@ QAjSearchEntryItem* QAjSearchWidget::findSearchEntry( QString id )
         return searchEntries[ id ];
     else
         return NULL;
+}
+
+
+/*!
+    \fn QAjSearchWidget::initPopup()
+ */
+void QAjSearchWidget::initPopup()
+{
+    popup->setTitle( tr("&Search") );
+    popup->addAction( downloadButton );
+    popup->addAction( removeButton );
+    popup->addAction( copyLinkButton );
 }

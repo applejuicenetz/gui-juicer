@@ -40,14 +40,15 @@ public:
     QAjIncomingWidget( QXMLModule* xml, QWidget *parent = 0 );
 
     ~QAjIncomingWidget();
-    void initToolBar();
     void setDir( QString dir );
 
 private:
+    void initToolBar();
     QString dir;
     QAction *reloadButton, *openButton, *saveButton;
     void storeFtp();
     void reloadFtp();
+    void initPopup();
     QFtp* ftp;
 
 public slots:

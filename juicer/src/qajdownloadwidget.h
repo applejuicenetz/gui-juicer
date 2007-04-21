@@ -70,6 +70,7 @@ public:
     QString findDownloadByTempNum( QFileInfo tempFile );
     void initToolBar();
     void setDirs( QFileInfo tmpDir, QFileInfo inDir );
+    void initPopup();
 
     QAction *powerUpButton, *powerDownButton, *powerOkButton, *powerMaxButton;
     QAction *pauseDownloadButton, *resumeDownloadButton;
@@ -85,11 +86,6 @@ private:
 
     QHash<QString, QAjDownloadItem*> downloads;
     int currIdRoundRobin;
-
-    QAction *pausePopup, *resumePopup, *cancelPopup;
-    QAction *partListPopup, *renamePopup, *renamePlusPopup;
-    QAction *openPopup;
-    QAction *copyLinkPopup;
 
     QIcon *linuxIcon, *windowsIcon, *macIcon, *solarisIcon, *freeBsdIcon, *netwareIcon, *otherOsIcon;
 

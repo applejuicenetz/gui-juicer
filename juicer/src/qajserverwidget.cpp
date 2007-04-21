@@ -49,11 +49,6 @@ QAjServerWidget::QAjServerWidget( QXMLModule* xml, QWidget *parent ) : QAjListWi
     }
     setHeaderLabels( headers );
 
-    popup->setTitle( tr("Ser&ver") );
-    connectId = popup->addAction( QIcon(":/small/connect.png"), "connect", this, SLOT(connectSlot()) );
-    removeId =popup->addAction( QIcon(":/small/cancel.png"), "remove", this, SLOT(removeSlot()) );
-    popup->addSeparator();
-    popup->addAction( QIcon(":/small/find.png"), "find new", this, SLOT(findSlot()) );
     QObject::connect( this, SIGNAL( newSelection( bool ) ) , this, SLOT( selectionChanged( bool ) ) );
     QObject::connect( this, SIGNAL( itemDoubleClicked ( QTreeWidgetItem*, int ) ), this, SLOT( connectSlot() ) );
     
@@ -61,6 +56,7 @@ QAjServerWidget::QAjServerWidget( QXMLModule* xml, QWidget *parent ) : QAjListWi
     QObject::connect( serverHttp, SIGNAL( requestFinished ( int , bool ) ), this, SLOT( gotServer( int , bool ) ) );
 
     initToolBar();
+    initPopup();
     selectionChanged( false );
 }
 
@@ -182,8 +178,6 @@ void QAjServerWidget::connectingTo( QString id )
 
 void QAjServerWidget::selectionChanged( bool oneSelected )
 {
-    removeId->setEnabled( oneSelected );
-    connectId->setEnabled( oneSelected );
     removeButton->setEnabled( oneSelected );
     connectButton->setEnabled( oneSelected );
 }
@@ -212,7 +206,7 @@ void QAjServerWidget::gotServer( int , bool error )
 {
     if ( error )
     {
-        QMessageBox::critical( NULL, "error", "Could not fetch server source." , QMessageBox::Abort, QMessageBox::Cancel );
+        QMessageBox::critical( NULL, tr("error"), tr("Could not fetch server source.") , QMessageBox::Abort, QMessageBox::Cancel );
     }
     else
     {
@@ -230,4 +224,17 @@ void QAjServerWidget::gotServer( int , bool error )
             begin = end;
         }
     }
+}
+
+
+/*!
+    \fn QAjServerWidget::initPopup()
+ */
+void QAjServerWidget::initPopup()
+{
+    popup->setTitle( tr("Ser&ver") );
+    popup->addAction( connectButton );
+    popup->addAction( removeButton );
+    popup->addSeparator();
+    popup->addAction( findButton );
 }

@@ -40,16 +40,10 @@ QAjShareWidget::QAjShareWidget( QString filesystemSeparator, QXMLModule* xml, QW
     }
     setHeaderLabels( headers );
 
-    popup->setTitle( tr("S&hare") );
-    removeId = popup->addAction( QIcon(":/small/remove.png"), "remove", this, SLOT(removeSlot()) );
-    popup->addSeparator();
-    popup->addAction( QIcon(":/small/add.png"), "insert new", this, SLOT(insertSlot()) );
-    popup->addAction( QIcon(":/small/update.png"), "reload shared files", this, SLOT(reloadSlot()) );
-    popup->addAction( QIcon(":/small/commit.png"), "commit changes", this, SLOT(commitSlot()) );
-
     connect( this, SIGNAL( newSelection( bool ) ) , this, SLOT( selectionChanged( bool ) ) );
 
     initToolBar();
+    initPopup();
     selectionChanged( false );
 }
 
@@ -65,12 +59,10 @@ void QAjShareWidget::initToolBar()
 {
     toolBar = new QToolBar( "share operations", this );
 
-    toolBar->addAction( QIcon(":/add.png"), "add share", this, SLOT( insertSlot() ) );
+    insertButton = toolBar->addAction( QIcon(":/add.png"), "add share", this, SLOT( insertSlot() ) );
     removeButton = toolBar->addAction( QIcon(":/remove.png"), "remove share", this, SLOT( removeSlot() ) );
     reloadButton = toolBar->addAction( QIcon(":/update.png"), "reload shared files", this, SLOT( reloadSlot() ) );
     applyButton = toolBar->addAction( QIcon(":/commit.png"), "commit changes to the core", this, SLOT( commitSlot() ) );
-    applyButton->setDisabled( true );
-    removeButton->setDisabled( true );
 }
 
 
@@ -151,7 +143,7 @@ void QAjShareWidget::commitSlot()
 
 void QAjShareWidget::selectionChanged( bool oneSelected )
 {
-    removeId->setEnabled( oneSelected );
+    removeButton->setEnabled( oneSelected );
 }
 
 void QAjShareWidget::insertDirList( QTreeWidgetItem* parent, QStringList* dirList )
@@ -190,4 +182,18 @@ void QAjShareWidget::insertDirList( QTreeWidgetItem* parent, QStringList* dirLis
             insertDirList( currChild, dirList );
         }
     }
+}
+
+
+/*!
+    \fn QAjShareWidget::initPopup()
+ */
+void QAjShareWidget::initPopup()
+{
+    popup->setTitle( tr("S&hare") );
+    popup->addAction( removeButton );
+    popup->addSeparator();
+    popup->addAction( insertButton );
+    popup->addAction( reloadButton );
+    popup->addAction( applyButton );
 }

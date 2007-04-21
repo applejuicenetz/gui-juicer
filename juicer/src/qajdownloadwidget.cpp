@@ -101,22 +101,12 @@ QAjDownloadWidget::QAjDownloadWidget( QXMLModule* xml, QWidget *parent ) : QAjLi
     }
     setHeaderLabels( headers );
 
-    popup->setTitle( tr("&Download") );
-    pausePopup = popup->addAction( QIcon(":/small/pause.png"), "pause", this, SLOT(pauseSlot()) );
-    resumePopup = popup->addAction( QIcon(":/small/resume.png"), "resume", this, SLOT(resumeSlot()) );
-    cancelPopup = popup->addAction( QIcon(":/small/cancel.png"), "cancel", this, SLOT(cancelSlot()) );
-    partListPopup = popup->addAction( QIcon(":/small/partlist.png"), "part list", this, SLOT(partListSlot()) );
-    renamePopup = popup->addAction( QIcon(":/small/rename.png"), "rename", this, SLOT(renameSlot()) );
-    renamePlusPopup = popup->addAction( QIcon(":/small/rename_plus.png"), "rename by clipboard", this, SLOT(renamePlusSlot()) );
-    openPopup = popup->addAction( QIcon(":/small/exec.png"), "open file", this, SLOT(openSlot()) );
-    copyLinkPopup = popup->addAction( QIcon(":/small/text_block.png"), "copy ajfsp link to clipboard", this, SLOT(linkSlot()) );
-    popup->addSeparator();
-    popup->addAction( QIcon(":/small/filter.png"), "remove finished/canceld", this, SLOT(cleanSlot()) );
     QObject::connect( this, SIGNAL( newSelection( bool ) ) , this, SLOT( selectionChanged( bool ) ) );
 
     setIconSize( QSize( 100, 20 ) );
 
     initToolBar();
+    initPopup();
     selectionChanged( false );
 }
 
@@ -379,15 +369,6 @@ void QAjDownloadWidget::linkSlot() {
 
 void QAjDownloadWidget::selectionChanged(  bool oneSelected  )
 {
-    pausePopup->setEnabled( oneSelected );
-    resumePopup->setEnabled( oneSelected );
-    cancelPopup->setEnabled( oneSelected );
-    partListPopup->setEnabled( oneSelected );
-    renamePopup->setEnabled( oneSelected );
-    renamePlusPopup->setEnabled( oneSelected );
-    openPopup->setEnabled( oneSelected );
-    copyLinkPopup->setEnabled( oneSelected );
-
     bool onePaused = false;
     bool oneActive = false;
     bool oneFinished = false;
@@ -589,3 +570,22 @@ void QAjDownloadWidget::setDirs( QFileInfo tmpDir, QFileInfo inDir )
     this->incomingDir = inDir;
 }
 
+
+
+/*!
+    \fn QAjDownloadWidget::initPopup()
+ */
+void QAjDownloadWidget::initPopup()
+{
+    popup->setTitle( tr("&Download") );
+    popup->addAction( pauseDownloadButton );
+    popup->addAction( resumeDownloadButton );
+    popup->addAction( cancelDownloadButton );
+    popup->addAction( partListButton );
+    popup->addAction( renameDownloadButton );
+    popup->addAction( renamePlusDownloadButton );
+    popup->addAction( openDownloadButton );
+    popup->addAction( copyLinkButton );
+    popup->addSeparator();
+    popup->addAction( clearDownloadButton );
+}

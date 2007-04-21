@@ -48,7 +48,7 @@ public slots:
 protected:
     void insertDirList( QTreeWidgetItem* parent, QStringList* dirList );
     QString filesystemSeparator;
-    QAction *removeButton, *applyButton, *reloadButton;
+    QAction *removeButton, *applyButton, *reloadButton, *insertButton;
 
 private slots:
     void selectionChanged( bool oneSelected);
@@ -61,6 +61,8 @@ signals:
     void remove();
     void reload();
     void commit();
+private:
+    void initPopup();
 };
 
 #endif
