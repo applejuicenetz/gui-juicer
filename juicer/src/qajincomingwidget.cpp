@@ -44,10 +44,12 @@ QAjIncomingWidget::QAjIncomingWidget( QXMLModule* xml, QWidget *parent ) : QAjLi
 
     ftp = new QFtp( this );
 
+    connect( this, SIGNAL( newSelection( bool ) ) , this, SLOT( selectionChanged( bool ) ) );
     connect( ftp, SIGNAL( listInfo ( QUrlInfo ) ), this, SLOT( insert( QUrlInfo ) ) );
     connect( this, SIGNAL( itemDoubleClicked ( QTreeWidgetItem*, int ) ), this, SLOT( open() ) );
 
     initToolBar();
+    selectionChanged( false );
 }
 
 
@@ -293,3 +295,13 @@ void QAjIncomingWidget::insert( QUrlInfo info )
     }
 }
 
+
+
+/*!
+    \fn QAjIncomingWidget::selectionChanged( bool oneSelected )
+ */
+void QAjIncomingWidget::selectionChanged( bool oneSelected )
+{
+    openButton->setEnabled( oneSelected );
+    saveButton->setEnabled( oneSelected );
+}

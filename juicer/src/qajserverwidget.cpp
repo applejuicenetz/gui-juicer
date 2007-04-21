@@ -54,15 +54,14 @@ QAjServerWidget::QAjServerWidget( QXMLModule* xml, QWidget *parent ) : QAjListWi
     removeId =popup->addAction( QIcon(":/small/cancel.png"), "remove", this, SLOT(removeSlot()) );
     popup->addSeparator();
     popup->addAction( QIcon(":/small/find.png"), "find new", this, SLOT(findSlot()) );
-    removeId->setEnabled( false );
-    connectId->setEnabled( false );
-    QObject::connect( this, SIGNAL( newSelection( bool ) ) , this, SLOT( selectionChanged1( bool ) ) );
+    QObject::connect( this, SIGNAL( newSelection( bool ) ) , this, SLOT( selectionChanged( bool ) ) );
     QObject::connect( this, SIGNAL( itemDoubleClicked ( QTreeWidgetItem*, int ) ), this, SLOT( connectSlot() ) );
     
     serverHttp = new QHttp( this );
     QObject::connect( serverHttp, SIGNAL( requestFinished ( int , bool ) ), this, SLOT( gotServer( int , bool ) ) );
 
     initToolBar();
+    selectionChanged( false );
 }
 
 
@@ -80,9 +79,6 @@ void QAjServerWidget::initToolBar()
     connectButton = toolBar->addAction( QIcon(":/connect.png"), "connect to this server", this, SLOT( connectSlot() ) );
     removeButton = toolBar->addAction( QIcon(":/cancel.png"), "remove server", this, SLOT( removeSlot() ) );
     findButton = toolBar->addAction( QIcon(":/find.png"), "find server", this, SLOT( findSlot() ) );
-
-    removeButton->setEnabled( false );
-    connectButton->setEnabled( false );
 }
 
 
@@ -165,7 +161,7 @@ void QAjServerWidget::connectedWith( QString id )
     if ( servers.contains( id ) )
     {
         servers[ id ]->setIcon( NAME_SERVER_INDEX, QIcon(":/small/connected.png") );
-        connected( servers[ id ]->text( NAME_SERVER_INDEX ) );
+        //connected( servers[ id ]->text( NAME_SERVER_INDEX ) );
     }
     connectedWithId = id;
     connectingToId = "";
@@ -184,7 +180,7 @@ void QAjServerWidget::connectingTo( QString id )
     connectingToId = id;
 }
 
-void QAjServerWidget::selectionChanged1( bool oneSelected )
+void QAjServerWidget::selectionChanged( bool oneSelected )
 {
     removeId->setEnabled( oneSelected );
     connectId->setEnabled( oneSelected );

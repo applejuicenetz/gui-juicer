@@ -46,11 +46,11 @@ QAjShareWidget::QAjShareWidget( QString filesystemSeparator, QXMLModule* xml, QW
     popup->addAction( QIcon(":/small/add.png"), "insert new", this, SLOT(insertSlot()) );
     popup->addAction( QIcon(":/small/update.png"), "reload shared files", this, SLOT(reloadSlot()) );
     popup->addAction( QIcon(":/small/commit.png"), "commit changes", this, SLOT(commitSlot()) );
-    removeId->setEnabled( false );
 
-    connect( this, SIGNAL( newSelection( bool ) ) , this, SLOT( newSelection( bool ) ) );
+    connect( this, SIGNAL( newSelection( bool ) ) , this, SLOT( selectionChanged( bool ) ) );
 
     initToolBar();
+    selectionChanged( false );
 }
 
 
@@ -149,7 +149,7 @@ void QAjShareWidget::commitSlot()
     applyButton->setEnabled( false );
 }
 
-void QAjShareWidget::newSelection( bool oneSelected )
+void QAjShareWidget::selectionChanged( bool oneSelected )
 {
     removeId->setEnabled( oneSelected );
 }

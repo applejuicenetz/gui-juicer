@@ -73,7 +73,7 @@ private slots:
     void downloadSlot();
     void searchSlot();
     void linkSlot();
-    void selectionChanged(  bool oneSelected  );
+    void selectionChanged( bool oneSelected );
 };
 
 #endif

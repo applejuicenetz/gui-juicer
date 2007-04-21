@@ -61,7 +61,7 @@ private:
 public slots:
     void findSlot();
 private slots:
-    void selectionChanged1( bool isOneSelected );
+    void selectionChanged( bool isOneSelected );
     void removeSlot();
     void connectSlot();
     void gotServer( int id, bool error );
@@ -69,7 +69,6 @@ signals:
     void remove();
     void connect();
     void find();
-    void connected( QString server );
 };
 
 #endif

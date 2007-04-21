@@ -54,6 +54,7 @@ public slots:
     void open();
     void save();
     void insert( QUrlInfo info );
+    void selectionChanged( bool oneSelected );
 
 private:
     class CopyThread : public QThread

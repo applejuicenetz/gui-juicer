@@ -51,7 +51,7 @@ protected:
     QAction *removeButton, *applyButton, *reloadButton;
 
 private slots:
-    void newSelection( bool oneSelected);
+    void selectionChanged( bool oneSelected);
     void insertSlot();
     void removeSlot();
     void reloadSlot();

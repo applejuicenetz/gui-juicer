@@ -41,3 +41,4 @@ Ideas
         - popup will be shown if a download was finished
 - add support for different languages
 - make the whole gui more customizable, maybe by using dock widget
+- check if a  requested download is already in the share and if, inform the user about it

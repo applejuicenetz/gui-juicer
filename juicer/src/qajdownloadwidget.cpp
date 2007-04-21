@@ -112,19 +112,12 @@ QAjDownloadWidget::QAjDownloadWidget( QXMLModule* xml, QWidget *parent ) : QAjLi
     copyLinkPopup = popup->addAction( QIcon(":/small/text_block.png"), "copy ajfsp link to clipboard", this, SLOT(linkSlot()) );
     popup->addSeparator();
     popup->addAction( QIcon(":/small/filter.png"), "remove finished/canceld", this, SLOT(cleanSlot()) );
-    pausePopup->setEnabled( false );
-    resumePopup->setEnabled( false );
-    cancelPopup->setEnabled( false );
-    partListPopup->setEnabled( false );
-    renamePopup->setEnabled( false );
-    renamePlusPopup->setEnabled( false );
-    openPopup->setEnabled( false );
-    copyLinkPopup->setEnabled( false );
-    QObject::connect( this, SIGNAL( newSelection( bool ) ) , this, SLOT( selectionChanged1( bool ) ) );
+    QObject::connect( this, SIGNAL( newSelection( bool ) ) , this, SLOT( selectionChanged( bool ) ) );
 
     setIconSize( QSize( 100, 20 ) );
 
     initToolBar();
+    selectionChanged( false );
 }
 
 QAjDownloadWidget::~QAjDownloadWidget()
@@ -162,15 +155,6 @@ void QAjDownloadWidget::initToolBar()
     copyLinkButton = toolBar->addAction( QIcon(":/small/text_block.png"), "copy ajfsp link to clipboard", this, SLOT(linkSlot()) );
 
     clearDownloadButton = toolBar->addAction( QIcon(":/filter.png"), "remove finished/canceld download", this, SLOT( cleanSlot() ) );
-
-    pauseDownloadButton->setDisabled( true );
-    resumeDownloadButton->setDisabled( true );
-    cancelDownloadButton->setDisabled( true );
-    partListButton->setDisabled( true );
-    renameDownloadButton->setDisabled( true );
-    renamePlusDownloadButton->setDisabled( true );
-    openDownloadButton->setDisabled( true );
-    copyLinkButton->setDisabled( true );
 
     toolBar->addSeparator();
 
@@ -393,7 +377,7 @@ void QAjDownloadWidget::linkSlot() {
     QApplication::clipboard()->setText(link);
 }
 
-void QAjDownloadWidget::selectionChanged1(  bool oneSelected  )
+void QAjDownloadWidget::selectionChanged(  bool oneSelected  )
 {
     pausePopup->setEnabled( oneSelected );
     resumePopup->setEnabled( oneSelected );

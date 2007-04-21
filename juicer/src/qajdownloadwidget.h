@@ -99,7 +99,7 @@ private:
     QFileInfo tempDir, incomingDir;
 
 private slots:
-    void selectionChanged1( bool oneSelected );
+    void selectionChanged( bool oneSelected );
     void pauseSlot();
     void resumeSlot();
     void cancelSlot();
