@@ -7,7 +7,7 @@ x optionaly fetch new servers on startup
 - make opening of downloads work via ftp
 - fix and test login behaviour, especially after connection lost, starting
   core during the gui running, ...
-- bring the popup menu of the incoming view to the same status as it's tool bar
+x bring the popup menu of the incoming view to the same status as it's tool bar
 - fix column adjustment when first gui instance started with links as arguments
 x fix enable and disable of server tool bar
 - fix windows connection lost
