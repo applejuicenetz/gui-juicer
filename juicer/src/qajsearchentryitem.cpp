@@ -21,18 +21,11 @@
 
 #include "qajsearchitem.h"
 
-QAjSearchEntryItem::QAjSearchEntryItem( QString id, QAjSearchItem* search, QString checksum, QString size, QTreeWidget* parent ) : QAjItem( parent, id )
-{
-    this->search = search;
-    this->checksum = checksum;
-    this->size = size;
-}
-
 QAjSearchEntryItem::QAjSearchEntryItem( QString id, QAjSearchItem* search, QString checksum, QString size, QTreeWidgetItem* parent ) : QAjItem( parent, id )
 {
     this->search = search;
     this->checksum = checksum;
-    this->size = size;
+    this->size = size.toULongLong();
 }
 
 QAjSearchEntryItem::~QAjSearchEntryItem()
@@ -46,7 +39,7 @@ bool QAjSearchEntryItem::operator<( const QTreeWidgetItem & other ) const
     switch ( sortIndex )
     {
     case SIZE_SEARCH_INDEX:
-        return this->size.toULongLong() < searchItem->size.toULongLong();
+        return this->size < searchItem->size;
     default:
         return this->text( sortIndex ) < other.text( sortIndex );
     }

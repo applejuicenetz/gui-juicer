@@ -17,64 +17,30 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
-#ifndef QAJINCOMINGWIDGET_H
-#define QAJINCOMINGWIDGET_H
+#ifndef QAJINCOMINGITEM_H
+#define QAJINCOMINGITEM_H
 
-#include <QSettings>
-#include <QFileDialog>
-#include <QMessageBox>
+#include <QHeaderView>
+#include <QDateTime>
 
-#include "qajincomingitem.h"
-#include "qajlistwidget.h"
-#include "ftp.h"
-
-class Juicer;
+#include "qajitem.h"
+#include "types.h"
 
 /**
 	@author Matthias Reif <matthias.reif@informatik.tu-chemnitz.de>
 */
-class QAjIncomingWidget : public QAjListWidget
+class QAjIncomingItem : public QAjItem
 {
-Q_OBJECT
 public:
-    QAjIncomingWidget( QXMLModule* xml, QWidget *parent = 0 );
+    QAjIncomingItem( qint64 size, QDateTime date, QTreeWidget* parent );
 
-    ~QAjIncomingWidget();
-    void initToolBar();
-    void setDir( QString dir );
+    ~QAjIncomingItem();
 
-private:
-    QString dir;
-    QAction *reloadButton, *openButton, *saveButton;
-    void storeFtp();
-    void reloadFtp();
-    QFtp* ftp;
-
-public slots:
-    void reload();
-    void open();
-    void save();
-    void insert( QUrlInfo info );
-    void selectionChanged( bool oneSelected );
+    virtual bool operator<( const QTreeWidgetItem & other ) const;
 
 private:
-    class CopyThread : public QThread
-    {
-        public:
-        CopyThread(QString oldFilename, QString newFilename)
-        {
-            this->oldFilename = oldFilename;
-            this->newFilename = newFilename;
-        }
-        QString oldFilename, newFilename;
-        void run()
-        {
-            if(!QFile::copy(oldFilename, newFilename))
-            {
-                QMessageBox::critical(NULL, "error", "copy process failed");
-            }
-        }
-    };
+    qint64 size;
+    QDateTime date;
 };
 
 #endif

@@ -17,64 +17,33 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
-#ifndef QAJINCOMINGWIDGET_H
-#define QAJINCOMINGWIDGET_H
-
-#include <QSettings>
-#include <QFileDialog>
-#include <QMessageBox>
-
 #include "qajincomingitem.h"
-#include "qajlistwidget.h"
-#include "ftp.h"
 
-class Juicer;
-
-/**
-	@author Matthias Reif <matthias.reif@informatik.tu-chemnitz.de>
-*/
-class QAjIncomingWidget : public QAjListWidget
+QAjIncomingItem::QAjIncomingItem( qint64 size, QDateTime date, QTreeWidget* parent ) : QAjItem( parent )
 {
-Q_OBJECT
-public:
-    QAjIncomingWidget( QXMLModule* xml, QWidget *parent = 0 );
+    this->size = size;
+    this->date = date;
+}
 
-    ~QAjIncomingWidget();
-    void initToolBar();
-    void setDir( QString dir );
 
-private:
-    QString dir;
-    QAction *reloadButton, *openButton, *saveButton;
-    void storeFtp();
-    void reloadFtp();
-    QFtp* ftp;
+QAjIncomingItem::~QAjIncomingItem()
+{
+}
 
-public slots:
-    void reload();
-    void open();
-    void save();
-    void insert( QUrlInfo info );
-    void selectionChanged( bool oneSelected );
-
-private:
-    class CopyThread : public QThread
+bool QAjIncomingItem::operator<( const QTreeWidgetItem & other ) const
+{
+    int sortIndex = treeWidget()->header()->sortIndicatorSection();
+    QAjIncomingItem* incomingItem = (QAjIncomingItem*)&other;
+    switch ( sortIndex )
     {
-        public:
-        CopyThread(QString oldFilename, QString newFilename)
-        {
-            this->oldFilename = oldFilename;
-            this->newFilename = newFilename;
-        }
-        QString oldFilename, newFilename;
-        void run()
-        {
-            if(!QFile::copy(oldFilename, newFilename))
-            {
-                QMessageBox::critical(NULL, "error", "copy process failed");
-            }
-        }
-    };
-};
+        case SIZE_INCOMING_INDEX:
+            return this->size < incomingItem->size;
+            break;
+        case DATE_INCOMING_INDEX:
+            return this->date < incomingItem->date;
+            break;
+        default:
+            return this->text( sortIndex ) < other.text( sortIndex );
+    }
+}
 
-#endif

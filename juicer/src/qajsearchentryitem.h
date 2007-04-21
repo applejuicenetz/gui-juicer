@@ -30,13 +30,12 @@ class QAjSearchItem;
 class QAjSearchEntryItem : public QAjItem
 {
 public:
-    QAjSearchEntryItem( QString id, QAjSearchItem* search, QString checksum, QString size, QTreeWidget* parent );
     QAjSearchEntryItem( QString id, QAjSearchItem* search, QString checksum, QString size, QTreeWidgetItem* parent );
 
     ~QAjSearchEntryItem();
 
     QString checksum;
-    QString size;
+    unsigned long long size;
     QAjSearchItem* search;
 
     virtual bool operator<( const QTreeWidgetItem & other ) const;

@@ -27,14 +27,6 @@ QAjSearchItem::QAjSearchItem( QString id, QTreeWidget* parent ) : QAjItem( paren
     setTextAlignment( COUNT_SEARCH_INDEX, Qt::AlignRight );
 }
 
-QAjSearchItem::QAjSearchItem( QString id, QTreeWidgetItem* parent ) : QAjItem( parent, id )
-{
-    hits = 0;
-    entriesCount = 0;
-    setTextAlignment( SIZE_SEARCH_INDEX, Qt::AlignRight );
-    setTextAlignment( COUNT_SEARCH_INDEX, Qt::AlignRight );
-}
-
 QAjSearchItem::~QAjSearchItem()
 {}
 

@@ -218,7 +218,7 @@ void QAjSearchWidget::downloadSlot()
             QString link = "ajfsp://file|";
             link += searchEntryItem->text( TEXT_SEARCH_INDEX );
             link += "|" + searchEntryItem->checksum;
-            link += "|" + searchEntryItem->size + "/";
+            link += "|" + QString::number(searchEntryItem->size) + "/";
             link = QString( QUrl::toPercentEncoding(link) );
             xml->set( "processlink", "&link=" +link );
         }
@@ -259,7 +259,7 @@ void QAjSearchWidget::linkSlot()
         link += "ajfsp://file|";
         link += searchEntryItem->text( TEXT_SEARCH_INDEX );
         link += "|" + searchEntryItem->checksum;
-        link += "|" + searchEntryItem->size + "/";
+        link += "|" + QString::number(searchEntryItem->size) + "/";
     }
 
     QApplication::clipboard()->setText(link);

@@ -34,7 +34,6 @@ class QAjSearchItem : public QAjItem
 {
 public:
     QAjSearchItem( QString id, QTreeWidget* parent );
-    QAjSearchItem( QString id, QTreeWidgetItem* parent );
 
     ~QAjSearchItem();
 

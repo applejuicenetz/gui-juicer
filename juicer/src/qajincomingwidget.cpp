@@ -223,7 +223,7 @@ void QAjIncomingWidget::reload()
             int i;
             for(i=0; i<list.size(); i++)
             {
-                QAjItem* item = new QAjItem( this );
+                QAjIncomingItem* item = new QAjIncomingItem( list[i].size(), list[i].lastModified().toLocalTime(), this );
                 item->setText(FILENAME_INCOMING_INDEX, list[i].fileName());
                 item->setText(SIZE_INCOMING_INDEX, QConvert::bytes((double)list[i].size(), 2));
                 item->setText(DATE_INCOMING_INDEX, list[i].lastModified().toLocalTime().toString() );
@@ -287,7 +287,7 @@ void QAjIncomingWidget::insert( QUrlInfo info )
 {
     if ( info.isFile() || info.isDir() )
     {
-        QAjItem *item = new QAjItem( this );
+        QAjIncomingItem *item = new QAjIncomingItem( info.size(), info.lastModified().toLocalTime(), this );
         item->setText( FILENAME_INCOMING_INDEX, info.name() );
         item->setText( SIZE_INCOMING_INDEX, QConvert::bytes( (double)info.size(), 2 ) );
         item->setText( DATE_INCOMING_INDEX, info.lastModified().toLocalTime().toString() );
