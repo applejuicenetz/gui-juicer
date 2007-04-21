@@ -57,6 +57,22 @@
     </item>
    </layout>
   </widget>
+  <widget class="QListWidget" name="listWidget" >
+   <property name="geometry" >
+    <rect>
+     <x>10</x>
+     <y>20</y>
+     <width>121</width>
+     <height>361</height>
+    </rect>
+   </property>
+   <property name="autoScroll" >
+    <bool>false</bool>
+   </property>
+   <property name="selectionBehavior" >
+    <enum>QAbstractItemView::SelectRows</enum>
+   </property>
+  </widget>
   <widget class="QStackedWidget" name="stackedWidget" >
    <property name="geometry" >
     <rect>
@@ -70,7 +86,7 @@
     <enum>QFrame::NoFrame</enum>
    </property>
    <property name="currentIndex" >
-    <number>3</number>
+    <number>0</number>
    </property>
    <widget class="QWidget" name="Core" >
     <widget class="QLabel" name="label_24" >
@@ -413,19 +429,6 @@
     </widget>
    </widget>
    <widget class="QWidget" name="Appearance" >
-    <widget class="QCheckBox" name="showSplash" >
-     <property name="geometry" >
-      <rect>
-       <x>10</x>
-       <y>50</y>
-       <width>217</width>
-       <height>22</height>
-      </rect>
-     </property>
-     <property name="text" >
-      <string>show splash screen on startup</string>
-     </property>
-    </widget>
     <widget class="QLabel" name="label_26" >
      <property name="geometry" >
       <rect>
@@ -456,6 +459,57 @@
      <property name="orientation" >
       <enum>Qt::Horizontal</enum>
      </property>
+    </widget>
+    <widget class="QWidget" name="" >
+     <property name="geometry" >
+      <rect>
+       <x>11</x>
+       <y>51</y>
+       <width>219</width>
+       <height>54</height>
+      </rect>
+     </property>
+     <layout class="QVBoxLayout" >
+      <property name="margin" >
+       <number>0</number>
+      </property>
+      <property name="spacing" >
+       <number>6</number>
+      </property>
+      <item>
+       <widget class="QCheckBox" name="showSplash" >
+        <property name="text" >
+         <string>show splash screen on startup</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <layout class="QHBoxLayout" >
+        <property name="margin" >
+         <number>0</number>
+        </property>
+        <property name="spacing" >
+         <number>6</number>
+        </property>
+        <item>
+         <widget class="QLabel" name="label_30" >
+          <property name="maximumSize" >
+           <size>
+            <width>66</width>
+            <height>16777215</height>
+           </size>
+          </property>
+          <property name="text" >
+           <string>language:</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QComboBox" name="languageComboBox" />
+        </item>
+       </layout>
+      </item>
+     </layout>
     </widget>
    </widget>
    <widget class="QWidget" name="Behaviour" >
@@ -864,22 +918,6 @@
      </layout>
     </widget>
    </widget>
-  </widget>
-  <widget class="QListWidget" name="listWidget" >
-   <property name="geometry" >
-    <rect>
-     <x>10</x>
-     <y>20</y>
-     <width>121</width>
-     <height>361</height>
-    </rect>
-   </property>
-   <property name="autoScroll" >
-    <bool>false</bool>
-   </property>
-   <property name="selectionBehavior" >
-    <enum>QAbstractItemView::SelectRows</enum>
-   </property>
   </widget>
  </widget>
  <tabstops>

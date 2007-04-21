@@ -67,6 +67,9 @@ QAjOptionsDialog::QAjOptionsDialog( QWidget* parent ) : QDialog( parent )
     item = new QListWidgetItem(QIcon(":/options/ftp.png"), "FTP", listWidget);
 #endif
 
+    languageComboBox->addItem(QIcon(":/options/de.png"), "deutsch", "de");
+    languageComboBox->addItem(QIcon(":/options/gb.png"), "english", "en");
+
     this->setWindowIcon( QIcon(":/juicer.png") );
     connect( incomingButton, SIGNAL( clicked() ), this, SLOT( selectIncomingDir() ) );
     connect( tempButton, SIGNAL( clicked() ), this, SLOT( selectTempDir() ) );
@@ -137,6 +140,8 @@ AjSettings QAjOptionsDialog::getAjSettings()
 
     settings.fetchServersOnStartup = this->fetchServersCheckBox->isChecked();
 
+    settings.language = languageComboBox->itemData(languageComboBox->currentIndex());
+
     return settings;
 }
 
@@ -179,6 +184,8 @@ void QAjOptionsDialog::setAjSettings( AjSettings settings )
     ftpInDirEdit->setText( settings.ftpDir );
 
     fetchServersCheckBox->setChecked( settings.fetchServersOnStartup );
+
+    languageComboBox->setCurrentIndex(languageComboBox->findData(settings.language.toString().split("_")[0]));
 }
 
 void QAjOptionsDialog::selectIncomingDir()

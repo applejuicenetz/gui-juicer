@@ -120,6 +120,7 @@
 
 #include <QString>
 #include <QFile>
+#include <QVariant>
 
 class AjSettings
 {
@@ -132,6 +133,7 @@ class AjSettings
     QString location, incomingDirSpecific, tempDirSpecific;
     QString ftpServer, ftpPort, ftpUser, ftpPassword, ftpDir;
     bool fetchServersOnStartup;
+    QVariant language;
 };
 
 class Part

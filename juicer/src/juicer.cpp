@@ -260,6 +260,7 @@ void Juicer::showOptions()
         lokalSettings.endGroup();
 
         lokalSettings.setValue( "fetchServersOnStartup",  settings.fetchServersOnStartup );
+        lokalSettings.setValue( "language",  settings.language );
 
         timer->stop();
         timer->setSingleShot( false );
@@ -318,6 +319,7 @@ void Juicer::settingsReady( AjSettings settings )
         lokalSettings.endGroup();
 
         settings.fetchServersOnStartup = lokalSettings.value( "fetchServersOnStartup", false ).toBool();
+        settings.language = lokalSettings.value( "language", QLocale::system().name() );
 
         optionsDialog->setAjSettings( settings );
     }

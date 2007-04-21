@@ -24,7 +24,8 @@ int main( int argc, char ** argv )
 {
     QAjApplication a( argc, argv );
 
-    QString locale = QLocale::system().name();
+    QSettings settings;
+    QString locale = settings.value("language", QLocale::system().name()).toString();
     QTranslator translator;
     if( ! translator.load(":/translations/" + locale))
         translator.load("juicer_" + locale);

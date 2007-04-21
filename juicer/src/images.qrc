@@ -73,6 +73,8 @@
     <file alias="launching.png">resources/options/launch.png</file>
     <file alias="ftp.png">resources/options/network_local.png</file>
     <file alias="limits.png">resources/options/player_playlist.png</file>
+    <file alias="de.png">resources/options/de.png</file>
+    <file alias="gb.png">resources/options/gb.png</file>
 </qresource>
 
 </RCC>
