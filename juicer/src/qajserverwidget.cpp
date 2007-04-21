@@ -57,7 +57,8 @@ QAjServerWidget::QAjServerWidget( QXMLModule* xml, QWidget *parent ) : QAjListWi
     removeId->setEnabled( false );
     connectId->setEnabled( false );
     QObject::connect( this, SIGNAL( newSelection( bool ) ) , this, SLOT( selectionChanged1( bool ) ) );
-
+    QObject::connect( this, SIGNAL( itemDoubleClicked ( QTreeWidgetItem*, int ) ), this, SLOT( connectSlot() ) );
+    
     serverHttp = new QHttp( this );
     QObject::connect( serverHttp, SIGNAL( requestFinished ( int , bool ) ), this, SLOT( gotServer( int , bool ) ) );
 
