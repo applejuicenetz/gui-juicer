@@ -211,6 +211,7 @@ void QXMLModule::handleSettings( QDomElement e )
     settings.tempDir = e.firstChildElement("temporarydirectory").text();
     settingsReady(settings);
 
+    juicer->ajShareWidget->clear();
     QDomElement shareE;
     for(shareE=e.firstChildElement("share").firstChildElement("directory");
         !shareE.isNull(); shareE = shareE.nextSiblingElement("directory"))
