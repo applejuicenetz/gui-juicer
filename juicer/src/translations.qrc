@@ -1,0 +1,8 @@
+<!DOCTYPE RCC>
+<RCC version="1.0">
+
+<qresource prefix="/translations">
+    <file alias="de">resources/translations/juicer_de.qm</file>
+</qresource>
+
+</RCC>

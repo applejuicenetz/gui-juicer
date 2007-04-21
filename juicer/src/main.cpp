@@ -23,5 +23,12 @@
 int main( int argc, char ** argv )
 {
     QAjApplication a( argc, argv );
+
+    QString locale = QLocale::system().name();
+    QTranslator translator;
+    if( ! translator.load(":/translations/" + locale))
+        translator.load("juicer_" + locale);
+    a.installTranslator(&translator);
+
     return a.exec();
 }

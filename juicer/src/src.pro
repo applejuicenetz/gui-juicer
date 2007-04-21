@@ -72,11 +72,13 @@ CONFIG += warn_on \
           qt \
           x11 \
           stl \
-          debug
+          release
 TEMPLATE = app 
 QT += core gui network xml
 
-RESOURCES += images.qrc
-
+RESOURCES += images.qrc \
+translations.qrc
 TARGET = ../bin/juicer
+
+TRANSLATIONS += juicer_de.ts
 

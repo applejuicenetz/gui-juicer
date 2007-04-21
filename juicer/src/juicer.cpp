@@ -45,14 +45,14 @@ Juicer::Juicer( ) : QMainWindow( )
 
     ajShareWidget = new QAjShareWidget( filesystemSeparator, xml, ajTab );
 
-    ajTab->setTabToolTip( ajTab->addTab( ajDownloadWidget, QIcon(":/small/down.png"), "Downloads" ), "dowloads" );
-    ajTab->setTabToolTip( ajTab->addTab( ajUploadWidget, QIcon(":/small/up.png"), "Uploads" ), "uploads" );
-    ajTab->setTabToolTip( ajTab->addTab( ajSearchWidget, QIcon(":/small/searching.png"), "Search" ), "servers" );
-    ajTab->setTabToolTip( ajTab->addTab( ajServerMetaWidget, QIcon(":/small/server.png"), "Server" ), "searches" );
-    ajTab->setTabToolTip( ajTab->addTab( ajShareWidget, QIcon(":/small/shares.png"), "Shares" ), "shares" );
+    ajTab->setTabToolTip( ajTab->addTab( ajDownloadWidget, QIcon(":/small/down.png"), tr("Downloads") ), "dowloads" );
+    ajTab->setTabToolTip( ajTab->addTab( ajUploadWidget, QIcon(":/small/up.png"), tr("Uploads") ), "uploads" );
+    ajTab->setTabToolTip( ajTab->addTab( ajSearchWidget, QIcon(":/small/searching.png"), tr("Search") ), "servers" );
+    ajTab->setTabToolTip( ajTab->addTab( ajServerMetaWidget, QIcon(":/small/server.png"), tr("Server") ), "searches" );
+    ajTab->setTabToolTip( ajTab->addTab( ajShareWidget, QIcon(":/small/shares.png"), tr("Shares") ), "shares" );
 
     ajIncomingWidget = new QAjIncomingWidget( xml, ajTab );
-    ajTab->setTabToolTip( ajTab->addTab( ajIncomingWidget, QIcon(":/small/ftp.png"), "Incoming" ), "Incoming" );
+    ajTab->setTabToolTip( ajTab->addTab( ajIncomingWidget, QIcon(":/small/ftp.png"), tr("Incoming") ), "Incoming" );
 
     setCentralWidget( ajTab );
     prevTab = ajDownloadWidget;
