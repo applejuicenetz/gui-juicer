@@ -135,6 +135,8 @@ AjSettings QAjOptionsDialog::getAjSettings()
     settings.ftpPassword = ftpPasswordEdit->text();
     settings.ftpDir = ftpInDirEdit->text();
 
+    settings.fetchServersOnStartup = this->fetchServersCheckBox->isChecked();
+
     return settings;
 }
 
@@ -175,6 +177,8 @@ void QAjOptionsDialog::setAjSettings( AjSettings settings )
     ftpUserEdit->setText( settings.ftpUser );
     ftpPasswordEdit->setText( settings.ftpPassword );
     ftpInDirEdit->setText( settings.ftpDir );
+
+    fetchServersCheckBox->setChecked( settings.fetchServersOnStartup );
 }
 
 void QAjOptionsDialog::selectIncomingDir()

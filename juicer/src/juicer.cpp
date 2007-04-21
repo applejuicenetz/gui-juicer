@@ -259,6 +259,8 @@ void Juicer::showOptions()
         lokalSettings.setValue( "dir",  settings.ftpDir );
         lokalSettings.endGroup();
 
+        lokalSettings.setValue( "fetchServersOnStartup",  settings.fetchServersOnStartup );
+
         timer->stop();
         timer->setSingleShot( false );
         timer->start( lokalSettings.value( "refresh", 3 ).toInt() * 1000 );
@@ -314,6 +316,8 @@ void Juicer::settingsReady( AjSettings settings )
         settings.ftpPassword = lokalSettings.value( "password", "" ).toString();
         settings.ftpDir = lokalSettings.value( "dir", "/" ).toString();
         lokalSettings.endGroup();
+
+        settings.fetchServersOnStartup = lokalSettings.value( "fetchServersOnStartup", false ).toBool();
 
         optionsDialog->setAjSettings( settings );
     }
@@ -473,6 +477,12 @@ void Juicer::firstModified()
             ajServerWidget->sortItems( 0, Qt::AscendingOrder );
             ajShareWidget->sortItems( 0, Qt::AscendingOrder );
             this->show();
+
+            QSettings lokalSettings;
+            if(lokalSettings.value( "fetchServersOnStartup", false ).toBool())
+            {
+                ajServerWidget->findSlot();
+            }
         }
         firstModifiedCnt++;
     }

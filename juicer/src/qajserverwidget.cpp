@@ -147,8 +147,6 @@ void QAjServerWidget::findSlot()
     else
         host = serverURL.section( '/', 0, 0);
 
-    printf("get server from: %s\n", host.toLatin1().data() );
-
     serverHttp->setHost( host );
     serverHttp->get( serverURL );
 }

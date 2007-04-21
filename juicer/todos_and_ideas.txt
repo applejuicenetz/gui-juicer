@@ -2,7 +2,7 @@ TODOs
 =====
 
 - make all sortings work correctly (upload, server and incoming left)
-- optionaly fetch new servers on startup
+x optionaly fetch new servers on startup
 - finish the incoming view
 - make opening of downloads work via ftp
 - fix and test login behaviour, especially after connection lost, starting

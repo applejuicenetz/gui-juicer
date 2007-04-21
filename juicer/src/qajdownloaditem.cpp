@@ -454,18 +454,8 @@ bool QAjDownloadItem::operator<( const QTreeWidgetItem & other ) const
 }
 
 QString QAjDownloadItem::getLinkAJFSP() {
-    QString ajfspLink;
-
-    QString fileSize = QString::number( (int)this->size );
-//     fileSize.setNum( this->size );
-
-    ajfspLink.append("ajfsp://file|");
-    ajfspLink.append(this->text(0)/*this->fileName*/);
-    ajfspLink.append("|");
-    ajfspLink.append(this->hash);
-    ajfspLink.append("|");
-    ajfspLink.append(fileSize);
-    ajfspLink.append("/");
-
-    return ajfspLink;
+    return "ajfsp://file|"
+        + this->text(FILENAME_DOWN_INDEX) + "|"
+        + this->hash + "|"
+        + QString::number( this->size ) + "/";
 }

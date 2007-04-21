@@ -58,11 +58,12 @@ private:
 
     QHttp *serverHttp;
 
+public slots:
+    void findSlot();
 private slots:
     void selectionChanged1( bool isOneSelected );
     void removeSlot();
     void connectSlot();
-    void findSlot();
     void gotServer( int id, bool error );
 signals:
     void remove();

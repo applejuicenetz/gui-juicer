@@ -131,6 +131,7 @@ class AjSettings
     QString launcher;
     QString location, incomingDirSpecific, tempDirSpecific;
     QString ftpServer, ftpPort, ftpUser, ftpPassword, ftpDir;
+    bool fetchServersOnStartup;
 };
 
 class Part
