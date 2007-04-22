@@ -286,7 +286,6 @@ void Juicer::showOptions()
         settingsString += "&Incomingdirectory=" + settings.incomingDir;
         settingsString += "&Temporarydirectory=" + settings.tempDir;
         settingsString += "&MaxNewConnectionsPerTurn=" + settings.maxNewCon;
-        printf( "%s\n", settingsString.toAscii().data() );
         xml->set( "setsettings", settingsString );
     }
 }

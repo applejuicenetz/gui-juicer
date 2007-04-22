@@ -117,7 +117,6 @@ void FTP::run()
  */
 void FTP::dataTransferProgressSlot( qint64 done, qint64 total )
 {
-    fprintf(stderr, "%d %d\n", done, total );
     if ( dstFile != NULL )
     {
         progressDialog->setLabelText( dstFile->fileName() );
