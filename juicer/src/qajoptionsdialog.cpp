@@ -25,32 +25,32 @@ QAjOptionsDialog::QAjOptionsDialog( QWidget* parent ) : QDialog( parent )
     setupUi( this );
 
 #if QT_VERSION >= 0x040203
-    IconWidget* l = new IconWidget(":/options/core.png", "Core", listWidget);
+    IconWidget* l = new IconWidget(":/options/core.png", tr("Core"), listWidget);
     QListWidgetItem* item = new QListWidgetItem(listWidget);
     item->setSizeHint(l->size());
     listWidget->setItemWidget(item, l);
 
-    l = new IconWidget(":/options/limits.png", "Limits", listWidget);
+    l = new IconWidget(":/options/limits.png", tr("Limits"), listWidget);
     item = new QListWidgetItem(listWidget);
     item->setSizeHint(l->size());
     listWidget->setItemWidget(item, l);
 
-    l = new IconWidget(":/options/appearance.png", "Appearance", listWidget);
+    l = new IconWidget(":/options/appearance.png", tr("Appearance"), listWidget);
     item = new QListWidgetItem(listWidget);
     item->setSizeHint(l->size());
     listWidget->setItemWidget(item, l);
 
-    l = new IconWidget(":/options/behaviour.png", "Behaviour", listWidget);
+    l = new IconWidget(":/options/behaviour.png", tr("Behaviour"), listWidget);
     item = new QListWidgetItem(listWidget);
     item->setSizeHint(l->size());
     listWidget->setItemWidget(item, l);
 
-    l = new IconWidget(":/options/launching.png", "Launching", listWidget);
+    l = new IconWidget(":/options/launching.png", tr("Launching"), listWidget);
     item = new QListWidgetItem(listWidget);
     item->setSizeHint(l->size());
     listWidget->setItemWidget(item, l);
 
-    l = new IconWidget(":/options/ftp.png", "FTP", listWidget);
+    l = new IconWidget(":/options/ftp.png", tr("FTP"), listWidget);
     item = new QListWidgetItem(listWidget);
     item->setSizeHint(l->size());
     listWidget->setItemWidget(item, l);
@@ -124,11 +124,11 @@ AjSettings QAjOptionsDialog::getAjSettings()
 
     settings.launcher = launchCombo->currentText();
     if( sameComputerRadio->isChecked() )
-        settings.location = "same";
+        settings.location = AjSettings::SAME;
     else if( specificRadio->isChecked() )
-        settings.location = "specific";
+        settings.location = AjSettings::SPECIFIC;
     else
-        settings.location = "ftp";
+        settings.location = AjSettings::FTP;
     settings.tempDirSpecific = tempSpecificEdit->text();
     settings.incomingDirSpecific = incomingSpecificEdit->text();
 
@@ -171,9 +171,9 @@ void QAjOptionsDialog::setAjSettings( AjSettings settings )
     tcpEdit->setText( settings.tcpPort );
 
     launchCombo->setEditText( settings.launcher );
-    sameComputerRadio->setChecked( settings.location == "same" );
-    specificRadio->setChecked( settings.location == "specific" );
-    ftpRadio->setChecked( settings.location == "ftp" );
+    sameComputerRadio->setChecked( settings.location == AjSettings::SAME );
+    specificRadio->setChecked( settings.location == AjSettings::SPECIFIC );
+    ftpRadio->setChecked( settings.location == AjSettings::FTP );
     incomingSpecificEdit->setText( settings.incomingDirSpecific );
     tempSpecificEdit->setText( settings.tempDirSpecific );
 

@@ -306,7 +306,7 @@ void Juicer::settingsReady( AjSettings settings )
 
         settings.launcher = lokalSettings.value( "launcher", optionsDialog->launchCombo->itemText(0)).toString();
 
-        settings.location = lokalSettings.value( "location", "same" ).toString();
+        settings.location = (AjSettings::LOCATION)lokalSettings.value( "location", AjSettings::SAME ).toInt();
         settings.tempDirSpecific = lokalSettings.value( "tempDirSpecific", "/" ).toString();
         settings.incomingDirSpecific = lokalSettings.value( "incomingDirSpecific", "/" ).toString();
 
@@ -332,6 +332,8 @@ bool Juicer::login()
 //	ajUploadWidget->clear();
     ajServerWidget->clear();
     ajSearchWidget->clear();
+    ajIncomingWidget->clear();
+    ajShareWidget->clear();
     connected = false;
     qApp->processEvents();
     xml->get( "getsession" );

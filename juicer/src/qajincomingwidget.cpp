@@ -104,20 +104,20 @@ void QAjIncomingWidget::reloadFtp()
 void QAjIncomingWidget::save()
 {
     QString actDir;
-    // determine the path
     QSettings lokalSettings;
-    QString location = lokalSettings.value( "location", "same" ).toString();
-    if(location == "ftp")
+    // determine the path
+    AjSettings::LOCATION location = getLocation();
+    if(location == AjSettings::FTP)
     {
         storeFtp();
     }
     else
     {
-        if( location == "specific" )
+        if( location == AjSettings::SPECIFIC )
         {
             actDir = lokalSettings.value( "incomingDirSpecific", "/" ).toString() + QDir::separator();
         }
-        else if( location == "same" )
+        else if( location == AjSettings::SAME )
         {
             actDir = this->dir + QDir::separator();
         }
@@ -200,15 +200,15 @@ void QAjIncomingWidget::reload()
 {
     this->clear();
     QSettings lokalSettings;
-    QString mode = lokalSettings.value( "location", "same" ).toString();
-    if(mode == "ftp")
+    AjSettings::LOCATION location = getLocation();
+    if(location == AjSettings::FTP)
     {
         reloadFtp();
     }
     else
     {
         QString actDir;
-        if(mode == "same")
+        if(location == AjSettings::SAME)
         {
             if(this->dir.isEmpty())
                 return;
@@ -255,14 +255,14 @@ void QAjIncomingWidget::open()
     QString exec = args.takeFirst();
 
     QString actDir;
-    // determine the path
     QSettings lokalSettings;
-    QString location = lokalSettings.value( "location", "same" ).toString();
-    if( location == "specific" )
+    // determine the path
+    AjSettings::LOCATION location = getLocation();
+    if( location == AjSettings::SPECIFIC )
     {
         actDir = lokalSettings.value( "incomingDirSpecific", "/" ).toString() + QDir::separator();
     }
-    else if( location == "same" )
+    else if( location == AjSettings::SAME )
     {
         actDir = this->dir + QDir::separator();
     }
@@ -319,4 +319,14 @@ void QAjIncomingWidget::initPopup()
     popup->addAction( saveButton );
     popup->addSeparator();
     popup->addAction( reloadButton );
+}
+
+
+/*!
+    \fn QAjIncomingWidget::getLocation()
+ */
+AjSettings::LOCATION QAjIncomingWidget::getLocation()
+{
+    QSettings lokalSettings;
+    return (AjSettings::LOCATION)lokalSettings.value( "location", AjSettings::SAME ).toInt();
 }

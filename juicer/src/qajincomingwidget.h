@@ -49,6 +49,7 @@ private:
     void storeFtp();
     void reloadFtp();
     void initPopup();
+    AjSettings::LOCATION getLocation();
     QFtp* ftp;
 
 public slots:

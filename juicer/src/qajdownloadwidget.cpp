@@ -321,13 +321,14 @@ void QAjDownloadWidget::openSlot()
     QString iDir, tDir;
     // determine the path
     QSettings lokalSettings;
-    QString location = lokalSettings.value( "location", "same" ).toString();
-    if( location == "specific" )
+    AjSettings::LOCATION location = (AjSettings::LOCATION)lokalSettings.value( "location", AjSettings::SAME ).toInt();
+
+    if( location == AjSettings::SPECIFIC )
     {
         iDir = lokalSettings.value( "incomingDirSpecific", "/" ).toString() + QDir::separator();
         tDir = lokalSettings.value( "tempDirSpecific", "/" ).toString() + QDir::separator();
     }
-    else if( location == "same" )
+    else if( location == AjSettings::SAME )
     {
         iDir = incomingDir.absolutePath() + QDir::separator();
         tDir = tempDir.absolutePath() + QDir::separator();

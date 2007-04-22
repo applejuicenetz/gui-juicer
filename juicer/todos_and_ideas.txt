@@ -24,10 +24,10 @@ Ideas
 - offer an auto-align functionality
         - all columns will be aligned after every modification period
         - maybe too iritating
-- nicer options dialog
-        - get rid of these tabs
-        - add some icons (more colored)
-        - maybe in kontrolcenter style
+x nicer options dialog
+        x get rid of these tabs
+        x add some icons (more colored)
+        x maybe in kontrolcenter style
 - own icons at all
 - make incoming view browseable, including some basic file operations (e.g. delete, copy, move, ...)
         - warn/permit deletion of 'new' files
