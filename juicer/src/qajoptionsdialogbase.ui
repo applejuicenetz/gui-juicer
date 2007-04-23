@@ -89,24 +89,6 @@
     <number>0</number>
    </property>
    <widget class="QWidget" name="Core" >
-    <widget class="QLabel" name="label_24" >
-     <property name="geometry" >
-      <rect>
-       <x>10</x>
-       <y>10</y>
-       <width>43</width>
-       <height>25</height>
-      </rect>
-     </property>
-     <property name="font" >
-      <font>
-       <pointsize>14</pointsize>
-      </font>
-     </property>
-     <property name="text" >
-      <string>Core</string>
-     </property>
-    </widget>
     <widget class="Line" name="line" >
      <property name="geometry" >
       <rect>
@@ -256,14 +238,12 @@
       </item>
      </layout>
     </widget>
-   </widget>
-   <widget class="QWidget" name="Limits" >
-    <widget class="QLabel" name="label_25" >
+    <widget class="QLabel" name="label_24" >
      <property name="geometry" >
       <rect>
        <x>10</x>
        <y>10</y>
-       <width>55</width>
+       <width>321</width>
        <height>25</height>
       </rect>
      </property>
@@ -273,9 +253,11 @@
       </font>
      </property>
      <property name="text" >
-      <string>Limits</string>
+      <string>Core</string>
      </property>
     </widget>
+   </widget>
+   <widget class="QWidget" name="Limits" >
     <widget class="Line" name="line_2" >
      <property name="geometry" >
       <rect>
@@ -427,14 +409,12 @@
       </item>
      </layout>
     </widget>
-   </widget>
-   <widget class="QWidget" name="Appearance" >
-    <widget class="QLabel" name="label_26" >
+    <widget class="QLabel" name="label_25" >
      <property name="geometry" >
       <rect>
        <x>10</x>
        <y>10</y>
-       <width>108</width>
+       <width>321</width>
        <height>25</height>
       </rect>
      </property>
@@ -444,9 +424,11 @@
       </font>
      </property>
      <property name="text" >
-      <string>Appearance</string>
+      <string>Limits</string>
      </property>
     </widget>
+   </widget>
+   <widget class="QWidget" name="Appearance" >
     <widget class="Line" name="line_3" >
      <property name="geometry" >
       <rect>
@@ -460,7 +442,7 @@
       <enum>Qt::Horizontal</enum>
      </property>
     </widget>
-    <widget class="QWidget" name="" >
+    <widget class="QWidget" name="layoutWidget" >
      <property name="geometry" >
       <rect>
        <x>11</x>
@@ -511,14 +493,12 @@
       </item>
      </layout>
     </widget>
-   </widget>
-   <widget class="QWidget" name="Behaviour" >
-    <widget class="QLabel" name="label_27" >
+    <widget class="QLabel" name="label_26" >
      <property name="geometry" >
       <rect>
        <x>10</x>
        <y>10</y>
-       <width>94</width>
+       <width>321</width>
        <height>25</height>
       </rect>
      </property>
@@ -528,9 +508,11 @@
       </font>
      </property>
      <property name="text" >
-      <string>Behaviour</string>
+      <string>Appearance</string>
      </property>
     </widget>
+   </widget>
+   <widget class="QWidget" name="Behaviour" >
     <widget class="Line" name="line_4" >
      <property name="geometry" >
       <rect>
@@ -612,14 +594,12 @@
       </item>
      </layout>
     </widget>
-   </widget>
-   <widget class="QWidget" name="Launching" >
-    <widget class="QLabel" name="label_28" >
+    <widget class="QLabel" name="label_27" >
      <property name="geometry" >
       <rect>
        <x>10</x>
        <y>10</y>
-       <width>95</width>
+       <width>321</width>
        <height>25</height>
       </rect>
      </property>
@@ -629,9 +609,11 @@
       </font>
      </property>
      <property name="text" >
-      <string>Launching</string>
+      <string>Behaviour</string>
      </property>
     </widget>
+   </widget>
+   <widget class="QWidget" name="Launching" >
     <widget class="Line" name="line_5" >
      <property name="geometry" >
       <rect>
@@ -802,14 +784,12 @@
       </item>
      </layout>
     </widget>
-   </widget>
-   <widget class="QWidget" name="Ftp" >
-    <widget class="QLabel" name="label_29" >
+    <widget class="QLabel" name="label_28" >
      <property name="geometry" >
       <rect>
        <x>10</x>
        <y>10</y>
-       <width>35</width>
+       <width>321</width>
        <height>25</height>
       </rect>
      </property>
@@ -819,9 +799,11 @@
       </font>
      </property>
      <property name="text" >
-      <string>FTP</string>
+      <string>Launching</string>
      </property>
     </widget>
+   </widget>
+   <widget class="QWidget" name="Ftp" >
     <widget class="Line" name="line_6" >
      <property name="geometry" >
       <rect>
@@ -916,6 +898,24 @@
        <widget class="QLineEdit" name="ftpServerEdit" />
       </item>
      </layout>
+    </widget>
+    <widget class="QLabel" name="label_29" >
+     <property name="geometry" >
+      <rect>
+       <x>10</x>
+       <y>10</y>
+       <width>321</width>
+       <height>25</height>
+      </rect>
+     </property>
+     <property name="font" >
+      <font>
+       <pointsize>14</pointsize>
+      </font>
+     </property>
+     <property name="text" >
+      <string>FTP</string>
+     </property>
     </widget>
    </widget>
   </widget>
