@@ -37,7 +37,10 @@ HEADERS += ftp.h \
            qajincomingwidget.h \
            qajsearchentryitem.h \
            qajserveritem.h \
-           qajincomingitem.h
+           qajincomingitem.h \
+           qajsharemetawidget.h \
+           qajsharefileswidget.h \
+           qajsharefileitem.h
 SOURCES += ftp.cpp \
            main.cpp \
            md5c.c \
@@ -69,7 +72,10 @@ SOURCES += ftp.cpp \
            qajincomingwidget.cpp \
            qajsearchentryitem.cpp \
            qajserveritem.cpp \
-           qajincomingitem.cpp
+           qajincomingitem.cpp \
+           qajsharemetawidget.cpp \
+           qajsharefileswidget.cpp \
+           qajsharefileitem.cpp \
 CONFIG += warn_on \
           qt \
           x11 \

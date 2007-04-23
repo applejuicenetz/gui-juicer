@@ -41,7 +41,6 @@ QAjServerMetaWidget::~QAjServerMetaWidget()
 {
 }
 
-
 /*!
     \fn QAjServerMetaWidget::welcomeDockLocationChanged( Qt::DockWidgetArea area )
     prepared for qt 4.3

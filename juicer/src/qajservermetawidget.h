@@ -60,6 +60,7 @@ public:
         }
     } *dock;
 
+
 private slots:
     void welcomeDockLocationChanged( Qt::DockWidgetArea area );
     void dockVisibleSlot( bool visible );

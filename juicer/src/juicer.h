@@ -54,6 +54,8 @@
 #include "qajserverwidget.h"
 #include "qajservermetawidget.h"
 #include "qajsharewidget.h"
+#include "qajsharefileswidget.h"
+#include "qajsharemetawidget.h"
 #include "qajincomingwidget.h"
 
 #include "qxmlmodule.h"
@@ -82,6 +84,8 @@ public:
     QAjServerMetaWidget *ajServerMetaWidget;
     QAjServerWidget *ajServerWidget;
     QAjShareWidget *ajShareWidget;
+    QAjShareMetaWidget *ajShareMetaWidget;
+    QAjShareFilesWidget *ajShareFilesWidget;
     QAjIncomingWidget *ajIncomingWidget;
 
     void setFilesystemSeparator( QString separator )

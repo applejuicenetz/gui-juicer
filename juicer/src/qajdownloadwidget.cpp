@@ -142,7 +142,7 @@ void QAjDownloadWidget::initToolBar()
 
     openDownloadButton = toolBar->addAction( QIcon(":/exec.png"), "open download", this, SLOT( openSlot() ) );
 
-    copyLinkButton = toolBar->addAction( QIcon(":/small/text_block.png"), "copy ajfsp link to clipboard", this, SLOT(linkSlot()) );
+    copyLinkButton = toolBar->addAction( QIcon(":/text_block.png"), "copy ajfsp link to clipboard", this, SLOT(linkSlot()) );
 
     clearDownloadButton = toolBar->addAction( QIcon(":/filter.png"), "remove finished/canceld download", this, SLOT( cleanSlot() ) );
 

@@ -38,18 +38,21 @@ Juicer::Juicer( ) : QMainWindow( )
     ajUploadWidget = new QAjUploadWidget( xml, ajTab );
     ajSearchWidget = new QAjSearchWidget( xml, ajTab );
 
-
     ajServerMetaWidget = new QAjServerMetaWidget( ajTab );
     ajServerWidget = new QAjServerWidget( xml, ajServerMetaWidget );
     ajServerMetaWidget->setServerWidget( ajServerWidget );
 
-    ajShareWidget = new QAjShareWidget( filesystemSeparator, xml, ajTab );
+    ajShareMetaWidget = new QAjShareMetaWidget( ajTab );
+    ajShareWidget = new QAjShareWidget( filesystemSeparator, xml, ajShareMetaWidget );
+    ajShareFilesWidget = new QAjShareFilesWidget( xml, ajShareMetaWidget );
+    ajShareMetaWidget->setShareWidget( ajShareWidget );
+    ajShareMetaWidget->setShareFilesWidget( ajShareFilesWidget );
 
     ajTab->setTabToolTip( ajTab->addTab( ajDownloadWidget, QIcon(":/small/down.png"), tr("Downloads") ), "dowloads" );
     ajTab->setTabToolTip( ajTab->addTab( ajUploadWidget, QIcon(":/small/up.png"), tr("Uploads") ), "uploads" );
     ajTab->setTabToolTip( ajTab->addTab( ajSearchWidget, QIcon(":/small/searching.png"), tr("Search") ), "servers" );
     ajTab->setTabToolTip( ajTab->addTab( ajServerMetaWidget, QIcon(":/small/server.png"), tr("Server") ), "searches" );
-    ajTab->setTabToolTip( ajTab->addTab( ajShareWidget, QIcon(":/small/shares.png"), tr("Shares") ), "shares" );
+    ajTab->setTabToolTip( ajTab->addTab( ajShareMetaWidget, QIcon(":/small/shares.png"), tr("Shares") ), "shares" );
 
     ajIncomingWidget = new QAjIncomingWidget( xml, ajTab );
     ajTab->setTabToolTip( ajTab->addTab( ajIncomingWidget, QIcon(":/small/ftp.png"), tr("Incoming") ), "Incoming" );
@@ -199,8 +202,10 @@ void Juicer::closeEvent( QCloseEvent* ce )
     lokalSettings.endGroup();
     #if QT_VERSION < 0x040300
     lokalSettings.setValue( "welcomePos", ajServerMetaWidget->dockWidgetArea(ajServerMetaWidget->dock) );
+    lokalSettings.setValue( "filesPos", ajShareMetaWidget->dockWidgetArea(ajShareMetaWidget->dock) );
     #endif
     lokalSettings.setValue( "welcomeVisible", ajServerMetaWidget->dock->enabled );
+    lokalSettings.setValue( "filesVisible", ajShareMetaWidget->dock->enabled );
     ce->accept();
 }
 
@@ -421,7 +426,7 @@ void Juicer::tabChanged( QWidget *tab )
     ajUploadWidget->setActive( tab == ajUploadWidget );
     ajSearchWidget->setActive( tab == ajSearchWidget );
     ajServerWidget->setActive( tab == ajServerMetaWidget );
-    ajShareWidget->setActive( tab == ajShareWidget );
+    ajShareWidget->setActive( tab == ajShareMetaWidget );
     ajIncomingWidget->setActive( tab == ajIncomingWidget );
 
     if ( (prevTab == ajShareWidget) && ( ajShareWidget->changed ) )
