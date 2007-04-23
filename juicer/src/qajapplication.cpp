@@ -62,8 +62,7 @@ void QAjApplication::start()
         splash->show();
     }
 
-    Juicer* juicer = new Juicer( );
-    juicer->queueLinks( argList );
+    Juicer* juicer = new Juicer( argList );
     juicer->setWindowTitle( "Juicer" );
     setQuitOnLastWindowClosed( true );
 

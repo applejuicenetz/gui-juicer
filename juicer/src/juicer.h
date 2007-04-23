@@ -72,7 +72,7 @@ class Juicer: public QMainWindow
 {
     Q_OBJECT
 public:
-    Juicer( );
+    Juicer( QStringList argList );
     ~Juicer();
     bool login();
 
@@ -146,7 +146,7 @@ protected:
     QStringList queuedLinks;
     QDateTime zeroTime;
 
-    int firstModifiedCnt;
+    int firstModifiedCnt, firstModifiedMax;
 
 private slots:
 

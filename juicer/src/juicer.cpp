@@ -20,7 +20,7 @@
 
 #include "juicer.h"
 
-Juicer::Juicer( ) : QMainWindow( )
+Juicer::Juicer( QStringList argList ) : QMainWindow( )
 {
 #ifdef Q_WS_WIN
     filesystemSeparator = "\\";
@@ -29,6 +29,7 @@ Juicer::Juicer( ) : QMainWindow( )
 #endif
 
     zeroTime = QDateTime( QDate(1970,1,1), QTime(0,0), Qt::UTC );
+    firstModifiedMax = 4 + argList.size();
     QSettings lokalSettings;
 
     linkServer = new QAjServerSocket( QAjApplication::APP_PORT );
@@ -151,6 +152,7 @@ Juicer::Juicer( ) : QMainWindow( )
     tabChanged( ajDownloadWidget );
 
     login();
+    queueLinks( argList );
 }
 
 Juicer::~Juicer()
@@ -477,9 +479,9 @@ void Juicer::connectedSince( QString since )
 
 void Juicer::firstModified()
 {
-    if (firstModifiedCnt < 5)
+    if (firstModifiedCnt <= firstModifiedMax)
     {
-        if (firstModifiedCnt == 4)
+        if (firstModifiedCnt == firstModifiedMax)
         {
             ajDownloadWidget->updateView( true );
             ajDownloadWidget->adjustSizeOfColumns();
