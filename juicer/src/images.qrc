@@ -64,6 +64,12 @@
     <file alias="exec.png">resources/small/exec.png</file>
     <file alias="save.png">resources/filesave.png</file>
     <file alias="text_block.png">resources/small/text_block.png</file>
+    <file alias="credits.png">resources/small/coins.png</file>
+    <file alias="downstream.png">resources/small/arrow_down.png</file>
+    <file alias="upstream.png">resources/small/arrow_up.png</file>
+    <file alias="downloaded.png">resources/small/basket_put.png</file>
+    <file alias="uploaded.png">resources/small/basket_remove.png</file>
+    <file alias="version.png">resources/small/help.png</file>
 </qresource>
 
 <qresource prefix="/options">

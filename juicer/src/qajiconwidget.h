@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2005 by Matthias Reif   *
+ *   Copyright (C) 2007 by Matthias Reif   *
  *   matthias.reif@informatik.tu-chemnitz.de   *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -17,40 +17,27 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
+#ifndef QAJICONWIDGET_H
+#define QAJICONWIDGET_H
 
-#ifndef QAJOPTIONSDIALOG_H
-#define QAJOPTIONSDIALOG_H
+#include <QWidget>
+#include <QLabel>
+#include <QBoxLayout>
 
-#include <QDialog>
-#include <QFileDialog>
-#include "ui_qajoptionsdialogbase.h"
-
-#include "qajiconwidget.h"
-
-#include "types.h"
-
-class QAjOptionsDialog : public QDialog, public Ui::QAjOptionsDialogBase
+/**
+	@author Matthias Reif <matthias.reif@informatik.tu-chemnitz.de>
+*/
+class QAjIconWidget : public QWidget
 {
-    Q_OBJECT
-
+Q_OBJECT
 public:
-    QAjOptionsDialog( QWidget* parent = 0 );
-    ~QAjOptionsDialog();
+    QAjIconWidget(QString icon, QString text, QBoxLayout::Direction dir, QWidget *parent = 0, int spacing = -1, int margin = 9);
 
-    AjSettings getAjSettings();
-    void setAjSettings( AjSettings settings );
-    QStringList getDefaultStatusbarComponents();
+    ~QAjIconWidget();
+    void setText( QString text );
 
-    QString defaultLauncher;
-
-protected slots:
-    void selectIncomingDir();
-    void selectTempDir();
-    void selectIncomingDirSpecific();
-    void selectTempDirSpecific();
-    void selectLauncher();
-    void specificRadioToggled( bool checked );
+private:
+    QLabel *iconLabel, *textLabel;
 };
 
 #endif
-

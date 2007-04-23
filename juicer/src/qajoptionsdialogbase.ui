@@ -442,13 +442,31 @@
       <enum>Qt::Horizontal</enum>
      </property>
     </widget>
+    <widget class="QLabel" name="label_26" >
+     <property name="geometry" >
+      <rect>
+       <x>10</x>
+       <y>10</y>
+       <width>321</width>
+       <height>25</height>
+      </rect>
+     </property>
+     <property name="font" >
+      <font>
+       <pointsize>14</pointsize>
+      </font>
+     </property>
+     <property name="text" >
+      <string>Appearance</string>
+     </property>
+    </widget>
     <widget class="QWidget" name="layoutWidget" >
      <property name="geometry" >
       <rect>
-       <x>11</x>
-       <y>51</y>
-       <width>219</width>
-       <height>54</height>
+       <x>10</x>
+       <y>50</y>
+       <width>271</width>
+       <height>174</height>
       </rect>
      </property>
      <layout class="QVBoxLayout" >
@@ -456,7 +474,7 @@
        <number>0</number>
       </property>
       <property name="spacing" >
-       <number>6</number>
+       <number>15</number>
       </property>
       <item>
        <widget class="QCheckBox" name="showSplash" >
@@ -491,25 +509,69 @@
         </item>
        </layout>
       </item>
+      <item>
+       <layout class="QHBoxLayout" >
+        <property name="margin" >
+         <number>0</number>
+        </property>
+        <property name="spacing" >
+         <number>6</number>
+        </property>
+        <item>
+         <widget class="QLabel" name="label_31" >
+          <property name="text" >
+           <string>show in statusbar:</string>
+          </property>
+          <property name="alignment" >
+           <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QListWidget" name="statusbarList" >
+          <property name="selectionMode" >
+           <enum>QAbstractItemView::MultiSelection</enum>
+          </property>
+          <item>
+           <property name="text" >
+            <string>connected since</string>
+           </property>
+          </item>
+          <item>
+           <property name="text" >
+            <string>core version</string>
+           </property>
+          </item>
+          <item>
+           <property name="text" >
+            <string>downstream</string>
+           </property>
+          </item>
+          <item>
+           <property name="text" >
+            <string>upstream</string>
+           </property>
+          </item>
+          <item>
+           <property name="text" >
+            <string>downloaded</string>
+           </property>
+          </item>
+          <item>
+           <property name="text" >
+            <string>uploaded</string>
+           </property>
+          </item>
+          <item>
+           <property name="text" >
+            <string>credits</string>
+           </property>
+          </item>
+         </widget>
+        </item>
+       </layout>
+      </item>
      </layout>
-    </widget>
-    <widget class="QLabel" name="label_26" >
-     <property name="geometry" >
-      <rect>
-       <x>10</x>
-       <y>10</y>
-       <width>321</width>
-       <height>25</height>
-      </rect>
-     </property>
-     <property name="font" >
-      <font>
-       <pointsize>14</pointsize>
-      </font>
-     </property>
-     <property name="text" >
-      <string>Appearance</string>
-     </property>
     </widget>
    </widget>
    <widget class="QWidget" name="Behaviour" >

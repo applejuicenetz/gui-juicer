@@ -90,6 +90,13 @@
 #define SIZE_INCOMING_INDEX 1
 #define DATE_INCOMING_INDEX 2
 
+#define CONNECTED_SINCE "0"
+#define CORE_VERSION "1"
+#define DOWNSTREAM "2"
+#define UPSTREAM "3"
+#define DOWNLOADED "4"
+#define UPLOADED "5"
+#define CREDITS "6"
 
 #define ONE_DAY 86400
 #define ONE_HOUR 3600
@@ -123,6 +130,7 @@
 #define GNOME_LAUNCHER "gnome-open (Gnome)"
 
 #include <QString>
+#include <QStringList>
 #include <QFile>
 #include <QVariant>
 
@@ -140,6 +148,7 @@ class AjSettings
     QString ftpServer, ftpPort, ftpUser, ftpPassword, ftpDir;
     bool fetchServersOnStartup;
     QVariant language;
+    QStringList statusbarComponents;
 };
 
 class Part

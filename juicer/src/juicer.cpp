@@ -95,13 +95,13 @@ Juicer::Juicer( QStringList argList ) : QMainWindow( )
 
     menuBar()->addMenu( help );
 
-    downSpeedLabel = new QLabel(this);
-    upSpeedLabel = new QLabel(this);
-    creditsLabel = new QLabel(this);
-    downSizeLabel = new QLabel(this);
-    upSizeLabel = new QLabel(this);
-    coreVersionLabel = new QLabel(this);
-    connectedLabel = new QLabel(this);
+    downSpeedLabel = new QAjIconWidget(":/small/downstream.png", "0", QBoxLayout::LeftToRight, this, 2, 2);
+    upSpeedLabel = new QAjIconWidget(":/small/upstream.png", "0", QBoxLayout::LeftToRight, this, 2, 2);
+    creditsLabel = new QAjIconWidget(":/small/credits.png", "0", QBoxLayout::LeftToRight, this, 2, 2);
+    downSizeLabel = new QAjIconWidget(":/small/downloaded.png", "0", QBoxLayout::LeftToRight, this, 2, 2);
+    upSizeLabel = new QAjIconWidget(":/small/uploaded.png", "0", QBoxLayout::LeftToRight, this, 2, 2);
+    coreVersionLabel = new QAjIconWidget(":/small/version.png", "0", QBoxLayout::LeftToRight, this, 2, 2);
+    connectedLabel = new QAjIconWidget(":/small/connected.png", "0", QBoxLayout::LeftToRight, this, 2, 2);
 
     statusBar()->addPermanentWidget( connectedLabel );
     statusBar()->addPermanentWidget( coreVersionLabel );
@@ -110,6 +110,7 @@ Juicer::Juicer( QStringList argList ) : QMainWindow( )
     statusBar()->addPermanentWidget( downSizeLabel );
     statusBar()->addPermanentWidget( upSizeLabel );
     statusBar()->addPermanentWidget( creditsLabel );
+    initStatusBar();
 
     lokalSettings.beginGroup( "MainWindow" );
     resize( lokalSettings.value( "size", QSize(1000, 600) ).toSize() );
@@ -273,6 +274,9 @@ void Juicer::showOptions()
 
         lokalSettings.setValue( "fetchServersOnStartup",  settings.fetchServersOnStartup );
         lokalSettings.setValue( "language",  settings.language );
+        lokalSettings.setValue( "statusbarComponents",  settings.statusbarComponents );
+
+        initStatusBar();
 
         timer->stop();
         timer->setSingleShot( false );
@@ -331,6 +335,7 @@ void Juicer::settingsReady( AjSettings settings )
 
         settings.fetchServersOnStartup = lokalSettings.value( "fetchServersOnStartup", false ).toBool();
         settings.language = lokalSettings.value( "language", QLocale::system().name() );
+        settings.statusbarComponents = lokalSettings.value( "statusbarComponents", optionsDialog->getDefaultStatusbarComponents() ).toStringList();
 
         optionsDialog->setAjSettings( settings );
     }
@@ -586,4 +591,22 @@ QStringList Juicer::getExec()
         args << launcher.split(" ");
     }
     return args;
+}
+
+
+/*!
+    \fn Juicer::initStatusBar()
+ */
+void Juicer::initStatusBar()
+{
+    QSettings lokalSettings;
+    QStringList show = lokalSettings.value( "statusbarComponents", optionsDialog->getDefaultStatusbarComponents() ).toStringList();
+    connectedLabel->setVisible(show.contains(CONNECTED_SINCE));
+    coreVersionLabel->setVisible(show.contains(CORE_VERSION));
+    downSpeedLabel->setVisible(show.contains(DOWNSTREAM));
+    upSpeedLabel->setVisible(show.contains(UPSTREAM));
+    downSizeLabel->setVisible(show.contains(DOWNLOADED));
+    upSizeLabel->setVisible(show.contains(UPLOADED));
+    creditsLabel->setVisible(show.contains(CREDITS));
+
 }

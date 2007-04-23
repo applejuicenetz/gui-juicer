@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2005 by Matthias Reif   *
+ *   Copyright (C) 2007 by Matthias Reif   *
  *   matthias.reif@informatik.tu-chemnitz.de   *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -17,40 +17,36 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
-
-#ifndef QAJOPTIONSDIALOG_H
-#define QAJOPTIONSDIALOG_H
-
-#include <QDialog>
-#include <QFileDialog>
-#include "ui_qajoptionsdialogbase.h"
-
 #include "qajiconwidget.h"
 
-#include "types.h"
-
-class QAjOptionsDialog : public QDialog, public Ui::QAjOptionsDialogBase
+QAjIconWidget::QAjIconWidget(QString icon, QString text, QBoxLayout::Direction dir, QWidget *parent, int spacing, int margin) : QWidget( parent )
 {
-    Q_OBJECT
+    iconLabel = new QLabel(this);
+    iconLabel->setPixmap(QPixmap(icon));
+    textLabel = new QLabel(text, this);
+    textLabel->adjustSize();
 
-public:
-    QAjOptionsDialog( QWidget* parent = 0 );
-    ~QAjOptionsDialog();
+    QBoxLayout* layout = new QBoxLayout(dir);
+    layout->setMargin(margin);
+    layout->setSpacing(spacing);
+    layout->addWidget(iconLabel, 0, Qt::AlignHCenter);
+    layout->addWidget(textLabel, 0, Qt::AlignHCenter);
 
-    AjSettings getAjSettings();
-    void setAjSettings( AjSettings settings );
-    QStringList getDefaultStatusbarComponents();
+    this->setLayout(layout);
 
-    QString defaultLauncher;
+    this->adjustSize();
+}
 
-protected slots:
-    void selectIncomingDir();
-    void selectTempDir();
-    void selectIncomingDirSpecific();
-    void selectTempDirSpecific();
-    void selectLauncher();
-    void specificRadioToggled( bool checked );
-};
 
-#endif
+QAjIconWidget::~QAjIconWidget()
+{
+}
 
+
+/*!
+    \fn QAjIconWidget::setText( QString text )
+ */
+void QAjIconWidget::setText( QString text )
+{
+    textLabel->setText( text );
+}

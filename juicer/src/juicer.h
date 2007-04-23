@@ -68,6 +68,8 @@
 #include "qajserversocket.h"
 #include "qajapplication.h"
 
+#include "qajiconwidget.h"
+
 class Juicer: public QMainWindow
 {
     Q_OBJECT
@@ -127,13 +129,13 @@ protected:
     QMenu* file;
     QMenu* help;
 
-    QLabel *downSpeedLabel;
-    QLabel *upSpeedLabel;
-    QLabel *creditsLabel;
-    QLabel *downSizeLabel;
-    QLabel *upSizeLabel;
-    QLabel *coreVersionLabel;
-    QLabel *connectedLabel;
+    QAjIconWidget *downSpeedLabel;
+    QAjIconWidget *upSpeedLabel;
+    QAjIconWidget *creditsLabel;
+    QAjIconWidget *downSizeLabel;
+    QAjIconWidget *upSizeLabel;
+    QAjIconWidget *coreVersionLabel;
+    QAjIconWidget *connectedLabel;
 
     QAction *downloadMenuBar, *serverMenuBar, *shareMenuBar, *searchMenuBar;
 
@@ -172,6 +174,8 @@ private slots:
     void linkServerLine( QString line );
 
     void adjustColumns();
+private:
+    void initStatusBar();
 };
 
 

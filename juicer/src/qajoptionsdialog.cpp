@@ -25,32 +25,32 @@ QAjOptionsDialog::QAjOptionsDialog( QWidget* parent ) : QDialog( parent )
     setupUi( this );
 
 #if QT_VERSION >= 0x040203
-    IconWidget* l = new IconWidget(":/options/core.png", tr("Core"), listWidget);
+    QAjIconWidget* l = new QAjIconWidget(":/options/core.png", tr("Core"), QBoxLayout::TopToBottom, listWidget);
     QListWidgetItem* item = new QListWidgetItem(listWidget);
     item->setSizeHint(l->size());
     listWidget->setItemWidget(item, l);
 
-    l = new IconWidget(":/options/limits.png", tr("Limits"), listWidget);
+    l = new QAjIconWidget(":/options/limits.png", tr("Limits"), QBoxLayout::TopToBottom, listWidget);
     item = new QListWidgetItem(listWidget);
     item->setSizeHint(l->size());
     listWidget->setItemWidget(item, l);
 
-    l = new IconWidget(":/options/appearance.png", tr("Appearance"), listWidget);
+    l = new QAjIconWidget(":/options/appearance.png", tr("Appearance"), QBoxLayout::TopToBottom, listWidget);
     item = new QListWidgetItem(listWidget);
     item->setSizeHint(l->size());
     listWidget->setItemWidget(item, l);
 
-    l = new IconWidget(":/options/behaviour.png", tr("Behaviour"), listWidget);
+    l = new QAjIconWidget(":/options/behaviour.png", tr("Behaviour"), QBoxLayout::TopToBottom, listWidget);
     item = new QListWidgetItem(listWidget);
     item->setSizeHint(l->size());
     listWidget->setItemWidget(item, l);
 
-    l = new IconWidget(":/options/launching.png", tr("Launching"), listWidget);
+    l = new QAjIconWidget(":/options/launching.png", tr("Launching"), QBoxLayout::TopToBottom, listWidget);
     item = new QListWidgetItem(listWidget);
     item->setSizeHint(l->size());
     listWidget->setItemWidget(item, l);
 
-    l = new IconWidget(":/options/ftp.png", tr("FTP"), listWidget);
+    l = new QAjIconWidget(":/options/ftp.png", tr("FTP"), QBoxLayout::TopToBottom, listWidget);
     item = new QListWidgetItem(listWidget);
     item->setSizeHint(l->size());
     listWidget->setItemWidget(item, l);
@@ -142,6 +142,12 @@ AjSettings QAjOptionsDialog::getAjSettings()
 
     settings.language = languageComboBox->itemData(languageComboBox->currentIndex());
 
+    QList<QListWidgetItem *> items = statusbarList->selectedItems();
+    int i;
+    for(i=0; i<items.size(); i++)
+    {
+        settings.statusbarComponents << QString::number(statusbarList->row(items[i]));
+    }
     return settings;
 }
 
@@ -186,6 +192,13 @@ void QAjOptionsDialog::setAjSettings( AjSettings settings )
     fetchServersCheckBox->setChecked( settings.fetchServersOnStartup );
 
     languageComboBox->setCurrentIndex(languageComboBox->findData(settings.language.toString().split("_")[0]));
+
+    statusbarList->clearSelection();
+    int i;
+    for(i=0; i<settings.statusbarComponents.size(); i++)
+    {
+        statusbarList->item(settings.statusbarComponents[i].toInt())->setSelected(true);
+    }
 }
 
 void QAjOptionsDialog::selectIncomingDir()
@@ -239,4 +252,19 @@ void QAjOptionsDialog::specificRadioToggled( bool checked )
     tempSpecificLabel->setEnabled( checked );
     incomingSpecificButton->setEnabled( checked );
     tempSpecificButton->setEnabled( checked );
+}
+
+
+/*!
+    \fn QAjOptionsDialog::getDefaultStatusbarComponents()
+ */
+QStringList QAjOptionsDialog::getDefaultStatusbarComponents()
+{
+    QStringList x;
+    int i;
+    for(i=0; i<statusbarList->count(); i++)
+    {
+        x << QString::number(i);
+    }
+    return x;
 }
