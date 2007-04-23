@@ -216,6 +216,8 @@ void QXMLModule::handleSettings( QDomElement e )
     settings.tempDir = e.firstChildElement("temporarydirectory").text();
     settingsReady(settings);
 
+    juicer->ajShareFilesWidget->setTmpDir(settings.tempDir);
+
     juicer->ajShareWidget->clear();
     QDomElement shareE;
     for(shareE=e.firstChildElement("share").firstChildElement("directory");
@@ -247,7 +249,8 @@ void QXMLModule::handleShares( QDomElement e )
         for (n = e.firstChild(); !n.isNull(); n = n.nextSibling())
         {
             QDomElement shareE = n.toElement();
-            if (!shareE.isNull())
+            if (!shareE.isNull() &&
+                !shareE.attribute("filename").contains(juicer->ajShareFilesWidget->getTmpDir()))
             {
             juicer->ajShareFilesWidget->insertFile(
             shareE.attribute("id"),

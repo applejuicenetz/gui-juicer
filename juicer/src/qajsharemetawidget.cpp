@@ -13,12 +13,14 @@
 
 QAjShareMetaWidget::QAjShareMetaWidget( QWidget *parent ) : QMainWindow(parent)
 {
-    dock = new AjShareFilesDockWidget( "files", this );
+    dock = new AjShareFilesDockWidget( tr("files"), this );
     #if QT_VERSION >= 0x040300
         connect( dock, SIGNAL(dockLocationChanged( Qt::DockWidgetArea )), this, SLOT(shareFilesDockChanged(Qt::DockWidgetArea)));
     #endif
 
     this->sharedFilesWidget = NULL;
+
+//     connect( shareWidget, SIGNAL( newSelection( bool ) ) , this, SLOT( selectionChanged( bool ) ) );
 
 }
 
@@ -75,6 +77,17 @@ void QAjShareMetaWidget::setShareFilesWidget(QAjShareFilesWidget* shareFilesWidg
 void QAjShareMetaWidget::dockVisibleSlot( bool visible )
 {
     dock->enabled = visible;
+}
+
+void QAjShareMetaWidget::selectionChanged( bool oneSelected )
+{
+    if ( oneSelected && (this->sharedFilesWidget != NULL ) ) {
+      QList<QAjItem *> selectedItems = this->shareWidget->selectedAjItems();
+
+      QAjShareItem *shareItem =  (QAjShareItem*)selectedItems[0];
+
+      sharedFilesWidget->updateVisibleFiles( shareItem->path );
+    }
 }
 
 

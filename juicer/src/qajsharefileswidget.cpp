@@ -58,6 +58,32 @@ QAjShareFileItem* QAjShareFilesWidget::findFile( QString id )
 }
 
 void QAjShareFilesWidget::updateSharedFilesList() {
-    xml->get("shares");
+    xml->get("share");
+}
+
+// show only the files in the choosen directory
+void QAjShareFilesWidget::updateVisibleFiles( QString path ) {
+
+    if (this->sharedFiles.isEmpty()) return;
+
+    QList<QString>  ids = this->sharedFiles.keys();
+
+    for ( int i = 0; i < ids.size(); i++ ) {
+        QAjShareFileItem *shareFileItem = findFile( ids[i] );
+        if ( shareFileItem != NULL )
+        {
+            if ( shareFileItem->getPath() == path ) {
+                sharedFiles[ ids[i] ]->setHidden( false );
+            }
+            else {
+                sharedFiles[ ids[i] ]->setHidden( true );
+            }
+        }
+        else {
+            fprintf(stderr, "shared file with id %s not found\n", ids[i].toLatin1().data());
+        }
+    }
+
+    repaint();
 }
 

@@ -41,6 +41,7 @@ QAjShareWidget::QAjShareWidget( QString filesystemSeparator, QXMLModule* xml, QW
     setHeaderLabels( headers );
 
     connect( this, SIGNAL( newSelection( bool ) ) , this, SLOT( selectionChanged( bool ) ) );
+    connect( this, SIGNAL( newSelection( bool ) ) , parent, SLOT( selectionChanged( bool ) ) );
 
     initToolBar();
     initPopup();

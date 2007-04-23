@@ -22,7 +22,12 @@
 
 Juicer::Juicer( ) : QMainWindow( )
 {
+#ifdef Q_WS_WIN
     filesystemSeparator = "\\";
+#else
+    filesystemSeparator = "/";
+#endif
+
     zeroTime = QDateTime( QDate(1970,1,1), QTime(0,0), Qt::UTC );
     QSettings lokalSettings;
 

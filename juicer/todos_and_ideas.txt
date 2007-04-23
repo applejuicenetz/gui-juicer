@@ -17,6 +17,8 @@ x add enabling and disabling of the toolbarbuttons of the incomng view
 - new icon for get ajfsp link
 x double click at the server widget connects to the according server
 x fix adding shares again to the share list when opening the options dialog
+- share tab: fix file selection when the core runs on a different system than the gui
+- share tab: add rehashing of the share and the possibility to copy ajfsp links from share
 
 Ideas
 =====
@@ -34,7 +36,7 @@ x nicer options dialog
 - warn/permit re-login if faster than 30minutes
 - show duration since login instead of the date
 - get aj links from share (and from the current downloads)
-        - copy it to the clipboard
+        x copy it to the clipboard
 - system tray icon
         - gui minimized into the tray
         - icon indicates download speed, number of downloads, ...

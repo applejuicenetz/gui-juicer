@@ -49,9 +49,22 @@ public:
     void insertFile(QString id, QString hash, QString fileName, QString size, QString priority);
     QAjShareFileItem* findFile( QString id );
     void updateSharedFilesList();
+    void updateVisibleFiles( QString path );
+
+    void setTmpDir ( const QString& theValue )
+    {
+      tmpDir = theValue;
+    }
+
+    QString getTmpDir() const
+    {
+      return tmpDir;
+    }
+
 
 private:
     QHash<QString, QAjShareFileItem*> sharedFiles;
+    QString tmpDir;
 
 
 };
