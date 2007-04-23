@@ -397,6 +397,7 @@ void Juicer::gotSession()
     timer->start( lokalSettings.value( "refresh", 3 ).toInt() * 1000 );
     partListTimer->setSingleShot( false );
     partListTimer->start( 3000 );
+    xml->get( "share" );
 }
 
 void Juicer::showNetworkInfo()

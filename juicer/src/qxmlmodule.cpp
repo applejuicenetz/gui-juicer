@@ -155,6 +155,10 @@ void QXMLModule::requestFinished( int id, bool error )
                     {
                         partsSize = e.attribute("filesize").toULongLong();
                     }
+                    else if ( e.tagName() == "shares" )
+                    {
+                        handleShares( e );
+                    }
                     else
                     {
                         fprintf(stderr, "unhandled element: %s\n", e.tagName().toLatin1().data());
@@ -166,10 +170,11 @@ void QXMLModule::requestFinished( int id, bool error )
         {
             handleSettings(root);
         }
-        else if ( root.tagName() == "shares" )
-        {
-            handleShares(root);
-        }
+// this does not work. documentation false?
+//         else if ( root.tagName() == "shares" )
+//         {
+//             handleShares(root);
+//         }
         handlePartList(id);
         modifiedDone();
     }
@@ -228,13 +233,6 @@ void QXMLModule::handleSettings( QDomElement e )
 void QXMLModule::handleShare( QDomElement e )
 {
     juicer->setUploadFilename( e.attribute("id"), e.attribute("filename") );
-    juicer->ajShareFilesWidget->insertFile(
-            e.attribute("id"),
-            e.attribute("checksum"),
-            e.attribute("filename"),
-            e.attribute("size"),
-            e.attribute("priority")
-    );
 
 }
 
@@ -244,11 +242,21 @@ void QXMLModule::handleShare( QDomElement e )
  */
 void QXMLModule::handleShares( QDomElement e )
 {
-    QDomElement shareE;
-    for( shareE=e.firstChildElement("share");!shareE.isNull();
-         shareE=shareE.nextSiblingElement("share") )
+    QDomNode n;
     {
-        handleShare(shareE);
+        for (n = e.firstChild(); !n.isNull(); n = n.nextSibling())
+        {
+            QDomElement shareE = n.toElement();
+            if (!shareE.isNull())
+            {
+            juicer->ajShareFilesWidget->insertFile(
+            shareE.attribute("id"),
+            shareE.attribute("checksum"),
+            shareE.attribute("filename"),
+            shareE.attribute("size"),
+            shareE.attribute("priority") );
+            }
+        }
     }
 }
 

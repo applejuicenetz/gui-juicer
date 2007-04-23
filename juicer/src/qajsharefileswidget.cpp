@@ -14,7 +14,7 @@
 QAjShareFilesWidget::QAjShareFilesWidget( QXMLModule* xml, QWidget *parent ) : QAjListWidget( xml, parent )
 {
 
-    currIdRoundRobin = -1;
+//     currIdRoundRobin = -1;
     QStringList headers;
     for ( int i = 0; i < NUM_SHARED_FILES_OVERVIEW_COL; i++ )
     {
@@ -32,7 +32,6 @@ QAjShareFilesWidget::QAjShareFilesWidget( QXMLModule* xml, QWidget *parent ) : Q
         }
     }
     setHeaderLabels( headers );
-
 }
 
 QAjShareFilesWidget::~QAjShareFilesWidget()
@@ -59,6 +58,6 @@ QAjShareFileItem* QAjShareFilesWidget::findFile( QString id )
 }
 
 void QAjShareFilesWidget::updateSharedFilesList() {
-//     xml->get("share");
+    xml->get("shares");
 }
 

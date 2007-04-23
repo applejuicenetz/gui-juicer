@@ -52,7 +52,6 @@ public:
 
 private:
     QHash<QString, QAjShareFileItem*> sharedFiles;
-    int currIdRoundRobin;
 
 
 };

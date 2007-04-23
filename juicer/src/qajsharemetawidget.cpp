@@ -66,8 +66,6 @@ void QAjShareMetaWidget::setShareFilesWidget(QAjShareFilesWidget* shareFilesWidg
     QSettings localSettings;
     addDockWidget((Qt::DockWidgetArea)localSettings.value("filesPos", Qt::RightDockWidgetArea).toInt(), dock);
     dock->setVisible(localSettings.value("filesVisible", true).toBool());
-
-    shareFilesWidget->updateSharedFilesList();
 }
 
 
