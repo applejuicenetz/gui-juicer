@@ -75,7 +75,7 @@ SOURCES += ftp.cpp \
            qajincomingitem.cpp \
            qajsharemetawidget.cpp \
            qajsharefileswidget.cpp \
-           qajsharefileitem.cpp \
+           qajsharefileitem.cpp
 CONFIG += warn_on \
           qt \
           x11 \
