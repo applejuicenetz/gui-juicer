@@ -46,8 +46,9 @@ public:
 
     ~QAjShareFilesWidget();
 
-    void insertFile(QString id, QString hash, QString fileName, QString size);
+    void insertFile(QString id, QString hash, QString fileName, QString size, QString priority);
     QAjShareFileItem* findFile( QString id );
+    void updateSharedFilesList();
 
 private:
     QHash<QString, QAjShareFileItem*> sharedFiles;

@@ -32,7 +32,7 @@ public:
 
     ~QAjShareFileItem();
 
-    void update( QString hash, QString fileName, QString size );
+    void update( QString hash, QString fileName, QString size, QString priority );
 
 
     QString getLinkAJFSP();
@@ -45,7 +45,7 @@ public:
     bool operator<( const QTreeWidgetItem & other ) const;
 
 protected:
-    QString hash, size;
+    QString hash, size, priority;
 
     QAjListWidget *parentWidget;
 

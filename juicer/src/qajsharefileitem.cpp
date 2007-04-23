@@ -22,11 +22,14 @@ QAjShareFileItem::~QAjShareFileItem()
 }
 
 
-void QAjShareFileItem::update( QString hash, QString fileName, QString size ) {
+void QAjShareFileItem::update( QString hash, QString fileName, QString size, QString priority ) {
     this->hash = hash;
     this->size = size;
+    this->priority = priority;
 
-    this->setText( FILENAME_DOWN_INDEX, fileName );
+    this->setText( FILENAME_SHARED_FILE_INDEX, fileName );
+    this->setText( SIZE_SHARED_FILE_INDEX, QConvert::bytesExtra(size) );
+    this->setText( PRIORITY_SHARED_FILE_INDEX, priority );
 }
 
 
@@ -37,7 +40,7 @@ bool QAjShareFileItem::operator<( const QTreeWidgetItem & other ) const
     switch ( sortIndex )
     {
     case FILENAME_DOWN_INDEX:
-        return this->text( FILENAME_DOWN_INDEX ) < other.text( FILENAME_DOWN_INDEX );
+        return this->text( FILENAME_SHARED_FILE_INDEX ) < other.text( FILENAME_SHARED_FILE_INDEX );
     case SIZE_DOWN_INDEX:
         return size.toInt() < shareFileItem->getSize().toInt();
     default:

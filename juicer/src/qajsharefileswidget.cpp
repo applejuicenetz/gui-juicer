@@ -16,8 +16,21 @@ QAjShareFilesWidget::QAjShareFilesWidget( QXMLModule* xml, QWidget *parent ) : Q
 
     currIdRoundRobin = -1;
     QStringList headers;
-    headers.append( tr("filename") );
-    headers.append( tr("size") );
+    for ( int i = 0; i < NUM_SHARED_FILES_OVERVIEW_COL; i++ )
+    {
+        switch (i)
+        {
+        case FILENAME_SHARED_FILE_INDEX:
+              headers.append( tr("filename") );
+              break;
+        case SIZE_SHARED_FILE_INDEX:
+              headers.append( tr("size") );
+              break;
+        case PRIORITY_SHARED_FILE_INDEX:
+              headers.append( tr("priority") );
+              break;
+        }
+    }
     setHeaderLabels( headers );
 
 }
@@ -26,7 +39,7 @@ QAjShareFilesWidget::~QAjShareFilesWidget()
 {
 }
 
-void QAjShareFilesWidget::insertFile(QString id, QString hash, QString fileName, QString size)
+void QAjShareFilesWidget::insertFile(QString id, QString hash, QString fileName, QString size, QString priority)
 {
     QAjShareFileItem *shareFileItem = findFile( id );
     if ( shareFileItem == NULL )
@@ -34,7 +47,7 @@ void QAjShareFilesWidget::insertFile(QString id, QString hash, QString fileName,
         shareFileItem = new QAjShareFileItem( id, this );
         sharedFiles[ id ] = shareFileItem;
     }
-    shareFileItem->update( hash, fileName, size );
+    shareFileItem->update( hash, fileName, size, priority );
 }
 
 QAjShareFileItem* QAjShareFilesWidget::findFile( QString id )
@@ -43,5 +56,9 @@ QAjShareFileItem* QAjShareFilesWidget::findFile( QString id )
         return sharedFiles[id];
     else
         return NULL;
+}
+
+void QAjShareFilesWidget::updateSharedFilesList() {
+//     xml->get("share");
 }
 

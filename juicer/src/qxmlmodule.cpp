@@ -228,6 +228,14 @@ void QXMLModule::handleSettings( QDomElement e )
 void QXMLModule::handleShare( QDomElement e )
 {
     juicer->setUploadFilename( e.attribute("id"), e.attribute("filename") );
+    juicer->ajShareFilesWidget->insertFile(
+            e.attribute("id"),
+            e.attribute("checksum"),
+            e.attribute("filename"),
+            e.attribute("size"),
+            e.attribute("priority")
+    );
+
 }
 
 
