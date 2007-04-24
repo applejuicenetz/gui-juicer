@@ -21,6 +21,7 @@
 */
 class QAjFileWidget : public QAjListWidget
 {
+    Q_OBJECT
 public:
     QAjFileWidget( QXMLModule *xml, QWidget *parent = 0 );
 
