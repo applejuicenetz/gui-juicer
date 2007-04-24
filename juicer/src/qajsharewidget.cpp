@@ -21,6 +21,8 @@
 
 QAjShareWidget::QAjShareWidget( QString filesystemSeparator, QXMLModule* xml, QWidget *parent ) : QAjListWidget( xml, parent )
 {
+    this->fileSystem = NULL;
+
     this->filesystemSeparator = filesystemSeparator;
     changed = false;
     setColumnCount( NUM_SHARE_COL );
@@ -84,19 +86,28 @@ void QAjShareWidget::insertShare( QString path, QString shareMode )
 
 void QAjShareWidget::insertSlot()
 {
-    QString dir = QFileDialog::getExistingDirectory( this, "Choose a directory" );
-    if ( dir != "" )
-    {
-        int result = QMessageBox::question( this, "question", "Share subdirectories?", QMessageBox::Yes, QMessageBox::No );
-        QString mode;
-        if ( result == QMessageBox::Yes )
-            mode = "subdirectory";
-        else
-            mode = "directory";
-        insertShare( dir, mode );
+//     QString dir = QFileDialog::getExistingDirectory( this, "Choose a directory" );
+//     if ( dir != "" )
+//     {
+//         int result = QMessageBox::question( this, "question", "Share subdirectories?", QMessageBox::Yes, QMessageBox::No );
+//         QString mode;
+//         if ( result == QMessageBox::Yes )
+//             mode = "subdirectory";
+//         else
+//             mode = "directory";
+//         insertShare( dir, mode );
+//     }
+//     changed = true;
+//     applyButton->setEnabled( true );
+
+//       xml->get( "directory", "&directory=/" );
+
+    if ( fileSystem == NULL) {
+        fileSystem = new QAjFileDialog(xml);
     }
-    changed = true;
-    applyButton->setEnabled( true );
+
+    fileSystem->show();
+
 }
 
 void QAjShareWidget::removeSlot()

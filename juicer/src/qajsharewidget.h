@@ -25,6 +25,7 @@
 #include <QMessageBox>
 #include "qajlistwidget.h"
 #include "qajshareitem.h"
+#include "qajfiledialog.h"
 
 /**
 @author Matthias Reif
@@ -36,6 +37,8 @@ public:
     QAjShareWidget( QString filesystemSeparator, QXMLModule* xml, QWidget *parent = 0 );
 
     ~QAjShareWidget();
+
+    QAjFileDialog* fileSystem;
 
     void insertShare( QString path, QString shareMode );
     void initToolBar();

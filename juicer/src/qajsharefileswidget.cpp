@@ -72,7 +72,7 @@ void QAjShareFilesWidget::updateVisibleFiles( QString path ) {
         QAjShareFileItem *shareFileItem = findFile( ids[i] );
         if ( shareFileItem != NULL )
         {
-            if ( shareFileItem->getPath() == path ) {
+            if ( shareFileItem->getPath().contains( path ) ) {
                 sharedFiles[ ids[i] ]->setHidden( false );
             }
             else {

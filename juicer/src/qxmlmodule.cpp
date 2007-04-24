@@ -159,6 +159,20 @@ void QXMLModule::requestFinished( int id, bool error )
                     {
                         handleShares( e );
                     }
+                    else if ( e.tagName() == "dir" )
+                    {
+//                         fprintf(stderr, "name: %s\n", e.attribute("name").toLatin1().data());
+
+                        juicer->ajShareWidget->fileSystem->insertDirectory(
+                              e.attribute("name"),
+                              e.attribute("type").toInt() );
+                    }
+                    else if ( e.tagName() == "filesystem" )
+                    {
+//                         fprintf(stderr, "name: %s\n", e.attribute("name").toLatin1().data());
+
+                        juicer->ajShareWidget->fileSystem->insertSeperator(e.attribute("filesystem"));
+                    }
                     else
                     {
                         fprintf(stderr, "unhandled element: %s\n", e.tagName().toLatin1().data());
