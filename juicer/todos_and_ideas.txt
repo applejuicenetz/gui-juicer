@@ -46,3 +46,5 @@ x add support for different languages
         - improve it
 - make the whole gui more customizable, maybe by using dock widget
 - check if a requested download is already in the share and if, inform the user about it
+- add downloads from an applejuice link list
+
