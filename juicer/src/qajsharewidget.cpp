@@ -66,6 +66,7 @@ void QAjShareWidget::initToolBar()
     removeButton = toolBar->addAction( QIcon(":/remove.png"), "remove share", this, SLOT( removeSlot() ) );
     reloadButton = toolBar->addAction( QIcon(":/update.png"), "reload shared files", this, SLOT( reloadSlot() ) );
     applyButton = toolBar->addAction( QIcon(":/commit.png"), "commit changes to the core", this, SLOT( commitSlot() ) );
+    applyButton->setEnabled( false );
 }
 
 
