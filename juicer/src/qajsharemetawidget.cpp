@@ -68,6 +68,15 @@ void QAjShareMetaWidget::setShareFilesWidget(QAjShareFilesWidget* shareFilesWidg
     QSettings localSettings;
     addDockWidget((Qt::DockWidgetArea)localSettings.value("filesPos", Qt::RightDockWidgetArea).toInt(), dock);
     dock->setVisible(localSettings.value("filesVisible", true).toBool());
+
+    shareWidget->copyLinkButton = shareWidget->toolBar->addAction( QIcon(":/text_block.png"), "copy ajfsp link to clipboard", sharedFilesWidget, SLOT(linkSlot()) );
+
+    shareWidget->copyLinkButton->setEnabled( false );
+
+    sharedFilesWidget->popup->addAction( shareWidget->copyLinkButton );
+
+    QObject::connect( sharedFilesWidget, SIGNAL( newSelection( bool ) ) ,
+                      this, SLOT( selectionChangedFileWidget( bool ) ) );
 }
 
 
@@ -88,6 +97,12 @@ void QAjShareMetaWidget::selectionChanged( bool oneSelected )
 
       sharedFilesWidget->updateVisibleFiles( shareItem->path );
     }
+
+}
+
+void QAjShareMetaWidget::selectionChangedFileWidget(  bool oneSelected  )
+{
+    shareWidget->copyLinkButton->setEnabled( oneSelected );
 }
 
 

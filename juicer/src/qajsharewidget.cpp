@@ -36,7 +36,7 @@ QAjShareWidget::QAjShareWidget( QString filesystemSeparator, QXMLModule* xml, QW
             headers.append( tr("path") );
             break;
         case MODE_SHARE_INDEX:
-            headers.append( tr("recursive") );
+            headers.append( tr("with subdirectories") );
             break;
         }
     }

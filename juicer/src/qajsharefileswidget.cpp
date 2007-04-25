@@ -32,6 +32,7 @@ QAjShareFilesWidget::QAjShareFilesWidget( QXMLModule* xml, QWidget *parent ) : Q
         }
     }
     setHeaderLabels( headers );
+
 }
 
 QAjShareFilesWidget::~QAjShareFilesWidget()
@@ -86,4 +87,16 @@ void QAjShareFilesWidget::updateVisibleFiles( QString path ) {
 
     repaint();
 }
+
+void QAjShareFilesWidget::linkSlot() {
+
+    QString link;
+
+    QList<QAjItem *>  selectedItems = selectedAjItems();
+    QAjShareFileItem* ajShareItem = (QAjShareFileItem*)selectedItems[0];
+    link = ajShareItem->getLinkAJFSP();
+
+    QApplication::clipboard()->setText(link);
+}
+
 

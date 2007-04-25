@@ -36,7 +36,7 @@ x nicer options dialog
         - warn/permit deletion of 'new' files
 - warn/permit re-login if faster than 30minutes
 - show duration since login instead of the date
-- get aj links from share (and from the current downloads)
+x get aj links from share (and from the current downloads)
         x copy it to the clipboard
 - system tray icon
         - gui minimized into the tray

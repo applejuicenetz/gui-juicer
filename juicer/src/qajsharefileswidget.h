@@ -66,6 +66,8 @@ private:
     QHash<QString, QAjShareFileItem*> sharedFiles;
     QString tmpDir;
 
+private slots:
+    void linkSlot();
 
 };
 

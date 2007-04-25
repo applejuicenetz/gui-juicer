@@ -43,6 +43,7 @@ public:
     void insertShare( QString path, QString shareMode );
     void initToolBar();
     QAction* removeId;
+    QAction* copyLinkButton;
     bool changed;
 
 public slots:
