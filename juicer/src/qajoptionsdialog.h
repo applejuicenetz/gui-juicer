@@ -50,6 +50,8 @@ protected slots:
     void selectTempDirSpecific();
     void selectLauncher();
     void specificRadioToggled( bool checked );
+private slots:
+    void jumpToFtpSlot();
 };
 
 #endif

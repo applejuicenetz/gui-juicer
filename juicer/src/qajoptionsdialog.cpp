@@ -88,6 +88,7 @@ QAjOptionsDialog::QAjOptionsDialog( QWidget* parent ) : QDialog( parent )
     specificRadioToggled( false );
 
     connect( listWidget, SIGNAL(currentRowChanged( int ) ), stackedWidget , SLOT(setCurrentIndex( int ) ) );
+    connect( jumpFtpButton, SIGNAL(clicked() ), this , SLOT(jumpToFtpSlot() ) );
 
     listWidget->setCurrentRow( 0 );
 }
@@ -267,4 +268,13 @@ QStringList QAjOptionsDialog::getDefaultStatusbarComponents()
         x << QString::number(i);
     }
     return x;
+}
+
+
+/*!
+    \fn QAjOptionsDialog::jumpToFtpSlot()
+ */
+void QAjOptionsDialog::jumpToFtpSlot()
+{
+    stackedWidget->setCurrentIndex(stackedWidget->count() -1);
 }
