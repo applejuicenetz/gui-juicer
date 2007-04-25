@@ -59,12 +59,12 @@ QAjOptionsDialog::QAjOptionsDialog( QWidget* parent ) : QDialog( parent )
     listWidget->setWrapping(true);
     listWidget->setSpacing( 5 );
     QListWidgetItem* item;
-    item = new QListWidgetItem(QIcon(":/options/core.png"), "Core", listWidget);
-    item = new QListWidgetItem(QIcon(":/options/limits.png"), "Limits", listWidget);
-    item = new QListWidgetItem(QIcon(":/options/appearance.png"), "Appearance", listWidget);
-    item = new QListWidgetItem(QIcon(":/options/behaviour.png"), "Behaviour", listWidget);
-    item = new QListWidgetItem(QIcon(":/options/launching.png"), "Launching", listWidget);
-    item = new QListWidgetItem(QIcon(":/options/ftp.png"), "FTP", listWidget);
+    item = new QListWidgetItem(QIcon(":/options/core.png"), tr("Core"), listWidget);
+    item = new QListWidgetItem(QIcon(":/options/limits.png"), tr("Limits"), listWidget);
+    item = new QListWidgetItem(QIcon(":/options/appearance.png"), tr("Appearance"), listWidget);
+    item = new QListWidgetItem(QIcon(":/options/behaviour.png"), tr("Behaviour"), listWidget);
+    item = new QListWidgetItem(QIcon(":/options/launching.png"), tr("Launching"), listWidget);
+    item = new QListWidgetItem(QIcon(":/options/ftp.png"), tr("FTP"), listWidget);
 #endif
 
     languageComboBox->addItem(QIcon(":/options/de.png"), "deutsch", "de");
