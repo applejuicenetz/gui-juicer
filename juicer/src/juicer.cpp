@@ -22,11 +22,11 @@
 
 Juicer::Juicer( QStringList argList ) : QMainWindow( )
 {
-#ifdef Q_WS_WIN
-    filesystemSeparator = "\\";
-#else
-    filesystemSeparator = "/";
-#endif
+// #ifdef Q_WS_WIN
+//     filesystemSeparator = "\\";
+// #else
+//     filesystemSeparator = "/";
+// #endif
 
     zeroTime = QDateTime( QDate(1970,1,1), QTime(0,0), Qt::UTC );
     firstModifiedMax = 4 + argList.size();
@@ -49,7 +49,7 @@ Juicer::Juicer( QStringList argList ) : QMainWindow( )
     ajServerMetaWidget->setServerWidget( ajServerWidget );
 
     ajShareMetaWidget = new QAjShareMetaWidget( ajTab );
-    ajShareWidget = new QAjShareWidget( filesystemSeparator, xml, ajShareMetaWidget );
+    ajShareWidget = new QAjShareWidget( xml, ajShareMetaWidget );
     ajShareFilesWidget = new QAjShareFilesWidget( xml, ajShareMetaWidget );
     ajShareMetaWidget->setShareWidget( ajShareWidget );
     ajShareMetaWidget->setShareFilesWidget( ajShareFilesWidget );

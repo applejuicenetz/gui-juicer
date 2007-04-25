@@ -176,6 +176,7 @@ private slots:
     void adjustColumns();
 private:
     void initStatusBar();
+
 };
 
 

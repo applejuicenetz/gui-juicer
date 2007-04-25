@@ -46,7 +46,7 @@ public:
 
     ~QAjShareFilesWidget();
 
-    void insertFile(QString id, QString hash, QString fileName, QString size, QString priority);
+    void insertFile( QString id, QString hash, QString fileName, QString size, QString priority, QString filesystemSeperator );
     QAjShareFileItem* findFile( QString id );
     void updateSharedFilesList();
     void updateVisibleFiles( QString path );
@@ -60,7 +60,6 @@ public:
     {
       return tmpDir;
     }
-
 
 private:
     QHash<QString, QAjShareFileItem*> sharedFiles;

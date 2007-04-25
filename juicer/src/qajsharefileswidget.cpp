@@ -32,14 +32,13 @@ QAjShareFilesWidget::QAjShareFilesWidget( QXMLModule* xml, QWidget *parent ) : Q
         }
     }
     setHeaderLabels( headers );
-
 }
 
 QAjShareFilesWidget::~QAjShareFilesWidget()
 {
 }
 
-void QAjShareFilesWidget::insertFile(QString id, QString hash, QString fileName, QString size, QString priority)
+void QAjShareFilesWidget::insertFile( QString id, QString hash, QString fileName, QString size, QString priority, QString filesystemSeperator )
 {
     QAjShareFileItem *shareFileItem = findFile( id );
     if ( shareFileItem == NULL )
@@ -47,7 +46,7 @@ void QAjShareFilesWidget::insertFile(QString id, QString hash, QString fileName,
         shareFileItem = new QAjShareFileItem( id, this );
         sharedFiles[ id ] = shareFileItem;
     }
-    shareFileItem->update( hash, fileName, size, priority );
+    shareFileItem->update( hash, fileName, size, priority, filesystemSeperator );
 }
 
 QAjShareFileItem* QAjShareFilesWidget::findFile( QString id )
@@ -68,6 +67,9 @@ void QAjShareFilesWidget::updateVisibleFiles( QString path ) {
     if (this->sharedFiles.isEmpty()) return;
 
     QList<QString>  ids = this->sharedFiles.keys();
+
+//     path.remove(path.length()-1,1);
+//     fprintf(stderr, "show files of path %s\n", path.toLatin1().data());
 
     for ( int i = 0; i < ids.size(); i++ ) {
         QAjShareFileItem *shareFileItem = findFile( ids[i] );

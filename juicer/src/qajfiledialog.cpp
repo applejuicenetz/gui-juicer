@@ -45,6 +45,11 @@ void QAjFileDialog::insertDirectory( QString dir, QString path, int type ) {
 
 void QAjFileDialog::insertSeperator( QString seperator ) {
     if ( fileSystem != NULL ) fileSystem->insertSeperator( seperator );
+    this->filesystemSeperator = seperator;
+}
+
+QString QAjFileDialog::getSeperator() {
+    return filesystemSeperator;
 }
 
 void QAjFileDialog::getPathSlot() {

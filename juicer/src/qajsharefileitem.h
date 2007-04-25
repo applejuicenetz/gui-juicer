@@ -32,7 +32,7 @@ public:
 
     ~QAjShareFileItem();
 
-    void update( QString hash, QString fileName, QString size, QString priority );
+    void update( QString hash, QString fileName, QString size, QString priority, QString filesystemSeperator  );
 
 
     QString getLinkAJFSP();
@@ -53,7 +53,6 @@ public:
     {
       return path;
     }
-
 
 protected:
     QString hash, path, size;

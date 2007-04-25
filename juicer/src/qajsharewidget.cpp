@@ -19,7 +19,7 @@
  ***************************************************************************/
 #include "qajsharewidget.h"
 
-QAjShareWidget::QAjShareWidget( QString filesystemSeparator, QXMLModule* xml, QWidget *parent ) : QAjListWidget( xml, parent )
+QAjShareWidget::QAjShareWidget( QXMLModule* xml, QWidget *parent ) : QAjListWidget( xml, parent )
 {
     this->fileSystem = NULL;
 
@@ -71,10 +71,10 @@ void QAjShareWidget::initToolBar()
 }
 
 
-void QAjShareWidget::insertShare( QString path, QString shareMode )
+void QAjShareWidget::insertShare( QString path, QString shareMode, QString filesystemSeperator )
 {
-    if ( !path.endsWith( filesystemSeparator ) )
-        path += filesystemSeparator;
+    if ( !path.endsWith( filesystemSeparator.data()[0] ) )
+        path += filesystemSeperator;
     QAjShareItem *item = new QAjShareItem( this );
     item->path = path;
     item->setText( PATH_SHARE_INDEX, path );
@@ -105,7 +105,7 @@ void QAjShareWidget::insertSlot()
             mode = "subdirectory";
         else
             mode = "directory";
-        insertShare( dir, mode );
+        insertShare( dir, mode, fileSystem->getSeperator() );
 
         changed = true;
         applyButton->setEnabled( true );

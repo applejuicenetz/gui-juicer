@@ -146,15 +146,15 @@
       <directoryradio>executable</directoryradio>
       <runarguments>
         <ajqt4gui/>
-        <juicer/>
+        <juicer></juicer>
       </runarguments>
       <cwd>
         <ajqt4gui>/home/remat/projekte/svn/ajqtgui/juicer</ajqt4gui>
-        <juicer>/home/remat/projekte/svn/ajqtgui/juicer</juicer>
+        <juicer>/home/holg/projects/juicer</juicer>
       </cwd>
       <debugarguments>
         <ajqt4gui/>
-        <juicer/>
+        <juicer></juicer>
       </debugarguments>
       <globaldebugarguments></globaldebugarguments>
       <globalcwd>/home/holg/projects/juicer</globalcwd>

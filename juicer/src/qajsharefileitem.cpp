@@ -22,14 +22,16 @@ QAjShareFileItem::~QAjShareFileItem()
 }
 
 
-void QAjShareFileItem::update( QString hash, QString fileName, QString size, QString priority ) {
+void QAjShareFileItem::update( QString hash, QString fileName, QString size, QString priority, QString filesystemSeperator ) {
     this->hash = hash;
 
-#ifdef Q_WS_WIN
-    QStringList fileNameList = fileName.split(QChar('\\'));
-#else
-    QStringList fileNameList = fileName.split(QChar('/'));
-#endif
+// #ifdef Q_WS_WIN
+//     QStringList fileNameList = fileName.split(QChar('\\'));
+// #else
+//     QStringList fileNameList = fileName.split(QChar('/'));
+// #endif
+
+    QStringList fileNameList = fileName.split(filesystemSeperator);
 
     fileName.remove(fileNameList.last());
     this->path = fileName;

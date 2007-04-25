@@ -36,11 +36,12 @@ public:
     void insertDirectory( QString dir, QString path, int type );
     void insertSeperator( QString seperator );
     QString getDirectory();
+    QString getSeperator();
 
 private:
     QAjFileWidget* fileSystem;
     QDialogButtonBox   *okButton, *cancelButton;
-    QString newSharePath;
+    QString newSharePath, filesystemSeperator;
 
 private slots:
    void getPathSlot();

@@ -76,7 +76,7 @@ void QAjShareMetaWidget::setShareFilesWidget(QAjShareFilesWidget* shareFilesWidg
     sharedFilesWidget->popup->addAction( shareWidget->copyLinkButton );
 
     QObject::connect( sharedFilesWidget, SIGNAL( newSelection( bool ) ) ,
-                      this, SLOT( selectionChangedFileWidget( bool ) ) );
+                      shareWidget->copyLinkButton, SLOT( setEnabled( bool ) ) );
 }
 
 
@@ -100,9 +100,5 @@ void QAjShareMetaWidget::selectionChanged( bool oneSelected )
 
 }
 
-void QAjShareMetaWidget::selectionChangedFileWidget(  bool oneSelected  )
-{
-    shareWidget->copyLinkButton->setEnabled( oneSelected );
-}
 
 
