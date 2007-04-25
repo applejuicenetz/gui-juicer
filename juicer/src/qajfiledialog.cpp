@@ -20,7 +20,16 @@ QAjFileDialog::QAjFileDialog( QXMLModule *xml, QWidget *parent )
     fileSystem->setFixedSize(400,600);
     fileSystem->setColumnWidth( 0, 396 );
 
-//     this->xml = xml;
+    okButton = new QDialogButtonBox(QDialogButtonBox::Ok);
+    okButton->setParent( this );
+    okButton->setGeometry ( 50, 600, 100, 50 );
+
+    cancelButton = new QDialogButtonBox(QDialogButtonBox::Cancel);
+    cancelButton->setParent( this );
+    cancelButton->setGeometry ( 200, 600, 100, 50 );
+
+    connect ( okButton, SIGNAL (clicked ( QAbstractButton * )), this, SLOT (getPathSlot()));
+    connect ( cancelButton, SIGNAL (clicked ( QAbstractButton * )), this, SLOT (close()));
 
     xml->get( "directory" );
 }
@@ -30,12 +39,22 @@ QAjFileDialog::~QAjFileDialog()
 {
 }
 
-void QAjFileDialog::insertDirectory( QString dir, int type ) {
-    if ( fileSystem != NULL ) fileSystem->insertDirectory( dir, type );
+void QAjFileDialog::insertDirectory( QString dir, QString path, int type ) {
+    if ( fileSystem != NULL ) fileSystem->insertDirectory( dir, path, type );
 }
 
 void QAjFileDialog::insertSeperator( QString seperator ) {
     if ( fileSystem != NULL ) fileSystem->insertSeperator( seperator );
 }
 
+void QAjFileDialog::getPathSlot() {
+
+    newSharePath = fileSystem->getPathFromSelectedItem();
+
+    this->close();
+}
+
+QString QAjFileDialog::getDirectory() {
+    return newSharePath;
+}
 

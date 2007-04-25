@@ -161,17 +161,16 @@ void QXMLModule::requestFinished( int id, bool error )
                     }
                     else if ( e.tagName() == "dir" )
                     {
-//                         fprintf(stderr, "name: %s\n", e.attribute("name").toLatin1().data());
-
                         juicer->ajShareWidget->fileSystem->insertDirectory(
                               e.attribute("name"),
+                              e.attribute("path"),
                               e.attribute("type").toInt() );
+
+//                         fprintf(stderr, "dir: %s\n", e.attribute("name").toLatin1().data());
                     }
                     else if ( e.tagName() == "filesystem" )
                     {
-//                         fprintf(stderr, "name: %s\n", e.attribute("name").toLatin1().data());
-
-                        juicer->ajShareWidget->fileSystem->insertSeperator(e.attribute("filesystem"));
+                        juicer->ajShareWidget->fileSystem->insertSeperator(e.attribute("seperator"));
                     }
                     else
                     {

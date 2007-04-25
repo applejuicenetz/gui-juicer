@@ -15,6 +15,8 @@
 #include <QDialog>
 #include <QTreeWidget>
 #include <QTreeWidgetItem>
+#include <QPushButton>
+#include <QDialogButtonBox>
 
 #include "qxmlmodule.h"
 #include "qajfileitem.h"
@@ -25,18 +27,23 @@
 */
 class QAjFileDialog : public QDialog
 {
+    Q_OBJECT
 public:
     QAjFileDialog( QXMLModule *xml, QWidget *parent = 0 );
 
     ~QAjFileDialog();
 
-    void insertDirectory( QString dir, int type );
+    void insertDirectory( QString dir, QString path, int type );
     void insertSeperator( QString seperator );
+    QString getDirectory();
 
 private:
     QAjFileWidget* fileSystem;
-//     QXMLModule* xml;
+    QDialogButtonBox   *okButton, *cancelButton;
+    QString newSharePath;
 
+private slots:
+   void getPathSlot();
 };
 
 #endif

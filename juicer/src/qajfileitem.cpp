@@ -14,14 +14,13 @@
 QAjFileItem::QAjFileItem( QTreeWidget *parent )
  : QAjItem( parent )
 {
-//     QObject::connect( this, SIGNAL( itemDoubleClicked ( QTreeWidgetItem*, int ) ), this, SLOT( getSubDirectories() ) );
-
+    QAjFileItem* progressingItem = new QAjFileItem( this );
+    progressingItem->setText(0, "progressing");
 }
 
 QAjFileItem::QAjFileItem( QAjFileItem *parent )
  : QAjItem( parent )
 {
-//     QObject::connect( this, SIGNAL( itemDoubleClicked ( QTreeWidgetItem*, int ) ), this, SLOT( getSubDirectories() ) );
 
 }
 
@@ -30,18 +29,18 @@ QAjFileItem::~QAjFileItem()
 {
 }
 
-void QAjFileItem::insertDirectory( QString dir ) {
+void QAjFileItem::insertDirectory( QString dir, QString path ) {
+
     QAjFileItem* newDirectory = new QAjFileItem( this );
 
     newDirectory->setText(0, dir);
-    newDirectory->path = this->text(0);
+    newDirectory->path = path;
 
-    this->nextFolder.append( newDirectory );
-    this->addChild( newDirectory );
+    QAjFileItem* progressingItem = new QAjFileItem( newDirectory );
+    progressingItem->setText(0, "progressing");
+
 }
 
 
-// void QAjFileItem::getSubDirectories() {
-// 
-// }
+
 

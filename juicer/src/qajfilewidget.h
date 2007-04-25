@@ -27,15 +27,20 @@ public:
 
     ~QAjFileWidget();
 
-    void insertDirectory( QString dir, int type );
+    void insertDirectory( QString dir, QString path, int type );
     void insertSeperator( QString seperator );
+    void emptyDirectory();
+    QString getPathFromSelectedItem();
 
 private:
     QAjFileItem* rootPath, *currentPath;
     QString fileSystemSeperator;
 
+    void getSubDirectories( QAjFileItem* item );
+
+
 private slots:
-    void getSubDirectoriesSlot( QTreeWidgetItem* item );
+    void updateSubDirectoriesSlot ( QTreeWidgetItem* item );
 
 };
 

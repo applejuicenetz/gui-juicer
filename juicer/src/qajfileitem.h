@@ -13,8 +13,10 @@
 #define QAJFILEITEM_H
 
 #include <QList>
+#include <QString>
 
 #include "qajitem.h"
+#include "types.h"
 
 
 
@@ -29,16 +31,9 @@ public:
 
     ~QAjFileItem();
 
-    QString path, filesystemSeperator;
+    QString path;
 
-    void insertDirectory( QString dir );
-
-private:
-    QList<QAjFileItem*> nextFolder;
-
-private slots:
-//     void getSubDirectories();
-
+    void insertDirectory( QString dir, QString path );
 };
 
 #endif

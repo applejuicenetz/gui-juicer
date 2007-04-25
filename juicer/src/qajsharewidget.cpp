@@ -86,27 +86,32 @@ void QAjShareWidget::insertShare( QString path, QString shareMode )
 
 void QAjShareWidget::insertSlot()
 {
-//     QString dir = QFileDialog::getExistingDirectory( this, "Choose a directory" );
-//     if ( dir != "" )
-//     {
-//         int result = QMessageBox::question( this, "question", "Share subdirectories?", QMessageBox::Yes, QMessageBox::No );
-//         QString mode;
-//         if ( result == QMessageBox::Yes )
-//             mode = "subdirectory";
-//         else
-//             mode = "directory";
-//         insertShare( dir, mode );
-//     }
-//     changed = true;
-//     applyButton->setEnabled( true );
-
-//       xml->get( "directory", "&directory=/" );
+//     xml->get( "directory", "&directory=/home/applejuice" );
 
     if ( fileSystem == NULL) {
-        fileSystem = new QAjFileDialog(xml);
+        fileSystem = new QAjFileDialog(xml, this);
     }
 
-    fileSystem->show();
+    fileSystem->exec();
+
+    QString dir = fileSystem->getDirectory();
+
+    if ( !dir.isEmpty() )
+    {
+        int result = QMessageBox::question( this, "question", tr("Share subdirectories?"), QMessageBox::Yes, QMessageBox::No );
+        QString mode;
+        if ( result == QMessageBox::Yes )
+            mode = "subdirectory";
+        else
+            mode = "directory";
+        insertShare( dir, mode );
+
+        changed = true;
+        applyButton->setEnabled( true );
+    }
+    else {
+        fprintf(stderr, "directory: %s\n", dir.toLatin1().data());
+    }
 
 }
 
@@ -146,7 +151,7 @@ void QAjShareWidget::commitSlot()
             cnt++;
         }
     }
-    sharesString = "&countshares=" + QString::number( cnt-1 );
+    sharesString += "&countshares=" + QString::number( cnt-1 );
     xml->set( "setsettings", sharesString );
     xml->get( "settings" );
     changed = false;

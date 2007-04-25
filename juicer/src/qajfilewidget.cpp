@@ -20,8 +20,8 @@ QAjFileWidget::QAjFileWidget( QXMLModule *xml, QWidget *parent )
     headers.append( tr("Choose directory") );
     setHeaderLabels( headers );
 
-    connect( this, SIGNAL( itemDoubleClicked ( QTreeWidgetItem*, int ) ),
-             this, SLOT( getSubDirectoriesSlot ( QTreeWidgetItem* ) ) );
+    connect( this, SIGNAL( itemExpanded ( QTreeWidgetItem* ) ),
+             this, SLOT( updateSubDirectoriesSlot ( QTreeWidgetItem* ) ) );
 }
 
 
@@ -29,32 +29,55 @@ QAjFileWidget::~QAjFileWidget()
 {
 }
 
-void QAjFileWidget::insertDirectory( QString dir, int type ) {
-    if ( rootPath == NULL ) {
-        rootPath = new QAjFileItem( this );
-        rootPath->setText(0, dir);
-        rootPath->setFlags( Qt::ItemIsEnabled );
+void QAjFileWidget::insertDirectory( QString dir, QString path, int type ) {
 
-        currentPath = rootPath;
-    }
-    else {
-        currentPath->insertDirectory( dir );
+    if ( type != FILESYSTEM_TYPE_DISKDRIVE ) {
+        if ( rootPath == NULL ) {
+            rootPath = new QAjFileItem( this );
+            rootPath->setText(0, dir);
+            currentPath = rootPath;
+
+        }
+        else {
+            if ( path.isEmpty() ) {
+                if ( rootPath == currentPath )
+                    path = currentPath->text(0);
+                else
+                    path = currentPath->path + currentPath->text(0) + fileSystemSeperator;
+            }
+            currentPath->insertDirectory( dir, path );
+        }
     }
 
-    expandItem( currentPath );
 }
 
 void QAjFileWidget::insertSeperator( QString seperator ) {
     fileSystemSeperator = seperator;
-    if ( (rootPath != NULL) && (rootPath != currentPath) ) {
-        currentPath->path +=seperator;
+}
+
+
+void QAjFileWidget::updateSubDirectoriesSlot ( QTreeWidgetItem* item ) {
+
+    currentPath = (QAjFileItem*)item;
+
+    if ( currentPath->child(0)->text(0) == "progressing" ) {
+        QString dir = currentPath->path+currentPath->text(0);
+        fprintf(stderr, "get directory: %s\n", dir.toLatin1().data());
+        xml->get( "directory", "&directory="+currentPath->path+currentPath->text(0) );
+        emptyDirectory();
     }
 }
 
-void QAjFileWidget::getSubDirectoriesSlot( QTreeWidgetItem* item ) {
-    currentPath = (QAjFileItem*)item;
 
-    xml->get( "directory", "&directory="+currentPath->path+fileSystemSeperator+currentPath->text(0) );
+void QAjFileWidget::emptyDirectory() {
+    if (currentPath->child(0)->text(0) == "progressing") {
+        currentPath->takeChild(0);
+    }
 }
 
+QString QAjFileWidget::getPathFromSelectedItem() {
+      QList<QTreeWidgetItem *> selection = selectedItems();
+      QAjFileItem* firstSelectedItem = (QAjFileItem*)selection[0];
 
+      return firstSelectedItem->path+firstSelectedItem->text(0);
+}

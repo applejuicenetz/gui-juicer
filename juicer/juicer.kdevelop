@@ -141,7 +141,7 @@
   </kdevdebugger>
   <kdevtrollproject>
     <run>
-      <mainprogram>/home/remat/projekte/svn/ajqtgui/juicer/./bin/juicer</mainprogram>
+      <mainprogram>/home/holg/projects/juicer/bin/juicer</mainprogram>
       <programargs></programargs>
       <directoryradio>executable</directoryradio>
       <runarguments>
@@ -157,8 +157,8 @@
         <juicer/>
       </debugarguments>
       <globaldebugarguments></globaldebugarguments>
-      <globalcwd>/home/remat/projekte/svn/ajqtgui/juicer</globalcwd>
-      <useglobalprogram>false</useglobalprogram>
+      <globalcwd>/home/holg/projects/juicer</globalcwd>
+      <useglobalprogram>true</useglobalprogram>
       <terminal>false</terminal>
       <autocompile>false</autocompile>
       <autoinstall>false</autoinstall>
@@ -188,18 +188,19 @@
     <openfiles/>
   </workspace>
   <kdevfilecreate>
+    <filetypes/>
     <useglobaltypes>
       <type ext="ui" />
       <type ext="cpp" />
       <type ext="h" />
       <type ext="ts" />
-      <type ext="qrc" />
     </useglobaltypes>
   </kdevfilecreate>
   <kdevdocumentation>
     <projectdoc>
-      <docsystem>Doxygen Documentation Collection</docsystem>
+      <docsystem>Doxygen-Dokumentation</docsystem>
       <docurl>juicer.tag</docurl>
+      <usermanualurl></usermanualurl>
     </projectdoc>
   </kdevdocumentation>
   <substmap>
@@ -247,4 +248,9 @@
     <appskde>false</appskde>
     <url/>
   </dist>
+  <ctagspart>
+    <customArguments></customArguments>
+    <customTagfilePath>/home/holg/projects/juicer/tags</customTagfilePath>
+    <activeTagsFiles/>
+  </ctagspart>
 </kdevelop>
