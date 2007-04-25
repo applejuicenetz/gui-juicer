@@ -457,5 +457,5 @@ QString QAjDownloadItem::getLinkAJFSP() {
     return "ajfsp://file|"
         + this->text(FILENAME_DOWN_INDEX) + "|"
         + this->hash + "|"
-        + QString::number( this->size ) + "/";
+        + QString::number( (int)this->size ) + "/";
 }

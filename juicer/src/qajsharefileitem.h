@@ -39,7 +39,7 @@ public:
 
     QString getSize() const
     {
-      return this->text(SIZE_SHARED_FILE_INDEX);
+      return this->size;
     }
 
     bool operator<( const QTreeWidgetItem & other ) const;
@@ -56,7 +56,7 @@ public:
 
 
 protected:
-    QString hash, path;
+    QString hash, path, size;
 
     QAjListWidget *parentWidget;
 

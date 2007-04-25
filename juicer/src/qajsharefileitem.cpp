@@ -33,6 +33,7 @@ void QAjShareFileItem::update( QString hash, QString fileName, QString size, QSt
 
     fileName.remove(fileNameList.last());
     this->path = fileName;
+    this->size = size;
 
     this->setText( FILENAME_SHARED_FILE_INDEX, fileNameList.back() );
     this->setText( SIZE_SHARED_FILE_INDEX, QConvert::bytesExtra(size) );
@@ -51,7 +52,7 @@ bool QAjShareFileItem::operator<( const QTreeWidgetItem & other ) const
     case FILENAME_DOWN_INDEX:
         return this->text( FILENAME_SHARED_FILE_INDEX ) < other.text( FILENAME_SHARED_FILE_INDEX );
     case SIZE_DOWN_INDEX:
-        return this->text( SIZE_SHARED_FILE_INDEX ).toInt() < shareFileItem->getSize().toInt();
+        return this->size.toInt() < shareFileItem->getSize().toInt();
     default:
         return this->text( sortIndex ) < other.text( sortIndex );
     }
@@ -65,7 +66,7 @@ QString QAjShareFileItem::getLinkAJFSP() {
     ajfspLink.append("|");
     ajfspLink.append(this->hash);
     ajfspLink.append("|");
-    ajfspLink.append(this->text(SIZE_SHARED_FILE_INDEX));
+    ajfspLink.append(this->size);
     ajfspLink.append("/");
 
     return ajfspLink;
