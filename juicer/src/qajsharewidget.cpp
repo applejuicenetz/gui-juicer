@@ -86,7 +86,6 @@ void QAjShareWidget::insertShare( QString path, QString shareMode )
 
 void QAjShareWidget::insertSlot()
 {
-//     xml->get( "directory", "&directory=/home/applejuice" );
 
     if ( fileSystem == NULL) {
         fileSystem = new QAjFileDialog(xml, this);
@@ -108,9 +107,6 @@ void QAjShareWidget::insertSlot()
 
         changed = true;
         applyButton->setEnabled( true );
-    }
-    else {
-        fprintf(stderr, "directory: %s\n", dir.toLatin1().data());
     }
 
 }
