@@ -50,6 +50,7 @@ public:
     QAjShareFileItem* findFile( QString id );
     void updateSharedFilesList();
     void updateVisibleFiles( QString path );
+    void setPriority( int prio );
 
     void setTmpDir ( const QString& theValue )
     {

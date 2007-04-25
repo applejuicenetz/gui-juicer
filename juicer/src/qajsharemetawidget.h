@@ -60,6 +60,7 @@ private slots:
     void shareFilesDockChanged( Qt::DockWidgetArea area );
     void dockVisibleSlot( bool visible );
     void selectionChanged( bool oneSelected );
+    void setPrioritySlot();
 
 };
 

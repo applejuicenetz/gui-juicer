@@ -77,6 +77,25 @@ void QAjShareMetaWidget::setShareFilesWidget(QAjShareFilesWidget* shareFilesWidg
 
     QObject::connect( sharedFilesWidget, SIGNAL( newSelection( bool ) ) ,
                       shareWidget->copyLinkButton, SLOT( setEnabled( bool ) ) );
+
+    shareWidget->toolBar->addSeparator();
+
+    shareWidget->prioCheck = new QCheckBox( shareWidget->toolBar );
+    shareWidget->prioCheck->setText( tr("Priority:") );
+    shareWidget->prioCheck->setChecked( false );
+    shareWidget->prioCheck->adjustSize();
+    shareWidget->toolBar->addWidget( shareWidget->prioCheck );
+
+    shareWidget->prioSpin = new QDoubleSpinBox( shareWidget->toolBar );
+    shareWidget->prioSpin->setRange( 1, 250 );
+    shareWidget->prioSpin->setSingleStep( 1 );
+    shareWidget->prioSpin->setDecimals( 0 );
+    shareWidget->toolBar->addWidget( shareWidget->prioSpin );
+
+//     connect( shareWidget->prioCheck, SIGNAL( valueChanged( const QString&) ), this, SLOT( setPrioritySlot() ) );
+//     connect( shareWidget->prioSpin, SIGNAL( valueChanged( double ) ), this, SLOT( setPrioritySlot() ) );
+
+    shareWidget->prioOkButton = shareWidget->toolBar->addAction( QIcon(":/ok.png"), "apply priority", this, SLOT( setPrioritySlot() ) );
 }
 
 
@@ -100,5 +119,15 @@ void QAjShareMetaWidget::selectionChanged( bool oneSelected )
 
 }
 
+void QAjShareMetaWidget::setPrioritySlot()
+{
+    int value;
+    if ( shareWidget->prioCheck->isChecked() )
+        value = shareWidget->prioSpin->value();
+    else
+        value = 1;
+
+    sharedFilesWidget->setPriority( value );
+}
 
 

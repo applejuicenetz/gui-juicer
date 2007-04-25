@@ -23,6 +23,9 @@
 #include <QStringList>
 #include <QFileDialog>
 #include <QMessageBox>
+#include <QCheckBox>
+#include <QDoubleSpinBox>
+
 #include "qajlistwidget.h"
 #include "qajshareitem.h"
 #include "qajfiledialog.h"
@@ -43,7 +46,9 @@ public:
     void insertShare( QString path, QString shareMode, QString filesystemSeperator );
     void initToolBar();
     QAction* removeId;
-    QAction* copyLinkButton;
+    QAction* copyLinkButton, *prioOkButton;
+    QCheckBox* prioCheck;
+    QDoubleSpinBox* prioSpin;
     bool changed;
 
 public slots:

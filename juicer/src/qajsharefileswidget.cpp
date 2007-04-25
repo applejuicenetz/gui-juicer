@@ -68,9 +68,6 @@ void QAjShareFilesWidget::updateVisibleFiles( QString path ) {
 
     QList<QString>  ids = this->sharedFiles.keys();
 
-//     path.remove(path.length()-1,1);
-//     fprintf(stderr, "show files of path %s\n", path.toLatin1().data());
-
     for ( int i = 0; i < ids.size(); i++ ) {
         QAjShareFileItem *shareFileItem = findFile( ids[i] );
         if ( shareFileItem != NULL )
@@ -99,6 +96,17 @@ void QAjShareFilesWidget::linkSlot() {
     link = ajShareItem->getLinkAJFSP();
 
     QApplication::clipboard()->setText(link);
+}
+
+void QAjShareFilesWidget::setPriority( int prio ) {
+    QList<QTreeWidgetItem *>  selectedItems = this->selectedItems();
+
+    for ( int i = 0; i < selectedItems.size(); i++ ) {
+        QAjShareFileItem* ajShareItem = (QAjShareFileItem*)selectedItems.at(i);
+        xml->set( "setpriority", "&priority=" + QString::number(prio) + "&id=" + ajShareItem->getId() );
+    }
+
+    xml->get( "share" );
 }
 
 
