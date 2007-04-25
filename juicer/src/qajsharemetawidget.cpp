@@ -92,9 +92,6 @@ void QAjShareMetaWidget::setShareFilesWidget(QAjShareFilesWidget* shareFilesWidg
     shareWidget->prioSpin->setDecimals( 0 );
     shareWidget->toolBar->addWidget( shareWidget->prioSpin );
 
-//     connect( shareWidget->prioCheck, SIGNAL( valueChanged( const QString&) ), this, SLOT( setPrioritySlot() ) );
-//     connect( shareWidget->prioSpin, SIGNAL( valueChanged( double ) ), this, SLOT( setPrioritySlot() ) );
-
     shareWidget->prioOkButton = shareWidget->toolBar->addAction( QIcon(":/ok.png"), "apply priority", this, SLOT( setPrioritySlot() ) );
 }
 
