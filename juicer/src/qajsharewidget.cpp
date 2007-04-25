@@ -42,12 +42,11 @@ QAjShareWidget::QAjShareWidget( QString filesystemSeparator, QXMLModule* xml, QW
     }
     setHeaderLabels( headers );
 
-    connect( this, SIGNAL( newSelection( bool ) ) , this, SLOT( selectionChanged( bool ) ) );
     connect( this, SIGNAL( newSelection( bool ) ) , parent, SLOT( selectionChanged( bool ) ) );
 
     initToolBar();
     initPopup();
-    selectionChanged( false );
+    newSelection(false);
 }
 
 
@@ -67,6 +66,8 @@ void QAjShareWidget::initToolBar()
     reloadButton = toolBar->addAction( QIcon(":/update.png"), "reload shared files", this, SLOT( reloadSlot() ) );
     applyButton = toolBar->addAction( QIcon(":/commit.png"), "commit changes to the core", this, SLOT( commitSlot() ) );
     applyButton->setEnabled( false );
+
+    connect( this, SIGNAL( newSelection( bool ) ) , removeButton, SLOT( setEnabled( bool ) ) );
 }
 
 
@@ -155,10 +156,6 @@ void QAjShareWidget::commitSlot()
     applyButton->setEnabled( false );
 }
 
-void QAjShareWidget::selectionChanged( bool oneSelected )
-{
-    removeButton->setEnabled( oneSelected );
-}
 
 void QAjShareWidget::insertDirList( QTreeWidgetItem* parent, QStringList* dirList )
 {

@@ -59,8 +59,6 @@ private:
 
 public slots:
     void findSlot();
-private slots:
-    void selectionChanged( bool isOneSelected );
     void removeSlot();
     void connectSlot();
     void gotServer( int id, bool error );
