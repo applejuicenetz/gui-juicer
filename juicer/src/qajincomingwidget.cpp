@@ -125,14 +125,14 @@ void QAjIncomingWidget::save()
         int i;
         for( i=0; i<items.size(); i++ )
         {
-            QString newDir = QFileDialog::getExistingDirectory(this, "copy to", actDir)
+            QString newDir = QFileDialog::getExistingDirectory(this, tr("copy to"), actDir)
                     + QDir::separator();
             if(!newDir.isEmpty())
             {
                 QString newFilename = items[i]->text( FILENAME_INCOMING_INDEX );
                 while(!newFilename.isEmpty() && QFile::exists(newDir + newFilename))
                 {
-                    newFilename = QInputDialog::getText(this, "file already exists",
+                    newFilename = QInputDialog::getText(this, tr("file already exists"),
                             "filename", QLineEdit::Normal, items[i]->text( FILENAME_INCOMING_INDEX ));
                 }
                 if(!newFilename.isEmpty())

@@ -329,6 +329,16 @@ http://www.progeln.de</source>
         <source>Incoming</source>
         <translation type="unfinished">Incoming-Verzeichnis</translation>
     </message>
+    <message>
+        <location filename="qajincomingwidget.cpp" line="128"/>
+        <source>copy to</source>
+        <translation type="unfinished">Kopieren nach </translation>
+    </message>
+    <message>
+        <location filename="qajincomingwidget.cpp" line="135"/>
+        <source>file already exists</source>
+        <translation type="unfinished">Datei exisitert bereits</translation>
+    </message>
 </context>
 <context>
     <name>QAjLoginDialog</name>
