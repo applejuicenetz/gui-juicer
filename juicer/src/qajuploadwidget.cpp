@@ -67,9 +67,9 @@ QAjUploadWidget::QAjUploadWidget( QXMLModule* xml, QWidget *parent ) : QAjListWi
     setHeaderLabels( headers );
 
     activeUpload = new QTreeWidgetItem( this );
-    activeUpload->setText( FILENAME_UP_INDEX, "1. active" );
+    activeUpload->setText( FILENAME_UP_INDEX, tr("active uploads") );
     queuedUpload = new QTreeWidgetItem( this );
-    queuedUpload->setText( FILENAME_UP_INDEX, "2. queueing" );
+    queuedUpload->setText( FILENAME_UP_INDEX, tr("queueing uploads") );
 
     expandItem( activeUpload );
 

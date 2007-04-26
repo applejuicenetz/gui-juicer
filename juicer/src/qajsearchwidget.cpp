@@ -63,20 +63,20 @@ void QAjSearchWidget::initToolBar()
 {
     toolBar = new QToolBar( "search operations", this );
 
-    downloadButton = toolBar->addAction( QIcon(":/save.png"), "download", this, SLOT( downloadSlot() ) );
-    removeButton = toolBar->addAction( QIcon(":/cancel.png"), "cancel search", this, SLOT( removeSlot() ) );
-    copyLinkButton = toolBar->addAction( QIcon(":/text_block.png"), "copy ajfsp link to clipboard", this, SLOT( linkSlot() ) );
+    downloadButton = toolBar->addAction( QIcon(":/save.png"), tr("download"), this, SLOT( downloadSlot() ) );
+    removeButton = toolBar->addAction( QIcon(":/cancel.png"), tr("cancel search"), this, SLOT( removeSlot() ) );
+    copyLinkButton = toolBar->addAction( QIcon(":/text_block.png"), tr("copy ajfsp link to clipboard"), this, SLOT( linkSlot() ) );
 
     toolBar->addSeparator();
 
     searchLabel = new QLabel( toolBar );
-    searchLabel->setText( "search for:" );
+    searchLabel->setText( tr("search for:") );
     toolBar->addWidget( searchLabel );
     searchEdit = new QLineEdit(toolBar );
     searchEdit->setMinimumWidth( 200 );
     toolBar->addWidget( searchEdit );
     connect( searchEdit, SIGNAL( returnPressed() ), this, SLOT( searchSlot() ) );
-    searchButton = toolBar->addAction( "search", this, SLOT( searchSlot() )  );
+    searchButton = toolBar->addAction( tr("search"), this, SLOT( searchSlot() )  );
 }
 
 void QAjSearchWidget::insertSearch( QString id, QString searchText, QString running, QString foundFiles )

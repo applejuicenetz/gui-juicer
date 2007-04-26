@@ -51,7 +51,7 @@ void QAjShareMetaWidget::setShareWidget(QAjShareWidget* shareWidget)
     this->setCentralWidget(shareWidget);
 
     shareWidget->popup->addSeparator();
-    showFiles = new QAction("show shared files in this directory", this );
+    showFiles = new QAction(tr("show shared files in this directory"), this );
     showFiles->setCheckable( true );
     QObject::connect(showFiles, SIGNAL(toggled(bool)), dock, SLOT(setVisible(bool)));
     QObject::connect(showFiles, SIGNAL(toggled(bool)), this, SLOT(dockVisibleSlot(bool)));
@@ -69,7 +69,7 @@ void QAjShareMetaWidget::setShareFilesWidget(QAjShareFilesWidget* shareFilesWidg
     addDockWidget((Qt::DockWidgetArea)localSettings.value("filesPos", Qt::RightDockWidgetArea).toInt(), dock);
     dock->setVisible(localSettings.value("filesVisible", true).toBool());
 
-    shareWidget->copyLinkButton = shareWidget->toolBar->addAction( QIcon(":/text_block.png"), "copy ajfsp link to clipboard", sharedFilesWidget, SLOT(linkSlot()) );
+    shareWidget->copyLinkButton = shareWidget->toolBar->addAction( QIcon(":/text_block.png"), tr("copy ajfsp link to clipboard"), sharedFilesWidget, SLOT(linkSlot()) );
 
     shareWidget->copyLinkButton->setEnabled( false );
 
@@ -92,7 +92,7 @@ void QAjShareMetaWidget::setShareFilesWidget(QAjShareFilesWidget* shareFilesWidg
     shareWidget->prioSpin->setDecimals( 0 );
     shareWidget->toolBar->addWidget( shareWidget->prioSpin );
 
-    shareWidget->prioOkButton = shareWidget->toolBar->addAction( QIcon(":/ok.png"), "apply priority", this, SLOT( setPrioritySlot() ) );
+    shareWidget->prioOkButton = shareWidget->toolBar->addAction( QIcon(":/ok.png"), tr("apply priority"), this, SLOT( setPrioritySlot() ) );
 }
 
 

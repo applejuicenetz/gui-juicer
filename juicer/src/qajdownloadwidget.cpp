@@ -128,23 +128,23 @@ void QAjDownloadWidget::initToolBar()
 {
     toolBar = new QToolBar( "download operations", this );
 
-    pauseDownloadButton = toolBar->addAction( QIcon(":/pause.png"), "pause download", this, SLOT( pauseSlot() ) );
-    pauseDownloadButton->setToolTip( "pause download" );
+    pauseDownloadButton = toolBar->addAction( QIcon(":/pause.png"), tr("pause download"), this, SLOT( pauseSlot() ) );
+    pauseDownloadButton->setToolTip( tr("pause download") );
 
-    resumeDownloadButton = toolBar->addAction( QIcon(":/resume.png"), "resume download", this, SLOT( resumeSlot() ) );
-    resumeDownloadButton->setToolTip( "resume download" );
+    resumeDownloadButton = toolBar->addAction( QIcon(":/resume.png"), tr("resume download"), this, SLOT( resumeSlot() ) );
+    resumeDownloadButton->setToolTip( tr("resume download") );
 
-    cancelDownloadButton = toolBar->addAction( QIcon(":/cancel.png"), "cancel download", this, SLOT( cancelSlot() ) );
+    cancelDownloadButton = toolBar->addAction( QIcon(":/cancel.png"), tr("cancel download"), this, SLOT( cancelSlot() ) );
 
-    partListButton = toolBar->addAction( QIcon(":/partlist.png"), "show part list", this, SLOT( partListSlot() ) );
-    renameDownloadButton = toolBar->addAction( QIcon(":/rename.png"), "rename download", this, SLOT( renameSlot() ) );
-    renamePlusDownloadButton = toolBar->addAction( QIcon(":/rename_plus.png"), "rename download by clipboard", this, SLOT( renamePlusSlot() ) );
+    partListButton = toolBar->addAction( QIcon(":/partlist.png"), tr("show part list"), this, SLOT( partListSlot() ) );
+    renameDownloadButton = toolBar->addAction( QIcon(":/rename.png"), tr("rename download"), this, SLOT( renameSlot() ) );
+    renamePlusDownloadButton = toolBar->addAction( QIcon(":/rename_plus.png"), tr("rename download by clipboard"), this, SLOT( renamePlusSlot() ) );
 
-    openDownloadButton = toolBar->addAction( QIcon(":/exec.png"), "open download", this, SLOT( openSlot() ) );
+    openDownloadButton = toolBar->addAction( QIcon(":/exec.png"), tr("open download"), this, SLOT( openSlot() ) );
 
-    copyLinkButton = toolBar->addAction( QIcon(":/text_block.png"), "copy ajfsp link to clipboard", this, SLOT(linkSlot()) );
+    copyLinkButton = toolBar->addAction( QIcon(":/text_block.png"), tr("copy ajfsp link to clipboard"), this, SLOT(linkSlot()) );
 
-    clearDownloadButton = toolBar->addAction( QIcon(":/filter.png"), "remove finished/canceld download", this, SLOT( cleanSlot() ) );
+    clearDownloadButton = toolBar->addAction( QIcon(":/filter.png"), tr("remove finished/canceld download"), this, SLOT( cleanSlot() ) );
 
     toolBar->addSeparator();
 
@@ -164,9 +164,9 @@ void QAjDownloadWidget::initToolBar()
     connect( powerSpin, SIGNAL( valueChanged( const QString&) ), this, SLOT( applyPowerDownload() ) );
     connect( powerSpin, SIGNAL( valueChanged( double ) ), this, SLOT( applyPowerDownload() ) );
 
-    powerOkButton = toolBar->addAction( QIcon(":/ok.png"), "apply power download", this, SLOT( applyPowerDownload() ) );
+    powerOkButton = toolBar->addAction( QIcon(":/ok.png"), tr("apply power download"), this, SLOT( applyPowerDownload() ) );
 
-    powerMaxButton = toolBar->addAction( QIcon(":/launch.png"), "set all downloads to 1:50", this, SLOT( maxPowerDownload() )  );
+    powerMaxButton = toolBar->addAction( QIcon(":/launch.png"), tr("set all downloads to 1:50"), this, SLOT( maxPowerDownload() )  );
 
     #ifdef AJQTGUI_MODE_SPECIAL
         bool special = true;
@@ -240,7 +240,7 @@ bool QAjDownloadWidget::remove( QString id )
 
 void QAjDownloadWidget::cancelSlot()
 {
-    if ( QMessageBox::question( this, "Confirm", "Do you realy want to cancel this download(s)?", QMessageBox::No, QMessageBox::Yes ) == QMessageBox::Yes )
+    if ( QMessageBox::question( this, tr("Confirm"), tr("Do you realy want to cancel this download(s)?"), QMessageBox::No, QMessageBox::Yes ) == QMessageBox::Yes )
     {
         processSelected( "canceldownload" );
     }
@@ -276,7 +276,7 @@ void QAjDownloadWidget::renameSlot()
     for ( i=0; i<selectedItems.size(); i++ )
     {
         oldFilename = selectedItems[i]->text( FILENAME_DOWN_INDEX );
-        newFilename = QInputDialog::getText( this, "rename download", "enter new filename for " + oldFilename, QLineEdit::Normal, oldFilename, &ok );
+        newFilename = QInputDialog::getText( this, tr("rename download"), tr("enter new filename for ") + oldFilename, QLineEdit::Normal, oldFilename, &ok );
         newFilename = QString( QUrl::toPercentEncoding( newFilename ) );
         if ( ok && !newFilename.isEmpty() )
         {

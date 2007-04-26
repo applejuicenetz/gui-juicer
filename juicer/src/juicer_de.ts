@@ -65,7 +65,7 @@
     <message>
         <location filename="juicer.cpp" line="92"/>
         <source>&amp;About</source>
-        <translation type="unfinished">%Über</translation>
+        <translation type="unfinished">&amp;Über</translation>
     </message>
     <message>
         <location filename="juicer.cpp" line="93"/>
@@ -183,6 +183,76 @@ http://www.progeln.de</source>
         <source>Power Download:</source>
         <translation type="unfinished">Power Download:</translation>
     </message>
+    <message>
+        <location filename="qajdownloadwidget.cpp" line="132"/>
+        <source>pause download</source>
+        <translation type="unfinished">Download pausieren</translation>
+    </message>
+    <message>
+        <location filename="qajdownloadwidget.cpp" line="135"/>
+        <source>resume download</source>
+        <translation type="unfinished">Download fortsetzen</translation>
+    </message>
+    <message>
+        <location filename="qajdownloadwidget.cpp" line="137"/>
+        <source>cancel download</source>
+        <translation type="unfinished">Download abbrechen</translation>
+    </message>
+    <message>
+        <location filename="qajdownloadwidget.cpp" line="139"/>
+        <source>show part list</source>
+        <translation type="unfinished">Partliste anzeigen</translation>
+    </message>
+    <message>
+        <location filename="qajdownloadwidget.cpp" line="279"/>
+        <source>rename download</source>
+        <translation type="unfinished">Download umbenennen</translation>
+    </message>
+    <message>
+        <location filename="qajdownloadwidget.cpp" line="141"/>
+        <source>rename download by clipboard</source>
+        <translation type="unfinished">Name des Downloads durch Inhalt der Zwischenablage ersetzen</translation>
+    </message>
+    <message>
+        <location filename="qajdownloadwidget.cpp" line="143"/>
+        <source>open download</source>
+        <translation type="unfinished">Datei öffnen</translation>
+    </message>
+    <message>
+        <location filename="qajdownloadwidget.cpp" line="145"/>
+        <source>copy ajfsp link to clipboard</source>
+        <translation type="unfinished">ajfsp-link in die Zwischenablage kopieren</translation>
+    </message>
+    <message>
+        <location filename="qajdownloadwidget.cpp" line="147"/>
+        <source>remove finished/canceld download</source>
+        <translation type="unfinished">Fertige/Abgebrochene Downloads entfernen</translation>
+    </message>
+    <message>
+        <location filename="qajdownloadwidget.cpp" line="243"/>
+        <source>Confirm</source>
+        <translation type="unfinished">Bestätigen</translation>
+    </message>
+    <message>
+        <location filename="qajdownloadwidget.cpp" line="243"/>
+        <source>Do you realy want to cancel this download(s)?</source>
+        <translation type="unfinished">Wollen Sie die gewählten Downloads wirklich abbrechen?</translation>
+    </message>
+    <message>
+        <location filename="qajdownloadwidget.cpp" line="279"/>
+        <source>enter new filename for </source>
+        <translation type="unfinished">Geben Sie einen neuen Dateinamen ein für </translation>
+    </message>
+    <message>
+        <location filename="qajdownloadwidget.cpp" line="167"/>
+        <source>apply power download</source>
+        <translation type="unfinished">Powerdownload bestätigen</translation>
+    </message>
+    <message>
+        <location filename="qajdownloadwidget.cpp" line="169"/>
+        <source>set all downloads to 1:50</source>
+        <translation type="unfinished">Alle Downloads auf 1:50 setzen</translation>
+    </message>
 </context>
 <context>
     <name>QAjFileWidget</name>
@@ -257,7 +327,7 @@ http://www.progeln.de</source>
     <message>
         <location filename="qajincomingwidget.cpp" line="317"/>
         <source>Incoming</source>
-        <translation type="unfinished">Incoming</translation>
+        <translation type="unfinished">Incoming-Verzeichnis</translation>
     </message>
 </context>
 <context>
@@ -339,32 +409,32 @@ http://www.progeln.de</source>
 <context>
     <name>QAjOptionsDialog</name>
     <message>
-        <location filename="qajoptionsdialog.cpp" line="28"/>
+        <location filename="qajoptionsdialog.cpp" line="62"/>
         <source>Core</source>
         <translation type="unfinished">Core</translation>
     </message>
     <message>
-        <location filename="qajoptionsdialog.cpp" line="33"/>
+        <location filename="qajoptionsdialog.cpp" line="63"/>
         <source>Limits</source>
         <translation type="unfinished">Limits</translation>
     </message>
     <message>
-        <location filename="qajoptionsdialog.cpp" line="38"/>
+        <location filename="qajoptionsdialog.cpp" line="64"/>
         <source>Appearance</source>
         <translation type="unfinished">Erscheinung</translation>
     </message>
     <message>
-        <location filename="qajoptionsdialog.cpp" line="43"/>
+        <location filename="qajoptionsdialog.cpp" line="65"/>
         <source>Behaviour</source>
         <translation type="unfinished">Verhalten</translation>
     </message>
     <message>
-        <location filename="qajoptionsdialog.cpp" line="48"/>
+        <location filename="qajoptionsdialog.cpp" line="66"/>
         <source>Launching</source>
         <translation type="unfinished">Starten</translation>
     </message>
     <message>
-        <location filename="qajoptionsdialog.cpp" line="53"/>
+        <location filename="qajoptionsdialog.cpp" line="67"/>
         <source>FTP</source>
         <translation type="unfinished">FTP</translation>
     </message>
@@ -514,7 +584,7 @@ http://www.progeln.de</source>
     <message>
         <location filename="qajoptionsdialogbase.ui" line="637"/>
         <source>Refresh:</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Auffrischen:</translation>
     </message>
     <message>
         <location filename="qajoptionsdialogbase.ui" line="644"/>
@@ -635,7 +705,7 @@ http://www.progeln.de</source>
 <context>
     <name>QAjSearchWidget</name>
     <message>
-        <location filename="qajsearchwidget.cpp" line="32"/>
+        <location filename="qajsearchwidget.cpp" line="79"/>
         <source>search</source>
         <translation type="unfinished">Suche</translation>
     </message>
@@ -653,6 +723,26 @@ http://www.progeln.de</source>
         <location filename="qajsearchwidget.cpp" line="283"/>
         <source>&amp;Search</source>
         <translation type="unfinished">&amp;Suche</translation>
+    </message>
+    <message>
+        <location filename="qajsearchwidget.cpp" line="66"/>
+        <source>download</source>
+        <translation type="unfinished">Gewählte Dateien herunterladen</translation>
+    </message>
+    <message>
+        <location filename="qajsearchwidget.cpp" line="67"/>
+        <source>cancel search</source>
+        <translation type="unfinished">Suche abbrechen</translation>
+    </message>
+    <message>
+        <location filename="qajsearchwidget.cpp" line="68"/>
+        <source>copy ajfsp link to clipboard</source>
+        <translation type="unfinished">ajfsp-link in die Zwischenablage kopieren</translation>
+    </message>
+    <message>
+        <location filename="qajsearchwidget.cpp" line="73"/>
+        <source>search for:</source>
+        <translation type="unfinished">Suche nach:</translation>
     </message>
 </context>
 <context>
@@ -723,6 +813,26 @@ http://www.progeln.de</source>
         <source>files</source>
         <translation type="unfinished">Dateien</translation>
     </message>
+    <message>
+        <location filename="qajsharemetawidget.cpp" line="84"/>
+        <source>Priority:</source>
+        <translation type="unfinished">Priorität</translation>
+    </message>
+    <message>
+        <location filename="qajsharemetawidget.cpp" line="54"/>
+        <source>show shared files in this directory</source>
+        <translation type="unfinished">Dateien in diesem Verzeichnis anzeigen</translation>
+    </message>
+    <message>
+        <location filename="qajsharemetawidget.cpp" line="72"/>
+        <source>copy ajfsp link to clipboard</source>
+        <translation type="unfinished">ajfsp-link in die Zwischenablage kopieren</translation>
+    </message>
+    <message>
+        <location filename="qajsharemetawidget.cpp" line="95"/>
+        <source>apply priority</source>
+        <translation type="unfinished">Neue Priorität bestätigen</translation>
+    </message>
 </context>
 <context>
     <name>QAjShareWidget</name>
@@ -737,7 +847,7 @@ http://www.progeln.de</source>
         <translation type="obsolete">rekursiv</translation>
     </message>
     <message>
-        <location filename="qajsharewidget.cpp" line="204"/>
+        <location filename="qajsharewidget.cpp" line="206"/>
         <source>S&amp;hare</source>
         <translation type="unfinished">Freigabe</translation>
     </message>
@@ -750,6 +860,26 @@ http://www.progeln.de</source>
         <location filename="qajsharewidget.cpp" line="102"/>
         <source>Share subdirectories?</source>
         <translation type="unfinished">Unterverzeichnise freigeben?</translation>
+    </message>
+    <message>
+        <location filename="qajsharewidget.cpp" line="64"/>
+        <source>add share</source>
+        <translation type="unfinished">Verzeichnis hinzufügen</translation>
+    </message>
+    <message>
+        <location filename="qajsharewidget.cpp" line="65"/>
+        <source>remove share</source>
+        <translation type="unfinished">Verzeichnis entfernen</translation>
+    </message>
+    <message>
+        <location filename="qajsharewidget.cpp" line="66"/>
+        <source>reload shared files</source>
+        <translation type="unfinished">Gesharte Verzeichnisse neu laden</translation>
+    </message>
+    <message>
+        <location filename="qajsharewidget.cpp" line="67"/>
+        <source>commit changes to the core and check shares</source>
+        <translation type="unfinished">Änderungen übernehmen und Shareüberprüfung starten</translation>
     </message>
 </context>
 <context>
@@ -788,6 +918,16 @@ http://www.progeln.de</source>
         <location filename="qajuploadwidget.cpp" line="63"/>
         <source>direct state</source>
         <translation type="unfinished">Verbindungsart</translation>
+    </message>
+    <message>
+        <location filename="qajuploadwidget.cpp" line="70"/>
+        <source>active uploads</source>
+        <translation type="unfinished">Aktive Uploads</translation>
+    </message>
+    <message>
+        <location filename="qajuploadwidget.cpp" line="72"/>
+        <source>queueing uploads</source>
+        <translation type="unfinished">Uploads in Warteschlange</translation>
     </message>
 </context>
 <context>
