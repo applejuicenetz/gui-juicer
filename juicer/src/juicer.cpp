@@ -472,7 +472,7 @@ void Juicer::tabChanged( QWidget *tab )
 
 void Juicer::exitCore()
 {
-    if ( QMessageBox::question( this, "Confirm", "Do you realy want to exit the core?\n All your credits will be lost!", QMessageBox::No, QMessageBox::Yes) == QMessageBox::Yes)
+    if ( QMessageBox::question( this, tr("Confirm"), tr("Do you realy want to exit the core?\nAll your credits will be lost!"), QMessageBox::No, QMessageBox::Yes) == QMessageBox::Yes)
     {
         xml->set( "exitcore" );
     }
@@ -488,11 +488,11 @@ void Juicer::connectedSince( QString since )
     if( since != "0" )
     {
         QString time = zeroTime.addMSecs( since.toULongLong() ).toLocalTime().toString( Qt::LocalDate );
-        connectedLabel->setText( "connected since " + time );
+        connectedLabel->setText( tr("connected since") + " " + time );
     }
     else
     {
-        connectedLabel->setText( "NOT connected" );
+        connectedLabel->setText( tr("NOT connected") );
     }
 }
 
