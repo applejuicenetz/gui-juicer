@@ -43,7 +43,9 @@
       <root>/usr/lib/qt4</root>
       <designerpluginpaths/>
     </qt>
-    <references/>
+    <references>
+      <pcs>Qt4</pcs>
+    </references>
     <codecompletion>
       <automaticCodeCompletion>false</automaticCodeCompletion>
       <automaticArgumentsHint>true</automaticArgumentsHint>
@@ -150,7 +152,7 @@
       </runarguments>
       <cwd>
         <ajqt4gui>/home/remat/projekte/svn/ajqtgui/juicer</ajqt4gui>
-        <juicer>/home/holg/projects/juicer</juicer>
+        <juicer>/home/remat/projekte/svn/ajqtgui/juicer</juicer>
       </cwd>
       <debugarguments>
         <ajqt4gui/>

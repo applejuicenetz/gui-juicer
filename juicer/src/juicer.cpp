@@ -20,7 +20,7 @@
 
 #include "juicer.h"
 
-Juicer::Juicer( QStringList argList ) : QMainWindow( )
+Juicer::Juicer( QStringList argList ) : QMainWindow()
 {
 // #ifdef Q_WS_WIN
 //     filesystemSeparator = "\\";
@@ -154,6 +154,18 @@ Juicer::Juicer( QStringList argList ) : QMainWindow( )
 
     login();
     queueLinks( argList );
+
+    if(lokalSettings.value( "useTray", false ).toBool())
+    {
+        tray = new QSystemTrayIcon( QIcon(":/juicer.png"), this );
+        tray->setVisible(true);
+        tray->setContextMenu( file );
+        connect(tray, SIGNAL(activated(QSystemTrayIcon::ActivationReason)), this, SLOT( trayActivated( QSystemTrayIcon::ActivationReason ) ) );
+    }
+    else
+    {
+        tray = NULL;
+    }
 }
 
 Juicer::~Juicer()
@@ -256,6 +268,7 @@ void Juicer::showOptions()
         lokalSettings.setValue( "coreAddress",  settings.coreAddress );
         lokalSettings.setValue( "savePassword",  settings.savePassword );
         lokalSettings.setValue( "showSplash",  settings.showSplash );
+        lokalSettings.setValue( "useTray",  settings.useTray );
         lokalSettings.setValue( "serverURL",  settings.serverURL );
         lokalSettings.setValue( "refresh",  settings.refresh );
 
@@ -283,7 +296,7 @@ void Juicer::showOptions()
         timer->start( lokalSettings.value( "refresh", 3 ).toInt() * 1000 );
 
         // save password in local file if user want's it
-        if ( settings.savePassword == "true" )
+        if ( settings.savePassword )
             lokalSettings.setValue( "password", password );
         else
             lokalSettings.remove( "password" );
@@ -314,8 +327,9 @@ void Juicer::settingsReady( AjSettings settings )
     {
         QSettings lokalSettings;
         settings.coreAddress = lokalSettings.value( "coreAddress", "localhost" ).toString();
-        settings.savePassword = lokalSettings.value( "savePassword",  "false" ).toString();
-        settings.showSplash = lokalSettings.value( "showSplash",  "true" ).toString();
+        settings.savePassword = lokalSettings.value( "savePassword",  false ).toBool();
+        settings.showSplash = lokalSettings.value( "showSplash", true ).toBool();
+        settings.useTray = lokalSettings.value( "useTray",  false ).toBool();
         settings.serverURL = lokalSettings.value( "serverURL",  "http://www.applejuicenet.de/18.0.html" ).toString();
         settings.refresh = lokalSettings.value( "refresh", 3 ).toInt();
 
@@ -609,4 +623,16 @@ void Juicer::initStatusBar()
     upSizeLabel->setVisible(show.contains(UPLOADED));
     creditsLabel->setVisible(show.contains(CREDITS));
 
+}
+
+
+/*!
+    \fn Juicer::trayActivated( QSystemTrayIcon::ActivationReason reason )
+ */
+void Juicer::trayActivated( QSystemTrayIcon::ActivationReason reason )
+{
+    if(reason == QSystemTrayIcon::Trigger)
+    {
+        this->setVisible(!this->isVisible());
+    }
 }

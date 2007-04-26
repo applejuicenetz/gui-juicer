@@ -113,6 +113,7 @@ AjSettings QAjOptionsDialog::getAjSettings()
     settings.autoconnect = autoConnect->isChecked()?"true":"false";
     settings.savePassword = savePassword->isChecked()?"true":"false";
     settings.showSplash = showSplash->isChecked()?"true":"false";
+    settings.useTray = trayCheckBox->isChecked()?"true":"false";
 
     settings.maxDown = QString::number( downSpin->value() );
     settings.maxUp = QString::number( upSpin->value() );
@@ -165,8 +166,9 @@ void QAjOptionsDialog::setAjSettings( AjSettings settings )
     refreshSpin->setValue( settings.refresh );
 
     autoConnect->setChecked( ( settings.autoconnect == "true" ) );
-    savePassword->setChecked( ( settings.savePassword == "true" ) );
-    showSplash->setChecked( ( settings.showSplash == "true" ) );
+    savePassword->setChecked( ( settings.savePassword ) );
+    showSplash->setChecked( ( settings.showSplash ) );
+    trayCheckBox->setChecked( ( settings.useTray ) );
 
     downSpin->setValue( settings.maxDown.toInt() / 1024 );
     upSpin->setValue( settings.maxUp.toInt() / 1024 );

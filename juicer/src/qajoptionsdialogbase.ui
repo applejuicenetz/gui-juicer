@@ -460,13 +460,13 @@
       <string>Appearance</string>
      </property>
     </widget>
-    <widget class="QWidget" name="layoutWidget" >
+    <widget class="QWidget" name="" >
      <property name="geometry" >
       <rect>
        <x>10</x>
        <y>50</y>
        <width>271</width>
-       <height>174</height>
+       <height>184</height>
       </rect>
      </property>
      <layout class="QVBoxLayout" >
@@ -474,12 +474,19 @@
        <number>0</number>
       </property>
       <property name="spacing" >
-       <number>15</number>
+       <number>6</number>
       </property>
       <item>
        <widget class="QCheckBox" name="showSplash" >
         <property name="text" >
          <string>show splash screen on startup</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QCheckBox" name="trayCheckBox" >
+        <property name="text" >
+         <string>use tray icon</string>
         </property>
        </widget>
       </item>

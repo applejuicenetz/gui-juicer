@@ -48,6 +48,8 @@
 #include <QSplitter>
 #include <QTabWidget>
 
+#include <QSystemTrayIcon>
+
 #include "qajdownloadwidget.h"
 #include "qajuploadwidget.h"
 #include "qajsearchwidget.h"
@@ -174,8 +176,11 @@ private slots:
     void linkServerLine( QString line );
 
     void adjustColumns();
+    void trayActivated ( QSystemTrayIcon::ActivationReason reason );
 private:
     void initStatusBar();
+
+    QSystemTrayIcon* tray;
 
 };
 

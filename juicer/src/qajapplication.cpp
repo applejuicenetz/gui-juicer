@@ -56,7 +56,7 @@ void QAjApplication::start()
 {
     QSettings lokalSettings;
     QSplashScreen *splash = NULL;
-    if ( lokalSettings.value( "showSplash", "true" ).toString() == "true" )
+    if ( lokalSettings.value( "showSplash", true ).toBool() )
     {
         splash = new QSplashScreen(QPixmap(":/splash.png"));
         splash->show();
