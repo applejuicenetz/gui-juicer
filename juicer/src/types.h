@@ -145,18 +145,8 @@ class AjSettings
 {
     public:
     enum LOCATION{SAME=0,SPECIFIC=1,FTP=2};
-    QString nick, password, coreAddress, tcpPort, xmlPort, incomingDir, tempDir, autoconnect;
-    bool savePassword, showSplash, useTray;
-    QString maxDown, maxUp, maxCon, maxSlot, maxSources, maxNewCon, allowBrowse;
-    QString serverURL;
-    int refresh;
-    QString launcher;
-    LOCATION location;
-    QString incomingDirSpecific, tempDirSpecific;
-    QString ftpServer, ftpPort, ftpUser, ftpPassword, ftpDir;
-    bool fetchServersOnStartup;
-    QVariant language;
-    QStringList statusbarComponents;
+    QString nick, tcpPort, xmlPort, incomingDir, tempDir, autoconnect;
+    QString maxDown, maxUp, maxCon, maxSlot, maxSources, maxNewCon;
 };
 
 class Part

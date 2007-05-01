@@ -29,6 +29,7 @@
 
 #include "qajlistwidget.h"
 #include "qajserveritem.h"
+#include "qajoptionsdialog.h"
 
 /**
 @author Matthias Reif

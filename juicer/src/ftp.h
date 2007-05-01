@@ -22,7 +22,6 @@
 
 #include <QObject>
 #include <QFtp>
-#include <QSettings>
 #include <QThread>
 #include <QStringList>
 #include <QDir>
@@ -30,6 +29,7 @@
 #include <QMessageBox>
 #include <QProgressDialog>
 
+#include "qajoptionsdialog.h"
 #include "types.h"
 
 /**

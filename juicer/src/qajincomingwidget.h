@@ -20,10 +20,10 @@
 #ifndef QAJINCOMINGWIDGET_H
 #define QAJINCOMINGWIDGET_H
 
-#include <QSettings>
 #include <QFileDialog>
 #include <QMessageBox>
 
+#include "qajoptionsdialog.h"
 #include "qajincomingitem.h"
 #include "qajlistwidget.h"
 #include "ftp.h"

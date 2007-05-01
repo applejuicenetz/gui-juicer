@@ -19,6 +19,8 @@
  ***************************************************************************/
 #include "ftp.h"
 
+#include "juicer.h"
+
 FTP::FTP( QString host, int port, QString user, QString password, bool binary, QObject *parent ) : QThread( parent )
 {
     this->host = host;
@@ -41,13 +43,10 @@ FTP::FTP( QString host, int port, QString user, QString password, bool binary, Q
 
 FTP::FTP( QObject *parent ) : QThread( parent )
 {
-    QSettings lokalSettings;
-    lokalSettings.beginGroup("ftp");
-    host = lokalSettings.value( "server", "localhost" ).toString();
-    port = lokalSettings.value( "port", "21" ).toInt();
-    user = lokalSettings.value( "user", "anonymous" ).toString();
-    password = lokalSettings.value( "password", "" ).toString();
-    lokalSettings.endGroup();
+    host = QAjOptionsDialog::getSetting( "ftp", "server", "localhost" ).toString();
+    port = QAjOptionsDialog::getSetting( "ftp", "port", "21" ).toInt();
+    user = QAjOptionsDialog::getSetting( "ftp", "user", "anonymous" ).toString();
+    password = QAjOptionsDialog::getSetting( "ftp", "password", "" ).toString();
     binary = true;
 }
 

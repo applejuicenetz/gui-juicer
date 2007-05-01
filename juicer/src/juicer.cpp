@@ -30,7 +30,6 @@ Juicer::Juicer( QStringList argList ) : QMainWindow()
 
     zeroTime = QDateTime( QDate(1970,1,1), QTime(0,0), Qt::UTC );
     firstModifiedMax = 4 + argList.size();
-    QSettings lokalSettings;
 
     linkServer = new QAjServerSocket( QAjApplication::APP_PORT );
     connect( linkServer, SIGNAL( lineReady( QString ) ), this, SLOT( linkServerLine( QString ) ) );
@@ -112,6 +111,7 @@ Juicer::Juicer( QStringList argList ) : QMainWindow()
     statusBar()->addPermanentWidget( creditsLabel );
     initStatusBar();
 
+    QSettings lokalSettings;
     lokalSettings.beginGroup( "MainWindow" );
     resize( lokalSettings.value( "size", QSize(1000, 600) ).toSize() );
     move( lokalSettings.value( "pos", QPoint(100, 100) ).toPoint() );
@@ -124,9 +124,10 @@ Juicer::Juicer( QStringList argList ) : QMainWindow()
     connect( xml, SIGNAL( modifiedDone( ) ), this, SLOT( firstModified() ) );
 
     connected = false;
-    password = lokalSettings.value( "password" ).toString();
+    
+    QString password = QAjOptionsDialog::getSetting( "corePassword", "" ).toString();
     // no password in local file? => ask for it
-    if ( password == NULL )
+    if ( password.isEmpty() )
     {
         bool ok;
         password = QInputDialog::getText( this, "Juicer", "Enter core password:", QLineEdit::Password,  QString::null, &ok );
@@ -135,13 +136,14 @@ Juicer::Juicer( QStringList argList ) : QMainWindow()
         else
         {
             // save password in local file if user wants it
-            if ( lokalSettings.value( "savePassword", "false" ).toString() == "true" )
-                lokalSettings.setValue( "password", password );
+            if ( QAjOptionsDialog::getSetting( "savePassword", false ).toBool() )
+                QAjOptionsDialog::setSetting( "password", password );
         }
     }
+
     xml->setPassword( password );
-    xml->setHost( lokalSettings.value("coreAddress", "localhost").toString(),
-                  lokalSettings.value("/progeln.de/Juicer/xmlPort", 9851).toInt() );
+    xml->setHost( QAjOptionsDialog::getSetting("coreAddress", "localhost").toString(),
+                  QAjOptionsDialog::getSetting("xmlPort", 9851).toInt() );
 
      timer = new QTimer( this );
     connect( timer, SIGNAL( timeout() ), this, SLOT( timerSlot() ) );
@@ -155,7 +157,7 @@ Juicer::Juicer( QStringList argList ) : QMainWindow()
     login();
     queueLinks( argList );
 
-    if(lokalSettings.value( "useTray", false ).toBool())
+    if( QAjOptionsDialog::getSetting( "useTray", false ).toBool() )
     {
         tray = new QSystemTrayIcon( QIcon(":/juicer.png"), this );
         tray->setVisible(true);
@@ -264,48 +266,16 @@ void Juicer::showOptions()
     {
         // save options
         AjSettings settings = optionsDialog->getAjSettings();
-        QSettings lokalSettings;
-        lokalSettings.setValue( "coreAddress",  settings.coreAddress );
-        lokalSettings.setValue( "savePassword",  settings.savePassword );
-        lokalSettings.setValue( "showSplash",  settings.showSplash );
-        lokalSettings.setValue( "useTray",  settings.useTray );
-        lokalSettings.setValue( "serverURL",  settings.serverURL );
-        lokalSettings.setValue( "refresh",  settings.refresh );
-
-        lokalSettings.setValue( "launcher",  settings.launcher );
-        lokalSettings.setValue( "location",  settings.location );
-        lokalSettings.setValue( "incomingDirSpecific",  settings.incomingDirSpecific );
-        lokalSettings.setValue( "tempDirSpecific",  settings.tempDirSpecific );
-
-        lokalSettings.beginGroup( "ftp" );
-        lokalSettings.setValue( "server",  settings.ftpServer );
-        lokalSettings.setValue( "port",  settings.ftpPort );
-        lokalSettings.setValue( "user",  settings.ftpUser );
-        lokalSettings.setValue( "password",  settings.ftpPassword );
-        lokalSettings.setValue( "dir",  settings.ftpDir );
-        lokalSettings.endGroup();
-
-        lokalSettings.setValue( "fetchServersOnStartup",  settings.fetchServersOnStartup );
-        lokalSettings.setValue( "language",  settings.language );
-        lokalSettings.setValue( "statusbarComponents",  settings.statusbarComponents );
-
         initStatusBar();
 
         timer->stop();
         timer->setSingleShot( false );
-        timer->start( lokalSettings.value( "refresh", 3 ).toInt() * 1000 );
-
-        // save password in local file if user want's it
-        if ( settings.savePassword )
-            lokalSettings.setValue( "password", password );
-        else
-            lokalSettings.remove( "password" );
+        timer->start( QAjOptionsDialog::getSetting("refresh", 3).toInt() * 1000 );
 
         QString settingsString = "";
         settingsString += "&Nickname=" + settings.nick;
         settingsString += "&Port=" + settings.tcpPort;
         settingsString += "&XMLPort=" + settings.xmlPort;
-        settingsString += "&AllowBrowse=" + settings.allowBrowse;
         settingsString += "&MaxUpload=" + QString::number(settings.maxUp.toInt() * 1024);
         settingsString += "&MaxDownload=" + QString::number(settings.maxDown.toInt() * 1024);
         settingsString += "&MaxSourcesPerFile=" + settings.maxSources;
@@ -316,6 +286,7 @@ void Juicer::showOptions()
         settingsString += "&Temporarydirectory=" + settings.tempDir;
         settingsString += "&MaxNewConnectionsPerTurn=" + settings.maxNewCon;
         xml->set( "setsettings", settingsString );
+
     }
 }
 
@@ -325,33 +296,34 @@ void Juicer::settingsReady( AjSettings settings )
     ajIncomingWidget->setDir( settings.incomingDir );
     if ( optionsDialog != NULL )
     {
-        QSettings lokalSettings;
-        settings.coreAddress = lokalSettings.value( "coreAddress", "localhost" ).toString();
-        settings.savePassword = lokalSettings.value( "savePassword",  false ).toBool();
-        settings.showSplash = lokalSettings.value( "showSplash", true ).toBool();
-        settings.useTray = lokalSettings.value( "useTray",  false ).toBool();
-        settings.serverURL = lokalSettings.value( "serverURL",  "http://www.applejuicenet.de/18.0.html" ).toString();
-        settings.refresh = lokalSettings.value( "refresh", 3 ).toInt();
-
-        settings.launcher = lokalSettings.value( "launcher", optionsDialog->launchCombo->itemText(0)).toString();
-
-        settings.location = (AjSettings::LOCATION)lokalSettings.value( "location", AjSettings::SAME ).toInt();
-        settings.tempDirSpecific = lokalSettings.value( "tempDirSpecific", "/" ).toString();
-        settings.incomingDirSpecific = lokalSettings.value( "incomingDirSpecific", "/" ).toString();
-
-        lokalSettings.beginGroup("ftp");
-        settings.ftpServer = lokalSettings.value( "server", "localhost" ).toString();
-        settings.ftpPort = lokalSettings.value( "port", "21" ).toString();
-        settings.ftpUser = lokalSettings.value( "user", "anonymous" ).toString();
-        settings.ftpPassword = lokalSettings.value( "password", "" ).toString();
-        settings.ftpDir = lokalSettings.value( "dir", "/" ).toString();
-        lokalSettings.endGroup();
-
-        settings.fetchServersOnStartup = lokalSettings.value( "fetchServersOnStartup", false ).toBool();
-        settings.language = lokalSettings.value( "language", QLocale::system().name() );
-        settings.statusbarComponents = lokalSettings.value( "statusbarComponents", optionsDialog->getDefaultStatusbarComponents() ).toStringList();
+//         QSettings lokalSettings;
+//         settings.coreAddress = lokalSettings.value( "coreAddress", "localhost" ).toString();
+//         settings.savePassword = lokalSettings.value( "savePassword",  false ).toBool();
+//         settings.showSplash = lokalSettings.value( "showSplash", true ).toBool();
+//         settings.useTray = lokalSettings.value( "useTray",  false ).toBool();
+//         settings.serverURL = lokalSettings.value( "serverURL",  "http://www.applejuicenet.de/18.0.html" ).toString();
+//         settings.refresh = lokalSettings.value( "refresh", 3 ).toInt();
+// 
+//         settings.launcher = lokalSettings.value( "launcher", optionsDialog->launchCombo->itemText(0)).toString();
+// 
+//         settings.location = (AjSettings::LOCATION)lokalSettings.value( "location", AjSettings::SAME ).toInt();
+//         settings.tempDirSpecific = lokalSettings.value( "tempDirSpecific", "/" ).toString();
+//         settings.incomingDirSpecific = lokalSettings.value( "incomingDirSpecific", "/" ).toString();
+// 
+//         lokalSettings.beginGroup("ftp");
+//         settings.ftpServer = lokalSettings.value( "server", "localhost" ).toString();
+//         settings.ftpPort = lokalSettings.value( "port", "21" ).toString();
+//         settings.ftpUser = lokalSettings.value( "user", "anonymous" ).toString();
+//         settings.ftpPassword = lokalSettings.value( "password", "" ).toString();
+//         settings.ftpDir = lokalSettings.value( "dir", "/" ).toString();
+//         lokalSettings.endGroup();
+// 
+//         settings.fetchServersOnStartup = lokalSettings.value( "fetchServersOnStartup", false ).toBool();
+//         settings.language = lokalSettings.value( "language", QLocale::system().name() );
+//         settings.statusbarComponents = lokalSettings.value( "statusbarComponents", optionsDialog->getDefaultStatusbarComponents() ).toStringList();
 
         optionsDialog->setAjSettings( settings );
+        optionsDialog->setSettings();
     }
 }
 
@@ -613,8 +585,7 @@ QStringList Juicer::getExec()
  */
 void Juicer::initStatusBar()
 {
-    QSettings lokalSettings;
-    QStringList show = lokalSettings.value( "statusbarComponents", optionsDialog->getDefaultStatusbarComponents() ).toStringList();
+    QStringList show = QAjOptionsDialog::getSetting( "statusbarComponents", optionsDialog->getDefaultStatusbarComponents() ).toStringList();
     connectedLabel->setVisible(show.contains(CONNECTED_SINCE));
     coreVersionLabel->setVisible(show.contains(CORE_VERSION));
     downSpeedLabel->setVisible(show.contains(DOWNSTREAM));
@@ -636,3 +607,5 @@ void Juicer::trayActivated( QSystemTrayIcon::ActivationReason reason )
         this->setVisible(!this->isVisible());
     }
 }
+
+

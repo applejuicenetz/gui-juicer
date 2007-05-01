@@ -23,11 +23,13 @@
 
 #include <QDialog>
 #include <QFileDialog>
+#include <QSettings>
 #include "ui_qajoptionsdialogbase.h"
 
 #include "qajiconwidget.h"
 
 #include "types.h"
+
 
 class QAjOptionsDialog : public QDialog, public Ui::QAjOptionsDialogBase
 {
@@ -39,9 +41,16 @@ public:
 
     AjSettings getAjSettings();
     void setAjSettings( AjSettings settings );
-    QStringList getDefaultStatusbarComponents();
+    void setSettings();
+    void writeSettings();
 
+    QStringList getDefaultStatusbarComponents();
     QString defaultLauncher;
+
+    static QVariant getSetting( QString key, QVariant defaultValue );
+    static void setSetting( QString key, QVariant value );
+    static QVariant getSetting( QString group, QString key, QVariant defaultValue );
+    static void setSetting( QString group, QString key, QVariant value );
 
 protected slots:
     void selectIncomingDir();
@@ -52,6 +61,7 @@ protected slots:
     void specificRadioToggled( bool checked );
 private slots:
     void jumpToFtpSlot();
+    void acceptedSlot();
 };
 
 #endif

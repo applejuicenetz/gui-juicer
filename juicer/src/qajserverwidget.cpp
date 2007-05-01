@@ -133,8 +133,7 @@ void QAjServerWidget::connectSlot()
 
 void QAjServerWidget::findSlot()
 {
-    QSettings lokalSettings;
-    QString serverURL = lokalSettings.value( "serverURL", "http://www.applejuicenet.de/18.0.html" ).toString();
+    QString serverURL = QAjOptionsDialog::getSetting( "serverURL", "http://www.applejuicenet.de/18.0.html" ).toString();
 
     QString host;
     if ( serverURL.indexOf( "http://", 0, Qt::CaseInsensitive ) == 0 )

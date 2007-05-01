@@ -320,13 +320,12 @@ void QAjDownloadWidget::openSlot()
 
     QString iDir, tDir;
     // determine the path
-    QSettings lokalSettings;
-    AjSettings::LOCATION location = (AjSettings::LOCATION)lokalSettings.value( "location", AjSettings::SAME ).toInt();
+    AjSettings::LOCATION location = (AjSettings::LOCATION)QAjOptionsDialog::getSetting( "location", AjSettings::SAME ).toInt();
 
     if( location == AjSettings::SPECIFIC )
     {
-        iDir = lokalSettings.value( "incomingDirSpecific", "/" ).toString() + QDir::separator();
-        tDir = lokalSettings.value( "tempDirSpecific", "/" ).toString() + QDir::separator();
+        iDir = QAjOptionsDialog::getSetting( "incomingDirSpecific", "/" ).toString() + QDir::separator();
+        tDir = QAjOptionsDialog::getSetting( "tempDirSpecific", "/" ).toString() + QDir::separator();
     }
     else if( location == AjSettings::SAME )
     {
@@ -486,10 +485,7 @@ void QAjDownloadWidget::storeDownloadFtp()
     QString filename, localDir;
     QList<QTreeWidgetItem *>  selectedItems = this->selectedItems();
 
-    QSettings lokalSettings;
-    lokalSettings.beginGroup("ftp");
-    QString dir = lokalSettings.value( "dir", "/" ).toString();
-    lokalSettings.endGroup();
+    QString dir = QAjOptionsDialog::getSetting( "ftp", "dir", "/" ).toString();
 
     if ( ! dir.endsWith( '/' ) )
     {

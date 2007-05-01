@@ -20,6 +20,7 @@
 
 #include "qajoptionsdialog.h"
 
+
 QAjOptionsDialog::QAjOptionsDialog( QWidget* parent ) : QDialog( parent )
 {
     setupUi( this );
@@ -90,6 +91,8 @@ QAjOptionsDialog::QAjOptionsDialog( QWidget* parent ) : QDialog( parent )
     connect( listWidget, SIGNAL(currentRowChanged( int ) ), stackedWidget , SLOT(setCurrentIndex( int ) ) );
     connect( jumpFtpButton, SIGNAL(clicked() ), this , SLOT(jumpToFtpSlot() ) );
 
+    connect( this, SIGNAL( accepted() ), this, SLOT( acceptedSlot() ) );
+
     listWidget->setCurrentRow( 0 );
 }
 
@@ -100,20 +103,11 @@ AjSettings QAjOptionsDialog::getAjSettings()
 {
     AjSettings settings;
     settings.nick = nickEdit->text();
-    settings.password = passwordEdit->text();
-    settings.coreAddress = coreEdit->text();
     settings.xmlPort = xmlEdit->text();
     settings.incomingDir = incomingEdit->text();
     settings.tempDir = tempEdit->text();
 
-    settings.serverURL = serverEdit->text();
-
-    settings.refresh = refreshSpin->value();
-
     settings.autoconnect = autoConnect->isChecked()?"true":"false";
-    settings.savePassword = savePassword->isChecked()?"true":"false";
-    settings.showSplash = showSplash->isChecked()?"true":"false";
-    settings.useTray = trayCheckBox->isChecked()?"true":"false";
 
     settings.maxDown = QString::number( downSpin->value() );
     settings.maxUp = QString::number( upSpin->value() );
@@ -124,51 +118,17 @@ AjSettings QAjOptionsDialog::getAjSettings()
 
     settings.tcpPort = tcpEdit->text();
 
-    settings.launcher = launchCombo->currentText();
-    if( sameComputerRadio->isChecked() )
-        settings.location = AjSettings::SAME;
-    else if( specificRadio->isChecked() )
-        settings.location = AjSettings::SPECIFIC;
-    else
-        settings.location = AjSettings::FTP;
-    settings.tempDirSpecific = tempSpecificEdit->text();
-    settings.incomingDirSpecific = incomingSpecificEdit->text();
-
-    settings.ftpServer = ftpServerEdit->text();
-    settings.ftpPort = ftpPortEdit->text();
-    settings.ftpUser = ftpUserEdit->text();
-    settings.ftpPassword = ftpPasswordEdit->text();
-    settings.ftpDir = ftpInDirEdit->text();
-
-    settings.fetchServersOnStartup = this->fetchServersCheckBox->isChecked();
-
-    settings.language = languageComboBox->itemData(languageComboBox->currentIndex());
-
-    QList<QListWidgetItem *> items = statusbarList->selectedItems();
-    int i;
-    for(i=0; i<items.size(); i++)
-    {
-        settings.statusbarComponents << QString::number(statusbarList->row(items[i]));
-    }
     return settings;
 }
 
 void QAjOptionsDialog::setAjSettings( AjSettings settings )
 {
     nickEdit->setText( settings.nick );
-    passwordEdit->setText( settings.password );
-    coreEdit->setText( settings.coreAddress );
     xmlEdit->setText( settings.xmlPort );
     incomingEdit->setText( settings.incomingDir );
     tempEdit->setText( settings.tempDir );
-    serverEdit->setText( settings.serverURL );
-
-    refreshSpin->setValue( settings.refresh );
 
     autoConnect->setChecked( ( settings.autoconnect == "true" ) );
-    savePassword->setChecked( ( settings.savePassword ) );
-    showSplash->setChecked( ( settings.showSplash ) );
-    trayCheckBox->setChecked( ( settings.useTray ) );
 
     downSpin->setValue( settings.maxDown.toInt() / 1024 );
     upSpin->setValue( settings.maxUp.toInt() / 1024 );
@@ -178,30 +138,44 @@ void QAjOptionsDialog::setAjSettings( AjSettings settings )
     newSpin->setValue( settings.maxNewCon.toInt() );
 
     tcpEdit->setText( settings.tcpPort );
+}
 
-    launchCombo->setEditText( settings.launcher );
-    sameComputerRadio->setChecked( settings.location == AjSettings::SAME );
-    specificRadio->setChecked( settings.location == AjSettings::SPECIFIC );
-    ftpRadio->setChecked( settings.location == AjSettings::FTP );
-    incomingSpecificEdit->setText( settings.incomingDirSpecific );
-    tempSpecificEdit->setText( settings.tempDirSpecific );
+void QAjOptionsDialog::setSettings()
+{
+    passwordEdit->setText( getSetting( "password", "" ).toString() );
+    coreEdit->setText( getSetting( "coreAddress", "localhost" ).toString() );
 
-    ftpServerEdit->setText( settings.ftpServer );
-    ftpPortEdit->setText( settings.ftpPort );
-    ftpUserEdit->setText( settings.ftpUser );
-    ftpPasswordEdit->setText( settings.ftpPassword );
-    ftpInDirEdit->setText( settings.ftpDir );
+    refreshSpin->setValue( getSetting( "refresh", 3 ).toInt() );
 
-    fetchServersCheckBox->setChecked( settings.fetchServersOnStartup );
+    savePassword->setChecked( getSetting( "savePassword", false ).toBool() );
+    showSplash->setChecked( getSetting( "showSplash", true ).toBool() );
+    trayCheckBox->setChecked( getSetting( "useTray", false ).toBool() );
 
-    languageComboBox->setCurrentIndex(languageComboBox->findData(settings.language.toString().split("_")[0]));
+    launchCombo->setEditText( getSetting( "launcher", launchCombo->itemText(0)).toString() );
+    sameComputerRadio->setChecked( getSetting( "location", AjSettings::SAME ).toInt() );
+    specificRadio->setChecked( getSetting( "location", AjSettings::SPECIFIC ).toInt() );
+    ftpRadio->setChecked( getSetting( "location", AjSettings::FTP ).toInt() );
+    incomingSpecificEdit->setText( getSetting("incomingDirSpecific", "/" ).toString() );
+    tempSpecificEdit->setText( getSetting( "tempDirSpecific", "/" ).toString() );
 
+    ftpServerEdit->setText( getSetting( "ftp", "server", "localhost" ).toString() );
+    ftpPortEdit->setText( getSetting( "ftp", "port", "21" ).toString() );
+    ftpUserEdit->setText( getSetting( "ftp", "user", "anonymous" ).toString() );
+    ftpPasswordEdit->setText( getSetting( "ftp", "password", "" ).toString() );
+    ftpInDirEdit->setText( getSetting( "ftp", "dir", "/" ).toString() );
+
+    fetchServersCheckBox->setChecked( getSetting( "fetchServersOnStartup", false ).toBool() );
+
+    languageComboBox->setCurrentIndex(languageComboBox->findData(getSetting( "language", "en" ).toString().split("_")[0]));
+
+    QStringList statusbarComponents = getSetting( "statusbarComponents", getDefaultStatusbarComponents() ).toStringList();
     statusbarList->clearSelection();
     int i;
-    for(i=0; i<settings.statusbarComponents.size(); i++)
+    for(i=0; i<statusbarComponents.size(); i++)
     {
-        statusbarList->item(settings.statusbarComponents[i].toInt())->setSelected(true);
+        statusbarList->item( statusbarComponents[i].toInt() )->setSelected( true );
     }
+
 }
 
 void QAjOptionsDialog::selectIncomingDir()
@@ -279,4 +253,111 @@ QStringList QAjOptionsDialog::getDefaultStatusbarComponents()
 void QAjOptionsDialog::jumpToFtpSlot()
 {
     stackedWidget->setCurrentIndex(stackedWidget->count() -1);
+}
+
+
+/*!
+    \fn QAjOptionsDialog::writeSettings()
+ */
+void QAjOptionsDialog::writeSettings()
+{
+    if(savePassword->isChecked())
+    {
+        setSetting( "corePassword", passwordEdit->text() );
+    }
+    else
+    {
+        setSetting( "corePassword", "" );
+    }
+
+    setSetting( "coreAddress", coreEdit->text() );
+    setSetting( "savePassword", savePassword->isChecked() );
+    setSetting( "showSplash", showSplash->isChecked() );
+    setSetting( "useTray", trayCheckBox->isChecked() );
+    setSetting( "serverURL", serverEdit->text() );
+    setSetting( "refresh", refreshSpin->value() );
+    setSetting( "launcher", launchCombo->currentText() );
+
+    if( sameComputerRadio->isChecked() )
+        setSetting( "location", AjSettings::SAME );
+    else if( specificRadio->isChecked() )
+        setSetting( "location", AjSettings::SPECIFIC );
+    else
+        setSetting( "location", AjSettings::FTP );
+
+    setSetting( "incomingDirSpecific", tempSpecificEdit->text() );
+    setSetting( "tempDirSpecific", incomingSpecificEdit->text() );
+
+    setSetting( "ftp", "server", ftpServerEdit->text() );
+    setSetting( "ftp", "port", ftpPortEdit->text() );
+    setSetting( "ftp", "user", ftpUserEdit->text() );
+    setSetting( "ftp", "password", ftpPasswordEdit->text() );
+    setSetting( "ftp", "dir", ftpInDirEdit->text() );
+
+    setSetting( "fetchServersOnStartup",  fetchServersCheckBox->isChecked() );
+    setSetting( "language",  languageComboBox->itemData(languageComboBox->currentIndex()) );
+
+    QStringList statusbarComponents;
+    QList<QListWidgetItem *> items = statusbarList->selectedItems();
+    int i;
+    for(i=0; i<items.size(); i++)
+    {
+        statusbarComponents << QString::number(statusbarList->row(items[i]));
+    }
+    setSetting( "statusbarComponents",  statusbarComponents );
+}
+
+
+/*!
+    \fn QAjOptionsDialog::getSetting( QString key, QVariant defaultValue )
+ */
+QVariant QAjOptionsDialog::getSetting( QString key, QVariant defaultValue )
+{
+    QSettings lokalSettings;
+    return lokalSettings.value( key, defaultValue);
+}
+
+
+/*!
+    \fn QAjOptionsDialog::setSetting( QString key, QVariant value )
+ */
+void QAjOptionsDialog::setSetting( QString key, QVariant value )
+{
+    QSettings lokalSettings;
+    lokalSettings.setValue(key, value);
+}
+
+
+
+/*!
+    \fn QAjOptionsDialog::getSetting( QString group, QString key, QVariant defaultValue )
+ */
+QVariant QAjOptionsDialog::getSetting( QString group, QString key, QVariant defaultValue )
+{
+    QSettings lokalSettings;
+    lokalSettings.beginGroup( group );
+    QVariant value =  lokalSettings.value( key, defaultValue);
+    lokalSettings.endGroup();
+    return value;
+}
+
+
+/*!
+    \fn QAjOptionsDialog::setSetting( QString group, QString key, QVariant value )
+ */
+void QAjOptionsDialog::setSetting( QString group, QString key, QVariant value )
+{
+    QSettings lokalSettings;
+    lokalSettings.beginGroup( group );
+    lokalSettings.setValue(key, value);
+    lokalSettings.endGroup();
+}
+
+
+/*!
+    \fn QAjOptionsDialog::acceptedSlot()
+ */
+void QAjOptionsDialog::acceptedSlot()
+{
+    writeSettings();
 }

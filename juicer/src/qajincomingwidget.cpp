@@ -78,14 +78,10 @@ void QAjIncomingWidget::reloadFtp()
 {
     this->clear();
 
-    QSettings lokalSettings;
-    lokalSettings.beginGroup("ftp");
-    QString server = lokalSettings.value( "server", "localhost" ).toString();
-    int port = lokalSettings.value( "port", "21" ).toInt();
-    QString user = lokalSettings.value( "user", "anonymous" ).toString();
-    QString password = lokalSettings.value( "password", "foobar@msn.com" ).toString();
-    QString dir = lokalSettings.value( "dir", "/" ).toString();
-    lokalSettings.endGroup();
+    QString server = QAjOptionsDialog::getSetting( "ftp", "server", "localhost" ).toString();
+    int port = QAjOptionsDialog::getSetting( "ftp", "port", "21" ).toInt();
+    QString user = QAjOptionsDialog::getSetting( "ftp", "user", "anonymous" ).toString();
+    QString password = QAjOptionsDialog::getSetting( "ftp", "password", "" ).toString();
 
     if ( ftp->state() != QFtp::Unconnected )
     {
@@ -104,7 +100,6 @@ void QAjIncomingWidget::reloadFtp()
 void QAjIncomingWidget::save()
 {
     QString actDir;
-    QSettings lokalSettings;
     // determine the path
     AjSettings::LOCATION location = getLocation();
     if(location == AjSettings::FTP)
@@ -115,7 +110,7 @@ void QAjIncomingWidget::save()
     {
         if( location == AjSettings::SPECIFIC )
         {
-            actDir = lokalSettings.value( "incomingDirSpecific", "/" ).toString() + QDir::separator();
+            actDir = QAjOptionsDialog::getSetting( "incomingDirSpecific", "/" ).toString() + QDir::separator();
         }
         else if( location == AjSettings::SAME )
         {
@@ -153,11 +148,9 @@ void QAjIncomingWidget::storeFtp()
 {
     QString filename, localDir;
     QList<QTreeWidgetItem *>  selectedItems = this->selectedItems();
-    
-    QSettings lokalSettings;
-    lokalSettings.beginGroup("ftp");
-    QString dir = lokalSettings.value( "incoming", "/" ).toString();
-    lokalSettings.endGroup();
+
+    QString dir = QAjOptionsDialog::getSetting( "ftp", "dir", "/" ).toString();
+
 
     // TODO: check if the core filesystem separator is a better choice
     if ( ! dir.endsWith( '/' ) )
@@ -199,7 +192,6 @@ void QAjIncomingWidget::storeFtp()
 void QAjIncomingWidget::reload()
 {
     this->clear();
-    QSettings lokalSettings;
     AjSettings::LOCATION location = getLocation();
     if(location == AjSettings::FTP)
     {
@@ -216,7 +208,7 @@ void QAjIncomingWidget::reload()
         }
         else
         {
-            actDir = lokalSettings.value( "incomingDirSpecific", "/" ).toString();
+            actDir = QAjOptionsDialog::getSetting( "incomingDirSpecific", "/" ).toString();
         }
         QDir dirDir(actDir);
         if(dirDir.exists())
@@ -255,12 +247,11 @@ void QAjIncomingWidget::open()
     QString exec = args.takeFirst();
 
     QString actDir;
-    QSettings lokalSettings;
     // determine the path
     AjSettings::LOCATION location = getLocation();
     if( location == AjSettings::SPECIFIC )
     {
-        actDir = lokalSettings.value( "incomingDirSpecific", "/" ).toString() + QDir::separator();
+        actDir = QAjOptionsDialog::getSetting( "incomingDirSpecific", "/" ).toString() + QDir::separator();
     }
     else if( location == AjSettings::SAME )
     {
@@ -327,6 +318,5 @@ void QAjIncomingWidget::initPopup()
  */
 AjSettings::LOCATION QAjIncomingWidget::getLocation()
 {
-    QSettings lokalSettings;
-    return (AjSettings::LOCATION)lokalSettings.value( "location", AjSettings::SAME ).toInt();
+    return (AjSettings::LOCATION)QAjOptionsDialog::getSetting( "location", AjSettings::SAME ).toInt();
 }

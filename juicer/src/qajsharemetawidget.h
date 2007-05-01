@@ -16,11 +16,12 @@
 #include <QMainWindow>
 #include <QWidget>
 #include <QDockWidget>
-#include <QSettings>
 
 #include "qxmlmodule.h"
 #include "qajsharewidget.h"
 #include "qajsharefileswidget.h"
+
+class Juicer;
 
 /**
 	@author Holger Gerth <holger.gerth@informatik.tu-chemnitz.de>

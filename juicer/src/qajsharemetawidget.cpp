@@ -11,6 +11,8 @@
 //
 #include "qajsharemetawidget.h"
 
+#include "juicer.h"
+
 QAjShareMetaWidget::QAjShareMetaWidget( QWidget *parent ) : QMainWindow(parent)
 {
     dock = new AjShareFilesDockWidget( tr("files"), this );

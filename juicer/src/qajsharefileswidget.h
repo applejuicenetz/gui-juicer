@@ -19,10 +19,7 @@
 #include <QHash>
 #include <QList>
 #include <QIcon>
-#include <QSettings>
-// #include <QFileDialog>
 #include <QCheckBox>
-// #include <QDoubleSpinBox>
 #include <QInputDialog>
 #include <QApplication>
 #include <QClipboard>
