@@ -151,6 +151,8 @@ void QAjOptionsDialog::setSettings()
     showSplash->setChecked( getSetting( "showSplash", true ).toBool() );
     trayCheckBox->setChecked( getSetting( "useTray", false ).toBool() );
 
+    serverEdit->setText( getSetting( "serverURL", "http://www.applejuicenet.de/18.0.html" ).toString() );
+
     launchCombo->setEditText( getSetting( "launcher", launchCombo->itemText(0)).toString() );
     sameComputerRadio->setChecked( getSetting( "location", AjSettings::SAME ).toInt() );
     specificRadio->setChecked( getSetting( "location", AjSettings::SPECIFIC ).toInt() );
