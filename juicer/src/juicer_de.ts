@@ -651,7 +651,7 @@ All Ihre Credits würden verloren gehen!</translation>
     <message>
         <location filename="qajoptionsdialogbase.ui" line="785"/>
         <source>Use specific folders (e.g. for smb):</source>
-        <translation type="unfinished">Benutze bestimmte Verzeichnisse( z.B: für smb):</translation>
+        <translation type="unfinished">Benutze bestimmte Verz. (z.B: für smb):</translation>
     </message>
     <message>
         <location filename="qajoptionsdialogbase.ui" line="839"/>

@@ -154,9 +154,11 @@ void QAjOptionsDialog::setSettings()
     serverEdit->setText( getSetting( "serverURL", "http://www.applejuicenet.de/18.0.html" ).toString() );
 
     launchCombo->setEditText( getSetting( "launcher", launchCombo->itemText(0)).toString() );
-    sameComputerRadio->setChecked( getSetting( "location", AjSettings::SAME ).toInt() );
-    specificRadio->setChecked( getSetting( "location", AjSettings::SPECIFIC ).toInt() );
-    ftpRadio->setChecked( getSetting( "location", AjSettings::FTP ).toInt() );
+
+    int location = getSetting( "location", AjSettings::SAME ).toInt();
+    sameComputerRadio->setChecked( location == AjSettings::SAME );
+    specificRadio->setChecked( location == AjSettings::SPECIFIC );
+    ftpRadio->setChecked( location == AjSettings::FTP );
     incomingSpecificEdit->setText( getSetting("incomingDirSpecific", "/" ).toString() );
     tempSpecificEdit->setText( getSetting( "tempDirSpecific", "/" ).toString() );
 
@@ -287,8 +289,8 @@ void QAjOptionsDialog::writeSettings()
     else
         setSetting( "location", AjSettings::FTP );
 
-    setSetting( "incomingDirSpecific", tempSpecificEdit->text() );
-    setSetting( "tempDirSpecific", incomingSpecificEdit->text() );
+    setSetting( "incomingDirSpecific", incomingSpecificEdit->text() );
+    setSetting( "tempDirSpecific", tempSpecificEdit->text() );
 
     setSetting( "ftp", "server", ftpServerEdit->text() );
     setSetting( "ftp", "port", ftpPortEdit->text() );
