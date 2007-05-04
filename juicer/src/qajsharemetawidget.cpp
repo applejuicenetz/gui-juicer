@@ -40,7 +40,8 @@ QAjShareMetaWidget::~QAjShareMetaWidget()
 void QAjShareMetaWidget::shareFilesDockChanged( Qt::DockWidgetArea area )
 {
     QSettings localSettings;
-    localSettings.setValue("filesPos", area);
+    localSettings.beginGroup("FilesDock");
+    localSettings.setValue("pos", area);
 }
 
 
@@ -68,8 +69,11 @@ void QAjShareMetaWidget::setShareFilesWidget(QAjShareFilesWidget* shareFilesWidg
     dock->setWidget(sharedFilesWidget);
 
     QSettings localSettings;
-    addDockWidget((Qt::DockWidgetArea)localSettings.value("filesPos", Qt::RightDockWidgetArea).toInt(), dock);
-    dock->setVisible(localSettings.value("filesVisible", true).toBool());
+    localSettings.beginGroup("FilesDock");
+    addDockWidget((Qt::DockWidgetArea)localSettings.value("pos", Qt::RightDockWidgetArea).toInt(), dock);
+    dock->setVisible(localSettings.value("visible", true).toBool());
+    dock->resize(localSettings.value("size", true).toSize());
+    localSettings.endGroup();
 
     shareWidget->copyLinkButton = shareWidget->toolBar->addAction( QIcon(":/text_block.png"), tr("copy ajfsp link to clipboard"), sharedFilesWidget, SLOT(linkSlot()) );
 

@@ -47,6 +47,11 @@ public:
             : QDockWidget(title, parent) {
             enabled = false;
         }
+        QSize sizeHint() const {
+            QSettings localSettings;
+            localSettings.beginGroup("FilesDock");
+            return localSettings.value("size", true).toSize();
+        }
         bool enabled;
     protected:
         void closeEvent( QCloseEvent * event )

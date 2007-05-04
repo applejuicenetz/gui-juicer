@@ -32,8 +32,11 @@ QAjServerMetaWidget::QAjServerMetaWidget(QWidget *parent) : QMainWindow(parent)
     dock->setWidget(welcomeMessage);
 
     QSettings localSettings;
-    addDockWidget((Qt::DockWidgetArea)localSettings.value("welcomePos", Qt::RightDockWidgetArea).toInt(), dock);
-    dock->setVisible(localSettings.value("welcomeVisible", true).toBool());
+    localSettings.beginGroup("WelcomeDock");
+    addDockWidget((Qt::DockWidgetArea)localSettings.value("pos", Qt::RightDockWidgetArea).toInt(), dock);
+    dock->setVisible(localSettings.value("visible", true).toBool());
+    dock->resize(localSettings.value("size", true).toSize());
+    localSettings.endGroup();
 }
 
 
@@ -48,7 +51,8 @@ QAjServerMetaWidget::~QAjServerMetaWidget()
 void QAjServerMetaWidget::welcomeDockLocationChanged( Qt::DockWidgetArea area )
 {
     QSettings localSettings;
-    localSettings.setValue("welcomePos", area);
+    localSettings.beginGroup("WelcomeDock");
+    localSettings.setValue("pos", area);
 }
 
 

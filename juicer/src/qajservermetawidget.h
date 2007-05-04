@@ -51,6 +51,12 @@ public:
         AjDockWidget(QString title, QAjServerMetaWidget* parent)
             : QDockWidget(title, parent) {enabled = false;}
         bool enabled;
+
+        QSize sizeHint() const {
+            QSettings localSettings;
+            localSettings.beginGroup("WelcomeDock");
+            return localSettings.value("size", true).toSize();
+        }
     protected:
         void closeEvent( QCloseEvent * event )
         {

@@ -222,12 +222,16 @@ void Juicer::closeEvent( QCloseEvent* ce )
     lokalSettings.setValue( "size", size() );
     lokalSettings.setValue( "pos", pos() );
     lokalSettings.endGroup();
-    #if QT_VERSION < 0x040300
-    lokalSettings.setValue( "welcomePos", ajServerMetaWidget->dockWidgetArea(ajServerMetaWidget->dock) );
-    lokalSettings.setValue( "filesPos", ajShareMetaWidget->dockWidgetArea(ajShareMetaWidget->dock) );
-    #endif
-    lokalSettings.setValue( "welcomeVisible", ajServerMetaWidget->dock->enabled );
-    lokalSettings.setValue( "filesVisible", ajShareMetaWidget->dock->enabled );
+    lokalSettings.beginGroup("WelcomeDock");
+    lokalSettings.setValue( "pos", ajServerMetaWidget->dockWidgetArea(ajServerMetaWidget->dock) );
+    lokalSettings.setValue( "size", ajServerMetaWidget->dock->size() );
+    lokalSettings.setValue( "visible", ajServerMetaWidget->dock->enabled );
+    lokalSettings.endGroup();
+    lokalSettings.beginGroup("FilesDock");
+    lokalSettings.setValue( "pos", ajShareMetaWidget->dockWidgetArea(ajShareMetaWidget->dock) );
+    lokalSettings.setValue( "size", ajShareMetaWidget->dock->size() );
+    lokalSettings.setValue( "visible", ajShareMetaWidget->dock->enabled );
+    lokalSettings.endGroup();
     ce->accept();
 }
 
@@ -538,6 +542,8 @@ void Juicer::adjustColumns()
         ajServerWidget->adjustSizeOfColumns();
     if ( ajShareWidget->isVisible() )
         ajShareWidget->adjustSizeOfColumns();
+    if ( ajShareMetaWidget->sharedFilesWidget->isVisible() )
+        ajShareMetaWidget->sharedFilesWidget->adjustSizeOfColumns();
 }
 
 
