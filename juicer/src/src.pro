@@ -94,7 +94,10 @@ QT += core gui network xml
 
 RESOURCES += images.qrc \
 translations.qrc
+RC_FILE = resources/juicer.rc
 TARGET = ../bin/juicer
 
 TRANSLATIONS += juicer_de.ts
+
+DISTFILES += resources/juicer.rc
 
