@@ -220,7 +220,7 @@ void QAjIncomingWidget::reload()
                 QAjIncomingItem* item = new QAjIncomingItem( list[i].size(), list[i].lastModified().toLocalTime(), this );
                 item->setText(FILENAME_INCOMING_INDEX, list[i].fileName());
                 item->setText(SIZE_INCOMING_INDEX, QConvert::bytes((double)list[i].size(), 2));
-                item->setText(DATE_INCOMING_INDEX, list[i].lastModified().toLocalTime().toString() );
+                item->setText(DATE_INCOMING_INDEX, list[i].lastModified().toLocalTime().toString( Qt::LocalDate ) );
                 this->addTopLevelItem( item );
             }
         }

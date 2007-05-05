@@ -57,6 +57,7 @@ private:
     QAction *removeButton, *connectButton, *findButton;
 
     QHttp *serverHttp;
+    QDateTime zeroTime;
 
 public slots:
     void findSlot();

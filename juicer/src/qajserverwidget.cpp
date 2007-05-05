@@ -21,6 +21,7 @@
 
 QAjServerWidget::QAjServerWidget( QXMLModule* xml, QWidget *parent ) : QAjListWidget( xml, parent )
 {
+    zeroTime = QDateTime( QDate(1970,1,1), QTime(0,0), Qt::UTC );
     connectedWithId = "";
     connectingToId = "";
     setColumnCount( NUM_SERVER_COL );
@@ -85,24 +86,13 @@ void QAjServerWidget::insertServer( QString id, QString name, QString host, QStr
     QAjServerItem *item = findServer( id );
     if ( item == NULL )
     {
-        lastseen = lastseen.left(lastseen.length()-3);
-        time_t time = lastseen.toLong();
-        struct tm *time2;
-        time2 = localtime( &time );
-        //QString timeString(asctime(time2));
-        QString timeString = "";
-        timeString += QConvert::num( time2->tm_mday ) + ". ";
-        timeString += QConvert::num( time2->tm_mon + 1 ) + ". ";
-        timeString += QConvert::num( time2->tm_year + 1900 );
-        timeString += " ";
-        timeString += QConvert::num( time2->tm_hour ) + ":";
-        timeString += QConvert::num( time2->tm_min );
+        QString time = zeroTime.addMSecs( lastseen.toULongLong() ).toLocalTime().toString( Qt::LocalDate );
         item = new QAjServerItem( id, this );
         servers[ id ] = item;
         item->setText( NAME_SERVER_INDEX, name );
         item->setText( HOST_SERVER_INDEX, host );
         item->setText( PORT_SERVER_INDEX, port );
-        item->setText( LASTSEEN_SERVER_INDEX, timeString );
+        item->setText( LASTSEEN_SERVER_INDEX, time );
         item->setText( TESTS_SERVER_INDEX, tests );
         item->setTextAlignment( TESTS_SERVER_INDEX, Qt::AlignRight );
         if( id == connectedWithId )
