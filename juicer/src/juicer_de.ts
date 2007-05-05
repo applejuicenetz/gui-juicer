@@ -3,82 +3,82 @@
 <context>
     <name>Juicer</name>
     <message>
-        <location filename="juicer.cpp" line="57"/>
+        <location filename="juicer.cpp" line="56"/>
         <source>Downloads</source>
         <translation type="unfinished">Downloads</translation>
     </message>
     <message>
-        <location filename="juicer.cpp" line="58"/>
+        <location filename="juicer.cpp" line="57"/>
         <source>Uploads</source>
         <translation type="unfinished">Uploads</translation>
     </message>
     <message>
-        <location filename="juicer.cpp" line="59"/>
+        <location filename="juicer.cpp" line="58"/>
         <source>Search</source>
         <translation type="unfinished">Suche</translation>
     </message>
     <message>
-        <location filename="juicer.cpp" line="60"/>
+        <location filename="juicer.cpp" line="59"/>
         <source>Server</source>
         <translation type="unfinished">Server</translation>
     </message>
     <message>
-        <location filename="juicer.cpp" line="61"/>
+        <location filename="juicer.cpp" line="60"/>
         <source>Shares</source>
         <translation type="unfinished">Freigaben</translation>
     </message>
     <message>
-        <location filename="juicer.cpp" line="64"/>
+        <location filename="juicer.cpp" line="63"/>
         <source>Incoming</source>
         <translation type="unfinished">Incoming</translation>
     </message>
     <message>
-        <location filename="juicer.cpp" line="74"/>
+        <location filename="juicer.cpp" line="73"/>
         <source>&amp;AppleJuice</source>
         <translation type="unfinished">&amp;AppleJuice</translation>
     </message>
     <message>
-        <location filename="juicer.cpp" line="77"/>
+        <location filename="juicer.cpp" line="76"/>
         <source>C&amp;onfigure</source>
         <translation type="unfinished">&amp;Einstellungen</translation>
     </message>
     <message>
-        <location filename="juicer.cpp" line="78"/>
+        <location filename="juicer.cpp" line="77"/>
         <source>&amp;Net Info</source>
         <translation type="unfinished">&amp;Netz Info</translation>
     </message>
     <message>
-        <location filename="juicer.cpp" line="80"/>
+        <location filename="juicer.cpp" line="79"/>
         <source>&amp;Exit Core</source>
         <translation type="unfinished">Core b&amp;eenden</translation>
     </message>
     <message>
-        <location filename="juicer.cpp" line="81"/>
+        <location filename="juicer.cpp" line="80"/>
         <source>&amp;Quit GUI</source>
         <translation type="unfinished">&amp;GUI schließen</translation>
     </message>
     <message>
-        <location filename="juicer.cpp" line="91"/>
+        <location filename="juicer.cpp" line="90"/>
         <source>&amp;Help</source>
         <translation type="unfinished">&amp;Hilfe</translation>
     </message>
     <message>
-        <location filename="juicer.cpp" line="92"/>
+        <location filename="juicer.cpp" line="91"/>
         <source>&amp;About</source>
         <translation type="unfinished">&amp;Über</translation>
     </message>
     <message>
-        <location filename="juicer.cpp" line="93"/>
+        <location filename="juicer.cpp" line="92"/>
         <source>About &amp;Qt</source>
         <translation type="unfinished">Über &amp;Qt</translation>
     </message>
     <message>
-        <location filename="juicer.cpp" line="234"/>
+        <location filename="juicer.cpp" line="240"/>
         <source>Juicer Info</source>
         <translation type="unfinished">Juicer Info</translation>
     </message>
     <message>
-        <location filename="juicer.cpp" line="235"/>
+        <location filename="juicer.cpp" line="241"/>
         <source>Juicer 
 
 http://ajqtgui.sf.net
@@ -86,57 +86,57 @@ http://www.progeln.de</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="juicer.cpp" line="240"/>
+        <location filename="juicer.cpp" line="246"/>
         <source>Juicer: About Qt</source>
         <translation type="unfinished">Juicer: Über Qt</translation>
     </message>
     <message>
-        <location filename="juicer.cpp" line="375"/>
+        <location filename="juicer.cpp" line="351"/>
         <source>Downstream: </source>
         <translation type="unfinished">Downstream: </translation>
     </message>
     <message>
-        <location filename="juicer.cpp" line="376"/>
+        <location filename="juicer.cpp" line="352"/>
         <source>/s</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="juicer.cpp" line="376"/>
+        <location filename="juicer.cpp" line="352"/>
         <source>Upstream: </source>
         <translation type="unfinished">Upstream: </translation>
     </message>
     <message>
-        <location filename="juicer.cpp" line="377"/>
+        <location filename="juicer.cpp" line="353"/>
         <source>Credits: </source>
         <translation type="unfinished">Credits: </translation>
     </message>
     <message>
-        <location filename="juicer.cpp" line="378"/>
+        <location filename="juicer.cpp" line="354"/>
         <source>Downloaded: </source>
         <translation type="unfinished">Runtergeladen: </translation>
     </message>
     <message>
-        <location filename="juicer.cpp" line="379"/>
+        <location filename="juicer.cpp" line="355"/>
         <source>Uploaded: </source>
         <translation type="unfinished">Hochgeladen: </translation>
     </message>
     <message>
-        <location filename="juicer.cpp" line="475"/>
+        <location filename="juicer.cpp" line="451"/>
         <source>Confirm</source>
         <translation type="unfinished">Bestätigen</translation>
     </message>
     <message>
-        <location filename="juicer.cpp" line="491"/>
+        <location filename="juicer.cpp" line="467"/>
         <source>connected since</source>
         <translation type="unfinished">verbunden seit</translation>
     </message>
     <message>
-        <location filename="juicer.cpp" line="495"/>
+        <location filename="juicer.cpp" line="471"/>
         <source>NOT connected</source>
         <translation type="unfinished">NICHT verbunden</translation>
     </message>
     <message>
-        <location filename="juicer.cpp" line="475"/>
+        <location filename="juicer.cpp" line="451"/>
         <source>Do you realy want to exit the core?
 All your credits will be lost!</source>
         <translation type="unfinished">Möchten Sie den Core wirklich beenden?
@@ -196,7 +196,7 @@ All Ihre Credits würden verloren gehen!</translation>
         <translation type="unfinished">nicht gesehen</translation>
     </message>
     <message>
-        <location filename="qajdownloadwidget.cpp" line="581"/>
+        <location filename="qajdownloadwidget.cpp" line="580"/>
         <source>&amp;Download</source>
         <translation type="unfinished">&amp;Download</translation>
     </message>
@@ -226,7 +226,7 @@ All Ihre Credits würden verloren gehen!</translation>
         <translation type="unfinished">Partliste anzeigen</translation>
     </message>
     <message>
-        <location filename="qajdownloadwidget.cpp" line="279"/>
+        <location filename="qajdownloadwidget.cpp" line="282"/>
         <source>rename download</source>
         <translation type="unfinished">Download umbenennen</translation>
     </message>
@@ -251,17 +251,17 @@ All Ihre Credits würden verloren gehen!</translation>
         <translation type="unfinished">Fertige/Abgebrochene Downloads entfernen</translation>
     </message>
     <message>
-        <location filename="qajdownloadwidget.cpp" line="243"/>
+        <location filename="qajdownloadwidget.cpp" line="246"/>
         <source>Confirm</source>
         <translation type="unfinished">Bestätigen</translation>
     </message>
     <message>
         <location filename="qajdownloadwidget.cpp" line="243"/>
         <source>Do you realy want to cancel this download(s)?</source>
-        <translation type="unfinished">Wollen Sie die gewählten Downloads wirklich abbrechen?</translation>
+        <translation type="obsolete">Wollen Sie die gewählten Downloads wirklich abbrechen?</translation>
     </message>
     <message>
-        <location filename="qajdownloadwidget.cpp" line="279"/>
+        <location filename="qajdownloadwidget.cpp" line="282"/>
         <source>enter new filename for </source>
         <translation type="unfinished">Geben Sie einen neuen Dateinamen ein für </translation>
     </message>
@@ -274,6 +274,21 @@ All Ihre Credits würden verloren gehen!</translation>
         <location filename="qajdownloadwidget.cpp" line="169"/>
         <source>set all downloads to 1:50</source>
         <translation type="unfinished">Alle Downloads auf 1:50 setzen</translation>
+    </message>
+    <message>
+        <location filename="qajdownloadwidget.cpp" line="244"/>
+        <source>Do you realy want to cancel </source>
+        <translation type="unfinished">Wollen Sie wirklich </translation>
+    </message>
+    <message>
+        <location filename="qajdownloadwidget.cpp" line="245"/>
+        <source> downloads?</source>
+        <translation type="unfinished"> Downloads abbrechen?</translation>
+    </message>
+    <message>
+        <location filename="qajdownloadwidget.cpp" line="245"/>
+        <source> download?</source>
+        <translation type="unfinished">Download abbrechen?</translation>
     </message>
 </context>
 <context>
@@ -302,12 +317,12 @@ All Ihre Credits würden verloren gehen!</translation>
         <translation type="unfinished">zuletzt geändert</translation>
     </message>
     <message>
-        <location filename="qajincomingwidget.cpp" line="68"/>
+        <location filename="qajincomingwidget.cpp" line="67"/>
         <source>open</source>
         <translation type="unfinished">öffnen</translation>
     </message>
     <message>
-        <location filename="qajincomingwidget.cpp" line="69"/>
+        <location filename="qajincomingwidget.cpp" line="68"/>
         <source>copy</source>
         <translation type="unfinished">kopieren</translation>
     </message>
@@ -317,49 +332,69 @@ All Ihre Credits würden verloren gehen!</translation>
         <translation type="unfinished">erneut loaden</translation>
     </message>
     <message>
-        <location filename="qajincomingwidget.cpp" line="173"/>
+        <location filename="qajincomingwidget.cpp" line="222"/>
         <source>save</source>
         <translation type="unfinished">speichere</translation>
     </message>
     <message>
-        <location filename="qajincomingwidget.cpp" line="173"/>
+        <location filename="qajincomingwidget.cpp" line="222"/>
         <source>to</source>
         <translation type="unfinished">nach</translation>
     </message>
     <message>
-        <location filename="qajincomingwidget.cpp" line="188"/>
+        <location filename="qajincomingwidget.cpp" line="237"/>
         <source>error</source>
         <translation type="unfinished">Fehler</translation>
     </message>
     <message>
-        <location filename="qajincomingwidget.cpp" line="188"/>
+        <location filename="qajincomingwidget.cpp" line="237"/>
         <source>already exists</source>
         <translation type="unfinished">existiert bereits</translation>
     </message>
     <message>
-        <location filename="qajincomingwidget.cpp" line="271"/>
+        <location filename="qajincomingwidget.cpp" line="318"/>
         <source>open file</source>
         <translation type="unfinished">Datei öffnen</translation>
     </message>
     <message>
-        <location filename="qajincomingwidget.cpp" line="271"/>
+        <location filename="qajincomingwidget.cpp" line="318"/>
         <source>opening via ftp currently not supported</source>
         <translation type="unfinished">Öffnen von Dateien mittels FTP zur Zeit nicht unterstützt</translation>
     </message>
     <message>
-        <location filename="qajincomingwidget.cpp" line="317"/>
+        <location filename="qajincomingwidget.cpp" line="353"/>
         <source>Incoming</source>
         <translation type="unfinished">Incoming-Verzeichnis</translation>
     </message>
     <message>
-        <location filename="qajincomingwidget.cpp" line="128"/>
+        <location filename="qajincomingwidget.cpp" line="127"/>
         <source>copy to</source>
         <translation type="unfinished">Kopieren nach </translation>
     </message>
     <message>
-        <location filename="qajincomingwidget.cpp" line="135"/>
+        <location filename="qajincomingwidget.cpp" line="134"/>
         <source>file already exists</source>
         <translation type="unfinished">Datei exisitert bereits</translation>
+    </message>
+    <message>
+        <location filename="qajincomingwidget.cpp" line="69"/>
+        <source>delete</source>
+        <translation type="unfinished">löschen</translation>
+    </message>
+    <message>
+        <location filename="qajincomingwidget.cpp" line="174"/>
+        <source>Delete </source>
+        <translation type="unfinished">Lösche</translation>
+    </message>
+    <message>
+        <location filename="qajincomingwidget.cpp" line="175"/>
+        <source>files</source>
+        <translation type="unfinished">Dateien</translation>
+    </message>
+    <message>
+        <location filename="qajincomingwidget.cpp" line="175"/>
+        <source>file</source>
+        <translation type="unfinished">Datei</translation>
     </message>
 </context>
 <context>
@@ -441,32 +476,32 @@ All Ihre Credits würden verloren gehen!</translation>
 <context>
     <name>QAjOptionsDialog</name>
     <message>
-        <location filename="qajoptionsdialog.cpp" line="62"/>
+        <location filename="qajoptionsdialog.cpp" line="63"/>
         <source>Core</source>
         <translation type="unfinished">Core</translation>
     </message>
     <message>
-        <location filename="qajoptionsdialog.cpp" line="63"/>
+        <location filename="qajoptionsdialog.cpp" line="64"/>
         <source>Limits</source>
         <translation type="unfinished">Limits</translation>
     </message>
     <message>
-        <location filename="qajoptionsdialog.cpp" line="64"/>
+        <location filename="qajoptionsdialog.cpp" line="65"/>
         <source>Appearance</source>
         <translation type="unfinished">Erscheinung</translation>
     </message>
     <message>
-        <location filename="qajoptionsdialog.cpp" line="65"/>
+        <location filename="qajoptionsdialog.cpp" line="66"/>
         <source>Behaviour</source>
         <translation type="unfinished">Verhalten</translation>
     </message>
     <message>
-        <location filename="qajoptionsdialog.cpp" line="66"/>
+        <location filename="qajoptionsdialog.cpp" line="67"/>
         <source>Launching</source>
         <translation type="unfinished">Starten</translation>
     </message>
     <message>
-        <location filename="qajoptionsdialog.cpp" line="67"/>
+        <location filename="qajoptionsdialog.cpp" line="68"/>
         <source>FTP</source>
         <translation type="unfinished">FTP</translation>
     </message>
@@ -489,252 +524,252 @@ All Ihre Credits würden verloren gehen!</translation>
         <translation type="unfinished">Abbrechen</translation>
     </message>
     <message>
-        <location filename="qajoptionsdialogbase.ui" line="256"/>
+        <location filename="qajoptionsdialogbase.ui" line="248"/>
         <source>Core</source>
         <translation type="unfinished">Core</translation>
     </message>
     <message>
-        <location filename="qajoptionsdialogbase.ui" line="132"/>
+        <location filename="qajoptionsdialogbase.ui" line="116"/>
         <source>Retype Password:</source>
         <translation type="unfinished">Passwort wiederh.:</translation>
     </message>
     <message>
-        <location filename="qajoptionsdialogbase.ui" line="145"/>
+        <location filename="qajoptionsdialogbase.ui" line="129"/>
         <source>TCP Port:</source>
         <translation type="unfinished">TCP Port:</translation>
     </message>
     <message>
-        <location filename="qajoptionsdialogbase.ui" line="959"/>
+        <location filename="qajoptionsdialogbase.ui" line="969"/>
         <source>Temporary Directory:</source>
         <translation type="unfinished">Temp. Verzeichnis:</translation>
     </message>
     <message>
-        <location filename="qajoptionsdialogbase.ui" line="827"/>
+        <location filename="qajoptionsdialogbase.ui" line="837"/>
         <source>...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="qajoptionsdialogbase.ui" line="172"/>
+        <location filename="qajoptionsdialogbase.ui" line="160"/>
         <source>XML Port:</source>
         <translation type="unfinished">XML Port:</translation>
     </message>
     <message>
-        <location filename="qajoptionsdialogbase.ui" line="179"/>
+        <location filename="qajoptionsdialogbase.ui" line="167"/>
         <source>Nick:</source>
         <translation type="unfinished">Spitzname:</translation>
     </message>
     <message>
-        <location filename="qajoptionsdialogbase.ui" line="186"/>
+        <location filename="qajoptionsdialogbase.ui" line="174"/>
         <source>New Password:</source>
         <translation type="unfinished">Neues Passwort:</translation>
     </message>
     <message>
-        <location filename="qajoptionsdialogbase.ui" line="949"/>
+        <location filename="qajoptionsdialogbase.ui" line="959"/>
         <source>Incoming Directory:</source>
         <translation type="unfinished">Incoming Verzeichnis:</translation>
     </message>
     <message>
-        <location filename="qajoptionsdialogbase.ui" line="216"/>
+        <location filename="qajoptionsdialogbase.ui" line="208"/>
         <source>Core Address:</source>
         <translation type="unfinished">Core Adresse:</translation>
     </message>
     <message>
-        <location filename="qajoptionsdialogbase.ui" line="228"/>
+        <location filename="qajoptionsdialogbase.ui" line="220"/>
         <source>automatically connect to servers</source>
         <translation type="unfinished">automatisch mit Servern verbinden</translation>
     </message>
     <message>
-        <location filename="qajoptionsdialogbase.ui" line="235"/>
+        <location filename="qajoptionsdialogbase.ui" line="227"/>
         <source>save core password</source>
         <translation type="unfinished">Core-Passwort speichern</translation>
     </message>
     <message>
-        <location filename="qajoptionsdialogbase.ui" line="427"/>
+        <location filename="qajoptionsdialogbase.ui" line="281"/>
         <source>Limits</source>
         <translation type="unfinished">Limits</translation>
     </message>
     <message>
-        <location filename="qajoptionsdialogbase.ui" line="306"/>
+        <location filename="qajoptionsdialogbase.ui" line="316"/>
         <source>Max. Upload Speed:</source>
         <translation type="unfinished">Max. Upload-Geschwindigkeit:</translation>
     </message>
     <message>
-        <location filename="qajoptionsdialogbase.ui" line="313"/>
+        <location filename="qajoptionsdialogbase.ui" line="323"/>
         <source>Max. Download Speed:</source>
         <translation type="unfinished">Max. Download-Geschwindigkeit:</translation>
     </message>
     <message>
-        <location filename="qajoptionsdialogbase.ui" line="320"/>
+        <location filename="qajoptionsdialogbase.ui" line="330"/>
         <source>Max. Speed Per Slot:</source>
         <translation type="unfinished">Max. Geschw. pro Slot:</translation>
     </message>
     <message>
-        <location filename="qajoptionsdialogbase.ui" line="370"/>
+        <location filename="qajoptionsdialogbase.ui" line="380"/>
         <source> kByte/s</source>
         <translation type="unfinished"> kByte/s</translation>
     </message>
     <message>
-        <location filename="qajoptionsdialogbase.ui" line="340"/>
+        <location filename="qajoptionsdialogbase.ui" line="350"/>
         <source>Max. New Connections:</source>
         <translation type="unfinished">Max. neue Verbindungen:</translation>
     </message>
     <message>
-        <location filename="qajoptionsdialogbase.ui" line="347"/>
+        <location filename="qajoptionsdialogbase.ui" line="357"/>
         <source>Max. Connections:</source>
         <translation type="unfinished">Max. Verbindungen:</translation>
     </message>
     <message>
-        <location filename="qajoptionsdialogbase.ui" line="396"/>
+        <location filename="qajoptionsdialogbase.ui" line="406"/>
         <source> per 10 seconds</source>
         <translation type="unfinished"> pro 10 Sekunden</translation>
     </message>
     <message>
-        <location filename="qajoptionsdialogbase.ui" line="406"/>
+        <location filename="qajoptionsdialogbase.ui" line="416"/>
         <source>Max. Sources Per File:</source>
         <translation type="unfinished">Max. Quellen pro Datei:</translation>
     </message>
     <message>
-        <location filename="qajoptionsdialogbase.ui" line="482"/>
+        <location filename="qajoptionsdialogbase.ui" line="474"/>
         <source>show splash screen on startup</source>
         <translation type="unfinished">zeige Splah-Screen beim Starten</translation>
     </message>
     <message>
-        <location filename="qajoptionsdialogbase.ui" line="460"/>
+        <location filename="qajoptionsdialogbase.ui" line="452"/>
         <source>Appearance</source>
         <translation type="unfinished">Erscheinung</translation>
     </message>
     <message>
-        <location filename="qajoptionsdialogbase.ui" line="681"/>
+        <location filename="qajoptionsdialogbase.ui" line="673"/>
         <source>Behaviour</source>
         <translation type="unfinished">Verhalten</translation>
     </message>
     <message>
-        <location filename="qajoptionsdialogbase.ui" line="631"/>
+        <location filename="qajoptionsdialogbase.ui" line="623"/>
         <source>sec.</source>
         <translation type="unfinished">sek.</translation>
     </message>
     <message>
-        <location filename="qajoptionsdialogbase.ui" line="644"/>
+        <location filename="qajoptionsdialogbase.ui" line="636"/>
         <source>Refresh:</source>
         <translation type="unfinished">Auffrischen:</translation>
     </message>
     <message>
-        <location filename="qajoptionsdialogbase.ui" line="651"/>
+        <location filename="qajoptionsdialogbase.ui" line="643"/>
         <source>Server Source:</source>
         <translation type="unfinished">Server-Quelle:</translation>
     </message>
     <message>
-        <location filename="qajoptionsdialogbase.ui" line="660"/>
+        <location filename="qajoptionsdialogbase.ui" line="652"/>
         <source>fetch new servers on startup</source>
         <translation type="unfinished">beim Starten neue Server holen</translation>
     </message>
     <message>
-        <location filename="qajoptionsdialogbase.ui" line="871"/>
+        <location filename="qajoptionsdialogbase.ui" line="706"/>
         <source>Launching</source>
         <translation type="unfinished">Starten</translation>
     </message>
     <message>
-        <location filename="qajoptionsdialogbase.ui" line="734"/>
+        <location filename="qajoptionsdialogbase.ui" line="744"/>
         <source>Open files with:</source>
         <translation type="unfinished">Öffne Dateien mit:</translation>
     </message>
     <message>
-        <location filename="qajoptionsdialogbase.ui" line="757"/>
+        <location filename="qajoptionsdialogbase.ui" line="767"/>
         <source>Location of files</source>
         <translation type="unfinished">Lage der Dateien</translation>
     </message>
     <message>
-        <location filename="qajoptionsdialogbase.ui" line="778"/>
+        <location filename="qajoptionsdialogbase.ui" line="788"/>
         <source>Core is running at the same computer</source>
         <translation type="unfinished">Core läuft auf dem selben Rechner</translation>
     </message>
     <message>
-        <location filename="qajoptionsdialogbase.ui" line="785"/>
+        <location filename="qajoptionsdialogbase.ui" line="795"/>
         <source>Use specific folders (e.g. for smb):</source>
         <translation type="unfinished">Benutze bestimmte Verz. (z.B: für smb):</translation>
     </message>
     <message>
-        <location filename="qajoptionsdialogbase.ui" line="839"/>
+        <location filename="qajoptionsdialogbase.ui" line="849"/>
         <source>Use ftp</source>
         <translation type="unfinished">Benutze FTP</translation>
     </message>
     <message>
-        <location filename="qajoptionsdialogbase.ui" line="846"/>
+        <location filename="qajoptionsdialogbase.ui" line="856"/>
         <source>jump to ftp settings</source>
         <translation type="unfinished">Springe zu den FTP-Einstellungen</translation>
     </message>
     <message>
-        <location filename="qajoptionsdialogbase.ui" line="986"/>
+        <location filename="qajoptionsdialogbase.ui" line="896"/>
         <source>FTP</source>
         <translation type="unfinished">FTP</translation>
     </message>
     <message>
-        <location filename="qajoptionsdialogbase.ui" line="908"/>
+        <location filename="qajoptionsdialogbase.ui" line="918"/>
         <source>Password:</source>
         <translation type="unfinished">Passwort:</translation>
     </message>
     <message>
-        <location filename="qajoptionsdialogbase.ui" line="915"/>
+        <location filename="qajoptionsdialogbase.ui" line="925"/>
         <source>User:</source>
         <translation type="unfinished">Nutzer:</translation>
     </message>
     <message>
-        <location filename="qajoptionsdialogbase.ui" line="925"/>
+        <location filename="qajoptionsdialogbase.ui" line="935"/>
         <source>Port:</source>
         <translation type="unfinished">Port:</translation>
     </message>
     <message>
-        <location filename="qajoptionsdialogbase.ui" line="932"/>
+        <location filename="qajoptionsdialogbase.ui" line="942"/>
         <source>Server:</source>
         <translation type="unfinished">Server:</translation>
     </message>
     <message>
-        <location filename="qajoptionsdialogbase.ui" line="510"/>
+        <location filename="qajoptionsdialogbase.ui" line="502"/>
         <source>language:</source>
         <translation type="unfinished">Sprache:</translation>
     </message>
     <message>
-        <location filename="qajoptionsdialogbase.ui" line="530"/>
+        <location filename="qajoptionsdialogbase.ui" line="522"/>
         <source>show in statusbar:</source>
         <translation type="unfinished">zeige in Statusbar:</translation>
     </message>
     <message>
-        <location filename="qajoptionsdialogbase.ui" line="544"/>
+        <location filename="qajoptionsdialogbase.ui" line="536"/>
         <source>connected since</source>
         <translation type="unfinished">verbunden seit</translation>
     </message>
     <message>
-        <location filename="qajoptionsdialogbase.ui" line="549"/>
+        <location filename="qajoptionsdialogbase.ui" line="541"/>
         <source>core version</source>
         <translation type="unfinished">Core Version</translation>
     </message>
     <message>
-        <location filename="qajoptionsdialogbase.ui" line="554"/>
+        <location filename="qajoptionsdialogbase.ui" line="546"/>
         <source>downstream</source>
         <translation type="unfinished">Downstream</translation>
     </message>
     <message>
-        <location filename="qajoptionsdialogbase.ui" line="559"/>
+        <location filename="qajoptionsdialogbase.ui" line="551"/>
         <source>upstream</source>
         <translation type="unfinished">Upstream</translation>
     </message>
     <message>
-        <location filename="qajoptionsdialogbase.ui" line="564"/>
+        <location filename="qajoptionsdialogbase.ui" line="556"/>
         <source>downloaded</source>
         <translation type="unfinished">Runtergeladen</translation>
     </message>
     <message>
-        <location filename="qajoptionsdialogbase.ui" line="569"/>
+        <location filename="qajoptionsdialogbase.ui" line="561"/>
         <source>uploaded</source>
         <translation type="unfinished">Hochgeladen</translation>
     </message>
     <message>
-        <location filename="qajoptionsdialogbase.ui" line="574"/>
+        <location filename="qajoptionsdialogbase.ui" line="566"/>
         <source>credits</source>
         <translation type="unfinished">Credits</translation>
     </message>
     <message>
-        <location filename="qajoptionsdialogbase.ui" line="489"/>
+        <location filename="qajoptionsdialogbase.ui" line="481"/>
         <source>use tray icon</source>
         <translation type="unfinished"></translation>
     </message>
@@ -785,42 +820,42 @@ All Ihre Credits würden verloren gehen!</translation>
 <context>
     <name>QAjServerWidget</name>
     <message>
-        <location filename="qajserverwidget.cpp" line="34"/>
+        <location filename="qajserverwidget.cpp" line="35"/>
         <source>name</source>
         <translation type="unfinished">Name</translation>
     </message>
     <message>
-        <location filename="qajserverwidget.cpp" line="37"/>
+        <location filename="qajserverwidget.cpp" line="38"/>
         <source>host</source>
         <translation type="unfinished">Host</translation>
     </message>
     <message>
-        <location filename="qajserverwidget.cpp" line="40"/>
+        <location filename="qajserverwidget.cpp" line="41"/>
         <source>port</source>
         <translation type="unfinished">Port</translation>
     </message>
     <message>
-        <location filename="qajserverwidget.cpp" line="43"/>
+        <location filename="qajserverwidget.cpp" line="44"/>
         <source>last seen</source>
         <translation type="unfinished">zuletzt gesehen</translation>
     </message>
     <message>
-        <location filename="qajserverwidget.cpp" line="46"/>
+        <location filename="qajserverwidget.cpp" line="47"/>
         <source>tests</source>
         <translation type="unfinished">Versuche</translation>
     </message>
     <message>
-        <location filename="qajserverwidget.cpp" line="231"/>
+        <location filename="qajserverwidget.cpp" line="220"/>
         <source>Ser&amp;ver</source>
         <translation type="unfinished">Ser&amp;ver</translation>
     </message>
     <message>
-        <location filename="qajserverwidget.cpp" line="205"/>
+        <location filename="qajserverwidget.cpp" line="194"/>
         <source>error</source>
         <translation type="unfinished">Fehler</translation>
     </message>
     <message>
-        <location filename="qajserverwidget.cpp" line="205"/>
+        <location filename="qajserverwidget.cpp" line="194"/>
         <source>Could not fetch server source.</source>
         <translation type="unfinished">Konnte Serverquelle nicht erreichen.</translation>
     </message>
@@ -846,27 +881,27 @@ All Ihre Credits würden verloren gehen!</translation>
 <context>
     <name>QAjShareMetaWidget</name>
     <message>
-        <location filename="qajsharemetawidget.cpp" line="16"/>
+        <location filename="qajsharemetawidget.cpp" line="18"/>
         <source>files</source>
         <translation type="unfinished">Dateien</translation>
     </message>
     <message>
-        <location filename="qajsharemetawidget.cpp" line="84"/>
+        <location filename="qajsharemetawidget.cpp" line="90"/>
         <source>Priority:</source>
         <translation type="unfinished">Priorität</translation>
     </message>
     <message>
-        <location filename="qajsharemetawidget.cpp" line="54"/>
+        <location filename="qajsharemetawidget.cpp" line="57"/>
         <source>show shared files in this directory</source>
         <translation type="unfinished">Dateien in diesem Verzeichnis anzeigen</translation>
     </message>
     <message>
-        <location filename="qajsharemetawidget.cpp" line="72"/>
+        <location filename="qajsharemetawidget.cpp" line="78"/>
         <source>copy ajfsp link to clipboard</source>
         <translation type="unfinished">ajfsp-link in die Zwischenablage kopieren</translation>
     </message>
     <message>
-        <location filename="qajsharemetawidget.cpp" line="95"/>
+        <location filename="qajsharemetawidget.cpp" line="101"/>
         <source>apply priority</source>
         <translation type="unfinished">Neue Priorität bestätigen</translation>
     </message>
