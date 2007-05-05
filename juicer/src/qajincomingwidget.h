@@ -45,9 +45,10 @@ public:
 private:
     void initToolBar();
     QString dir;
-    QAction *reloadButton, *openButton, *saveButton;
+    QAction *reloadButton, *openButton, *saveButton, *removeButton;
     void storeFtp();
     void reloadFtp();
+    void removeFtp() {}
     void initPopup();
     AjSettings::LOCATION getLocation();
     QFtp* ftp;
@@ -56,8 +57,8 @@ public slots:
     void reload();
     void open();
     void save();
+    void remove();
     void insert( QUrlInfo info );
-    void selectionChanged( bool oneSelected );
 
 private:
     class CopyThread : public QThread

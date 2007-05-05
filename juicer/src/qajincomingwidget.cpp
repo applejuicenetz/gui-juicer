@@ -44,13 +44,12 @@ QAjIncomingWidget::QAjIncomingWidget( QXMLModule* xml, QWidget *parent ) : QAjLi
 
     ftp = new QFtp( this );
 
-    connect( this, SIGNAL( newSelection( bool ) ) , this, SLOT( selectionChanged( bool ) ) );
     connect( ftp, SIGNAL( listInfo ( QUrlInfo ) ), this, SLOT( insert( QUrlInfo ) ) );
     connect( this, SIGNAL( itemDoubleClicked ( QTreeWidgetItem*, int ) ), this, SLOT( open() ) );
 
     initToolBar();
     initPopup();
-    selectionChanged( false );
+    newSelection( false );
 }
 
 
@@ -67,8 +66,13 @@ void QAjIncomingWidget::initToolBar()
     toolBar = new QToolBar( "incoming operations", this );
     openButton = toolBar->addAction( QIcon(":/exec.png"), tr("open"), this, SLOT( open() ) );
     saveButton = toolBar->addAction( QIcon(":/save.png"), tr("copy"), this, SLOT( save() ) );
+    removeButton = toolBar->addAction( QIcon(":/cancel.png"), tr("delete"), this, SLOT( remove() ) );
     toolBar->addSeparator();
     reloadButton = toolBar->addAction( QIcon(":/reload.png"), tr("reload"), this, SLOT( reload() ) );
+
+    connect( this, SIGNAL( newSelection( bool ) ) , openButton, SLOT( setEnabled( bool ) ) );
+    connect( this, SIGNAL( newSelection( bool ) ) , saveButton, SLOT( setEnabled( bool ) ) );
+    connect( this, SIGNAL( newSelection( bool ) ) , removeButton, SLOT( setEnabled( bool ) ) );
 }
 
 /*!
@@ -136,6 +140,57 @@ void QAjIncomingWidget::save()
                                 newDir + newFilename))->start();
                 }
             }
+        }
+    }
+}
+
+
+
+/*!
+    \fn QAjIncomingWidget::remove()
+ */
+void QAjIncomingWidget::remove()
+{
+    QString actDir;
+    // determine the path
+    AjSettings::LOCATION location = getLocation();
+    if(location == AjSettings::FTP)
+    {
+        removeFtp();
+    }
+    else
+    {
+        if( location == AjSettings::SPECIFIC )
+        {
+            actDir = QAjOptionsDialog::getSetting( "incomingDirSpecific", "/" ).toString() + QDir::separator();
+        }
+        else if( location == AjSettings::SAME )
+        {
+            actDir = this->dir + QDir::separator();
+        }
+        QList<QAjItem*> items = selectedAjItems();
+        int i;
+        int maxFilesToShow = 10;
+        QString list = "<b>Delete " + QString::number(items.size()) + " file"+(items.size()>1?"s":"")+"?</b><br>";
+        for( i=0; i<items.size() && i<maxFilesToShow; i++ )
+        {
+            list += "<br>" + items[i]->text( FILENAME_INCOMING_INDEX );
+        }
+        if(items.size() > maxFilesToShow)
+        {
+            list += "<br>(" + QString::number(items.size() - maxFilesToShow) + " more)";
+        }
+        if( QMessageBox::question( this, "Confirmation", list, QMessageBox::Yes | QMessageBox::No, QMessageBox::No )
+            == QMessageBox::Yes )
+        {
+            for( i=0; i<items.size() && i<maxFilesToShow; i++ )
+            {
+                if(!QFile::remove( actDir + items[i]->text( FILENAME_INCOMING_INDEX ) ))
+                {
+                    QMessageBox::critical( this, "Error", "Could not remove\n" + actDir + items[i]->text( FILENAME_INCOMING_INDEX ) );
+                }
+            }
+            reload();
         }
     }
 }
@@ -289,17 +344,6 @@ void QAjIncomingWidget::insert( QUrlInfo info )
 }
 
 
-
-/*!
-    \fn QAjIncomingWidget::selectionChanged( bool oneSelected )
- */
-void QAjIncomingWidget::selectionChanged( bool oneSelected )
-{
-    openButton->setEnabled( oneSelected );
-    saveButton->setEnabled( oneSelected );
-}
-
-
 /*!
     \fn QAjIncomingWidget::initPopup()
  */
@@ -308,6 +352,7 @@ void QAjIncomingWidget::initPopup()
     popup->setTitle( tr("Incoming") );
     popup->addAction( openButton );
     popup->addAction( saveButton );
+    popup->addAction( removeButton );
     popup->addSeparator();
     popup->addAction( reloadButton );
 }
