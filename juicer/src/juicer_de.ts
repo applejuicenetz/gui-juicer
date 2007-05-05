@@ -257,8 +257,8 @@ All Ihre Credits würden verloren gehen!</translation>
     </message>
     <message>
         <location filename="qajdownloadwidget.cpp" line="243"/>
-        <source>Do you realy want to cancel this download(s)?</source>
-        <translation type="obsolete">Wollen Sie die gewählten Downloads wirklich abbrechen?</translation>
+        <source>Do you realy want to cancel</source>
+        <translation type="unfinished">Wollen Sie wirklich</translation>
     </message>
     <message>
         <location filename="qajdownloadwidget.cpp" line="282"/>
@@ -278,17 +278,12 @@ All Ihre Credits würden verloren gehen!</translation>
     <message>
         <location filename="qajdownloadwidget.cpp" line="244"/>
         <source>Do you realy want to cancel </source>
-        <translation type="unfinished">Wollen Sie wirklich </translation>
+        <translation type="obsolete">Wollen Sie wirklich </translation>
     </message>
     <message>
         <location filename="qajdownloadwidget.cpp" line="245"/>
-        <source> downloads?</source>
-        <translation type="unfinished">  Downloads abbrechen?</translation>
-    </message>
-    <message>
-        <location filename="qajdownloadwidget.cpp" line="245"/>
-        <source> download?</source>
-        <translation type="unfinished"> Download abbrechen?</translation>
+        <source>download?</source>
+        <translation type="unfinished">Download abbrechen?</translation>
     </message>
 </context>
 <context>
@@ -383,7 +378,7 @@ All Ihre Credits würden verloren gehen!</translation>
     </message>
     <message>
         <location filename="qajincomingwidget.cpp" line="174"/>
-        <source>Delete </source>
+        <source>Delete</source>
         <translation type="unfinished">Lösche</translation>
     </message>
     <message>
