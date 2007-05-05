@@ -283,12 +283,12 @@ All Ihre Credits würden verloren gehen!</translation>
     <message>
         <location filename="qajdownloadwidget.cpp" line="245"/>
         <source> downloads?</source>
-        <translation type="unfinished"> Downloads abbrechen?</translation>
+        <translation type="unfinished">  Downloads abbrechen?</translation>
     </message>
     <message>
         <location filename="qajdownloadwidget.cpp" line="245"/>
         <source> download?</source>
-        <translation type="unfinished">Download abbrechen?</translation>
+        <translation type="unfinished"> Download abbrechen?</translation>
     </message>
 </context>
 <context>
