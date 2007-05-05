@@ -171,7 +171,7 @@ void QAjIncomingWidget::remove()
         QList<QAjItem*> items = selectedAjItems();
         int i;
         int maxFilesToShow = 10;
-        QString list = "<b>"+tr("Delete ") + QString::number(items.size())
+        QString list = "<b>"+tr("Delete") + " " + QString::number(items.size()) + " "
                         + (items.size()>1?tr("files"):tr("file"))+"?</b><br>";
         for( i=0; i<items.size() && i<maxFilesToShow; i++ )
         {
