@@ -196,7 +196,7 @@ All Ihre Credits würden verloren gehen!</translation>
         <translation type="unfinished">nicht gesehen</translation>
     </message>
     <message>
-        <location filename="qajdownloadwidget.cpp" line="580"/>
+        <location filename="qajdownloadwidget.cpp" line="581"/>
         <source>&amp;Download</source>
         <translation type="unfinished">&amp;Download</translation>
     </message>
@@ -226,7 +226,7 @@ All Ihre Credits würden verloren gehen!</translation>
         <translation type="unfinished">Partliste anzeigen</translation>
     </message>
     <message>
-        <location filename="qajdownloadwidget.cpp" line="282"/>
+        <location filename="qajdownloadwidget.cpp" line="283"/>
         <source>rename download</source>
         <translation type="unfinished">Download umbenennen</translation>
     </message>
@@ -251,17 +251,17 @@ All Ihre Credits würden verloren gehen!</translation>
         <translation type="unfinished">Fertige/Abgebrochene Downloads entfernen</translation>
     </message>
     <message>
-        <location filename="qajdownloadwidget.cpp" line="246"/>
+        <location filename="qajdownloadwidget.cpp" line="247"/>
         <source>Confirm</source>
         <translation type="unfinished">Bestätigen</translation>
     </message>
     <message>
-        <location filename="qajdownloadwidget.cpp" line="243"/>
+        <location filename="qajdownloadwidget.cpp" line="244"/>
         <source>Do you realy want to cancel</source>
-        <translation type="unfinished">Wollen Sie wirklich</translation>
+        <translation type="unfinished">Wollen Sie wirklich </translation>
     </message>
     <message>
-        <location filename="qajdownloadwidget.cpp" line="282"/>
+        <location filename="qajdownloadwidget.cpp" line="283"/>
         <source>enter new filename for </source>
         <translation type="unfinished">Geben Sie einen neuen Dateinamen ein für </translation>
     </message>
@@ -276,14 +276,14 @@ All Ihre Credits würden verloren gehen!</translation>
         <translation type="unfinished">Alle Downloads auf 1:50 setzen</translation>
     </message>
     <message>
-        <location filename="qajdownloadwidget.cpp" line="244"/>
-        <source>Do you realy want to cancel </source>
-        <translation type="obsolete">Wollen Sie wirklich </translation>
-    </message>
-    <message>
-        <location filename="qajdownloadwidget.cpp" line="245"/>
+        <location filename="qajdownloadwidget.cpp" line="246"/>
         <source>download?</source>
         <translation type="unfinished">Download abbrechen?</translation>
+    </message>
+    <message>
+        <location filename="qajdownloadwidget.cpp" line="246"/>
+        <source>downloads?</source>
+        <translation type="unfinished">Downloads abbrechen?</translation>
     </message>
 </context>
 <context>
