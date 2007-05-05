@@ -240,7 +240,10 @@ bool QAjDownloadWidget::remove( QString id )
 
 void QAjDownloadWidget::cancelSlot()
 {
-    if ( QMessageBox::question( this, tr("Confirm"), tr("Do you realy want to cancel this download(s)?"), QMessageBox::No, QMessageBox::Yes ) == QMessageBox::Yes )
+    QString text = tr("Do you realy want to cancel ")
+                    + QString::number(selectedItems().size())
+                    + (selectedItems().size()>1?tr(" downloads?"):tr(" download?"));
+    if ( QMessageBox::question( this, tr("Confirm"), text, QMessageBox::No, QMessageBox::Yes ) == QMessageBox::Yes )
     {
         processSelected( "canceldownload" );
     }
