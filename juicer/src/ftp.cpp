@@ -69,16 +69,8 @@ void FTP::init()
  */
 void FTP::stateChangedSlot( int state )
 {
-    switch ( state )
-    {
-    case( QFtp::Connected ):
-        break;
-    case( QFtp::LoggedIn ):
+    if( state == QFtp::LoggedIn )
         getNext();
-        break;
-    default:
-        break;
-    }
 }
 
 
@@ -97,7 +89,6 @@ void FTP::commandFinishedSlot( int id, bool error )
         dstFile->flush();
         dstFile->close();
         downloadFinished( dstFile, this );
-//		QMessageBox::information ( NULL, "finished", dstFile->fileName() + " finished", QMessageBox::Ok );
         dstFile = NULL;
         if(progressDialog->isVisible())
             progressDialog->hide();

@@ -273,14 +273,7 @@ void QAjOptionsDialog::jumpToFtpSlot()
  */
 void QAjOptionsDialog::writeSettings()
 {
-    if(savePassword->isChecked())
-    {
-        setSetting( "corePassword", passwordEdit->text() );
-    }
-    else
-    {
-        setSetting( "corePassword", "" );
-    }
+    setSetting( "corePassword", savePassword->isChecked()?passwordEdit->text():"" );
 
     setSetting( "coreAddress", coreEdit->text() );
     setSetting( "savePassword", savePassword->isChecked() );
