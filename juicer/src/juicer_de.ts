@@ -426,7 +426,7 @@ Möchten Sie die Änderungen zum Core übermitteln?</translation>
     <message>
         <location filename="qajincomingwidget.cpp" line="54"/>
         <source>please wait...</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">bitte warten...</translation>
     </message>
 </context>
 <context>
