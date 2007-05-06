@@ -420,11 +420,11 @@ void Juicer::processLink( QString link)
         QAjDownloadItem* download;
         if( (file = ajShareFilesWidget->findFile( size, hash )) != NULL )
         {
-            QMessageBox::information( this, "information", "The file seems to be already in the share:\n\n"+file->getFilename());
+            QMessageBox::information( this, tr("information"), tr("The file seems to be already in the share")+":\n\n"+file->getFilename());
         }
         else if( (download = ajDownloadWidget->findDownload( size, hash )) != NULL )
         {
-            QMessageBox::information( this, "information", "The file seems to be already in the download list:\n\n"+download->text( FILENAME_DOWN_INDEX ));
+            QMessageBox::information( this, tr("information"), tr("The file seems to be already in the download list")+":\n\n"+download->text( FILENAME_DOWN_INDEX ));
         }
     }
     xml->set( "processlink", "&link=" + QString( QUrl::toPercentEncoding( link ) ) );
@@ -454,7 +454,7 @@ void Juicer::tabChanged( QWidget *tab )
 
     if ( (prevTab == ajShareWidget) && ( ajShareWidget->changed ) )
     {
-        if ( QMessageBox::question( this, "question", "You've changed your shares.\nDo you want to transfer it to the core?", QMessageBox::Yes, QMessageBox::No ) == QMessageBox::Yes)
+        if ( QMessageBox::question( this, tr("question"), tr("You've changed your shares.\nDo you want to transfer the changes to the core?"), QMessageBox::Yes, QMessageBox::No ) == QMessageBox::Yes)
         {
             ajShareWidget->commitSlot();
         }
@@ -476,7 +476,7 @@ void Juicer::exitCore()
 
 void Juicer::setCoreVersion( QString version )
 {
-    coreVersionLabel->setText( "Core: " + version );
+    coreVersionLabel->setText( tr("Core: ") + version );
 }
 
 void Juicer::connectedSince( QString since )

@@ -121,26 +121,58 @@ http://www.progeln.de</source>
         <translation type="unfinished">Hochgeladen: </translation>
     </message>
     <message>
-        <location filename="juicer.cpp" line="453"/>
+        <location filename="juicer.cpp" line="471"/>
         <source>Confirm</source>
         <translation type="unfinished">Bestätigen</translation>
     </message>
     <message>
-        <location filename="juicer.cpp" line="469"/>
+        <location filename="juicer.cpp" line="487"/>
         <source>connected since</source>
         <translation type="unfinished">verbunden seit</translation>
     </message>
     <message>
-        <location filename="juicer.cpp" line="473"/>
+        <location filename="juicer.cpp" line="491"/>
         <source>NOT connected</source>
         <translation type="unfinished">NICHT verbunden</translation>
     </message>
     <message>
-        <location filename="juicer.cpp" line="453"/>
+        <location filename="juicer.cpp" line="471"/>
         <source>Do you realy want to exit the core?
 All your credits will be lost!</source>
         <translation type="unfinished">Möchten Sie den Core wirklich beenden?
 All Ihre Credits würden verloren gehen!</translation>
+    </message>
+    <message>
+        <location filename="juicer.cpp" line="427"/>
+        <source>information</source>
+        <translation type="unfinished">Information</translation>
+    </message>
+    <message>
+        <location filename="juicer.cpp" line="423"/>
+        <source>The file seems to be already in the share</source>
+        <translation type="unfinished">Die Datei scheint bereits in den Freigaben zu existieren</translation>
+    </message>
+    <message>
+        <location filename="juicer.cpp" line="427"/>
+        <source>The file seems to be already in the download list</source>
+        <translation type="unfinished">Die Datei scheint bereits in der Downloadliste zu sein</translation>
+    </message>
+    <message>
+        <location filename="juicer.cpp" line="457"/>
+        <source>question</source>
+        <translation type="unfinished">Frage</translation>
+    </message>
+    <message>
+        <location filename="juicer.cpp" line="457"/>
+        <source>You&apos;ve changed your shares.
+Do you want to transfer the changes to the core?</source>
+        <translation type="unfinished">Sie haben Ihre Freigaben verändert.
+Möchten Sie die Änderungen zum Core übermitteln?</translation>
+    </message>
+    <message>
+        <location filename="juicer.cpp" line="479"/>
+        <source>Core: </source>
+        <translation type="unfinished">Core: </translation>
     </message>
 </context>
 <context>
@@ -312,37 +344,37 @@ All Ihre Credits würden verloren gehen!</translation>
         <translation type="unfinished">zuletzt geändert</translation>
     </message>
     <message>
-        <location filename="qajincomingwidget.cpp" line="67"/>
+        <location filename="qajincomingwidget.cpp" line="70"/>
         <source>open</source>
         <translation type="unfinished">öffnen</translation>
     </message>
     <message>
-        <location filename="qajincomingwidget.cpp" line="68"/>
+        <location filename="qajincomingwidget.cpp" line="71"/>
         <source>copy</source>
         <translation type="unfinished">kopieren</translation>
     </message>
     <message>
-        <location filename="qajincomingwidget.cpp" line="71"/>
+        <location filename="qajincomingwidget.cpp" line="74"/>
         <source>reload</source>
         <translation type="unfinished">erneut loaden</translation>
     </message>
     <message>
-        <location filename="qajincomingwidget.cpp" line="221"/>
+        <location filename="qajincomingwidget.cpp" line="226"/>
         <source>save</source>
         <translation type="unfinished">speichere</translation>
     </message>
     <message>
-        <location filename="qajincomingwidget.cpp" line="221"/>
+        <location filename="qajincomingwidget.cpp" line="226"/>
         <source>to</source>
         <translation type="unfinished">nach</translation>
     </message>
     <message>
-        <location filename="qajincomingwidget.cpp" line="236"/>
+        <location filename="qajincomingwidget.cpp" line="241"/>
         <source>error</source>
         <translation type="unfinished">Fehler</translation>
     </message>
     <message>
-        <location filename="qajincomingwidget.cpp" line="236"/>
+        <location filename="qajincomingwidget.cpp" line="241"/>
         <source>already exists</source>
         <translation type="unfinished">existiert bereits</translation>
     </message>
@@ -357,39 +389,44 @@ All Ihre Credits würden verloren gehen!</translation>
         <translation type="obsolete">Öffnen von Dateien mittels FTP zur Zeit nicht unterstützt</translation>
     </message>
     <message>
-        <location filename="qajincomingwidget.cpp" line="388"/>
+        <location filename="qajincomingwidget.cpp" line="394"/>
         <source>Incoming</source>
         <translation type="unfinished">Incoming-Verzeichnis</translation>
     </message>
     <message>
-        <location filename="qajincomingwidget.cpp" line="128"/>
+        <location filename="qajincomingwidget.cpp" line="133"/>
         <source>copy to</source>
         <translation type="unfinished">Kopieren nach </translation>
     </message>
     <message>
-        <location filename="qajincomingwidget.cpp" line="135"/>
+        <location filename="qajincomingwidget.cpp" line="140"/>
         <source>file already exists</source>
         <translation type="unfinished">Datei exisitert bereits</translation>
     </message>
     <message>
-        <location filename="qajincomingwidget.cpp" line="69"/>
+        <location filename="qajincomingwidget.cpp" line="72"/>
         <source>delete</source>
         <translation type="unfinished">löschen</translation>
     </message>
     <message>
-        <location filename="qajincomingwidget.cpp" line="175"/>
+        <location filename="qajincomingwidget.cpp" line="180"/>
         <source>Delete</source>
         <translation type="unfinished">Lösche</translation>
     </message>
     <message>
-        <location filename="qajincomingwidget.cpp" line="176"/>
+        <location filename="qajincomingwidget.cpp" line="181"/>
         <source>files</source>
         <translation type="unfinished">Dateien</translation>
     </message>
     <message>
-        <location filename="qajincomingwidget.cpp" line="176"/>
+        <location filename="qajincomingwidget.cpp" line="181"/>
         <source>file</source>
         <translation type="unfinished">Datei</translation>
+    </message>
+    <message>
+        <location filename="qajincomingwidget.cpp" line="54"/>
+        <source>please wait...</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

@@ -53,6 +53,7 @@ private:
     void initPopup();
     AjSettings::LOCATION getLocation();
     QFtp* ftp;
+    QLabel* waitLabel;
 
 public slots:
     void reload();

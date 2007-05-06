@@ -50,6 +50,9 @@ QAjIncomingWidget::QAjIncomingWidget( QXMLModule* xml, QWidget *parent ) : QAjLi
     initToolBar();
     initPopup();
     newSelection( false );
+
+    waitLabel = new QLabel( tr("please wait..."), this );
+
 }
 
 
@@ -81,6 +84,8 @@ void QAjIncomingWidget::initToolBar()
 void QAjIncomingWidget::reloadFtp()
 {
     this->clear();
+    waitLabel->move( (this->width() - waitLabel->width()) /2, (this->height() - waitLabel->height()) / 2);
+    waitLabel->show();
 
     QString server = QAjOptionsDialog::getSetting( "ftp", "server", "localhost" ).toString();
     int port = QAjOptionsDialog::getSetting( "ftp", "port", "21" ).toInt();
@@ -369,6 +374,7 @@ void QAjIncomingWidget::open()
  */
 void QAjIncomingWidget::insert( QUrlInfo info )
 {
+    waitLabel->setVisible( false );
     if ( info.isFile() || info.isDir() )
     {
         QAjIncomingItem *item = new QAjIncomingItem( info.size(), info.lastModified().toLocalTime(), this );
