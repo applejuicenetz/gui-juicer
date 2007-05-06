@@ -177,6 +177,7 @@ private slots:
 
     void adjustColumns();
     void trayActivated ( QSystemTrayIcon::ActivationReason reason );
+    void lastWindowClosed();
 private:
     void initStatusBar();
 

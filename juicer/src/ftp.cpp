@@ -28,17 +28,7 @@ FTP::FTP( QString host, int port, QString user, QString password, bool binary, Q
     this->user = user;
     this->password = password;
     this->binary = binary;
-    dstFile = NULL;
-
-    ftp = new QFtp( );
-    connect( ftp, SIGNAL( stateChanged( int ) ), this, SLOT( stateChangedSlot( int ) ) );
-    connect( ftp, SIGNAL( commandFinished( int, bool ) ), this, SLOT( commandFinishedSlot( int, bool ) ) );
-    connect( ftp, SIGNAL( dataTransferProgress( qint64, qint64 ) ), this, SLOT( dataTransferProgressSlot( qint64, qint64 ) ) );
-    connect( ftp, SIGNAL( listInfo ( QUrlInfo ) ), this, SLOT( listInfoSlot( QUrlInfo ) ) );
-
-    progressDialog = new QProgressDialog();
-    progressDialog->hide();
-    connect( progressDialog, SIGNAL( canceled() ), this, SLOT( abort() ) );
+    init();
 }
 
 FTP::FTP( QObject *parent ) : QThread( parent )
@@ -48,12 +38,29 @@ FTP::FTP( QObject *parent ) : QThread( parent )
     user = QAjOptionsDialog::getSetting( "ftp", "user", "anonymous" ).toString();
     password = QAjOptionsDialog::getSetting( "ftp", "password", "" ).toString();
     binary = true;
+    init();
 }
 
 FTP::~FTP()
 {
-    ftp->close();
-    delete ftp;
+}
+
+
+/*!
+    \fn FTP::init()
+ */
+void FTP::init()
+{
+    dstFile = NULL;
+    tmpMode = false;
+    ftp = new QFtp( this );
+    connect( ftp, SIGNAL( stateChanged( int ) ), this, SLOT( stateChangedSlot( int ) ) );
+    connect( ftp, SIGNAL( commandFinished( int, bool ) ), this, SLOT( commandFinishedSlot( int, bool ) ) );
+    connect( ftp, SIGNAL( dataTransferProgress( qint64, qint64 ) ), this, SLOT( dataTransferProgressSlot( qint64, qint64 ) ) );
+
+    progressDialog = new QProgressDialog();
+    progressDialog->hide();
+    connect( progressDialog, SIGNAL( canceled() ), this, SLOT( abort() ) );
 }
 
 
@@ -89,7 +96,7 @@ void FTP::commandFinishedSlot( int id, bool error )
     {
         dstFile->flush();
         dstFile->close();
-        downloadFinished( dstFile );
+        downloadFinished( dstFile, this );
 //		QMessageBox::information ( NULL, "finished", dstFile->fileName() + " finished", QMessageBox::Ok );
         dstFile = NULL;
         if(progressDialog->isVisible())
@@ -106,7 +113,7 @@ void FTP::run()
 {
     ftp->connectToHost( host, port );
     ftp->login( user, password );
-    ftp->setTransferMode( QFtp::Passive );
+    ftp->setTransferMode( (QFtp::TransferMode)QAjOptionsDialog::getSetting( "ftp", "mode", QFtp::Active ).toInt() );
     exec();
 }
 
@@ -116,6 +123,17 @@ void FTP::run()
  */
 void FTP::dataTransferProgressSlot( qint64 done, qint64 total )
 {
+    qint64 min = -1;
+    if( tmpMode && ! ready )
+    {
+        bool full = QAjOptionsDialog::getSetting( "ftp", "full", false ).toBool();
+        if( !full )
+        {
+            min = QAjOptionsDialog::getSetting( "ftp", "mb", 10 ).toInt() * 1024 * 1024;
+            total = min;
+        }
+    }
+
     if ( dstFile != NULL )
     {
         progressDialog->setLabelText( dstFile->fileName() );
@@ -123,6 +141,12 @@ void FTP::dataTransferProgressSlot( qint64 done, qint64 total )
     progressDialog->setRange( 0, total );
     progressDialog->show();
     progressDialog->setValue( done );
+
+    if( tmpMode && !ready && min > 0 && done >= min )
+    {
+        ready = true;
+        readyRead( dstFile, this );
+    }
 }
 
 
@@ -153,6 +177,18 @@ void FTP::add( QString srcFilename, QFile* dstFile )
 
 
 /*!
+    \fn FTP::add( QString srcFilename )
+ */
+void FTP::add( QString srcFilename )
+{
+    tmpMode = true;
+    QTemporaryFile* dstFile = new QTemporaryFile( QDir::tempPath()+"juicer", this );
+    dstFile->open();
+    add( srcFilename, dstFile );
+}
+
+
+/*!
     \fn FTP::abort()
  */
 void FTP::abort()
@@ -163,25 +199,9 @@ void FTP::abort()
     {
         dstFile->flush();
         dstFile->close();
+        if( tmpMode )
+        {
+            dstFile->remove();
+        }
     }
-}
-
-
-/*!
-    \fn FTP::list( QString directory )
- */
-void FTP::list( QString directory )
-{
-    ftp->connectToHost( host, port );
-    ftp->login( user, password );
-    ftp->list( directory );
-}
-
-
-/*!
-    \fn FTP::listInfoSlot( QUrlInfo info )
- */
-void FTP::listInfoSlot( QUrlInfo info )
-{
-    listEntry( info );
 }

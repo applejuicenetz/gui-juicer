@@ -28,6 +28,8 @@ Juicer::Juicer( QStringList argList ) : QMainWindow()
 //     filesystemSeparator = "/";
 // #endif
 
+    connect( qApp, SIGNAL( lastWindowClosed () ), this, SLOT ( lastWindowClosed () ) );
+
     zeroTime = QDateTime( QDate(1970,1,1), QTime(0,0), Qt::UTC );
     firstModifiedMax = 4 + argList.size();
 
@@ -615,3 +617,12 @@ void Juicer::trayActivated( QSystemTrayIcon::ActivationReason reason )
 }
 
 
+
+
+/*!
+    \fn Juicer::lastWindowClosed()
+ */
+void Juicer::lastWindowClosed()
+{
+    delete this;
+}

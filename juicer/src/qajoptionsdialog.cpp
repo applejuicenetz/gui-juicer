@@ -166,7 +166,15 @@ void QAjOptionsDialog::setSettings()
     ftpPortEdit->setText( getSetting( "ftp", "port", "21" ).toString() );
     ftpUserEdit->setText( getSetting( "ftp", "user", "anonymous" ).toString() );
     ftpPasswordEdit->setText( getSetting( "ftp", "password", "" ).toString() );
-    ftpInDirEdit->setText( getSetting( "ftp", "dir", "/" ).toString() );
+    ftpInDirEdit->setText( getSetting( "ftp", "inDir", "/" ).toString() );
+    ftpTmpDirEdit->setText( getSetting( "ftp", "tmpDir", "/" ).toString() );
+    ftpActiveRadioButton->setChecked( getSetting( "ftp", "mode", QFtp::Active ) == QFtp::Active );
+    ftpPassiveRadioButton->setChecked( getSetting( "ftp", "mode", QFtp::Active ) == QFtp::Passive );
+
+    ftpMbSpinBox->setValue( getSetting( "ftp", "mb", "10" ).toInt() );
+    bool ftpFull = getSetting( "ftp", "full", false ).toBool();
+    ftpFullRadioButton->setChecked( ftpFull );
+    ftpMbRadioButton->setChecked( !ftpFull );
 
     fetchServersCheckBox->setChecked( getSetting( "fetchServersOnStartup", false ).toBool() );
 
@@ -296,7 +304,11 @@ void QAjOptionsDialog::writeSettings()
     setSetting( "ftp", "port", ftpPortEdit->text() );
     setSetting( "ftp", "user", ftpUserEdit->text() );
     setSetting( "ftp", "password", ftpPasswordEdit->text() );
-    setSetting( "ftp", "dir", ftpInDirEdit->text() );
+    setSetting( "ftp", "inDir", ftpInDirEdit->text() );
+    setSetting( "ftp", "tmpDir", ftpTmpDirEdit->text() );
+    setSetting( "ftp", "mode", ftpActiveRadioButton->isChecked()?QFtp::Active:QFtp::Passive );
+    setSetting( "ftp", "full", ftpFullRadioButton->isChecked() );
+    setSetting( "ftp", "mb", ftpMbSpinBox->value() );
 
     setSetting( "fetchServersOnStartup",  fetchServersCheckBox->isChecked() );
     setSetting( "language",  languageComboBox->itemData(languageComboBox->currentIndex()) );

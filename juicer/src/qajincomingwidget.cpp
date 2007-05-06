@@ -86,6 +86,7 @@ void QAjIncomingWidget::reloadFtp()
     int port = QAjOptionsDialog::getSetting( "ftp", "port", "21" ).toInt();
     QString user = QAjOptionsDialog::getSetting( "ftp", "user", "anonymous" ).toString();
     QString password = QAjOptionsDialog::getSetting( "ftp", "password", "" ).toString();
+    QString dir = QAjOptionsDialog::getSetting( "ftp", "inDir", "/" ).toString();
 
     if ( ftp->state() != QFtp::Unconnected )
     {
@@ -205,8 +206,7 @@ void QAjIncomingWidget::storeFtp()
     QString filename, localDir;
     QList<QTreeWidgetItem *>  selectedItems = this->selectedItems();
 
-    QString dir = QAjOptionsDialog::getSetting( "ftp", "dir", "/" ).toString();
-
+    QString dir = QAjOptionsDialog::getSetting( "ftp", "inDir", "/" ).toString();
 
     // TODO: check if the core filesystem separator is a better choice
     if ( ! dir.endsWith( '/' ) )
@@ -214,7 +214,6 @@ void QAjIncomingWidget::storeFtp()
         dir += '/';
     }
     FTP* ftp = new FTP( this );
-
     int i;
     for ( i=0; i<selectedItems.size(); i++ )
     {
@@ -237,6 +236,43 @@ void QAjIncomingWidget::storeFtp()
                 QMessageBox::critical( this, tr("error"), "\"" + dstFile->fileName() + "\" "+tr("already exists"), QMessageBox::Ok, QMessageBox::NoButton );
             }
         }
+    }
+    ftp->start();
+}
+
+
+/*!
+    \fn QAjIncomingWidget::openFtp()
+ */
+void QAjIncomingWidget::openFtp()
+{
+    QString filename;
+
+    QString dir = QAjOptionsDialog::getSetting( "ftp", "inDir", "/" ).toString();
+
+    // TODO: check if the core filesystem separator is a better choice
+    if ( ! dir.endsWith( '/' ) )
+    {
+        dir += '/';
+    }
+    FTP* ftp = new FTP( this );
+
+    bool full = QAjOptionsDialog::getSetting( "ftp", "full", false ).toBool();
+    if( full )
+    {
+        connect( ftp, SIGNAL( downloadFinished( QFile*, FTP* ) ), this, SLOT( ftpReadyRead( QFile*, FTP* ) ) );
+    }
+    else
+    {
+        connect( ftp, SIGNAL( readyRead( QFile*, FTP* ) ), this, SLOT( ftpReadyRead( QFile*, FTP* ) ) );
+    }
+
+    QList<QTreeWidgetItem *>  selectedItems = this->selectedItems();
+    int i;
+    for ( i=0; i<selectedItems.size(); i++ )
+    {
+        filename = selectedItems.at(i)->text( FILENAME_INCOMING_INDEX );
+        ftp->add( dir + filename );
     }
     ftp->start();
 }
@@ -315,8 +351,7 @@ void QAjIncomingWidget::open()
     }
     else // ftp
     {
-        QMessageBox::information(this, tr("open file"), tr("opening via ftp currently not supported"));
-        return;
+        return openFtp();
     }
 
     QList<QAjItem*> items = selectedAjItems();
@@ -365,4 +400,17 @@ void QAjIncomingWidget::initPopup()
 AjSettings::LOCATION QAjIncomingWidget::getLocation()
 {
     return (AjSettings::LOCATION)QAjOptionsDialog::getSetting( "location", AjSettings::SAME ).toInt();
+}
+
+
+/*!
+    \fn QAjIncomingWidget::ftpReadyRead( QFile* dstFile, FTP* ftp )
+ */
+void QAjIncomingWidget::ftpReadyRead( QFile* dstFile, FTP* ftp )
+{
+    QStringList args = Juicer::getExec();
+    QString exec = args.takeFirst();
+
+    args << dstFile->fileName();
+    QProcess::startDetached( exec, args );
 }

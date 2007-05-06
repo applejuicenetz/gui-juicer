@@ -28,6 +28,8 @@
 #include <QHash>
 #include <QMessageBox>
 #include <QProgressDialog>
+#include <QProcess>
+#include <QTemporaryFile>
 
 #include "qajoptionsdialog.h"
 #include "types.h"
@@ -44,7 +46,7 @@ public:
     ~FTP();
     void getNext();
     void add( QString srcFilename, QFile* dstFile );
-    void list( QString directory );
+    void add( QString srcFilename );
 
 private:
     QFtp* ftp;
@@ -60,20 +62,24 @@ private:
 
     QProgressDialog* progressDialog;
 
+    bool ready;
+    bool tmpMode;
+
 private slots:
     void stateChangedSlot( int state ) ;
     void commandFinishedSlot( int id, bool error );
 signals:
     void done();
     void errorOccured( QString message );
-    void downloadFinished( QFile* file );
-    void listEntry( QUrlInfo entry );
+    void downloadFinished( QFile* file, FTP* ftp );
+    void readyRead( QFile* dstFile, FTP* ftp);
 protected:
     void run();
 public slots:
     void dataTransferProgressSlot( qint64 done, qint64 total );
     void abort();
-    void listInfoSlot( QUrlInfo info );
+private:
+    void init();
 };
 
 #endif

@@ -6,7 +6,7 @@
     <x>0</x>
     <y>0</y>
     <width>512</width>
-    <height>450</height>
+    <height>500</height>
    </rect>
   </property>
   <property name="windowTitle" >
@@ -16,7 +16,7 @@
    <property name="geometry" >
     <rect>
      <x>10</x>
-     <y>408</y>
+     <y>452</y>
      <width>491</width>
      <height>33</height>
     </rect>
@@ -57,13 +57,29 @@
     </item>
    </layout>
   </widget>
+  <widget class="QListWidget" name="listWidget" >
+   <property name="geometry" >
+    <rect>
+     <x>10</x>
+     <y>20</y>
+     <width>131</width>
+     <height>421</height>
+    </rect>
+   </property>
+   <property name="autoScroll" >
+    <bool>false</bool>
+   </property>
+   <property name="selectionBehavior" >
+    <enum>QAbstractItemView::SelectRows</enum>
+   </property>
+  </widget>
   <widget class="QStackedWidget" name="stackedWidget" >
    <property name="geometry" >
     <rect>
      <x>140</x>
      <y>9</y>
      <width>371</width>
-     <height>391</height>
+     <height>431</height>
     </rect>
    </property>
    <property name="frameShape" >
@@ -899,10 +915,10 @@
     <widget class="QWidget" name="layoutWidget" >
      <property name="geometry" >
       <rect>
-       <x>10</x>
-       <y>50</y>
-       <width>351</width>
-       <height>201</height>
+       <x>11</x>
+       <y>54</y>
+       <width>349</width>
+       <height>200</height>
       </rect>
      </property>
      <layout class="QGridLayout" >
@@ -912,34 +928,30 @@
       <property name="spacing" >
        <number>6</number>
       </property>
-      <item row="3" column="0" >
-       <widget class="QLabel" name="label_20" >
+      <item row="5" column="1" >
+       <widget class="QLineEdit" name="ftpTmpDirEdit" />
+      </item>
+      <item row="5" column="0" >
+       <widget class="QLabel" name="label_23" >
         <property name="text" >
-         <string>Password:</string>
+         <string>Temporary Directory:</string>
         </property>
        </widget>
       </item>
-      <item row="2" column="0" >
-       <widget class="QLabel" name="label_19" >
+      <item row="4" column="0" >
+       <widget class="QLabel" name="label_21" >
         <property name="text" >
-         <string>User:</string>
+         <string>Incoming Directory:</string>
         </property>
        </widget>
       </item>
       <item row="2" column="1" >
        <widget class="QLineEdit" name="ftpUserEdit" />
       </item>
-      <item row="1" column="0" >
-       <widget class="QLabel" name="label_18" >
+      <item row="2" column="0" >
+       <widget class="QLabel" name="label_19" >
         <property name="text" >
-         <string>Port:</string>
-        </property>
-       </widget>
-      </item>
-      <item row="0" column="0" >
-       <widget class="QLabel" name="label_17" >
-        <property name="text" >
-         <string>Server:</string>
+         <string>User:</string>
         </property>
        </widget>
       </item>
@@ -950,51 +962,152 @@
         </property>
        </widget>
       </item>
-      <item row="5" column="1" >
-       <widget class="QLineEdit" name="ftpTmpEdit" />
-      </item>
-      <item row="4" column="0" >
-       <widget class="QLabel" name="label_21" >
-        <property name="text" >
-         <string>Incoming Directory:</string>
-        </property>
-       </widget>
-      </item>
-      <item row="1" column="1" >
-       <widget class="QLineEdit" name="ftpPortEdit" />
-      </item>
-      <item row="5" column="0" >
-       <widget class="QLabel" name="label_23" >
-        <property name="text" >
-         <string>Temporary Directory:</string>
-        </property>
-       </widget>
-      </item>
       <item row="4" column="1" >
        <widget class="QLineEdit" name="ftpInDirEdit" />
+      </item>
+      <item row="0" column="0" >
+       <widget class="QLabel" name="label_17" >
+        <property name="text" >
+         <string>Server:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="0" >
+       <widget class="QLabel" name="label_18" >
+        <property name="text" >
+         <string>Port:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="0" >
+       <widget class="QLabel" name="label_20" >
+        <property name="text" >
+         <string>Password:</string>
+        </property>
+       </widget>
       </item>
       <item row="0" column="1" >
        <widget class="QLineEdit" name="ftpServerEdit" />
       </item>
+      <item row="1" column="1" >
+       <widget class="QLineEdit" name="ftpPortEdit" />
+      </item>
      </layout>
     </widget>
+    <widget class="QGroupBox" name="groupBox_3" >
+     <property name="geometry" >
+      <rect>
+       <x>11</x>
+       <y>260</y>
+       <width>349</width>
+       <height>61</height>
+      </rect>
+     </property>
+     <property name="title" >
+      <string>Mode</string>
+     </property>
+     <widget class="QWidget" name="layoutWidget" >
+      <property name="geometry" >
+       <rect>
+        <x>10</x>
+        <y>20</y>
+        <width>331</width>
+        <height>28</height>
+       </rect>
+      </property>
+      <layout class="QHBoxLayout" >
+       <property name="margin" >
+        <number>0</number>
+       </property>
+       <property name="spacing" >
+        <number>6</number>
+       </property>
+       <item>
+        <widget class="QRadioButton" name="ftpActiveRadioButton" >
+         <property name="text" >
+          <string>active</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QRadioButton" name="ftpPassiveRadioButton" >
+         <property name="text" >
+          <string>passive</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+    </widget>
+    <widget class="QGroupBox" name="groupBox_2" >
+     <property name="geometry" >
+      <rect>
+       <x>11</x>
+       <y>327</y>
+       <width>349</width>
+       <height>101</height>
+      </rect>
+     </property>
+     <property name="title" >
+      <string>Launching</string>
+     </property>
+     <widget class="QWidget" name="layoutWidget" >
+      <property name="geometry" >
+       <rect>
+        <x>10</x>
+        <y>26</y>
+        <width>331</width>
+        <height>63</height>
+       </rect>
+      </property>
+      <layout class="QVBoxLayout" >
+       <property name="margin" >
+        <number>0</number>
+       </property>
+       <property name="spacing" >
+        <number>6</number>
+       </property>
+       <item>
+        <widget class="QRadioButton" name="ftpFullRadioButton" >
+         <property name="text" >
+          <string>open after 100% </string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <layout class="QHBoxLayout" >
+         <property name="margin" >
+          <number>0</number>
+         </property>
+         <property name="spacing" >
+          <number>6</number>
+         </property>
+         <item>
+          <widget class="QRadioButton" name="ftpMbRadioButton" >
+           <property name="text" >
+            <string>open after</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QSpinBox" name="ftpMbSpinBox" >
+           <property name="layoutDirection" >
+            <enum>Qt::LeftToRight</enum>
+           </property>
+           <property name="alignment" >
+            <set>Qt::AlignRight</set>
+           </property>
+           <property name="suffix" >
+            <string>MB</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+      </layout>
+     </widget>
+    </widget>
    </widget>
-  </widget>
-  <widget class="QListWidget" name="listWidget" >
-   <property name="geometry" >
-    <rect>
-     <x>10</x>
-     <y>20</y>
-     <width>131</width>
-     <height>361</height>
-    </rect>
-   </property>
-   <property name="autoScroll" >
-    <bool>false</bool>
-   </property>
-   <property name="selectionBehavior" >
-    <enum>QAbstractItemView::SelectRows</enum>
-   </property>
   </widget>
  </widget>
  <tabstops>

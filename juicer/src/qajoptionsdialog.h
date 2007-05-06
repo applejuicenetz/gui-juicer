@@ -24,6 +24,7 @@
 #include <QDialog>
 #include <QFileDialog>
 #include <QSettings>
+#include <QFtp>
 #include "ui_qajoptionsdialogbase.h"
 
 #include "qajiconwidget.h"

@@ -48,6 +48,7 @@ private:
     QAction *reloadButton, *openButton, *saveButton, *removeButton;
     void storeFtp();
     void reloadFtp();
+    void openFtp();
     void removeFtp() {}
     void initPopup();
     AjSettings::LOCATION getLocation();
@@ -78,6 +79,27 @@ private:
             }
         }
     };
+
+    class FtpThread : public QThread
+    {
+        public:
+        FtpThread( QFile* dstFile, FTP* ftp, QStringList args )
+        {
+            this->dstFile = dstFile;
+            this->ftp = ftp;
+            this->args = args;
+        }
+        QFile* dstFile; FTP* ftp; QStringList args;
+        void run()
+        {
+            QString exec = args.takeFirst();
+            args << dstFile->fileName();
+            QProcess::execute( exec, args );
+            ftp->abort();
+        }
+    };
+private slots:
+    void ftpReadyRead( QFile* dstFile, FTP* ftp );
 };
 
 #endif
