@@ -110,3 +110,19 @@ void QAjShareFilesWidget::setPriority( int prio ) {
 }
 
 
+
+
+/*!
+    \fn QAjShareFilesWidget::findFile( QString size, QString hash )
+ */
+QAjShareFileItem* QAjShareFilesWidget::findFile( QString size, QString hash )
+{
+    QList<QAjShareFileItem*> list = sharedFiles.values();
+    int i;
+    for( i=0; i<list.size(); i++ )
+    {
+        if( list[i]->getSize() == size && list[i]->getHash() == hash )
+            return list[i];
+    }
+    return NULL;
+}

@@ -24,20 +24,14 @@ QAjShareFileItem::~QAjShareFileItem()
 
 void QAjShareFileItem::update( QString hash, QString fileName, QString size, QString priority, QString filesystemSeperator ) {
     this->hash = hash;
+    this->filename = fileName;
 
-// #ifdef Q_WS_WIN
-//     QStringList fileNameList = fileName.split(QChar('\\'));
-// #else
-//     QStringList fileNameList = fileName.split(QChar('/'));
-// #endif
+    QFileInfo f(fileName);
 
-    QStringList fileNameList = fileName.split(filesystemSeperator);
-
-    fileName.remove(fileNameList.last());
-    this->path = fileName;
+    this->path = f.absolutePath();
     this->size = size;
 
-    this->setText( FILENAME_SHARED_FILE_INDEX, fileNameList.back() );
+    this->setText( FILENAME_SHARED_FILE_INDEX, f.fileName() );
     this->setText( SIZE_SHARED_FILE_INDEX, QConvert::bytesExtra(size) );
     this->setText( PRIORITY_SHARED_FILE_INDEX, priority );
 

@@ -42,6 +42,11 @@ public:
       return this->size;
     }
 
+    QString getHash() const
+    {
+        return this->hash;
+    }
+    
     bool operator<( const QTreeWidgetItem & other ) const;
 
     void setPath ( const QString& theValue )
@@ -53,10 +58,14 @@ public:
     {
       return path;
     }
+    QString getFilename() const
+    {
+        return filename;
+    }
 
 protected:
     QString hash, path, size;
-
+    QString filename;
     QAjListWidget *parentWidget;
 
 };

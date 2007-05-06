@@ -409,18 +409,36 @@ void Juicer::showNetworkInfo()
     networkDialog->exec();
 }
 
+void Juicer::processLink( QString link)
+{
+    QStringList s = link.split("|");
+    if(s.size() > 3 )
+    {
+        QString size = s[3].split("/")[0];
+        QString hash = s[2];
+        QAjShareFileItem* file;
+        QAjDownloadItem* download;
+        if( (file = ajShareFilesWidget->findFile( size, hash )) != NULL )
+        {
+            QMessageBox::information( this, "information", "The file seems to be already in the share:\n\n"+file->getFilename());
+        }
+        else if( (download = ajDownloadWidget->findDownload( size, hash )) != NULL )
+        {
+            QMessageBox::information( this, "information", "The file seems to be already in the download list:\n\n"+download->text( FILENAME_DOWN_INDEX ));
+        }
+    }
+    xml->set( "processlink", "&link=" + QString( QUrl::toPercentEncoding( link ) ) );
+}
 
 void Juicer::processLink()
 {
-    QString link = QString( QUrl::toPercentEncoding( ajAddressEdit->text().trimmed() ) );
-    xml->set( "processlink", "&link=" + link );
+    processLink( ajAddressEdit->text().trimmed() );
     ajAddressEdit->clear();
 }
 
 void Juicer::processClipboard()
 {
-    QString link = QString( QUrl::toPercentEncoding( qApp->clipboard()->text( QClipboard::Clipboard ).trimmed() ) );
-    xml->set( "processlink", "&link=" + link );
+    processLink( qApp->clipboard()->text( QClipboard::Clipboard ).trimmed() );
 }
 
 
@@ -510,10 +528,7 @@ void Juicer::linkServerLine( QString line )
 void Juicer::processQueuedLinks()
 {
     while ( ! queuedLinks.isEmpty() )
-    {
-        QString link = QString( QUrl::toPercentEncoding( queuedLinks.takeFirst() ) );
-        xml->set( "processlink", "&link=" + link );
-    }
+        processLink( queuedLinks.takeFirst() );
 }
 
 void Juicer::queueLinks( QStringList links )

@@ -164,6 +164,7 @@ private slots:
     void xmlError( int code );
     void gotSession();
 
+    void processLink( QString link );
     void processLink();
     void processClipboard();
 

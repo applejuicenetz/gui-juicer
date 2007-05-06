@@ -58,6 +58,7 @@ public:
     {
       return tmpDir;
     }
+    QAjShareFileItem* findFile( QString size, QString hash );
 
 private:
     QHash<QString, QAjShareFileItem*> sharedFiles;

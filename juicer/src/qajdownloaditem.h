@@ -154,6 +154,11 @@ public:
     {
         return tempNumber;
     }
+    
+    QString getHash()
+    {
+        return hash;
+    }
 
     virtual bool operator<( const QTreeWidgetItem & other ) const;
 

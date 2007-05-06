@@ -589,3 +589,19 @@ void QAjDownloadWidget::initPopup()
     popup->addSeparator();
     popup->addAction( clearDownloadButton );
 }
+
+
+/*!
+    \fn QAjDownloadWidget::findDownload( QString size, QString hash )
+ */
+QAjDownloadItem* QAjDownloadWidget::findDownload( QString size, QString hash )
+{
+    QList<QAjDownloadItem*> list = downloads.values();
+    int i;
+    for( i=0; i<list.size(); i++ )
+    {
+        if( QString::number((int)list[i]->getSize()) == size && list[i]->getHash() == hash )
+            return list[i];
+    }
+    return NULL;
+}

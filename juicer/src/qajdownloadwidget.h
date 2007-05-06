@@ -71,6 +71,7 @@ public:
     void initToolBar();
     void setDirs( QFileInfo tmpDir, QFileInfo inDir );
     void initPopup();
+    QAjDownloadItem* findDownload( QString size, QString hash );
 
     QAction *powerUpButton, *powerDownButton, *powerOkButton, *powerMaxButton;
     QAction *pauseDownloadButton, *resumeDownloadButton;
