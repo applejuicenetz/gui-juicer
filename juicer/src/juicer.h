@@ -184,6 +184,8 @@ private:
 
     QSystemTrayIcon* tray;
 
+protected slots:
+    void downloadsFinished( QList<QAjDownloadItem*> list );
 };
 
 

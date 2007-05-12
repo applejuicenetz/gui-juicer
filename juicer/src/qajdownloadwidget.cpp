@@ -402,14 +402,19 @@ void QAjDownloadWidget::selectionChanged(  bool oneSelected  )
 
 void QAjDownloadWidget::updateView( bool force )
 {
+    QList<QAjDownloadItem*> finished;
     if( force || this->isVisible() )
     {
         int i;
         for (i=0; i<topLevelItemCount(); i++)
         {
-            ((QAjDownloadItem*)topLevelItem(i))->updateView( &downloadStatusDescr );
+            QAjDownloadItem* item = ((QAjDownloadItem*)topLevelItem(i));
+            if( item->updateView( &downloadStatusDescr ) )
+                finished << item;
         }
     }
+    if( ! finished.isEmpty() )
+        downloadsFinished( finished );
 }
 
 QAjDownloadItem* QAjDownloadWidget::findDownload( QString id )

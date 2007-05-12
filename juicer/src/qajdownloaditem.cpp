@@ -36,6 +36,7 @@ QAjDownloadItem::QAjDownloadItem( QString id, QAjListWidget *parent ) : QAjItem(
     pixmap = new QPixmap(1, 1);
 
     finishedChanged = true;
+    firstFinished = false;
     first = true;
 
     setText( SOURCES_DOWN_INDEX, getSourcesString() );
@@ -244,12 +245,16 @@ void QAjDownloadItem::update( QString hash, QString fileName, QString status, QS
 
     this->setText( POWER_DOWN_INDEX, " " + QConvert::power( power ) + " " );
 
+    firstFinished = false;
     if ( status != this->status )
     {
         if ( status == DOWN_PAUSED )
             this->setTextColor( FILENAME_DOWN_INDEX, Qt::darkGray );
         else if ( status == DOWN_FINISHED )
+        {
             this->setTextColor( FILENAME_DOWN_INDEX, Qt::darkGreen );
+            firstFinished = true;
+        }
         else if ( status == DOWN_CANCELD )
             this->setTextColor( FILENAME_DOWN_INDEX, Qt::red );
         else
@@ -299,21 +304,8 @@ QString QAjDownloadItem::getSourcesString()
     return QString( " " + QString::number(activeSources) + "-" + QString::number(queuedSources) + "-" + QString::number(otherSources) + " " );
 }
 
-void QAjDownloadItem::updateView( QHash<QString, QString>* downloadStatusDescr )
+bool QAjDownloadItem::updateView( QHash<QString, QString>* downloadStatusDescr )
 {
-    setText( SPEED_DOWN_INDEX, " " + QConvert::bytes( speed, 1 ) + "/s ");
-
-    if ( speed > 0 )
-    {
-        remainingSec = (long int)(remainingSize / speed);
-        setText( REMAIN_TIME_DOWN_INDEX, " " + QConvert::time( remainingSec ) + " " );
-    }
-    else
-    {
-        remainingSec = LONG_MAX;
-        setText( REMAIN_TIME_DOWN_INDEX, QString( " n.a. " ) );
-    }
-
     if ( ( status == DOWN_SEARCHING ) || ( status == DOWN_LOADING ) )
     {
         if ( getActiveSources() > 0 )
@@ -342,6 +334,29 @@ void QAjDownloadItem::updateView( QHash<QString, QString>* downloadStatusDescr )
         setText( FINISHED_SIZE_DOWN_INDEX, " " + QConvert::bytes( ready ) + " " );
         setText( REMAIN_SIZE_DOWN_INDEX, " " + QConvert::bytes( remainingSize ) + " " );
     }
+    
+    if( status == DOWN_FINISHED )
+    {
+        speed = 0.0;
+        remainingSec = 0.0;
+    }
+
+    setText( SPEED_DOWN_INDEX, " " + QConvert::bytes( speed, 1 ) + "/s ");
+
+    if ( speed > 0 )
+    {
+        remainingSec = (long int)(remainingSize / speed);
+        setText( REMAIN_TIME_DOWN_INDEX, " " + QConvert::time( remainingSec ) + " " );
+    }
+    else
+    {
+        remainingSec = LONG_MAX;
+        setText( REMAIN_TIME_DOWN_INDEX, QString( " n.a. " ) );
+    }
+
+    bool ret = firstFinished;
+    firstFinished = false;
+    return ret;
 }
 
 

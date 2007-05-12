@@ -106,7 +106,7 @@ public:
 
     QString getSourcesString();
 
-    void updateView( QHash<QString, QString>* downloadStatusDescr );
+    bool updateView( QHash<QString, QString>* downloadStatusDescr );
 
     void deleteUsers();
 
@@ -176,7 +176,8 @@ protected:
 
     bool finishedChanged;
     bool first;
-
+    bool firstFinished;
+    
     int activeSources, queuedSources, otherSources;
     QAjListWidget *parentWidget;
     QPixmap *pixmap;

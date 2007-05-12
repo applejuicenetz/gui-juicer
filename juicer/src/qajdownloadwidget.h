@@ -117,6 +117,8 @@ public slots:
     void updateView( bool force = false );
     void storeDownloadFtp();
 
+signals:
+    void downloadsFinished( QList<QAjDownloadItem*> downloads );
 };
 
 #endif

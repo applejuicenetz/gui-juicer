@@ -170,6 +170,8 @@ Juicer::Juicer( QStringList argList ) : QMainWindow()
     {
         tray = NULL;
     }
+    connect( ajDownloadWidget, SIGNAL( downloadsFinished( QList<QAjDownloadItem*>  ) ),
+            this, SLOT( downloadsFinished( QList<QAjDownloadItem*> ) ) );
 }
 
 Juicer::~Juicer()
@@ -302,32 +304,6 @@ void Juicer::settingsReady( AjSettings settings )
     ajIncomingWidget->setDir( settings.incomingDir );
     if ( optionsDialog != NULL )
     {
-//         QSettings lokalSettings;
-//         settings.coreAddress = lokalSettings.value( "coreAddress", "localhost" ).toString();
-//         settings.savePassword = lokalSettings.value( "savePassword",  false ).toBool();
-//         settings.showSplash = lokalSettings.value( "showSplash", true ).toBool();
-//         settings.useTray = lokalSettings.value( "useTray",  false ).toBool();
-//         settings.serverURL = lokalSettings.value( "serverURL",  "http://www.applejuicenet.de/18.0.html" ).toString();
-//         settings.refresh = lokalSettings.value( "refresh", 3 ).toInt();
-// 
-//         settings.launcher = lokalSettings.value( "launcher", optionsDialog->launchCombo->itemText(0)).toString();
-// 
-//         settings.location = (AjSettings::LOCATION)lokalSettings.value( "location", AjSettings::SAME ).toInt();
-//         settings.tempDirSpecific = lokalSettings.value( "tempDirSpecific", "/" ).toString();
-//         settings.incomingDirSpecific = lokalSettings.value( "incomingDirSpecific", "/" ).toString();
-// 
-//         lokalSettings.beginGroup("ftp");
-//         settings.ftpServer = lokalSettings.value( "server", "localhost" ).toString();
-//         settings.ftpPort = lokalSettings.value( "port", "21" ).toString();
-//         settings.ftpUser = lokalSettings.value( "user", "anonymous" ).toString();
-//         settings.ftpPassword = lokalSettings.value( "password", "" ).toString();
-//         settings.ftpDir = lokalSettings.value( "dir", "/" ).toString();
-//         lokalSettings.endGroup();
-// 
-//         settings.fetchServersOnStartup = lokalSettings.value( "fetchServersOnStartup", false ).toBool();
-//         settings.language = lokalSettings.value( "language", QLocale::system().name() );
-//         settings.statusbarComponents = lokalSettings.value( "statusbarComponents", optionsDialog->getDefaultStatusbarComponents() ).toStringList();
-
         optionsDialog->setAjSettings( settings );
         optionsDialog->setSettings();
     }
@@ -337,7 +313,6 @@ bool Juicer::login()
 {
     firstModifiedCnt = 0;
     ajDownloadWidget->clear();
-//	ajUploadWidget->clear();
     ajServerWidget->clear();
     ajSearchWidget->clear();
     ajIncomingWidget->clear();
@@ -640,4 +615,22 @@ void Juicer::trayActivated( QSystemTrayIcon::ActivationReason reason )
 void Juicer::lastWindowClosed()
 {
     delete this;
+}
+
+
+/*!
+    \fn Juicer::downloadsFinished( QList<QAjDownloadItem*> list )
+ */
+void Juicer::downloadsFinished( QList<QAjDownloadItem*> list )
+{
+    if( tray != NULL && QSystemTrayIcon::supportsMessages() )
+    {
+        QString msg = "";
+        int i;
+        for( i=0; i<list.size(); i++ )
+        {
+            msg += list[i]->text( FILENAME_DOWN_INDEX ) + "\n";
+        }
+        tray->showMessage( "Download finished", msg, QSystemTrayIcon::Information, 3000 );
+    }
 }
