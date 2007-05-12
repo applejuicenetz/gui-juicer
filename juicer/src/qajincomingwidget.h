@@ -49,9 +49,10 @@ private:
     void storeFtp();
     void reloadFtp();
     void openFtp();
-    void removeFtp() {}
+    void removeFtp();
     void initPopup();
     AjSettings::LOCATION getLocation();
+    bool confirmRemove( QList<QAjItem *> items );
     QFtp* ftp;
     QLabel* waitLabel;
 

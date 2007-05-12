@@ -20,6 +20,7 @@ x fix adding shares again to the share list when opening the options dialog
 x share tab: fix file selection when the core runs on a different system than the gui
 - share tab: add rehashing of the share and the possibility to copy ajfsp links from share
 - test share directory selection on windows
+- handle ftp erros in incoming widget
 
 Ideas
 =====

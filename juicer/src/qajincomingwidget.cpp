@@ -92,6 +92,7 @@ void QAjIncomingWidget::reloadFtp()
     QString user = QAjOptionsDialog::getSetting( "ftp", "user", "anonymous" ).toString();
     QString password = QAjOptionsDialog::getSetting( "ftp", "password", "" ).toString();
     QString dir = QAjOptionsDialog::getSetting( "ftp", "inDir", "/" ).toString();
+    QFtp::TransferMode mode = (QFtp::TransferMode)QAjOptionsDialog::getSetting( "ftp", "mode", QFtp::Active ).toInt();
 
     if ( ftp->state() != QFtp::Unconnected )
     {
@@ -99,7 +100,7 @@ void QAjIncomingWidget::reloadFtp()
     }
     ftp->connectToHost( server, port );
     ftp->login( user, password );
-    ftp->setTransferMode( QFtp::Passive );
+    ftp->setTransferMode( mode );
     ftp->list( dir );
 }
 
@@ -151,50 +152,66 @@ void QAjIncomingWidget::save()
 }
 
 
+/*!
+    \fn QAjIncomingWidget::removeFtp()
+ */
+void QAjIncomingWidget::removeFtp()
+{
+    QList<QAjItem *>  selectedItems = this->selectedAjItems();
+    if(confirmRemove( selectedItems ) )
+    {
+        QFtp* ftp = new QFtp( this );
+        QString server = QAjOptionsDialog::getSetting( "ftp", "server", "localhost" ).toString();
+        int port = QAjOptionsDialog::getSetting( "ftp", "port", "21" ).toInt();
+        QString user = QAjOptionsDialog::getSetting( "ftp", "user", "anonymous" ).toString();
+        QString password = QAjOptionsDialog::getSetting( "ftp", "password", "" ).toString();
+        QString dir = QAjOptionsDialog::getSetting( "ftp", "inDir", "/" ).toString();
+        QFtp::TransferMode mode = (QFtp::TransferMode)QAjOptionsDialog::getSetting( "ftp", "mode", QFtp::Active ).toInt();
+        if ( ! dir.endsWith( '/' ) )
+            dir += '/';
+        ftp->connectToHost( server, port );
+        ftp->login( user, password );
+        ftp->setTransferMode( mode );
+        int i;
+        for ( i=0; i<selectedItems.size(); i++ )
+        {
+            ftp->remove( dir + selectedItems.at(i)->text( FILENAME_INCOMING_INDEX ) );
+        }
+    }
+}
+
 
 /*!
     \fn QAjIncomingWidget::remove()
  */
 void QAjIncomingWidget::remove()
 {
-    QString actDir;
-    // determine the path
-    AjSettings::LOCATION location = getLocation();
-    if(location == AjSettings::FTP)
+    QList<QAjItem*> items = selectedAjItems();
+    if( confirmRemove( items ) )
     {
-        removeFtp();
-    }
-    else
-    {
-        if( location == AjSettings::SPECIFIC )
+        QString actDir;
+        // determine the path
+        AjSettings::LOCATION location = getLocation();
+        if(location == AjSettings::FTP)
         {
-            actDir = QAjOptionsDialog::getSetting( "incomingDirSpecific", "/" ).toString() + QDir::separator();
+            removeFtp();
         }
-        else if( location == AjSettings::SAME )
+        else
         {
-            actDir = this->dir + QDir::separator();
-        }
-        QList<QAjItem*> items = selectedAjItems();
-        int i;
-        int maxFilesToShow = 10;
-        QString list = "<b>"+tr("Delete") + " " + QString::number(items.size()) + " "
-                        + (items.size()>1?tr("files"):tr("file"))+"?</b><br>";
-        for( i=0; i<items.size() && i<maxFilesToShow; i++ )
-        {
-            list += "<br>" + items[i]->text( FILENAME_INCOMING_INDEX );
-        }
-        if(items.size() > maxFilesToShow)
-        {
-            list += "<br>(" + QString::number(items.size() - maxFilesToShow) + " more)";
-        }
-        if( QMessageBox::question( this, "Confirmation", list, QMessageBox::Yes | QMessageBox::No, QMessageBox::No )
-            == QMessageBox::Yes )
-        {
-            for( i=0; i<items.size() && i<maxFilesToShow; i++ )
+            if( location == AjSettings::SPECIFIC )
+            {
+                actDir = QAjOptionsDialog::getSetting( "incomingDirSpecific", "/" ).toString() + QDir::separator();
+            }
+            else if( location == AjSettings::SAME )
+            {
+                actDir = this->dir + QDir::separator();
+            }
+            int i;
+            for( i=0; i<items.size(); i++ )
             {
                 if(!QFile::remove( actDir + items[i]->text( FILENAME_INCOMING_INDEX ) ))
                 {
-                    QMessageBox::critical( this, "Error", "Could not remove\n" + actDir + items[i]->text( FILENAME_INCOMING_INDEX ) );
+                QMessageBox::critical( this, "Error", "Could not remove\n" + actDir + items[i]->text( FILENAME_INCOMING_INDEX ) );
                 }
             }
             reload();
@@ -419,4 +436,25 @@ void QAjIncomingWidget::ftpReadyRead( QFile* dstFile, FTP* ftp )
 
     args << dstFile->fileName();
     QProcess::startDetached( exec, args );
+}
+
+
+/*!
+    \fn QAjIncomingWidget::confirmRemove( QList<QAjItem *> items )
+ */
+bool QAjIncomingWidget::confirmRemove( QList<QAjItem *> items )
+{
+    int i;
+    int maxFilesToShow = 10;
+    QString list = "<b>"+tr("Delete") + " " + QString::number(items.size()) + " "
+            + (items.size()>1?tr("files"):tr("file"))+"?</b><br>";
+    for( i=0; i<items.size() && i<maxFilesToShow; i++ )
+    {
+        list += "<br>" + items[i]->text( FILENAME_INCOMING_INDEX );
+    }
+    if(items.size() > maxFilesToShow)
+    {
+        list += "<br>(" + QString::number(items.size() - maxFilesToShow) + " more)";
+    }
+    return QMessageBox::question( this, "Confirmation", list, QMessageBox::Yes | QMessageBox::No, QMessageBox::No ) == QMessageBox::Yes;
 }
