@@ -186,6 +186,10 @@ void QAjDownloadWidget::insertDownload(QString id, QString hash, QString fileNam
     {
         downloadItem = new QAjDownloadItem( id, this );
         downloads[ id ] = downloadItem;
+        if(powerMaxButton->isVisible())
+        {
+            xml->set( "setpowerdownload", "&Powerdownload="+QConvert::power( 50 )+"&id="+id );
+        }
     }
     downloadItem->update( hash, fileName, status, size, ready, power, tempNumber );
 }

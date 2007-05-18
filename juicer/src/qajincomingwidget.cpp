@@ -306,6 +306,7 @@ void QAjIncomingWidget::openFtp()
 void QAjIncomingWidget::reload()
 {
     this->clear();
+    waitLabel->setVisible( false );
     AjSettings::LOCATION location = getLocation();
     if(location == AjSettings::FTP)
     {

@@ -190,7 +190,7 @@ Möchten Sie die Änderungen zum Core übermitteln?</translation>
     <message>
         <location filename="qajdownloadwidget.cpp" line="74"/>
         <source>status</source>
-        <translation type="unfinished">Satus</translation>
+        <translation type="unfinished">Status</translation>
     </message>
     <message>
         <location filename="qajdownloadwidget.cpp" line="77"/>
