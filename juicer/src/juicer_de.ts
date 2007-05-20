@@ -73,12 +73,12 @@
         <translation type="unfinished">Über &amp;Qt</translation>
     </message>
     <message>
-        <location filename="juicer.cpp" line="242"/>
+        <location filename="juicer.cpp" line="244"/>
         <source>Juicer Info</source>
         <translation type="unfinished">Juicer Info</translation>
     </message>
     <message>
-        <location filename="juicer.cpp" line="243"/>
+        <location filename="juicer.cpp" line="245"/>
         <source>Juicer 
 
 http://ajqtgui.sf.net
@@ -86,91 +86,91 @@ http://www.progeln.de</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="juicer.cpp" line="248"/>
+        <location filename="juicer.cpp" line="250"/>
         <source>Juicer: About Qt</source>
         <translation type="unfinished">Juicer: Über Qt</translation>
     </message>
     <message>
-        <location filename="juicer.cpp" line="353"/>
+        <location filename="juicer.cpp" line="328"/>
         <source>Downstream: </source>
         <translation type="unfinished">Downstream: </translation>
     </message>
     <message>
-        <location filename="juicer.cpp" line="354"/>
+        <location filename="juicer.cpp" line="329"/>
         <source>/s</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="juicer.cpp" line="354"/>
+        <location filename="juicer.cpp" line="329"/>
         <source>Upstream: </source>
         <translation type="unfinished">Upstream: </translation>
     </message>
     <message>
-        <location filename="juicer.cpp" line="355"/>
+        <location filename="juicer.cpp" line="330"/>
         <source>Credits: </source>
         <translation type="unfinished">Credits: </translation>
     </message>
     <message>
-        <location filename="juicer.cpp" line="356"/>
+        <location filename="juicer.cpp" line="331"/>
         <source>Downloaded: </source>
         <translation type="unfinished">Runtergeladen: </translation>
     </message>
     <message>
-        <location filename="juicer.cpp" line="357"/>
+        <location filename="juicer.cpp" line="332"/>
         <source>Uploaded: </source>
         <translation type="unfinished">Hochgeladen: </translation>
     </message>
     <message>
-        <location filename="juicer.cpp" line="471"/>
+        <location filename="juicer.cpp" line="446"/>
         <source>Confirm</source>
         <translation type="unfinished">Bestätigen</translation>
     </message>
     <message>
-        <location filename="juicer.cpp" line="487"/>
+        <location filename="juicer.cpp" line="462"/>
         <source>connected since</source>
         <translation type="unfinished">verbunden seit</translation>
     </message>
     <message>
-        <location filename="juicer.cpp" line="491"/>
+        <location filename="juicer.cpp" line="466"/>
         <source>NOT connected</source>
         <translation type="unfinished">NICHT verbunden</translation>
     </message>
     <message>
-        <location filename="juicer.cpp" line="471"/>
+        <location filename="juicer.cpp" line="446"/>
         <source>Do you realy want to exit the core?
 All your credits will be lost!</source>
         <translation type="unfinished">Möchten Sie den Core wirklich beenden?
 All Ihre Credits würden verloren gehen!</translation>
     </message>
     <message>
-        <location filename="juicer.cpp" line="427"/>
+        <location filename="juicer.cpp" line="402"/>
         <source>information</source>
         <translation type="unfinished">Information</translation>
     </message>
     <message>
-        <location filename="juicer.cpp" line="423"/>
+        <location filename="juicer.cpp" line="398"/>
         <source>The file seems to be already in the share</source>
         <translation type="unfinished">Die Datei scheint bereits in den Freigaben zu existieren</translation>
     </message>
     <message>
-        <location filename="juicer.cpp" line="427"/>
+        <location filename="juicer.cpp" line="402"/>
         <source>The file seems to be already in the download list</source>
         <translation type="unfinished">Die Datei scheint bereits in der Downloadliste zu sein</translation>
     </message>
     <message>
-        <location filename="juicer.cpp" line="457"/>
+        <location filename="juicer.cpp" line="432"/>
         <source>question</source>
         <translation type="unfinished">Frage</translation>
     </message>
     <message>
-        <location filename="juicer.cpp" line="457"/>
+        <location filename="juicer.cpp" line="432"/>
         <source>You&apos;ve changed your shares.
 Do you want to transfer the changes to the core?</source>
         <translation type="unfinished">Sie haben Ihre Freigaben verändert.
 Möchten Sie die Änderungen zum Core übermitteln?</translation>
     </message>
     <message>
-        <location filename="juicer.cpp" line="479"/>
+        <location filename="juicer.cpp" line="454"/>
         <source>Core: </source>
         <translation type="unfinished">Core: </translation>
     </message>
@@ -228,7 +228,7 @@ Möchten Sie die Änderungen zum Core übermitteln?</translation>
         <translation type="unfinished">nicht gesehen</translation>
     </message>
     <message>
-        <location filename="qajdownloadwidget.cpp" line="580"/>
+        <location filename="qajdownloadwidget.cpp" line="587"/>
         <source>&amp;Download</source>
         <translation type="unfinished">&amp;Download</translation>
     </message>
@@ -258,7 +258,7 @@ Möchten Sie die Änderungen zum Core übermitteln?</translation>
         <translation type="unfinished">Partliste anzeigen</translation>
     </message>
     <message>
-        <location filename="qajdownloadwidget.cpp" line="282"/>
+        <location filename="qajdownloadwidget.cpp" line="284"/>
         <source>rename download</source>
         <translation type="unfinished">Download umbenennen</translation>
     </message>
@@ -283,17 +283,17 @@ Möchten Sie die Änderungen zum Core übermitteln?</translation>
         <translation type="unfinished">Fertige/Abgebrochene Downloads entfernen</translation>
     </message>
     <message>
-        <location filename="qajdownloadwidget.cpp" line="246"/>
+        <location filename="qajdownloadwidget.cpp" line="248"/>
         <source>Confirm</source>
         <translation type="unfinished">Bestätigen</translation>
     </message>
     <message>
-        <location filename="qajdownloadwidget.cpp" line="243"/>
+        <location filename="qajdownloadwidget.cpp" line="245"/>
         <source>Do you realy want to cancel</source>
         <translation type="unfinished">Wollen Sie wirklich </translation>
     </message>
     <message>
-        <location filename="qajdownloadwidget.cpp" line="282"/>
+        <location filename="qajdownloadwidget.cpp" line="284"/>
         <source>enter new filename for </source>
         <translation type="unfinished">Geben Sie einen neuen Dateinamen ein für </translation>
     </message>
@@ -308,12 +308,12 @@ Möchten Sie die Änderungen zum Core übermitteln?</translation>
         <translation type="unfinished">Alle Downloads auf 1:50 setzen</translation>
     </message>
     <message>
-        <location filename="qajdownloadwidget.cpp" line="245"/>
+        <location filename="qajdownloadwidget.cpp" line="247"/>
         <source>download?</source>
         <translation type="unfinished">Download abbrechen?</translation>
     </message>
     <message>
-        <location filename="qajdownloadwidget.cpp" line="245"/>
+        <location filename="qajdownloadwidget.cpp" line="247"/>
         <source>downloads?</source>
         <translation type="unfinished">Downloads abbrechen?</translation>
     </message>
@@ -359,22 +359,22 @@ Möchten Sie die Änderungen zum Core übermitteln?</translation>
         <translation type="unfinished">erneut loaden</translation>
     </message>
     <message>
-        <location filename="qajincomingwidget.cpp" line="226"/>
+        <location filename="qajincomingwidget.cpp" line="243"/>
         <source>save</source>
         <translation type="unfinished">speichere</translation>
     </message>
     <message>
-        <location filename="qajincomingwidget.cpp" line="226"/>
+        <location filename="qajincomingwidget.cpp" line="243"/>
         <source>to</source>
         <translation type="unfinished">nach</translation>
     </message>
     <message>
-        <location filename="qajincomingwidget.cpp" line="241"/>
+        <location filename="qajincomingwidget.cpp" line="258"/>
         <source>error</source>
         <translation type="unfinished">Fehler</translation>
     </message>
     <message>
-        <location filename="qajincomingwidget.cpp" line="241"/>
+        <location filename="qajincomingwidget.cpp" line="258"/>
         <source>already exists</source>
         <translation type="unfinished">existiert bereits</translation>
     </message>
@@ -389,17 +389,17 @@ Möchten Sie die Änderungen zum Core übermitteln?</translation>
         <translation type="obsolete">Öffnen von Dateien mittels FTP zur Zeit nicht unterstützt</translation>
     </message>
     <message>
-        <location filename="qajincomingwidget.cpp" line="394"/>
+        <location filename="qajincomingwidget.cpp" line="412"/>
         <source>Incoming</source>
-        <translation type="unfinished">Incoming-Verzeichnis</translation>
+        <translation type="unfinished">Incoming</translation>
     </message>
     <message>
-        <location filename="qajincomingwidget.cpp" line="133"/>
+        <location filename="qajincomingwidget.cpp" line="134"/>
         <source>copy to</source>
         <translation type="unfinished">Kopieren nach </translation>
     </message>
     <message>
-        <location filename="qajincomingwidget.cpp" line="140"/>
+        <location filename="qajincomingwidget.cpp" line="141"/>
         <source>file already exists</source>
         <translation type="unfinished">Datei exisitert bereits</translation>
     </message>
@@ -409,17 +409,17 @@ Möchten Sie die Änderungen zum Core übermitteln?</translation>
         <translation type="unfinished">löschen</translation>
     </message>
     <message>
-        <location filename="qajincomingwidget.cpp" line="180"/>
+        <location filename="qajincomingwidget.cpp" line="450"/>
         <source>Delete</source>
         <translation type="unfinished">Lösche</translation>
     </message>
     <message>
-        <location filename="qajincomingwidget.cpp" line="181"/>
+        <location filename="qajincomingwidget.cpp" line="451"/>
         <source>files</source>
         <translation type="unfinished">Dateien</translation>
     </message>
     <message>
-        <location filename="qajincomingwidget.cpp" line="181"/>
+        <location filename="qajincomingwidget.cpp" line="451"/>
         <source>file</source>
         <translation type="unfinished">Datei</translation>
     </message>
@@ -485,24 +485,24 @@ Möchten Sie die Änderungen zum Core übermitteln?</translation>
         <translation type="unfinished">Anzahl Dateien:</translation>
     </message>
     <message>
-        <location filename="qajnetworkdialogbase.ui" line="84"/>
-        <source>192.168.199.244</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="qajnetworkdialogbase.ui" line="91"/>
+        <location filename="qajnetworkdialogbase.ui" line="99"/>
         <source>Size of all files:</source>
         <translation type="unfinished">Größe aller Dateien:</translation>
     </message>
     <message>
-        <location filename="qajnetworkdialogbase.ui" line="98"/>
+        <location filename="qajnetworkdialogbase.ui" line="106"/>
         <source>no</source>
         <translation type="unfinished">nein</translation>
     </message>
     <message>
-        <location filename="qajnetworkdialogbase.ui" line="105"/>
+        <location filename="qajnetworkdialogbase.ui" line="113"/>
         <source>Behind a firewall:</source>
         <translation type="unfinished">Hinter einer Firewall:</translation>
+    </message>
+    <message>
+        <location filename="qajnetworkdialogbase.ui" line="92"/>
+        <source>888.888.888.888</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1067,17 +1067,17 @@ Möchten Sie die Änderungen zum Core übermitteln?</translation>
 <context>
     <name>QObject</name>
     <message>
-        <location filename="qajdownloaditem.cpp" line="46"/>
+        <location filename="qajdownloaditem.cpp" line="47"/>
         <source>1. active</source>
         <translation type="unfinished">1. aktiv</translation>
     </message>
     <message>
-        <location filename="qajdownloaditem.cpp" line="50"/>
+        <location filename="qajdownloaditem.cpp" line="51"/>
         <source>2. queueing</source>
         <translation type="unfinished">2. wartend</translation>
     </message>
     <message>
-        <location filename="qajdownloaditem.cpp" line="54"/>
+        <location filename="qajdownloaditem.cpp" line="55"/>
         <source>3. others</source>
         <translation type="unfinished">3. Andere</translation>
     </message>
@@ -1190,6 +1190,19 @@ Möchten Sie die Änderungen zum Core übermitteln?</translation>
         <location filename="qajdownloadwidget.cpp" line="49"/>
         <source>canceled </source>
         <translation type="unfinished">abgebrochen</translation>
+    </message>
+</context>
+<context>
+    <name>QXMLModule</name>
+    <message>
+        <location filename="qxmlmodule.cpp" line="326"/>
+        <source>yes</source>
+        <translation type="unfinished">ja</translation>
+    </message>
+    <message>
+        <location filename="qxmlmodule.cpp" line="326"/>
+        <source>no</source>
+        <translation type="unfinished">nein</translation>
     </message>
 </context>
 </TS>

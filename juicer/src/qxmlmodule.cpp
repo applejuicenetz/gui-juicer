@@ -323,7 +323,7 @@ void QXMLModule::handleNetworkInfo( QDomElement e )
         e.attribute("files"),
         QConvert::bytesLong( e.attribute("filesize")),
         e.attribute("ip"),
-        e.attribute("firewalled")=="true"?"yes":"no");
+        e.attribute("firewalled")=="true"?tr("yes"):tr("no"));
     juicer->ajServerWidget->connectedWith( e.attribute("connectedwithserverid") );
     juicer->ajServerWidget->connectingTo( e.attribute("tryconnecttoserver") );
     juicer->connectedSince( e.attribute("connectedsince") );

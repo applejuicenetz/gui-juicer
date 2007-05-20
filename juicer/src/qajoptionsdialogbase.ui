@@ -1133,7 +1133,9 @@
   <tabstop>ftpPasswordEdit</tabstop>
   <tabstop>ftpInDirEdit</tabstop>
  </tabstops>
- <resources/>
+ <resources>
+  <include location="images.qrc" />
+ </resources>
  <connections>
   <connection>
    <sender>okButton</sender>

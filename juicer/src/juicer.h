@@ -25,13 +25,10 @@
 #include <QMessageBox>
 #include <QDateTime>
 #include <QLineEdit>
-#include <QTextEdit>
 #include <QToolButton>
 #include <QSettings>
 #include <QInputDialog>
-#include <QString>
 #include <QCheckBox>
-#include <QTreeWidget>
 #include <QClipboard>
 #include <QCloseEvent>
 #include <QLabel>
@@ -43,9 +40,7 @@
 #include <QToolButton>
 #include <QFileDialog>
 #include <QUrl>
-#include <QFileInfo>
 #include <QDir>
-#include <QSplitter>
 #include <QTabWidget>
 
 #include <QSystemTrayIcon>
@@ -65,9 +60,7 @@
 #include "qajlogindialog.h"
 #include "qajnetworkdialog.h"
 #include "qconvert.h"
-#include "qajdownloaditem.h"
 
-#include "qajserversocket.h"
 #include "qajapplication.h"
 
 #include "qajiconwidget.h"
@@ -111,7 +104,9 @@ protected:
     void initToolBars();
     void closeEvent( QCloseEvent* );
     void processQueuedLinks();
+    void initStatusBar();
 
+    QSystemTrayIcon* tray;
     QString password;
     QString filesystemSeparator;
 
@@ -138,8 +133,6 @@ protected:
     QAjIconWidget *upSizeLabel;
     QAjIconWidget *coreVersionLabel;
     QAjIconWidget *connectedLabel;
-
-    QAction *downloadMenuBar, *serverMenuBar, *shareMenuBar, *searchMenuBar;
 
     QAction *clipboardButton;
 
@@ -179,12 +172,6 @@ private slots:
     void adjustColumns();
     void trayActivated ( QSystemTrayIcon::ActivationReason reason );
     void lastWindowClosed();
-private:
-    void initStatusBar();
-
-    QSystemTrayIcon* tray;
-
-protected slots:
     void downloadsFinished( QList<QAjDownloadItem*> list );
 };
 

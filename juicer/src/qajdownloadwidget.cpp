@@ -169,13 +169,11 @@ void QAjDownloadWidget::initToolBar()
     powerMaxButton = toolBar->addAction( QIcon(":/launch.png"), tr("set all downloads to 1:50"), this, SLOT( maxPowerDownload() )  );
 
     #ifdef AJQTGUI_MODE_SPECIAL
-        bool special = true;
+        powerMaxButton->setVisible( );
     #else
         char* mode = getenv( "AJQTGUI_MODE" );
-        bool special = (( mode != NULL )) && ( strcmp(mode, "SPECIAL") == 0 );
+        powerMaxButton->setVisible((( mode != NULL )) && ( strcmp(mode, "SPECIAL") == 0 ));
     #endif
-
-    powerMaxButton->setVisible( special );
 }
 
 

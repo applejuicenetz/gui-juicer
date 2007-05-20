@@ -24,6 +24,8 @@
 QAjOptionsDialog::QAjOptionsDialog( QWidget* parent ) : QDialog( parent )
 {
     setupUi( this );
+    okButton->setIcon(QIcon(QString::fromUtf8(":/ok.png")));
+    cancelButton->setIcon(QIcon(QString::fromUtf8(":/cancel.png")));
 
 #if QT_VERSION >= 0x040203
     QAjIconWidget* l = new QAjIconWidget(":/options/core.png", tr("Core"), QBoxLayout::TopToBottom, listWidget);

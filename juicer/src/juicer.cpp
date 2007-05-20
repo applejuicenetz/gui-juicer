@@ -81,10 +81,11 @@ Juicer::Juicer( QStringList argList ) : QMainWindow()
     file->addAction( QIcon(":/small/exit.png"), tr("&Exit Core"), this, SLOT( exitCore() ), QKeySequence( Qt::CTRL+Qt::Key_E ) );
     file->addAction( QIcon(":/small/close.png"), tr("&Quit GUI"), qApp, SLOT( closeAllWindows() ), QKeySequence( Qt::CTRL+Qt::Key_Q ) );
 
-    downloadMenuBar = menuBar()->addMenu( ajDownloadWidget->popup );
-    searchMenuBar = menuBar()->addMenu( ajSearchWidget->popup );
-    serverMenuBar = menuBar()->addMenu( ajServerWidget->popup );
-    shareMenuBar = menuBar()->addMenu( ajShareWidget->popup );
+    menuBar()->addMenu( ajDownloadWidget->popup );
+    menuBar()->addMenu( ajSearchWidget->popup );
+    menuBar()->addMenu( ajServerWidget->popup );
+    menuBar()->addMenu( ajShareWidget->popup );
+    menuBar()->addMenu( ajIncomingWidget->popup );
 
     menuBar()->addSeparator();
 
