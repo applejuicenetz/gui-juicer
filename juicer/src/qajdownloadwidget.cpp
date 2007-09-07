@@ -188,8 +188,11 @@ void QAjDownloadWidget::insertDownload(QString id, QString hash, QString fileNam
         {
             xml->set( "setpowerdownload", "&Powerdownload="+QConvert::power( 50 )+"&id="+id );
         }
+        downloadItem->update( hash, fileName, status, size, ready, power, tempNumber );
+        updateView( true );
+    } else {
+        downloadItem->update( hash, fileName, status, size, ready, power, tempNumber );
     }
-    downloadItem->update( hash, fileName, status, size, ready, power, tempNumber );
 }
 
 

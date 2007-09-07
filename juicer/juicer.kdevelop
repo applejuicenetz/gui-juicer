@@ -143,7 +143,7 @@
   </kdevdebugger>
   <kdevtrollproject>
     <run>
-      <mainprogram>/home/holg/projects/juicer/bin/juicer</mainprogram>
+      <mainprogram>/home/remat/projekte/svn/ajqtgui/juicer/bin/juicer</mainprogram>
       <programargs/>
       <directoryradio>executable</directoryradio>
       <runarguments>
@@ -159,10 +159,10 @@
         <juicer/>
       </debugarguments>
       <globaldebugarguments/>
-      <globalcwd>/home/holg/projects/juicer</globalcwd>
+      <globalcwd>/home/remat/projekte/svn/ajqtgui/juicer</globalcwd>
       <useglobalprogram>true</useglobalprogram>
       <terminal>false</terminal>
-      <autocompile>false</autocompile>
+      <autocompile>true</autocompile>
       <autoinstall>false</autoinstall>
       <autokdesu>false</autokdesu>
       <envvars/>

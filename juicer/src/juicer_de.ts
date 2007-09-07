@@ -411,7 +411,7 @@ Möchten Sie die Änderungen zum Core übermitteln?</translation>
     <message>
         <location filename="qajincomingwidget.cpp" line="450"/>
         <source>Delete</source>
-        <translation type="unfinished">Lösche</translation>
+        <translation type="unfinished">Lösche </translation>
     </message>
     <message>
         <location filename="qajincomingwidget.cpp" line="451"/>
@@ -1074,7 +1074,7 @@ Möchten Sie die Änderungen zum Core übermitteln?</translation>
     <message>
         <location filename="qajdownloaditem.cpp" line="51"/>
         <source>2. queueing</source>
-        <translation type="unfinished">2. wartend</translation>
+        <translation type="unfinished">2. warte</translation>
     </message>
     <message>
         <location filename="qajdownloaditem.cpp" line="55"/>
@@ -1104,7 +1104,7 @@ Möchten Sie die Änderungen zum Core übermitteln?</translation>
     <message>
         <location filename="qajdownloadwidget.cpp" line="30"/>
         <source>queueing </source>
-        <translation type="unfinished">wartend </translation>
+        <translation type="unfinished">wartet</translation>
     </message>
     <message>
         <location filename="qajdownloadwidget.cpp" line="31"/>
@@ -1114,7 +1114,7 @@ Möchten Sie die Änderungen zum Core übermitteln?</translation>
     <message>
         <location filename="qajdownloadwidget.cpp" line="41"/>
         <source>loading </source>
-        <translation type="unfinished">lade </translation>
+        <translation type="unfinished">läd</translation>
     </message>
     <message>
         <location filename="qajdownloadwidget.cpp" line="33"/>
@@ -1139,7 +1139,7 @@ Möchten Sie die Änderungen zum Core übermitteln?</translation>
     <message>
         <location filename="qajdownloadwidget.cpp" line="50"/>
         <source>paused </source>
-        <translation type="unfinished">pausiert </translation>
+        <translation type="unfinished">pausiert</translation>
     </message>
     <message>
         <location filename="qajdownloadwidget.cpp" line="38"/>
@@ -1159,7 +1159,7 @@ Möchten Sie die Änderungen zum Core übermitteln?</translation>
     <message>
         <location filename="qajdownloadwidget.cpp" line="42"/>
         <source>searching </source>
-        <translation type="unfinished">suche </translation>
+        <translation type="unfinished">sucht</translation>
     </message>
     <message>
         <location filename="qajdownloadwidget.cpp" line="43"/>
@@ -1169,7 +1169,7 @@ Möchten Sie die Änderungen zum Core übermitteln?</translation>
     <message>
         <location filename="qajdownloadwidget.cpp" line="44"/>
         <source>finishing </source>
-        <translation type="unfinished">fertigstellen </translation>
+        <translation type="unfinished">stellt fertig</translation>
     </message>
     <message>
         <location filename="qajdownloadwidget.cpp" line="45"/>
@@ -1179,12 +1179,12 @@ Möchten Sie die Änderungen zum Core übermitteln?</translation>
     <message>
         <location filename="qajdownloadwidget.cpp" line="47"/>
         <source>canceling </source>
-        <translation type="unfinished">breche ab </translation>
+        <translation type="unfinished">bricht ab</translation>
     </message>
     <message>
         <location filename="qajdownloadwidget.cpp" line="48"/>
         <source>creating .dat </source>
-        <translation type="unfinished">erstelle .dat </translation>
+        <translation type="unfinished">erstellt .dat </translation>
     </message>
     <message>
         <location filename="qajdownloadwidget.cpp" line="49"/>

@@ -306,7 +306,7 @@ QString QAjDownloadItem::getSourcesString()
 
 bool QAjDownloadItem::updateView( QHash<QString, QString>* downloadStatusDescr )
 {
-    if ( ( status == DOWN_SEARCHING ) || ( status == DOWN_LOADING ) )
+    if( ( status == DOWN_SEARCHING ) || ( status == DOWN_LOADING ) )
     {
         if ( getActiveSources() > 0 )
         {
