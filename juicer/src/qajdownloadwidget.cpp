@@ -23,31 +23,31 @@
 
 QAjDownloadWidget::QAjDownloadWidget( QXMLModule* xml, QWidget *parent ) : QAjListWidget( xml, parent )
 {
-    userStatusDescr["1"] = QObject::tr("unasked ");
-    userStatusDescr["2"] = QObject::tr("try to connect ");
-    userStatusDescr["3"] = QObject::tr("partner have to old vers. ");
-    userStatusDescr["4"] = QObject::tr("partner can't	 open file ");
-    userStatusDescr["5"] = QObject::tr("queueing ");
-    userStatusDescr["6"] = QObject::tr("no usable parts ");
-    userStatusDescr["7"] = QObject::tr("loading ");
-    userStatusDescr["8"] = QObject::tr("not enough disk space ");
-    userStatusDescr["9"] = QObject::tr("finished ");
-    userStatusDescr["11"] = QObject::tr("no connection possible ");
-    userStatusDescr["12"] = QObject::tr("try indirect ");
-    userStatusDescr["13"] = QObject::tr("paused ");
-    userStatusDescr["14"] = QObject::tr("queue full ");
-    userStatusDescr["15"] = QObject::tr("own limit reached ");
-    userStatusDescr["16"] = QObject::tr("indirect conn. rejected ");
-    downloadStatusDescr["-1"] = QObject::tr("loading ");
-    downloadStatusDescr["0"] = QObject::tr("searching ");
-    downloadStatusDescr["1"] = QObject::tr("error at creating ");
-    downloadStatusDescr["12"] = QObject::tr("finishing ");
-    downloadStatusDescr["13"] = QObject::tr("error at finishing ");
-    downloadStatusDescr["14"] = QObject::tr("finished ");
-    downloadStatusDescr["15"] = QObject::tr("canceling ");
-    downloadStatusDescr["16"] = QObject::tr("creating .dat ");
-    downloadStatusDescr["17"] = QObject::tr("canceled ");
-    downloadStatusDescr["18"] = QObject::tr("paused ");
+    userStatusDescr["1"] = QObject::tr("unasked");
+    userStatusDescr["2"] = QObject::tr("try to connect");
+    userStatusDescr["3"] = QObject::tr("partner have to old vers.");
+    userStatusDescr["4"] = QObject::tr("partner can't	 open file");
+    userStatusDescr["5"] = QObject::tr("queueing");
+    userStatusDescr["6"] = QObject::tr("no usable parts");
+    userStatusDescr["7"] = QObject::tr("loading");
+    userStatusDescr["8"] = QObject::tr("not enough disk space");
+    userStatusDescr["9"] = QObject::tr("finished");
+    userStatusDescr["11"] = QObject::tr("no connection possible");
+    userStatusDescr["12"] = QObject::tr("try indirect");
+    userStatusDescr["13"] = QObject::tr("paused");
+    userStatusDescr["14"] = QObject::tr("queue full");
+    userStatusDescr["15"] = QObject::tr("own limit reached");
+    userStatusDescr["16"] = QObject::tr("indirect conn. rejected");
+    downloadStatusDescr["-1"] = QObject::tr("loading");
+    downloadStatusDescr["0"] = QObject::tr("searching");
+    downloadStatusDescr["1"] = QObject::tr("error at creating");
+    downloadStatusDescr["12"] = QObject::tr("finishing");
+    downloadStatusDescr["13"] = QObject::tr("error at finishing");
+    downloadStatusDescr["14"] = QObject::tr("finished");
+    downloadStatusDescr["15"] = QObject::tr("canceling");
+    downloadStatusDescr["16"] = QObject::tr("creating .dat");
+    downloadStatusDescr["17"] = QObject::tr("canceled");
+    downloadStatusDescr["18"] = QObject::tr("paused");
 
     linuxIcon = new QIcon(":/small/linux.png");
     windowsIcon = new QIcon(":/small/windows.png");
