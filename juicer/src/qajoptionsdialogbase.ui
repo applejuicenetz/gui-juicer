@@ -468,13 +468,13 @@
       <enum>Qt::Horizontal</enum>
      </property>
     </widget>
-    <widget class="QWidget" name="layoutWidget" >
+    <widget class="QWidget" name="" >
      <property name="geometry" >
       <rect>
-       <x>10</x>
-       <y>50</y>
-       <width>301</width>
-       <height>193</height>
+       <x>11</x>
+       <y>51</y>
+       <width>371</width>
+       <height>251</height>
       </rect>
      </property>
      <layout class="QVBoxLayout" >
@@ -499,15 +499,38 @@
        </widget>
       </item>
       <item>
-       <layout class="QHBoxLayout" >
+       <layout class="QGridLayout" >
         <property name="margin" >
          <number>0</number>
         </property>
         <property name="spacing" >
          <number>6</number>
         </property>
-        <item>
+        <item row="1" column="2" >
+         <widget class="QComboBox" name="fontSizeComboBox" />
+        </item>
+        <item row="0" column="1" >
+         <widget class="QComboBox" name="languageComboBox" >
+          <property name="sizePolicy" >
+           <sizepolicy>
+            <hsizetype>5</hsizetype>
+            <vsizetype>0</vsizetype>
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="0" >
          <widget class="QLabel" name="label_30" >
+          <property name="sizePolicy" >
+           <sizepolicy>
+            <hsizetype>5</hsizetype>
+            <vsizetype>5</vsizetype>
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
           <property name="maximumSize" >
            <size>
             <width>66</width>
@@ -519,8 +542,45 @@
           </property>
          </widget>
         </item>
-        <item>
-         <widget class="QComboBox" name="languageComboBox" />
+        <item row="1" column="1" >
+         <widget class="QFontComboBox" name="fontComboBox" >
+          <property name="sizePolicy" >
+           <sizepolicy>
+            <hsizetype>5</hsizetype>
+            <vsizetype>0</vsizetype>
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="2" >
+         <spacer>
+          <property name="orientation" >
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeHint" >
+           <size>
+            <width>40</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+        <item row="1" column="0" >
+         <widget class="QLabel" name="label_32" >
+          <property name="sizePolicy" >
+           <sizepolicy>
+            <hsizetype>5</hsizetype>
+            <vsizetype>5</vsizetype>
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="text" >
+           <string>font:</string>
+          </property>
+         </widget>
         </item>
        </layout>
       </item>
@@ -544,6 +604,26 @@
         </item>
         <item>
          <widget class="QListWidget" name="statusbarList" >
+          <property name="sizePolicy" >
+           <sizepolicy>
+            <hsizetype>5</hsizetype>
+            <vsizetype>0</vsizetype>
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="minimumSize" >
+           <size>
+            <width>143</width>
+            <height>100</height>
+           </size>
+          </property>
+          <property name="maximumSize" >
+           <size>
+            <width>143</width>
+            <height>180</height>
+           </size>
+          </property>
           <property name="selectionMode" >
            <enum>QAbstractItemView::MultiSelection</enum>
           </property>
@@ -583,6 +663,19 @@
            </property>
           </item>
          </widget>
+        </item>
+        <item>
+         <spacer>
+          <property name="orientation" >
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeHint" >
+           <size>
+            <width>51</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
         </item>
        </layout>
       </item>

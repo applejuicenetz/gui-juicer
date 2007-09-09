@@ -90,8 +90,10 @@ QAjOptionsDialog::QAjOptionsDialog( QWidget* parent ) : QDialog( parent )
 
     specificRadioToggled( false );
 
-    connect( listWidget, SIGNAL(currentRowChanged( int ) ), stackedWidget , SLOT(setCurrentIndex( int ) ) );
-    connect( jumpFtpButton, SIGNAL(clicked() ), this , SLOT(jumpToFtpSlot() ) );
+    connect( listWidget, SIGNAL( currentRowChanged( int ) ), stackedWidget , SLOT(setCurrentIndex( int ) ) );
+    connect( jumpFtpButton, SIGNAL( clicked() ), this , SLOT(jumpToFtpSlot() ) );
+
+    connect( fontComboBox, SIGNAL( currentFontChanged( const QFont& ) ), this, SLOT( setFontSizes( const QFont& ) ) );
 
     connect( this, SIGNAL( accepted() ), this, SLOT( acceptedSlot() ) );
 
@@ -190,6 +192,9 @@ void QAjOptionsDialog::setSettings()
         statusbarList->item( statusbarComponents[i].toInt() )->setSelected( true );
     }
 
+    QFont font = getSetting( "font", QApplication::font() ).value<QFont>();
+    QApplication::setFont( font );
+    fontComboBox->setCurrentFont( font );
 }
 
 void QAjOptionsDialog::selectIncomingDir()
@@ -230,7 +235,6 @@ void QAjOptionsDialog::selectTempDirSpecific()
     if( ! dir.isEmpty() )
         tempSpecificEdit->setText( dir );
 }
-
 
 /*!
     \fn QAjOptionsDialog::specificRadioToggled( bool checked )
@@ -316,6 +320,7 @@ void QAjOptionsDialog::writeSettings()
         statusbarComponents << QString::number(statusbarList->row(items[i]));
     }
     setSetting( "statusbarComponents",  statusbarComponents );
+    setSetting( "font", getFont() );
 }
 
 
@@ -371,4 +376,35 @@ void QAjOptionsDialog::setSetting( QString group, QString key, QVariant value )
 void QAjOptionsDialog::acceptedSlot()
 {
     writeSettings();
+}
+
+/*!
+    \fn QAjOptionsDialog::setFontSizes( const QFont& font )
+ */
+void QAjOptionsDialog::setFontSizes( const QFont& font )
+{
+    QList<int> sizes = fontDatabase.pointSizes( font.family() );
+    fontSizeComboBox->clear();
+    int index = 0;
+    int i = 0;
+    while( ! sizes.isEmpty() )
+    {
+        int size = sizes.takeFirst();
+        fontSizeComboBox->addItem(QString::number(size));
+        if(size == QApplication::font().pointSize())
+        {
+            index = i;
+        }
+        i++;
+    }
+    fontSizeComboBox->setCurrentIndex( index );
+}
+
+/*!
+    \fn QAjOptionsDialog::getFont()
+ */
+QFont QAjOptionsDialog::getFont() {
+    QFont font = fontComboBox->currentFont();
+    font.setPointSize(fontSizeComboBox->currentText().toInt());
+    return font;
 }

@@ -25,6 +25,7 @@
 #include <QFileDialog>
 #include <QSettings>
 #include <QFtp>
+#include <QFontDialog>
 #include "ui_qajoptionsdialogbase.h"
 
 #include "qajiconwidget.h"
@@ -44,6 +45,7 @@ public:
     void setAjSettings( AjSettings settings );
     void setSettings();
     void writeSettings();
+    QFont getFont();
 
     QStringList getDefaultStatusbarComponents();
     QString defaultLauncher;
@@ -52,6 +54,10 @@ public:
     static void setSetting( QString key, QVariant value );
     static QVariant getSetting( QString group, QString key, QVariant defaultValue );
     static void setSetting( QString group, QString key, QVariant value );
+
+private:
+    QFontDatabase fontDatabase;
+//     QFont currentFont;
 
 protected slots:
     void selectIncomingDir();
@@ -63,6 +69,7 @@ protected slots:
 private slots:
     void jumpToFtpSlot();
     void acceptedSlot();
+    void setFontSizes( const QFont& font );
 };
 
 #endif

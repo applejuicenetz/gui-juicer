@@ -275,6 +275,7 @@ void Juicer::showOptions()
     {
         // save options
         AjSettings settings = optionsDialog->getAjSettings();
+        QApplication::setFont(optionsDialog->getFont());
         initStatusBar();
 
         timer->stop();
