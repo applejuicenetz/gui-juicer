@@ -48,6 +48,7 @@
 #define REMAIN_SIZE_DOWN_INDEX 8
 #define REMAIN_TIME_DOWN_INDEX 9
 #define MISSING_DOWN_INDEX 10
+// #define PRIORITY_DOWN_INDEX 5
 // user col managmet
 #define NUM_USER_COL 2
 #define STATUS_USER_INDEX 0

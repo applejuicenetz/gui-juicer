@@ -1,6 +1,6 @@
 /***************************************************************************
- *   Copyright (C) 2004 by Matthias Reif                                   *
- *   matthias.reif@informatik.tu-chemnitz.de                               *
+ *   Copyright (C) 2007 by Matthias Reif   *
+ *   matthias.reif@informatik.tu-chemnitz.de   *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -17,39 +17,33 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
-#ifndef QCONVERT_H
-#define QCONVERT_H
+#ifndef QAJPOWERSPIN_H
+#define QAJPOWERSPIN_H
 
-#include <stdlib.h>
-
-#include <QObject>
-#include <QString>
-
-#include "types.h"
+#include <QAbstractSpinBox>
+#include <QDoubleSpinBox>
+#include <QLineEdit>
+#include <QWidget>
+#include <QHBoxLayout>
+#include <QCheckBox>
 
 /**
-@author Matthias Reif
+	@author Matthias Reif <matthias.reif@informatik.tu-chemnitz.de>
 */
-class QConvert : public QObject
+class QAjPowerSpin : public QWidget
 {
-    Q_OBJECT
+Q_OBJECT
 public:
-    QConvert(QObject *parent = 0);
+    QAjPowerSpin(QString id, QWidget *parent = 0);
 
-    ~QConvert();
-
-    static QString num( long int num );
-    static QString bytes( QString x );
-    static QString bytes( long int x );
-    static QString bytes( double x, int precision = 2 );
-    static QString bytes( qulonglong x );
-    static QString bytes( QString x, QString y );
-    static QString bytesLong( QString x );
-    static QString bytesExtra( QString x );
-    static QString power( QString x );
-    static float powerValue( QString x );
-    static QString power( float power );
-    static QString time( long int seconds );
+    ~QAjPowerSpin();
+    QDoubleSpinBox* spin;
+    QCheckBox* check;
+    QString id;
+protected slots:
+    void powerChanged();
+signals:
+    void powerChanged( QString id, double value );
 };
 
 #endif

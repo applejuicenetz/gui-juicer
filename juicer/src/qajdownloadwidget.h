@@ -110,7 +110,9 @@ private slots:
     void processSelected( QString request, QString para = "" );
     void requestSelected( QString request, QString para = "" );
     void applyPowerDownload();
+    void applyPowerDownload(QString id, double value);
     void maxPowerDownload();
+    void itemChanged( QTreeWidgetItem* item, int column );
 
 
 public slots:

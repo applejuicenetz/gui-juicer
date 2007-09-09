@@ -97,12 +97,16 @@ QAjDownloadWidget::QAjDownloadWidget( QXMLModule* xml, QWidget *parent ) : QAjLi
         case MISSING_DOWN_INDEX:
             headers.append( tr("not seen") );
             break;
+//         case PRIORITY_DOWN_INDEX:
+//             headers.append( tr("priority") );
+//             break;
         }
     }
     setHeaderLabels( headers );
 
     QObject::connect( this, SIGNAL( newSelection( bool ) ) , this, SLOT( selectionChanged( bool ) ) );
-
+    QObject::connect( this, SIGNAL( itemChanged ( QTreeWidgetItem*, int ) ) , this, SLOT( itemChanged ( QTreeWidgetItem*, int ) ) );
+    
     setIconSize( QSize( 100, 20 ) );
 
     initToolBar();
@@ -183,6 +187,7 @@ void QAjDownloadWidget::insertDownload(QString id, QString hash, QString fileNam
     if ( downloadItem == NULL )
     {
         downloadItem = new QAjDownloadItem( id, this );
+        connect(downloadItem->powerSpin, SIGNAL(powerChanged(QString, double)), this, SLOT(applyPowerDownload(QString, double)));
         downloads[ id ] = downloadItem;
         if(powerMaxButton->isVisible())
         {
@@ -559,6 +564,11 @@ void QAjDownloadWidget::applyPowerDownload()
 }
 
 
+void QAjDownloadWidget::applyPowerDownload(QString id, double value)
+{
+    xml->set( "setpowerdownload", "&Powerdownload="+QConvert::power( value )+"&id="+id );
+}
+
 void QAjDownloadWidget::maxPowerDownload()
 {
     QList<QString> ids = downloads.keys();
@@ -615,3 +625,9 @@ QAjDownloadItem* QAjDownloadWidget::findDownload( QString size, QString hash )
     }
     return NULL;
 }
+
+void QAjDownloadWidget::itemChanged( QTreeWidgetItem* item, int column )
+{
+
+}
+

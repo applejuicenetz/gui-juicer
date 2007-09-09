@@ -44,7 +44,8 @@ HEADERS += ftp.h \
            qajfiledialog.h \
            qajfileitem.h\
            qajiconwidget.h \
-           qajfilewidget.h
+           qajfilewidget.h \
+           qajpowerspin.h
 SOURCES += ftp.cpp \
            main.cpp \
            md5c.c \
@@ -83,7 +84,8 @@ SOURCES += ftp.cpp \
            qajfiledialog.cpp \
            qajfileitem.cpp \
            qajiconwidget.cpp \
-           qajfilewidget.cpp
+           qajfilewidget.cpp \
+           qajpowerspin.cpp
 CONFIG += warn_on \
           qt \
           x11 \

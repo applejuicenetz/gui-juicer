@@ -1,6 +1,6 @@
 /***************************************************************************
- *   Copyright (C) 2004 by Matthias Reif                                   *
- *   matthias.reif@informatik.tu-chemnitz.de                               *
+ *   Copyright (C) 2007 by Matthias Reif   *
+ *   matthias.reif@informatik.tu-chemnitz.de   *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -17,39 +17,42 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
-#ifndef QCONVERT_H
-#define QCONVERT_H
+#include "qajpowerspin.h"
 
-#include <stdlib.h>
-
-#include <QObject>
-#include <QString>
-
-#include "types.h"
-
-/**
-@author Matthias Reif
-*/
-class QConvert : public QObject
+QAjPowerSpin::QAjPowerSpin(QString id, QWidget *parent) : QWidget(parent)
 {
-    Q_OBJECT
-public:
-    QConvert(QObject *parent = 0);
+    this->id = id;
+    QHBoxLayout *layout = new QHBoxLayout;
+    layout->setSpacing(0);
+    layout->setMargin(0);
 
-    ~QConvert();
+    layout->insertSpacing(0, 10);
+    check = new QCheckBox();
+    layout->addWidget(check);
 
-    static QString num( long int num );
-    static QString bytes( QString x );
-    static QString bytes( long int x );
-    static QString bytes( double x, int precision = 2 );
-    static QString bytes( qulonglong x );
-    static QString bytes( QString x, QString y );
-    static QString bytesLong( QString x );
-    static QString bytesExtra( QString x );
-    static QString power( QString x );
-    static float powerValue( QString x );
-    static QString power( float power );
-    static QString time( long int seconds );
-};
+    spin = new QDoubleSpinBox();
+    spin->setFrame(false);
+    spin->setRange(2.2, 50.0);
+    spin->setSingleStep(0.1);
+    spin->setDecimals(1);
+    layout->addWidget(spin);
 
-#endif
+    setLayout(layout);
+
+    connect(check, SIGNAL(toggled(bool)), spin, SLOT(setEnabled(bool)));
+    connect(check, SIGNAL(toggled(bool)), this, SLOT(powerChanged()));
+    connect(spin, SIGNAL(valueChanged(double)), this, SLOT(powerChanged()));
+}
+
+
+QAjPowerSpin::~QAjPowerSpin()
+{
+}
+
+void QAjPowerSpin::powerChanged()
+{
+    if(check->isChecked())
+        powerChanged(id, spin->value());
+    else
+        powerChanged(id, 1.0);
+}

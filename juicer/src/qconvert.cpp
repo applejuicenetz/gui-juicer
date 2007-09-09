@@ -134,6 +134,12 @@ QString QConvert::num( long int num )
         return QString::number( num );
 }
 
+float QConvert::powerValue( QString x )
+{
+    float x1 = x.toFloat();
+    return (x1 + 10) / 10.0;
+}
+
 QString QConvert::power( QString x )
 {
     float x1 = x.toFloat();

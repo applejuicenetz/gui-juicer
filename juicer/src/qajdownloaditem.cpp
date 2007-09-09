@@ -22,6 +22,8 @@
 
 QAjDownloadItem::QAjDownloadItem( QString id, QAjListWidget *parent ) : QAjItem( parent, id )
 {
+    this->setFlags( Qt::ItemIsSelectable | Qt::ItemIsUserCheckable | Qt::ItemIsEnabled | Qt::ItemIsEditable );
+
     int i;
     for ( i=1; i<NUM_DOWN_COL; i++ )
     {
@@ -57,6 +59,13 @@ QAjDownloadItem::QAjDownloadItem( QString id, QAjListWidget *parent ) : QAjItem(
 
     partListWidget = new QAjPartListWidget();
     partListWidget->hide();
+
+    powerSpin = new QAjPowerSpin(id, parent);
+    parent->setItemWidget(this, POWER_DOWN_INDEX, powerSpin);
+
+    QSize sizeH = powerSpin->sizeHint();
+    sizeH.setHeight(sizeHint(FILENAME_DOWN_INDEX).height());
+    setSizeHint(POWER_DOWN_INDEX, sizeH);
 }
 
 QAjDownloadItem::~QAjDownloadItem()
@@ -243,7 +252,14 @@ void QAjDownloadItem::update( QString hash, QString fileName, QString status, QS
     this->setText( FILENAME_DOWN_INDEX, fileName );
     partListWidget->setFilename( fileName );
 
-    this->setText( POWER_DOWN_INDEX, " " + QConvert::power( power ) + " " );
+//     this->setText( POWER_DOWN_INDEX, " " + QConvert::power( power ) + " " );
+
+    float p = QConvert::powerValue( power );
+    if(p>1.0) {
+        this->powerSpin->spin->setValue( p );
+    }
+    this->powerSpin->check->setChecked(p>1.0);
+    this->powerSpin->spin->setEnabled(p>1.0);
 
     firstFinished = false;
     if ( status != this->status )

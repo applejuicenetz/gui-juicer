@@ -41,6 +41,7 @@
 #include "qconvert.h"
 
 #include "qajpartlistwidget.h"
+#include "qajpowerspin.h"
 
 class QAjUserItem;
 
@@ -161,6 +162,7 @@ public:
     }
 
     virtual bool operator<( const QTreeWidgetItem & other ) const;
+    QAjPowerSpin* powerSpin;
 
 protected:
     //Q_ULLONG
