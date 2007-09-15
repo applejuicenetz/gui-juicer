@@ -22,10 +22,7 @@
 
 QAjDownloadItem::QAjDownloadItem( QString id, QAjListWidget *parent ) : QAjItem( parent, id )
 {
-    this->setFlags( Qt::ItemIsSelectable | Qt::ItemIsUserCheckable | Qt::ItemIsEnabled | Qt::ItemIsEditable );
-
-    int i;
-    for ( i=1; i<NUM_DOWN_COL; i++ )
+    for( int i=1; i<NUM_DOWN_COL; i++ )
     {
         setTextAlignment( i, Qt::AlignRight );
     }
@@ -60,12 +57,13 @@ QAjDownloadItem::QAjDownloadItem( QString id, QAjListWidget *parent ) : QAjItem(
     partListWidget = new QAjPartListWidget();
     partListWidget->hide();
 
-    powerSpin = new QAjPowerSpin(id, parent);
-    parent->setItemWidget(this, POWER_DOWN_INDEX, powerSpin);
-
+    powerSpin = new QAjPowerSpin(id);
     QSize sizeH = powerSpin->sizeHint();
     sizeH.setHeight(sizeHint(FILENAME_DOWN_INDEX).height());
     setSizeHint(POWER_DOWN_INDEX, sizeH);
+
+//     initPowerSpin();
+    QTimer::singleShot(10, this, SLOT(initPowerSpin()));
 }
 
 QAjDownloadItem::~QAjDownloadItem()
@@ -82,13 +80,17 @@ QAjDownloadItem::~QAjDownloadItem()
         delete partListWidget;
 }
 
+void QAjDownloadItem::initPowerSpin() {
+    treeWidget()->setItemWidget(this, POWER_DOWN_INDEX, powerSpin);
+}
+
 void QAjDownloadItem::moveItem( QAjUserItem *userItem, QString oldStatus )
 {
     if ( oldStatus != userItem->getStatus() )
     {
 
-        if ( userItem->parent() && ( oldStatus != NEW_SOURCE ) )
-            userItem->parent()->takeChild( userItem->parent()->indexOfChild( userItem ) );
+        if ( userItem->QTreeWidgetItem::parent() && ( oldStatus != NEW_SOURCE ) )
+            userItem->QTreeWidgetItem::parent()->takeChild( userItem->QTreeWidgetItem::parent()->indexOfChild( userItem ) );
 
         if ( oldStatus == ACTIVE_SOURCE )
         {
@@ -354,7 +356,7 @@ bool QAjDownloadItem::updateView( QHash<QString, QString>* downloadStatusDescr )
     if( status == DOWN_FINISHED )
     {
         speed = 0.0;
-        remainingSec = 0.0;
+        remainingSec = 0;
     }
 
     setText( SPEED_DOWN_INDEX, " " + QConvert::bytes( speed, 1 ) + "/s ");

@@ -103,6 +103,7 @@ QAjDownloadWidget::QAjDownloadWidget( QXMLModule* xml, QWidget *parent ) : QAjLi
         }
     }
     setHeaderLabels( headers );
+    setAutoFillBackground(false);
 
     QObject::connect( this, SIGNAL( newSelection( bool ) ) , this, SLOT( selectionChanged( bool ) ) );
     QObject::connect( this, SIGNAL( itemChanged ( QTreeWidgetItem*, int ) ) , this, SLOT( itemChanged ( QTreeWidgetItem*, int ) ) );
@@ -194,6 +195,7 @@ void QAjDownloadWidget::insertDownload(QString id, QString hash, QString fileNam
             xml->set( "setpowerdownload", "&Powerdownload="+QConvert::power( 50 )+"&id="+id );
         }
         downloadItem->update( hash, fileName, status, size, ready, power, tempNumber );
+//         downloadItem->initPowerSpin();
         updateView( true );
     } else {
         downloadItem->update( hash, fileName, status, size, ready, power, tempNumber );

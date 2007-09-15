@@ -20,13 +20,15 @@
 #ifndef QAJITEM_H
 #define QAJITEM_H
 
+#include <QObject>
 #include <QTreeWidget>
 
 /**
 @author Matthias Reif
 */
-class QAjItem : public QTreeWidgetItem
+class QAjItem : public QTreeWidgetItem, public QObject
 {
+// Q_OBJECT
 public:
     QAjItem( QTreeWidget *parent, QString id="generic" );
     QAjItem( QTreeWidgetItem *parent, QString id="generic" );

@@ -19,13 +19,13 @@
  ***************************************************************************/
 #include "qajitem.h"
 
-QAjItem::QAjItem( QTreeWidget *parent, QString id ) : QTreeWidgetItem( parent )
+QAjItem::QAjItem( QTreeWidget *parent, QString id ) : QTreeWidgetItem( parent ), QObject()
 {
     this->id = id;
     status = "-1";
 }
 
-QAjItem::QAjItem( QTreeWidgetItem *parent, QString id ) : QTreeWidgetItem( parent )
+QAjItem::QAjItem( QTreeWidgetItem *parent, QString id ) : QTreeWidgetItem( parent ), QObject()
 {
     this->id = id;
     status = "-1";

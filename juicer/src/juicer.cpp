@@ -40,7 +40,7 @@ Juicer::Juicer( QStringList argList ) : QMainWindow()
 
     xml = new QXMLModule( this );
 
-    QTabWidget* ajTab = new QTabWidget(this);
+    ajTab = new QTabWidget(this);
     ajDownloadWidget = new QAjDownloadWidget( xml, ajTab );
     ajUploadWidget = new QAjUploadWidget( xml, ajTab );
     ajSearchWidget = new QAjSearchWidget( xml, ajTab );
@@ -148,12 +148,13 @@ Juicer::Juicer( QStringList argList ) : QMainWindow()
     xml->setHost( QAjOptionsDialog::getSetting("coreAddress", "localhost").toString(),
                   QAjOptionsDialog::getSetting("xmlPort", 9851).toInt() );
 
-     timer = new QTimer( this );
+    timer = new QTimer( this );
     connect( timer, SIGNAL( timeout() ), this, SLOT( timerSlot() ) );
     partListTimer = new QTimer( this );
     connect( partListTimer, SIGNAL( timeout() ), this, SLOT( partListTimerSlot() ) );
 
     connect( ajTab, SIGNAL( currentChanged( QWidget* ) ), this, SLOT( tabChanged( QWidget* ) ) );
+    connect( ajTab, SIGNAL( currentChanged( int ) ), this, SLOT( tabChanged( int ) ) );
 
     tabChanged( ajDownloadWidget );
 
@@ -171,8 +172,7 @@ Juicer::Juicer( QStringList argList ) : QMainWindow()
     {
         tray = NULL;
     }
-    connect( ajDownloadWidget, SIGNAL( downloadsFinished( QList<QAjDownloadItem*>  ) ),
-            this, SLOT( downloadsFinished( QList<QAjDownloadItem*> ) ) );
+    connect( ajDownloadWidget, SIGNAL( downloadsFinished( QList<QAjDownloadItem*>  ) ),this, SLOT( downloadsFinished( QList<QAjDownloadItem*> ) ) );
 }
 
 Juicer::~Juicer()
@@ -416,6 +416,12 @@ void Juicer::processLink()
 void Juicer::processClipboard()
 {
     processLink( qApp->clipboard()->text( QClipboard::Clipboard ).trimmed() );
+}
+
+
+void Juicer::tabChanged( int index )
+{
+    tabChanged(ajTab->widget( index ));
 }
 
 

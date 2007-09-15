@@ -106,6 +106,7 @@ protected:
     void processQueuedLinks();
     void initStatusBar();
 
+    QTabWidget* ajTab;
     QSystemTrayIcon* tray;
     QString password;
     QString filesystemSeparator;
@@ -161,6 +162,7 @@ private slots:
     void processLink();
     void processClipboard();
 
+    void tabChanged( int index );
     void tabChanged( QWidget *tab );
 
     void exitCore();

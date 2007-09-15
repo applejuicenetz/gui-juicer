@@ -50,7 +50,7 @@ class QAjUserItem;
 */
 class QAjDownloadItem : public QAjItem
 {
-//Q_OBJECT
+Q_OBJECT
 public:
     QAjDownloadItem( QString id, QAjListWidget *parent = 0 );
 
@@ -163,6 +163,8 @@ public:
 
     virtual bool operator<( const QTreeWidgetItem & other ) const;
     QAjPowerSpin* powerSpin;
+public slots:
+    void initPowerSpin();
 
 protected:
     //Q_ULLONG
