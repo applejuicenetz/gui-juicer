@@ -14,8 +14,8 @@
     <projectname>juicer</projectname>
     <projectdirectory>.</projectdirectory>
     <absoluteprojectpath>false</absoluteprojectpath>
-    <description/>
-    <defaultencoding/>
+    <description></description>
+    <defaultencoding></defaultencoding>
   </general>
   <kdevfileview>
     <groups>
@@ -61,16 +61,18 @@
       <namespaceAliases>std=_GLIBCXX_STD;__gnu_cxx=std</namespaceAliases>
       <processPrimaryTypes>true</processPrimaryTypes>
       <processFunctionArguments>false</processFunctionArguments>
-      <preProcessAllHeaders>false</preProcessAllHeaders>
+      <preProcessAllHeaders>true</preProcessAllHeaders>
       <parseMissingHeaders>false</parseMissingHeaders>
       <resolveIncludePaths>true</resolveIncludePaths>
       <alwaysParseInBackground>true</alwaysParseInBackground>
       <usePermanentCaching>true</usePermanentCaching>
       <alwaysIncludeNamespaces>false</alwaysIncludeNamespaces>
       <includePaths>.;</includePaths>
+      <parseMissingHeadersExperimental>true</parseMissingHeadersExperimental>
+      <resolveIncludePathsUsingMakeExperimental>false</resolveIncludePathsUsingMakeExperimental>
     </codecompletion>
     <creategettersetter>
-      <prefixGet/>
+      <prefixGet></prefixGet>
       <prefixSet>set</prefixSet>
       <prefixVariable>m_,_</prefixVariable>
       <parameterName>theValue</parameterName>
@@ -123,16 +125,16 @@
   </kdevdoctreeview>
   <kdevdebugger>
     <general>
-      <dbgshell/>
+      <dbgshell></dbgshell>
       <breakpoints/>
       <programargs/>
       <gdbpath>/usr/bin/gdb</gdbpath>
       <breakonloadinglibs>true</breakonloadinglibs>
       <separatetty>false</separatetty>
       <floatingtoolbar>false</floatingtoolbar>
-      <configGdbScript/>
-      <runShellScript/>
-      <runGdbScript/>
+      <configGdbScript></configGdbScript>
+      <runShellScript></runShellScript>
+      <runGdbScript></runGdbScript>
     </general>
     <display>
       <staticmembers>false</staticmembers>
@@ -144,7 +146,7 @@
   <kdevtrollproject>
     <run>
       <mainprogram>/home/remat/projekte/svn/ajqtgui/juicer/bin/juicer</mainprogram>
-      <programargs/>
+      <programargs></programargs>
       <directoryradio>executable</directoryradio>
       <runarguments>
         <ajqt4gui/>
@@ -158,7 +160,7 @@
         <ajqt4gui/>
         <juicer/>
       </debugarguments>
-      <globaldebugarguments/>
+      <globaldebugarguments></globaldebugarguments>
       <globalcwd>/home/remat/projekte/svn/ajqtgui/juicer</globalcwd>
       <useglobalprogram>true</useglobalprogram>
       <terminal>false</terminal>
@@ -175,7 +177,7 @@
       <runmultiplejobs>false</runmultiplejobs>
       <numberofjobs>1</numberofjobs>
       <dontact>false</dontact>
-      <makebin/>
+      <makebin></makebin>
       <prio>0</prio>
       <envvars/>
     </make>

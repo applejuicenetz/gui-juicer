@@ -154,7 +154,7 @@ void QAjOptionsDialog::setSettings()
     savePassword->setChecked( getSetting( "savePassword", false ).toBool() );
     showSplash->setChecked( getSetting( "showSplash", true ).toBool() );
     trayCheckBox->setChecked( getSetting( "useTray", false ).toBool() );
-    altRowsCheckBox->setChecked( getSetting( "altRows", true ).toBool() );
+    altRowsCheckBox->setChecked( getSetting( "altRows", false ).toBool() );
 
     serverEdit->setText( getSetting( "serverURL", "http://www.applejuicenet.de/18.0.html" ).toString() );
 
