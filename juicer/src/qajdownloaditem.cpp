@@ -187,7 +187,7 @@ void QAjDownloadItem::removeUser( QString id )
     delete item;
 }
 
-void QAjDownloadItem::updateUser( QString id, QString fileName, QString speed, QString status, QString power, QString queuePos, QString statusString, QIcon* osIcon )
+void QAjDownloadItem::updateUser( QString id, QString fileName, QString speed, QString status, QString power, QString queuePos, QString statusString, QIcon* osIcon, QTime time )
 {
     QAjUserItem* userItem = findUser( id );
     if ( userItem == NULL )
@@ -206,7 +206,7 @@ void QAjDownloadItem::updateUser( QString id, QString fileName, QString speed, Q
     }
     QString oldStatus = userItem->getStatus();
 
-    userItem->update( fileName, speed, status, power, queuePos, statusString, osIcon );
+    userItem->update( fileName, speed, status, power, queuePos, statusString, osIcon, time );
 
     incSources( userItem->getStatus() );
 
@@ -257,11 +257,12 @@ void QAjDownloadItem::update( QString hash, QString fileName, QString status, QS
 //     this->setText( POWER_DOWN_INDEX, " " + QConvert::power( power ) + " " );
 
     float p = QConvert::powerValue( power );
-    if(p>1.0) {
+    if( p > 1.0 )
+    {
         this->powerSpin->spin->setValue( p );
     }
-    this->powerSpin->check->setChecked(p>1.0);
-    this->powerSpin->spin->setEnabled(p>1.0);
+    this->powerSpin->check->setChecked( p > 1.0 );
+    this->powerSpin->spin->setEnabled( p > 1.0 );
 
     firstFinished = false;
     if ( status != this->status )
@@ -291,7 +292,7 @@ void QAjDownloadItem::setFinishedPixmap(int newWidth, int newHeight, double newR
     percent = (int)(finished * 100.0);
     delete pixmap;
     pixmap = new QPixmap(width, height);
-    pixmap->fill(Qt::white);
+    pixmap->fill(Qt::gray);
 
     QPainter p(pixmap);
     if ( ready > 0.0 )
@@ -308,9 +309,6 @@ void QAjDownloadItem::setFinishedPixmap(int newWidth, int newHeight, double newR
         }
         p.drawRect(0, 0, (int)(width*finished), height);
     }
-    p.setPen(Qt::gray);
-    p.setBrush(Qt::gray);
-    p.drawRect((int)(width*finished+1), 2, (int)(width-(width*finished+1)), height-4);
     p.end();
 
     setIcon( FINISHED_DOWN_INDEX, QIcon(*pixmap) );
@@ -346,13 +344,13 @@ bool QAjDownloadItem::updateView( QHash<QString, QString>* downloadStatusDescr )
 
     setText( SOURCES_DOWN_INDEX, getSourcesString() );
 
-    if ( finishedChanged )
+    if( finishedChanged )
     {
         setFinishedPixmap( 100, 10, ready );
         setText( FINISHED_SIZE_DOWN_INDEX, " " + QConvert::bytes( ready ) + " " );
         setText( REMAIN_SIZE_DOWN_INDEX, " " + QConvert::bytes( remainingSize ) + " " );
     }
-    
+
     if( status == DOWN_FINISHED )
     {
         speed = 0.0;
@@ -361,7 +359,7 @@ bool QAjDownloadItem::updateView( QHash<QString, QString>* downloadStatusDescr )
 
     setText( SPEED_DOWN_INDEX, " " + QConvert::bytes( speed, 1 ) + "/s ");
 
-    if ( speed > 0 )
+    if( speed > 0 )
     {
         remainingSec = (long int)(remainingSize / speed);
         setText( REMAIN_TIME_DOWN_INDEX, " " + QConvert::time( remainingSec ) + " " );

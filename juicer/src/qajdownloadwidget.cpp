@@ -57,52 +57,27 @@ QAjDownloadWidget::QAjDownloadWidget( QXMLModule* xml, QWidget *parent ) : QAjLi
     netwareIcon = new QIcon(":/small/netware.png");
     otherOsIcon = new QIcon();
 
-    currIdRoundRobin = -1;
-    QStringList headers;
-    int i;
-    for ( i=0; i<NUM_DOWN_COL; i++)
-    {
-        switch (i)
-        {
-        case FILENAME_DOWN_INDEX:
-            headers.append( tr("filename") );
-            break;
-        case SPEED_DOWN_INDEX:
-            headers.append( tr("speed") );
-            break;
-        case STATUS_DOWN_INDEX:
-            headers.append( tr("status") );
-            break;
-        case SOURCES_DOWN_INDEX:
-            headers.append( tr("sources") );
-            break;
-        case FINISHED_DOWN_INDEX:
-            headers.append( tr("finished") );
-            break;
-        case SIZE_DOWN_INDEX:
-            headers.append( tr("size") );
-            break;
-        case REMAIN_SIZE_DOWN_INDEX:
-            headers.append( tr("remaining") );
-            break;
-        case FINISHED_SIZE_DOWN_INDEX:
-            headers.append( tr("finished") );
-            break;
-        case REMAIN_TIME_DOWN_INDEX:
-            headers.append( tr("eta") );
-            break;
-        case POWER_DOWN_INDEX:
-            headers.append( tr("power") );
-            break;
-        case MISSING_DOWN_INDEX:
-            headers.append( tr("not seen") );
-            break;
-//         case PRIORITY_DOWN_INDEX:
-//             headers.append( tr("priority") );
-//             break;
-        }
+    QTreeWidgetItem* l = new QTreeWidgetItem( );
+    l->setText( FILENAME_DOWN_INDEX, tr("filename") );
+    l->setText( SOURCES_DOWN_INDEX, tr("sources") );
+    l->setText( SPEED_DOWN_INDEX, tr("speed") );
+    l->setText( STATUS_DOWN_INDEX, tr("status") );
+    l->setText( FINISHED_DOWN_INDEX, tr("finished") );
+    l->setText( POWER_DOWN_INDEX, tr("power") );
+    l->setIcon( POWER_DOWN_INDEX, QIcon(":/small/launch.png") );
+    l->setText( SIZE_DOWN_INDEX, tr("size") );
+    l->setText( FINISHED_SIZE_DOWN_INDEX, tr("finished") );
+    l->setText( REMAIN_SIZE_DOWN_INDEX, tr("remaining") );
+    l->setText( REMAIN_TIME_DOWN_INDEX, tr("eta") );
+    l->setIcon( REMAIN_TIME_DOWN_INDEX, QIcon(":/small/clock.png") );
+    l->setText( MISSING_DOWN_INDEX, tr("not seen") );
+    setHeaderItem( l );
+
+    for(int i=0; i<this->columnCount(); i++) {
+        l->setTextAlignment( i, Qt::AlignHCenter );
     }
-    setHeaderLabels( headers );
+
+    currIdRoundRobin = -1;
     setAutoFillBackground(false);
 
     QObject::connect( this, SIGNAL( newSelection( bool ) ) , this, SLOT( selectionChanged( bool ) ) );
@@ -203,7 +178,7 @@ void QAjDownloadWidget::insertDownload(QString id, QString hash, QString fileNam
 }
 
 
-void QAjDownloadWidget::insertUser(QString downloadId, QString id, QString fileName, QString speed, QString status, QString power, QString queuePos, QString os)
+void QAjDownloadWidget::insertUser(QString downloadId, QString id, QString fileName, QString speed, QString status, QString power, QString queuePos, QString os, QTime time)
 {
     QAjDownloadItem *downloadItem = findDownload( downloadId );
     if ( downloadItem == NULL )
@@ -227,7 +202,7 @@ void QAjDownloadWidget::insertUser(QString downloadId, QString id, QString fileN
         osIcon = netwareIcon;
     else
         osIcon = otherOsIcon;
-    downloadItem->updateUser( id, fileName, speed, status, power, queuePos, userStatusDescr[status], osIcon );
+    downloadItem->updateUser( id, fileName, speed, status, power, queuePos, userStatusDescr[status], osIcon, time );
 }
 
 

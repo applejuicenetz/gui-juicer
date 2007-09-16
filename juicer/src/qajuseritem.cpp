@@ -40,24 +40,25 @@ void QAjUserItem::init()
     setFlags( Qt::ItemIsEnabled );
 }
 
-void QAjUserItem::setSpeed( QString newSpeedString )
+void QAjUserItem::setSpeed( QString newSpeedString, QTime time )
 {
     newSpeed = newSpeedString.toInt();
     speedDif = newSpeed - speed;
     speed = newSpeed;
+
     if ( status == ACTIVE_SOURCE )
         setText( SPEED_DOWN_INDEX, QConvert::bytes(newSpeedString) + "/s" );
     else
         setText( SPEED_DOWN_INDEX, "" );
 }
 
-void QAjUserItem::update( QString fileName, QString speed, QString status, QString power, QString queuePos, QString statusString, QIcon* osIcon )
+void QAjUserItem::update( QString fileName, QString speed, QString status, QString power, QString queuePos, QString statusString, QIcon* osIcon, QTime time )
 {
     this->fileName = fileName;
     this->status = status;
     this->power = power;
     this->queuePos = queuePos.toInt();
-    setSpeed( speed );
+    setSpeed( speed, time );
 
     if ( this->status == QUEUED_SOURCE ) // queueing? print position
         statusString += " (" + queuePos + ")";
@@ -73,3 +74,4 @@ void QAjUserItem::update( QString fileName, QString speed, QString status, QStri
         setIcon( SOURCES_DOWN_INDEX, *osIcon );
     }
 }
+

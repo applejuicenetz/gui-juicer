@@ -70,6 +70,8 @@
     <file alias="downloaded.png">resources/small/basket_put.png</file>
     <file alias="uploaded.png">resources/small/basket_remove.png</file>
     <file alias="version.png">resources/small/help.png</file>
+    <file alias="clock.png">resources/small/clock.png</file>
+    <file alias="launch.png">resources/small/launch.png</file>
 </qresource>
 
 <qresource prefix="/options">

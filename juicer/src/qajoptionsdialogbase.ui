@@ -585,28 +585,13 @@
     <widget class="QWidget" name="layoutWidget" >
      <property name="geometry" >
       <rect>
-       <x>11</x>
-       <y>51</y>
+       <x>12</x>
+       <y>50</y>
        <width>371</width>
-       <height>251</height>
+       <height>381</height>
       </rect>
      </property>
      <layout class="QVBoxLayout" >
-      <property name="spacing" >
-       <number>6</number>
-      </property>
-      <property name="leftMargin" >
-       <number>0</number>
-      </property>
-      <property name="topMargin" >
-       <number>0</number>
-      </property>
-      <property name="rightMargin" >
-       <number>0</number>
-      </property>
-      <property name="bottomMargin" >
-       <number>0</number>
-      </property>
       <item>
        <widget class="QCheckBox" name="showSplash" >
         <property name="text" >
@@ -618,6 +603,13 @@
        <widget class="QCheckBox" name="trayCheckBox" >
         <property name="text" >
          <string>use tray icon</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QCheckBox" name="altRowsCheckBox" >
+        <property name="text" >
+         <string>alternating row colors</string>
         </property>
        </widget>
       </item>
@@ -712,24 +704,15 @@
        </layout>
       </item>
       <item>
-       <layout class="QHBoxLayout" >
-        <property name="spacing" >
-         <number>6</number>
-        </property>
-        <property name="leftMargin" >
-         <number>0</number>
-        </property>
-        <property name="topMargin" >
-         <number>0</number>
-        </property>
-        <property name="rightMargin" >
-         <number>0</number>
-        </property>
-        <property name="bottomMargin" >
-         <number>0</number>
-        </property>
-        <item>
+       <layout class="QGridLayout" >
+        <item row="0" column="0" >
          <widget class="QLabel" name="label_31" >
+          <property name="sizePolicy" >
+           <sizepolicy vsizetype="Preferred" hsizetype="Preferred" >
+            <horstretch>20</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
           <property name="text" >
            <string>show in statusbar:</string>
           </property>
@@ -738,7 +721,7 @@
           </property>
          </widget>
         </item>
-        <item>
+        <item row="0" column="1" >
          <widget class="QListWidget" name="statusbarList" >
           <property name="sizePolicy" >
            <sizepolicy vsizetype="Fixed" hsizetype="Preferred" >
@@ -798,18 +781,97 @@
           </item>
          </widget>
         </item>
-        <item>
-         <spacer>
-          <property name="orientation" >
-           <enum>Qt::Horizontal</enum>
+        <item row="1" column="0" >
+         <widget class="QLabel" name="label_33" >
+          <property name="enabled" >
+           <bool>false</bool>
           </property>
-          <property name="sizeHint" >
+          <property name="sizePolicy" >
+           <sizepolicy vsizetype="Preferred" hsizetype="Preferred" >
+            <horstretch>20</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="text" >
+           <string>show in download tab:</string>
+          </property>
+          <property name="alignment" >
+           <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="1" >
+         <widget class="QListWidget" name="downloadTabList" >
+          <property name="enabled" >
+           <bool>false</bool>
+          </property>
+          <property name="sizePolicy" >
+           <sizepolicy vsizetype="Fixed" hsizetype="Preferred" >
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="minimumSize" >
            <size>
-            <width>51</width>
-            <height>20</height>
+            <width>143</width>
+            <height>100</height>
            </size>
           </property>
-         </spacer>
+          <property name="maximumSize" >
+           <size>
+            <width>143</width>
+            <height>180</height>
+           </size>
+          </property>
+          <property name="selectionMode" >
+           <enum>QAbstractItemView::MultiSelection</enum>
+          </property>
+          <item>
+           <property name="text" >
+            <string>filename</string>
+           </property>
+          </item>
+          <item>
+           <property name="text" >
+            <string>sources</string>
+           </property>
+          </item>
+          <item>
+           <property name="text" >
+            <string>speed</string>
+           </property>
+          </item>
+          <item>
+           <property name="text" >
+            <string>status</string>
+           </property>
+          </item>
+          <item>
+           <property name="text" >
+            <string>power</string>
+           </property>
+          </item>
+          <item>
+           <property name="text" >
+            <string>size</string>
+           </property>
+          </item>
+          <item>
+           <property name="text" >
+            <string>ready</string>
+           </property>
+          </item>
+          <item>
+           <property name="text" >
+            <string>missing</string>
+           </property>
+          </item>
+          <item>
+           <property name="text" >
+            <string>eta</string>
+           </property>
+          </item>
+         </widget>
         </item>
        </layout>
       </item>

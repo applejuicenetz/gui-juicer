@@ -29,6 +29,7 @@
 #include <QHash>
 
 #include <QHeaderView>
+#include <QLinkedList>
 
 #include "qajuseritem.h"
 #include "qajdownloaditem.h"
@@ -58,7 +59,7 @@ public:
 
     void moveItem( QAjUserItem *userItem, QString oldStatus );
     void update( QString hash, QString fileName, QString status, QString size, QString ready, QString power, QString tempNumber );
-    void updateUser( QString id, QString fileName, QString speed, QString status, QString power, QString queuePos, QString statusString, QIcon *osIcon );
+    void updateUser( QString id, QString fileName, QString speed, QString status, QString power, QString queuePos, QString statusString, QIcon *osIcon, QTime time );
 
     void decSources( QString type );
     void incSources( QString type );
@@ -170,6 +171,7 @@ protected:
     //Q_ULLONG
     double size, ready, remainingSize;
     double speed;
+    QLinkedList<double> speeds;
     double finished;
     int percent;
     int width, height;

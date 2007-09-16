@@ -276,6 +276,13 @@ void Juicer::showOptions()
         // save options
         AjSettings settings = optionsDialog->getAjSettings();
         QApplication::setFont(optionsDialog->getFont());
+        bool altRows = optionsDialog->altRowsCheckBox->isChecked();
+        ajDownloadWidget->setAlternatingRowColors( altRows );
+        ajUploadWidget->setAlternatingRowColors( altRows );
+        ajServerWidget->setAlternatingRowColors( altRows );
+        ajIncomingWidget->setAlternatingRowColors( altRows );
+        ajSearchWidget->setAlternatingRowColors( altRows );
+        ajShareFilesWidget->setAlternatingRowColors( altRows );
         initStatusBar();
 
         timer->stop();

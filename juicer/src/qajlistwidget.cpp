@@ -23,6 +23,7 @@ QAjListWidget::QAjListWidget( QXMLModule* xml, QWidget *parent ) : QTreeWidget( 
 {
     this->xml = xml;
     setContextMenuPolicy( Qt::CustomContextMenu );
+    setAlternatingRowColors( QAjOptionsDialog::getSetting("altRows", true).toBool() );
 
     popup = new QMenu( this );
     toolBar = NULL;

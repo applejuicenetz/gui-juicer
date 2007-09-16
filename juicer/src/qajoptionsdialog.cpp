@@ -154,6 +154,7 @@ void QAjOptionsDialog::setSettings()
     savePassword->setChecked( getSetting( "savePassword", false ).toBool() );
     showSplash->setChecked( getSetting( "showSplash", true ).toBool() );
     trayCheckBox->setChecked( getSetting( "useTray", false ).toBool() );
+    altRowsCheckBox->setChecked( getSetting( "altRows", true ).toBool() );
 
     serverEdit->setText( getSetting( "serverURL", "http://www.applejuicenet.de/18.0.html" ).toString() );
 
@@ -285,6 +286,7 @@ void QAjOptionsDialog::writeSettings()
     setSetting( "savePassword", savePassword->isChecked() );
     setSetting( "showSplash", showSplash->isChecked() );
     setSetting( "useTray", trayCheckBox->isChecked() );
+    setSetting( "altRows", altRowsCheckBox->isChecked() );
     setSetting( "serverURL", serverEdit->text() );
     setSetting( "refresh", refreshSpin->value() );
     setSetting( "launcher", launchCombo->currentText() );

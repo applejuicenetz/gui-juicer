@@ -32,6 +32,7 @@
 #include "qajitem.h"
 #include "types.h"
 #include "qxmlmodule.h"
+#include "qajoptionsdialog.h"
 
 /**
 @author Matthias Reif

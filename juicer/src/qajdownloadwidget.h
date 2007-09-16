@@ -59,7 +59,7 @@ public:
     ~QAjDownloadWidget();
 
     void insertDownload(QString id, QString hash, QString fileName, QString status, QString size, QString ready, QString power, QString tempNumber);
-    void insertUser(QString downloadId, QString id, QString fileName, QString speed, QString status, QString power, QString queuePos, QString os);
+    void insertUser(QString downloadId, QString id, QString fileName, QString speed, QString status, QString power, QString queuePos, QString os, QTime time);
     bool remove( QString id );
 
     QAjDownloadItem* findDownload( QString id );

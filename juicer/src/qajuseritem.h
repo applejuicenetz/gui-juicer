@@ -21,10 +21,12 @@
 #define QAJUSERITEM_H
 
 #include <QTreeWidget>
+#include <QList>
 
 #include "qajitem.h"
 #include "qconvert.h"
 #include "types.h"
+#include "qajoptionsdialog.h"
 
 /**
 @author Matthias Reif
@@ -37,9 +39,9 @@ public:
 
     ~QAjUserItem();
 
-    void update( QString fileName, QString speed, QString status, QString power, QString queuePos, QString statusString, QIcon* osIcon );
+    void update( QString fileName, QString speed, QString status, QString power, QString queuePos, QString statusString, QIcon* osIcon, QTime time );
 
-    void setSpeed( QString newSpeedString );
+    void setSpeed( QString newSpeedString, QTime time );
 
     int getSpeedDif()
     {
@@ -61,10 +63,13 @@ public:
     {
         return power;
     }
+    void setAvgSpeed();
 private:
     void init();
 protected:
     int speed, newSpeed, speedDif;
+    QList<int> speeds;
+    QList<QTime> times;
     QString id;
     int queuePos;
     QString power;

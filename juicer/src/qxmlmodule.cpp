@@ -70,8 +70,10 @@ int QXMLModule::set( QString request, QString param )
 
 void QXMLModule::requestFinished( int id, bool error )
 {
+    
     if ( ! error )
     {
+        QTime now = QTime::currentTime();
         doc.setContent(readAll());
 
         QDomElement root = doc.documentElement();
@@ -133,7 +135,7 @@ void QXMLModule::requestFinished( int id, bool error )
                     }
                     else if ( e.tagName() == "user" )
                     {
-                        handleUser( e );
+                        handleUser( e, now );
                     }
                     else if ( e.tagName() == "server" )
                     {
@@ -353,9 +355,9 @@ void QXMLModule::handleUpload( QDomElement e )
 
 
 /*!
-    \fn QXMLModule::handleUser( QDomElement e )
+    \fn QXMLModule::handleUser( QDomElement e, QTime time )
  */
-void QXMLModule::handleUser( QDomElement e )
+void QXMLModule::handleUser( QDomElement e, QTime time )
 {
 //     juicer->ajDownloadWidget->mutex.lock();
     juicer->ajDownloadWidget->insertUser(
@@ -366,7 +368,8 @@ void QXMLModule::handleUser( QDomElement e )
         e.attribute("status"),
         e.attribute("powerdownload"),
         e.attribute("queueposition"),
-        e.attribute("operatingsystem"));
+        e.attribute("operatingsystem"),
+        time);
 //     juicer->ajDownloadWidget->mutex.unlock();
 }
 

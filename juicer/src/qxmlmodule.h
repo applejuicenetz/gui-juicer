@@ -93,7 +93,7 @@ private:
     void handleNetworkInfo( QDomElement e );
     void handleUpload( QDomElement e );
     void handleDownload( QDomElement e );
-    void handleUser( QDomElement e );
+    void handleUser( QDomElement e, QTime time );
     void handleServer( QDomElement e );
     void handleSearch( QDomElement e );
     void handleSearchEntry( QDomElement e );
