@@ -1,67 +1,43 @@
-/***************************************************************************
- *   Copyright (C) 2004 by Matthias Reif                                   *
- *   matthias.reif@informatik.tu-chemnitz.de                               *
- *                                                                         *
- *   This program is free software; you can redistribute it and/or modify  *
- *   it under the terms of the GNU General Public License as published by  *
- *   the Free Software Foundation; either version 2 of the License, or     *
- *   (at your option) any later version.                                   *
- *                                                                         *
- *   This program is distributed in the hope that it will be useful,       *
- *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
- *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
- *   GNU General Public License for more details.                          *
- *                                                                         *
- *   You should have received a copy of the GNU General Public License     *
- *   along with this program; if not, write to the                         *
- *   Free Software Foundation, Inc.,                                       *
- *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
- ***************************************************************************/
+//
+// C++ Interface: 
+//
+// Description: 
+//
+//
+// Author: Matthias Reif <matthias.reif@informatik.tu-chemnitz.de>, (C) 2007
+//
+// Copyright: See COPYING file that comes with this distribution
+//
+//
+
 #ifndef QAJLOGINDIALOG_H
 #define QAJLOGINDIALOG_H
 
 #include <QDialog>
-#include <QLabel>
-#include <QLineEdit>
-#include <QPushButton>
+#include "ui_qajlogindialogbase.h"
 
-/**
-@author Matthias Reif
-*/
-class QAjLoginDialog : public QDialog
+class QAjLoginDialog : public QDialog, private Ui::QAjLoginDialogBase
 {
-    Q_OBJECT
-public:
-    QAjLoginDialog(QString host, QString port, QString password, QString errorMsg, QWidget *parent = 0, const char *name = 0);
+  Q_OBJECT
 
-    ~QAjLoginDialog();
-    QString getHost()
-    {
-        return hostEdit->text();
-    }
-    QString getPort()
-    {
-        return portEdit->text();
-    }
-    QString getPassword()
-    {
-        return passwordEdit->text();
-    }
+public:
+  QAjLoginDialog(QWidget* parent = 0, Qt::WFlags fl = 0 );
+  ~QAjLoginDialog();
+
+  QString getHost() { return hostEdit->text(); }
+  int getPort() { return portSpinBox->value(); }
+  QString getPassword() { return passwordEdit->text(); }
+  void setHost( QString host ) { hostEdit->setText( host ); }
+  void setPort( int port ) { portSpinBox->setValue( port ); }
+  void setPassword( QString password ) { passwordEdit->setText( password ); }
+  void setHeader( QString text ) { headerLabel->setText( text ); }
+public slots:
 
 protected:
-    QLabel *messageLabel;
-    QLabel *hostLabel;
-    QLineEdit *hostEdit;
-    QLabel *portLabel;
-    QLineEdit *portEdit;
-    QLabel *passwordLabel;
-    QLineEdit *passwordEdit;
-    QPushButton *retryButton;
-    QPushButton *cancelButton;
+
 protected slots:
-    void retryClicked();
-    void cancelClicked();
 
 };
 
 #endif
+
