@@ -71,6 +71,7 @@ class Juicer: public QMainWindow
 public:
     Juicer( QStringList argList );
     ~Juicer();
+    QString getPassword();
     bool login();
 
     void setStatusBarText( QString downSpeed, QString upSpeed, QString credits, QString downSize, QString upSize );

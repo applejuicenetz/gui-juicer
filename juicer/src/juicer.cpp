@@ -22,12 +22,6 @@
 
 Juicer::Juicer( QStringList argList ) : QMainWindow()
 {
-// #ifdef Q_WS_WIN
-//     filesystemSeparator = "\\";
-// #else
-//     filesystemSeparator = "/";
-// #endif
-
     connect( qApp, SIGNAL( lastWindowClosed () ), this, SLOT ( lastWindowClosed () ) );
 
     zeroTime = QDateTime( QDate(1970,1,1), QTime(0,0), Qt::UTC );
@@ -127,24 +121,8 @@ Juicer::Juicer( QStringList argList ) : QMainWindow()
     connect( xml, SIGNAL( modifiedDone( ) ), this, SLOT( firstModified() ) );
 
     connected = false;
-    
-    QString password = QAjOptionsDialog::getSetting( "corePassword", "" ).toString();
-    // no password in local file? => ask for it
-    if ( password.isEmpty() )
-    {
-        bool ok;
-        password = QInputDialog::getText( this, "Juicer", "Enter core password:", QLineEdit::Password,  QString::null, &ok );
-        if ( !ok ) // user canceld
-            qApp->closeAllWindows();
-        else
-        {
-            // save password in local file if user wants it
-            if ( QAjOptionsDialog::getSetting( "savePassword", false ).toBool() )
-                QAjOptionsDialog::setSetting( "password", password );
-        }
-    }
 
-    xml->setPassword( password );
+    xml->setPassword( getPassword() );
     xml->setHost( QAjOptionsDialog::getSetting("coreAddress", "localhost").toString(),
                   QAjOptionsDialog::getSetting("xmlPort", 9851).toInt() );
 
@@ -177,6 +155,25 @@ Juicer::Juicer( QStringList argList ) : QMainWindow()
 
 Juicer::~Juicer()
 {}
+
+QString Juicer::getPassword() {
+    QString password = QAjOptionsDialog::getSetting( "corePassword", "" ).toString();
+    // no password in local file? => ask for it
+    if ( password.isEmpty() )
+    {
+        bool ok;
+        password = QInputDialog::getText( this, "Juicer", "Enter core password:", QLineEdit::Password,  QString::null, &ok );
+        if ( !ok ) // user canceld
+            qApp->closeAllWindows();
+        else
+        {
+            // save password in local file if user wants it
+            if ( QAjOptionsDialog::getSetting( "savePassword", false ).toBool() )
+                QAjOptionsDialog::setSetting( "password", password );
+        }
+    }
+    return password;
+}
 
 void Juicer::initToolBars()
 {
@@ -327,7 +324,7 @@ bool Juicer::login()
     ajIncomingWidget->clear();
     ajShareWidget->clear();
     connected = false;
-    qApp->processEvents();
+//     qApp->processEvents();
     xml->get( "getsession" );
     return true;
 }
@@ -353,24 +350,27 @@ void Juicer::xmlError( int code )
     else
         errorString = xml->errorString() + ".";
 
-    QAjLoginDialog *loginDialog = new QAjLoginDialog(
-                                      lokalSettings.value("coreAddress", "localhost").toString(),
-                                      lokalSettings.value("xmlPort", "9851").toString(),
-                                      lokalSettings.value("/progeln.de/Juicer/password", "").toString(),
-                                      errorString, this, "logionDialog" );
-    if ( loginDialog->exec() == QDialog::Accepted )
+    QAjLoginDialog loginDialog(this);// = new QAjLoginDialog( this );
+    loginDialog.setHost( QAjOptionsDialog::getSetting( "coreAddress", "localhost" ).toString() );
+    loginDialog.setPort( QAjOptionsDialog::getSetting("xmlPort", 9851 ).toInt() );
+    loginDialog.setPassword( QAjOptionsDialog::getSetting( "password", "" ).toString() );
+    loginDialog.setHeader( errorString );
+    int result = loginDialog.exec();
+    if (result  == QDialog::Accepted )
     {
-        password = loginDialog->getPassword();
+        printf("accepted\n");
+        password = loginDialog.getPassword();
         xml->abort();
-        xml->setPassword( loginDialog->getPassword() );
-        xml->setHost( loginDialog->getHost(), loginDialog->getPort().toInt() );
-        lokalSettings.setValue( "coreAddress", loginDialog->getHost() );
-        lokalSettings.setValue( "xmlPort", loginDialog->getPort() );
+        xml->setPassword( loginDialog.getPassword() );
+        xml->setHost( loginDialog.getHost(), loginDialog.getPort() );
+        lokalSettings.setValue( "coreAddress", loginDialog.getHost() );
+        lokalSettings.setValue( "xmlPort", loginDialog.getPort() );
         if ( lokalSettings.value( "savePassword", "false" ).toString() == "true" )
             lokalSettings.setValue( "password",  password);
         login();
+    } else if( result == QDialog::Ignore) {
+        printf("ignoreded\n");
     }
-    delete loginDialog;
 }
 
 void Juicer::gotSession()
