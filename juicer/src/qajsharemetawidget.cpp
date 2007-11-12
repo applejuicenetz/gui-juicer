@@ -23,13 +23,11 @@ QAjShareMetaWidget::QAjShareMetaWidget( QWidget *parent ) : QMainWindow(parent)
     this->sharedFilesWidget = NULL;
 
 //     connect( shareWidget, SIGNAL( newSelection( bool ) ) , this, SLOT( selectionChanged( bool ) ) );
-
 }
 
 
 QAjShareMetaWidget::~QAjShareMetaWidget()
 {
-    delete sharedFilesWidget;
 }
 
 
@@ -113,24 +111,16 @@ void QAjShareMetaWidget::dockVisibleSlot( bool visible )
 void QAjShareMetaWidget::selectionChanged( bool oneSelected )
 {
     if ( oneSelected && (this->sharedFilesWidget != NULL ) ) {
-      QList<QAjItem *> selectedItems = this->shareWidget->selectedAjItems();
-
-      QAjShareItem *shareItem =  (QAjShareItem*)selectedItems[0];
-
+      QAjShareItem *shareItem = (QAjShareItem*)this->shareWidget->selectedAjItems()[0];
       sharedFilesWidget->updateVisibleFiles( shareItem->path );
+      shareWidget->copyLinkButton->setEnabled( ! sharedFilesWidget->selectedItems().isEmpty() );
     }
-
 }
 
 void QAjShareMetaWidget::setPrioritySlot()
 {
-    int value;
+    int value = 1;
     if ( shareWidget->prioCheck->isChecked() )
         value = shareWidget->prioSpin->value();
-    else
-        value = 1;
-
     sharedFilesWidget->setPriority( value );
 }
-
-

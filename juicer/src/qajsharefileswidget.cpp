@@ -66,25 +66,10 @@ void QAjShareFilesWidget::updateVisibleFiles( QString path ) {
 
     if (this->sharedFiles.isEmpty()) return;
 
-    QList<QString>  ids = this->sharedFiles.keys();
-
-    for ( int i = 0; i < ids.size(); i++ ) {
-        QAjShareFileItem *shareFileItem = findFile( ids[i] );
-        if ( shareFileItem != NULL )
-        {
-            if ( shareFileItem->getPath().contains( path ) ) {
-                sharedFiles[ ids[i] ]->setHidden( false );
-            }
-            else {
-                sharedFiles[ ids[i] ]->setHidden( true );
-            }
-        }
-        else {
-            fprintf(stderr, "shared file with id %s not found\n", ids[i].toLatin1().data());
-        }
+    QList<QAjShareFileItem*> files = sharedFiles.values();
+    for ( int i = 0; i < files.size(); i++ ) {
+        files.at(i)->setHidden(!files.at(i)->getPath().startsWith( path ));
     }
-
-    repaint();
 }
 
 void QAjShareFilesWidget::linkSlot() {
