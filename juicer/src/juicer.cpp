@@ -368,8 +368,8 @@ void Juicer::xmlError( int code )
         if ( lokalSettings.value( "savePassword", "false" ).toString() == "true" )
             lokalSettings.setValue( "password",  password);
         login();
-    } else if( result == QDialog::Ignore) {
-        printf("ignoreded\n");
+//    } else if( result == QDialog::Ignore) {
+//        printf("ignoreded\n");
     }
 }
 

@@ -4,7 +4,8 @@
 # Das Target ist eine Anwendung:  ../bin/ajqt4gui
 
 FORMS += qajoptionsdialogbase.ui  \
-qajnetworkdialogbase.ui
+qajnetworkdialogbase.ui \
+qajlogindialogbase.ui
 HEADERS += ftp.h \
            global.h \
            md5class.h \
