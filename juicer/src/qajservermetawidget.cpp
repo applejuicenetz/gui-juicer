@@ -21,7 +21,7 @@
 
 QAjServerMetaWidget::QAjServerMetaWidget(QWidget *parent) : QMainWindow(parent)
 {
-    dock = new AjDockWidget( "server welcome message", this );
+    dock = new AjDockWidget( tr("server welcome message"), this );
     #if QT_VERSION >= 0x040300
         connect( dock, SIGNAL(dockLocationChanged( Qt::DockWidgetArea )), this, SLOT(welcomeDockLocationChanged(Qt::DockWidgetArea)));
     #endif
@@ -65,7 +65,7 @@ void QAjServerMetaWidget::setServerWidget(QAjServerWidget* serverWidget)
     this->setCentralWidget(serverWidget);
 
     serverWidget->popup->addSeparator();
-    showWelcomeAction = new QAction("show welcome message", this );
+    showWelcomeAction = new QAction(tr("show welcome message"), this );
     showWelcomeAction->setCheckable( true );
     QObject::connect(showWelcomeAction, SIGNAL(toggled(bool)), dock, SLOT(setVisible(bool)));
     QObject::connect(showWelcomeAction, SIGNAL(toggled(bool)), this, SLOT(dockVisibleSlot(bool)));

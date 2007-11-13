@@ -72,9 +72,9 @@ void QAjServerWidget::initToolBar()
 {
     toolBar = new QToolBar( "server operations", this );
 
-    connectButton = toolBar->addAction( QIcon(":/connect.png"), "connect to this server", this, SLOT( connectSlot() ) );
-    removeButton = toolBar->addAction( QIcon(":/cancel.png"), "remove server", this, SLOT( removeSlot() ) );
-    findButton = toolBar->addAction( QIcon(":/find.png"), "find server", this, SLOT( findSlot() ) );
+    connectButton = toolBar->addAction( QIcon(":/connect.png"), tr("connect to this server"), this, SLOT( connectSlot() ) );
+    removeButton = toolBar->addAction( QIcon(":/cancel.png"), tr("remove server"), this, SLOT( removeSlot() ) );
+    findButton = toolBar->addAction( QIcon(":/find.png"), tr("find server"), this, SLOT( findSlot() ) );
 
     QObject::connect( this, SIGNAL( newSelection( bool ) ) , connectButton, SLOT( setEnabled( bool ) ) );
     QObject::connect( this, SIGNAL( newSelection( bool ) ) , removeButton, SLOT( setEnabled( bool ) ) );

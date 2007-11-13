@@ -31,6 +31,9 @@ void QAjShareFileItem::update( QString hash, QString fileName, QString size, QSt
     this->path = f.absolutePath();
     this->size = size;
 
+    if ( !path.endsWith( filesystemSeperator.data()[0] ) )
+        path += filesystemSeperator;
+
     this->setText( FILENAME_SHARED_FILE_INDEX, f.fileName() );
     this->setText( SIZE_SHARED_FILE_INDEX, QConvert::bytesExtra(size) );
     this->setText( PRIORITY_SHARED_FILE_INDEX, priority );

@@ -44,7 +44,7 @@
       <designerpluginpaths/>
     </qt>
     <references>
-      <pcs>Qt4</pcs>
+      <pcs>automatic_%2Fhome%2Fholg%2Fprojects%2Fjuicer</pcs>
     </references>
     <codecompletion>
       <automaticCodeCompletion>false</automaticCodeCompletion>
@@ -135,6 +135,7 @@
       <configGdbScript></configGdbScript>
       <runShellScript></runShellScript>
       <runGdbScript></runGdbScript>
+      <raiseGDBOnStart>false</raiseGDBOnStart>
     </general>
     <display>
       <staticmembers>false</staticmembers>
@@ -145,7 +146,7 @@
   </kdevdebugger>
   <kdevtrollproject>
     <run>
-      <mainprogram>/home/remat/projekte/svn/ajqtgui/juicer/bin/juicer</mainprogram>
+      <mainprogram></mainprogram>
       <programargs></programargs>
       <directoryradio>executable</directoryradio>
       <runarguments>
@@ -161,8 +162,8 @@
         <juicer/>
       </debugarguments>
       <globaldebugarguments></globaldebugarguments>
-      <globalcwd>/home/remat/projekte/svn/ajqtgui/juicer</globalcwd>
-      <useglobalprogram>true</useglobalprogram>
+      <globalcwd></globalcwd>
+      <useglobalprogram>false</useglobalprogram>
       <terminal>false</terminal>
       <autocompile>true</autocompile>
       <autoinstall>false</autoinstall>
@@ -185,6 +186,7 @@
       <savebehaviour>2</savebehaviour>
       <replacePaths>false</replacePaths>
       <disableDefaultOpts>true</disableDefaultOpts>
+      <enableFilenamesOnly>false</enableFilenamesOnly>
     </qmake>
     <subclassing/>
   </kdevtrollproject>
@@ -204,7 +206,7 @@
     <projectdoc>
       <docsystem>Doxygen-Dokumentation</docsystem>
       <docurl>juicer.tag</docurl>
-      <usermanualurl/>
+      <usermanualurl></usermanualurl>
     </projectdoc>
   </kdevdocumentation>
   <substmap>

@@ -4,82 +4,82 @@
 <context>
     <name>Juicer</name>
     <message>
-        <location filename="juicer.cpp" line="58"/>
+        <location filename="juicer.cpp" line="52"/>
         <source>Downloads</source>
         <translation type="unfinished">Downloads</translation>
     </message>
     <message>
-        <location filename="juicer.cpp" line="59"/>
+        <location filename="juicer.cpp" line="53"/>
         <source>Uploads</source>
         <translation type="unfinished">Uploads</translation>
     </message>
     <message>
-        <location filename="juicer.cpp" line="60"/>
+        <location filename="juicer.cpp" line="54"/>
         <source>Search</source>
         <translation type="unfinished">Suche</translation>
     </message>
     <message>
-        <location filename="juicer.cpp" line="61"/>
+        <location filename="juicer.cpp" line="55"/>
         <source>Server</source>
         <translation type="unfinished">Server</translation>
     </message>
     <message>
-        <location filename="juicer.cpp" line="62"/>
+        <location filename="juicer.cpp" line="56"/>
         <source>Shares</source>
         <translation type="unfinished">Freigaben</translation>
     </message>
     <message>
-        <location filename="juicer.cpp" line="65"/>
+        <location filename="juicer.cpp" line="59"/>
         <source>Incoming</source>
         <translation type="unfinished">Incoming</translation>
     </message>
     <message>
-        <location filename="juicer.cpp" line="75"/>
+        <location filename="juicer.cpp" line="69"/>
         <source>&amp;AppleJuice</source>
         <translation type="unfinished">&amp;AppleJuice</translation>
     </message>
     <message>
-        <location filename="juicer.cpp" line="78"/>
+        <location filename="juicer.cpp" line="72"/>
         <source>C&amp;onfigure</source>
         <translation type="unfinished">&amp;Einstellungen</translation>
     </message>
     <message>
-        <location filename="juicer.cpp" line="79"/>
+        <location filename="juicer.cpp" line="73"/>
         <source>&amp;Net Info</source>
         <translation type="unfinished">&amp;Netz Info</translation>
     </message>
     <message>
-        <location filename="juicer.cpp" line="81"/>
+        <location filename="juicer.cpp" line="75"/>
         <source>&amp;Exit Core</source>
         <translation type="unfinished">Core b&amp;eenden</translation>
     </message>
     <message>
-        <location filename="juicer.cpp" line="82"/>
+        <location filename="juicer.cpp" line="76"/>
         <source>&amp;Quit GUI</source>
         <translation type="unfinished">&amp;GUI schließen</translation>
     </message>
     <message>
-        <location filename="juicer.cpp" line="93"/>
+        <location filename="juicer.cpp" line="87"/>
         <source>&amp;Help</source>
         <translation type="unfinished">&amp;Hilfe</translation>
     </message>
     <message>
-        <location filename="juicer.cpp" line="94"/>
+        <location filename="juicer.cpp" line="88"/>
         <source>&amp;About</source>
         <translation type="unfinished">&amp;Über</translation>
     </message>
     <message>
-        <location filename="juicer.cpp" line="95"/>
+        <location filename="juicer.cpp" line="89"/>
         <source>About &amp;Qt</source>
         <translation type="unfinished">Über &amp;Qt</translation>
     </message>
     <message>
-        <location filename="juicer.cpp" line="245"/>
+        <location filename="juicer.cpp" line="242"/>
         <source>Juicer Info</source>
         <translation type="unfinished">Juicer Info</translation>
     </message>
     <message>
-        <location filename="juicer.cpp" line="246"/>
+        <location filename="juicer.cpp" line="243"/>
         <source>Juicer 
 
 http://ajqtgui.sf.net
@@ -87,37 +87,37 @@ http://www.progeln.de</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="juicer.cpp" line="251"/>
+        <location filename="juicer.cpp" line="248"/>
         <source>Juicer: About Qt</source>
         <translation type="unfinished">Juicer: Über Qt</translation>
     </message>
     <message>
-        <location filename="juicer.cpp" line="337"/>
+        <location filename="juicer.cpp" line="334"/>
         <source>Downstream: </source>
         <translation type="unfinished">Downstream: </translation>
     </message>
     <message>
-        <location filename="juicer.cpp" line="338"/>
+        <location filename="juicer.cpp" line="335"/>
         <source>/s</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="juicer.cpp" line="338"/>
+        <location filename="juicer.cpp" line="335"/>
         <source>Upstream: </source>
         <translation type="unfinished">Upstream: </translation>
     </message>
     <message>
-        <location filename="juicer.cpp" line="339"/>
+        <location filename="juicer.cpp" line="336"/>
         <source>Credits: </source>
         <translation type="unfinished">Credits: </translation>
     </message>
     <message>
-        <location filename="juicer.cpp" line="340"/>
+        <location filename="juicer.cpp" line="337"/>
         <source>Downloaded: </source>
         <translation type="unfinished">Runtergeladen: </translation>
     </message>
     <message>
-        <location filename="juicer.cpp" line="341"/>
+        <location filename="juicer.cpp" line="338"/>
         <source>Uploaded: </source>
         <translation type="unfinished">Hochgeladen: </translation>
     </message>
@@ -357,7 +357,7 @@ Möchten Sie die Änderungen zum Core übermitteln?</translation>
     <message>
         <location filename="qajincomingwidget.cpp" line="74"/>
         <source>reload</source>
-        <translation type="unfinished">erneut loaden</translation>
+        <translation type="unfinished">Anzeige erneuern</translation>
     </message>
     <message>
         <location filename="qajincomingwidget.cpp" line="243"/>
@@ -435,27 +435,55 @@ Möchten Sie die Änderungen zum Core übermitteln?</translation>
     <message>
         <location filename="qajlogindialog.cpp" line="37"/>
         <source>Host: </source>
-        <translation type="unfinished">Rechner: </translation>
+        <translation type="obsolete">Rechner: </translation>
     </message>
     <message>
         <location filename="qajlogindialog.cpp" line="38"/>
         <source>XML port: </source>
-        <translation type="unfinished">XML Port: </translation>
+        <translation type="obsolete">XML Port: </translation>
     </message>
     <message>
         <location filename="qajlogindialog.cpp" line="39"/>
         <source>Password: </source>
-        <translation type="unfinished">Passwort: </translation>
+        <translation type="obsolete">Passwort: </translation>
     </message>
     <message>
         <location filename="qajlogindialog.cpp" line="47"/>
         <source>Retry</source>
-        <translation type="unfinished">Neu versuchen</translation>
+        <translation type="obsolete">Neu versuchen</translation>
     </message>
     <message>
         <location filename="qajlogindialog.cpp" line="48"/>
         <source>Cancel</source>
-        <translation type="unfinished">Abbrechen</translation>
+        <translation type="obsolete">Abbrechen</translation>
+    </message>
+</context>
+<context>
+    <name>QAjLoginDialogBase</name>
+    <message>
+        <location filename="qajlogindialogbase.ui" line="22"/>
+        <source>Login</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="qajlogindialogbase.ui" line="40"/>
+        <source>&lt;h3&gt;Login&lt;/h3&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="qajlogindialogbase.ui" line="73"/>
+        <source>Host:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="qajlogindialogbase.ui" line="128"/>
+        <source>Password:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="qajlogindialogbase.ui" line="141"/>
+        <source>Core-Port:</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -946,6 +974,19 @@ Möchten Sie die Änderungen zum Core übermitteln?</translation>
     </message>
 </context>
 <context>
+    <name>QAjServerMetaWidget</name>
+    <message>
+        <location filename="qajservermetawidget.cpp" line="24"/>
+        <source>server welcome message</source>
+        <translation type="unfinished">Willkommensnachricht des Servers</translation>
+    </message>
+    <message>
+        <location filename="qajservermetawidget.cpp" line="68"/>
+        <source>show welcome message</source>
+        <translation type="unfinished">Willkommensnachricht anzeigen</translation>
+    </message>
+</context>
+<context>
     <name>QAjServerWidget</name>
     <message>
         <location filename="qajserverwidget.cpp" line="35"/>
@@ -987,21 +1028,36 @@ Möchten Sie die Änderungen zum Core übermitteln?</translation>
         <source>Could not fetch server source.</source>
         <translation type="unfinished">Konnte Serverquelle nicht erreichen.</translation>
     </message>
+    <message>
+        <location filename="qajserverwidget.cpp" line="75"/>
+        <source>connect to this server</source>
+        <translation type="unfinished">Mit diesem Server verbinden</translation>
+    </message>
+    <message>
+        <location filename="qajserverwidget.cpp" line="76"/>
+        <source>remove server</source>
+        <translation type="unfinished">Server entfernen</translation>
+    </message>
+    <message>
+        <location filename="qajserverwidget.cpp" line="77"/>
+        <source>find server</source>
+        <translation type="unfinished">Server finden</translation>
+    </message>
 </context>
 <context>
     <name>QAjShareFilesWidget</name>
     <message>
-        <location filename="qajsharefileswidget.cpp" line="24"/>
+        <location filename="qajsharefileswidget.cpp" line="26"/>
         <source>filename</source>
         <translation type="unfinished">Dateiname</translation>
     </message>
     <message>
-        <location filename="qajsharefileswidget.cpp" line="27"/>
+        <location filename="qajsharefileswidget.cpp" line="29"/>
         <source>size</source>
         <translation type="unfinished">Größe</translation>
     </message>
     <message>
-        <location filename="qajsharefileswidget.cpp" line="30"/>
+        <location filename="qajsharefileswidget.cpp" line="32"/>
         <source>priority</source>
         <translation type="unfinished">Priorität</translation>
     </message>
@@ -1009,7 +1065,7 @@ Möchten Sie die Änderungen zum Core übermitteln?</translation>
 <context>
     <name>QAjShareMetaWidget</name>
     <message>
-        <location filename="qajsharemetawidget.cpp" line="18"/>
+        <location filename="qajsharemetawidget.cpp" line="20"/>
         <source>files</source>
         <translation type="unfinished">Dateien</translation>
     </message>

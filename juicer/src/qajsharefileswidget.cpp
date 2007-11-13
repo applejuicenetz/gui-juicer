@@ -11,6 +11,8 @@
 //
 #include "qajsharefileswidget.h"
 
+// #include<iostream>
+
 QAjShareFilesWidget::QAjShareFilesWidget( QXMLModule* xml, QWidget *parent ) : QAjListWidget( xml, parent )
 {
 
@@ -69,6 +71,8 @@ void QAjShareFilesWidget::updateVisibleFiles( QString path ) {
     QList<QAjShareFileItem*> files = sharedFiles.values();
     for ( int i = 0; i < files.size(); i++ ) {
         files.at(i)->setHidden(!files.at(i)->getPath().startsWith( path ));
+
+// std::cout << "File path: " << files.at(i)->getPath().toStdString() << std::endl;
     }
 }
 
