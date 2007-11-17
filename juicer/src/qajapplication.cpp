@@ -63,7 +63,7 @@ void QAjApplication::start()
 
     Juicer* juicer = new Juicer( argList );
     juicer->setWindowTitle( "Juicer" );
-    setQuitOnLastWindowClosed( true );
+    //setQuitOnLastWindowClosed( true );
 
     if ( splash != NULL )
     {

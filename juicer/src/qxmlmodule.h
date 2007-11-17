@@ -50,6 +50,7 @@ public:
 
     int setHost( const QString & hostname, quint16 portnumber = 80 );
 
+    int exec( const QString request, int nErrors = 0 );
     int get( QString request, QString param = "" );
     int set( QString request, QString param = "" );
 
@@ -73,13 +74,14 @@ protected:
 
     QLinkedList<Part> partList;
     qulonglong partsSize;
+    QHash<int, QString> requests;
+    QHash<int, int> errors;
     QHash<int, QString> partListRequests;
     QHash<int, QString> partListSimpleRequests;
 
 public slots:
     void responseHeaderReceived ( const QHttpResponseHeader & resp );
     void requestFinished(int id, bool error);
-    void httpDone(bool error);
 signals:
     void settingsReady( AjSettings settings );
     void error( int code );

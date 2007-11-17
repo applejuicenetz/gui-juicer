@@ -73,7 +73,7 @@ Juicer::Juicer( QStringList argList ) : QMainWindow()
     file->addAction( QIcon(":/small/network.png"), tr("&Net Info"), networkDialog, SLOT( exec() ), QKeySequence( Qt::CTRL+Qt::Key_N ) );
     file->addSeparator();
     file->addAction( QIcon(":/small/exit.png"), tr("&Exit Core"), this, SLOT( exitCore() ), QKeySequence( Qt::CTRL+Qt::Key_E ) );
-    file->addAction( QIcon(":/small/close.png"), tr("&Quit GUI"), qApp, SLOT( closeAllWindows() ), QKeySequence( Qt::CTRL+Qt::Key_Q ) );
+    file->addAction( QIcon(":/small/close.png"), tr("&Quit GUI"), qApp, SLOT( quit() ), QKeySequence( Qt::CTRL+Qt::Key_Q ) );
 
     menuBar()->addMenu( ajDownloadWidget->popup );
     menuBar()->addMenu( ajSearchWidget->popup );
@@ -157,14 +157,14 @@ Juicer::~Juicer()
 {}
 
 QString Juicer::getPassword() {
-    QString password = QAjOptionsDialog::getSetting( "corePassword", "" ).toString();
+    QString password = QAjOptionsDialog::getSetting( "password", "" ).toString();
     // no password in local file? => ask for it
     if ( password.isEmpty() )
     {
         bool ok;
         password = QInputDialog::getText( this, "Juicer", "Enter core password:", QLineEdit::Password,  QString::null, &ok );
         if ( !ok ) // user canceld
-            qApp->closeAllWindows();
+            qApp->quit();
         else
         {
             // save password in local file if user wants it
@@ -358,18 +358,21 @@ void Juicer::xmlError( int code )
     int result = loginDialog.exec();
     if (result  == QDialog::Accepted )
     {
-        printf("accepted\n");
         password = loginDialog.getPassword();
         xml->abort();
         xml->setPassword( loginDialog.getPassword() );
         xml->setHost( loginDialog.getHost(), loginDialog.getPort() );
         lokalSettings.setValue( "coreAddress", loginDialog.getHost() );
         lokalSettings.setValue( "xmlPort", loginDialog.getPort() );
-        if ( lokalSettings.value( "savePassword", "false" ).toString() == "true" )
+        if ( lokalSettings.value( "savePassword", "false" ).toString() == "true" ) {
             lokalSettings.setValue( "password",  password);
+        }
+        
         login();
 //    } else if( result == QDialog::Ignore) {
 //        printf("ignoreded\n");
+    } else {
+        qApp->quit();
     }
 }
 
@@ -629,7 +632,11 @@ void Juicer::trayActivated( QSystemTrayIcon::ActivationReason reason )
  */
 void Juicer::lastWindowClosed()
 {
-    delete this;
+    if(tray == NULL) {
+        qApp->quit();
+    } else {
+        delete this;
+    }
 }
 
 

@@ -26,7 +26,6 @@ QXMLModule::QXMLModule( Juicer* juicer, QObject *parent ) : QHttp( parent )
 {
     this->juicer = juicer;
     timeStamp = "0";
-    QObject::connect(this, SIGNAL(done( bool )), this, SLOT( httpDone( bool ) ) );
     QObject::connect(this, SIGNAL(requestFinished( int , bool )), this, SLOT(requestFinished(int, bool )));
     QObject::connect(this, SIGNAL(responseHeaderReceived( const QHttpResponseHeader&)), this, SLOT(responseHeaderReceived( const QHttpResponseHeader&)));
 }
@@ -42,6 +41,13 @@ int QXMLModule::setHost( const QString & hostname, quint16 portnumber )
     return QHttp::setHost( hostname, portnumber );
 }
 
+int QXMLModule::exec( const QString request, int nErrors ) {
+    int id = QHttp::get(request);
+    requests[id] = request;
+    errors[id] = nErrors;
+    return id;
+}
+
 int QXMLModule::get( QString request, QString param )
 {
     if(request == "modified")
@@ -50,7 +56,7 @@ int QXMLModule::get( QString request, QString param )
         param += "&filter=down;uploads;user;server;search;informations;ids";
     }
 
-    int httpRequest = QHttp::get("/xml/" + request + ".xml?password=" + passwordMD5 + param);
+    int httpRequest = exec("/xml/" + request + ".xml?password=" + passwordMD5 + param);
 
     if(request == "downloadpartlist")
     {
@@ -65,12 +71,11 @@ int QXMLModule::get( QString request, QString param )
 
 int QXMLModule::set( QString request, QString param )
 {
-    return QHttp::get( "/function/" + request + "?password=" + passwordMD5 + param );
+    return exec( "/function/" + request + "?password=" + passwordMD5 + param );
 }
 
 void QXMLModule::requestFinished( int id, bool error )
 {
-    
     if ( ! error )
     {
         QTime now = QTime::currentTime();
@@ -194,6 +199,10 @@ void QXMLModule::requestFinished( int id, bool error )
 //         }
         handlePartList(id);
         modifiedDone();
+    } else if(errors[id] < 3) {
+        exec(requests[id], errors[id] + 1);
+    } else {
+        QXMLModule::error(-1);
     }
 }
 
@@ -469,18 +478,6 @@ void QXMLModule::handleRemoved( QDomElement e )
 //         juicer->ajDownloadWidget->mutex.unlock();
     }
 }
-
-
-/*!
-    \fn QXMLModule::httpDone(bool error)
- */
-void QXMLModule::httpDone(bool error)
-{
-    if(error) {
-        this->error(-1);
-    }
-}
-
 
 /*!
     \fn QXMLModule::handlePart( QDomElement e )
