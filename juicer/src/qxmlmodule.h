@@ -40,7 +40,7 @@
 class Juicer;
 class QXMLHandler;
 
-class QXMLModule : public QHttp
+class QXMLModule : protected QHttp
 {
     Q_OBJECT
 public:
@@ -60,6 +60,12 @@ public:
     void setPasswordMD5( QString passwordMD5 )
     {
         this->passwordMD5 = passwordMD5;
+    }
+    QString getErrorString() {
+        return errorString();
+    }
+    void abort() {
+        abort();
     }
 
 protected:

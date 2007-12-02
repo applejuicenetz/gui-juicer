@@ -24,6 +24,7 @@
 #define DOWN_PAUSED "18"
 #define DOWN_FINISHED "14"
 #define DOWN_CANCELD "17"
+#define DOWN_FINISHING "12"
 #define DOWN_SEARCHING "0"
 #define DOWN_LOADING "-1"
 

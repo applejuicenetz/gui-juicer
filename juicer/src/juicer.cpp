@@ -49,14 +49,14 @@ Juicer::Juicer( QStringList argList ) : QMainWindow()
     ajShareMetaWidget->setShareWidget( ajShareWidget );
     ajShareMetaWidget->setShareFilesWidget( ajShareFilesWidget );
 
-    ajTab->setTabToolTip( ajTab->addTab( ajDownloadWidget, QIcon(":/small/down.png"), tr("Downloads") ), "dowloads" );
-    ajTab->setTabToolTip( ajTab->addTab( ajUploadWidget, QIcon(":/small/up.png"), tr("Uploads") ), "uploads" );
-    ajTab->setTabToolTip( ajTab->addTab( ajSearchWidget, QIcon(":/small/searching.png"), tr("Search") ), "servers" );
-    ajTab->setTabToolTip( ajTab->addTab( ajServerMetaWidget, QIcon(":/small/server.png"), tr("Server") ), "searches" );
-    ajTab->setTabToolTip( ajTab->addTab( ajShareMetaWidget, QIcon(":/small/shares.png"), tr("Shares") ), "shares" );
+    ajTab->setTabToolTip( ajTab->addTab( ajDownloadWidget, QIcon(":/small/down.png"), tr("Downloads") ), tr("Dowloads") );
+    ajTab->setTabToolTip( ajTab->addTab( ajUploadWidget, QIcon(":/small/up.png"), tr("Uploads") ), tr("Uploads") );
+    ajTab->setTabToolTip( ajTab->addTab( ajSearchWidget, QIcon(":/small/searching.png"), tr("Search") ), tr("Search") );
+    ajTab->setTabToolTip( ajTab->addTab( ajServerMetaWidget, QIcon(":/small/server.png"), tr("Server") ), tr("Servers") );
+    ajTab->setTabToolTip( ajTab->addTab( ajShareMetaWidget, QIcon(":/small/shares.png"), tr("Shares") ), tr("Shares") );
 
     ajIncomingWidget = new QAjIncomingWidget( xml, ajTab );
-    ajTab->setTabToolTip( ajTab->addTab( ajIncomingWidget, QIcon(":/small/ftp.png"), tr("Incoming") ), "Incoming" );
+    ajTab->setTabToolTip( ajTab->addTab( ajIncomingWidget, QIcon(":/small/ftp.png"), tr("Incoming") ), tr("Incoming") );
 
     setCentralWidget( ajTab );
     prevTab = ajDownloadWidget;
@@ -151,6 +151,7 @@ Juicer::Juicer( QStringList argList ) : QMainWindow()
         tray = NULL;
     }
     connect( ajDownloadWidget, SIGNAL( downloadsFinished( QList<QAjDownloadItem*>  ) ),this, SLOT( downloadsFinished( QList<QAjDownloadItem*> ) ) );
+
 }
 
 Juicer::~Juicer()
@@ -240,7 +241,7 @@ void Juicer::closeEvent( QCloseEvent* ce )
 void Juicer::about()
 {
     QMessageBox::about( this, tr("Juicer Info"),
-                        tr("Juicer \n\nhttp://ajqtgui.sf.net\nhttp://www.progeln.de"));
+                        tr("Juicer \n\nhttp://ajqtgui.sf.net"));
 }
 
 void Juicer::aboutQt()
@@ -348,7 +349,7 @@ void Juicer::xmlError( int code )
     if ( code == 302 )
         errorString = "Either wrong password or connection lost.";
     else
-        errorString = xml->errorString() + ".";
+        errorString = xml->getErrorString() + ".";
 
     QAjLoginDialog loginDialog(this);// = new QAjLoginDialog( this );
     loginDialog.setHost( QAjOptionsDialog::getSetting( "coreAddress", "localhost" ).toString() );

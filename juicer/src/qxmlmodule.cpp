@@ -43,6 +43,8 @@ int QXMLModule::setHost( const QString & hostname, quint16 portnumber )
 
 int QXMLModule::exec( const QString request, int nErrors ) {
     int id = QHttp::get(request);
+    // -- sleep awhile to avoid too many requests in a short time --
+    usleep(20);
     requests[id] = request;
     errors[id] = nErrors;
     return id;
@@ -199,8 +201,8 @@ void QXMLModule::requestFinished( int id, bool error )
 //         }
         handlePartList(id);
         modifiedDone();
-    } else if(errors[id] < 3) {
-        exec(requests[id], errors[id] + 1);
+/*    } else if(errors[id] < 1) {
+        exec("requests[id]", errors[id] + 1);*/
     } else {
         QXMLModule::error(-1);
     }

@@ -351,10 +351,9 @@ bool QAjDownloadItem::updateView( QHash<QString, QString>* downloadStatusDescr )
         setText( REMAIN_SIZE_DOWN_INDEX, " " + QConvert::bytes( remainingSize ) + " " );
     }
 
-    if( status == DOWN_FINISHED )
+    if( status != DOWN_LOADING )
     {
         speed = 0.0;
-        remainingSec = 0;
     }
 
     setText( SPEED_DOWN_INDEX, " " + QConvert::bytes( speed, 1 ) + "/s ");
