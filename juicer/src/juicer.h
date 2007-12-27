@@ -42,6 +42,9 @@
 #include <QUrl>
 #include <QDir>
 #include <QTabWidget>
+#include <QFile>
+#include <QFileDialog>
+#include <QTextStream>
 
 #include <QSystemTrayIcon>
 
@@ -148,6 +151,8 @@ protected:
     int firstModifiedCnt, firstModifiedMax;
 
 private slots:
+
+    void openAjL();
 
     void about();
     void aboutQt();

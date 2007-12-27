@@ -49,131 +49,220 @@
         <translation type="unfinished">&amp;Netz Info</translation>
     </message>
     <message>
-        <location filename="juicer.cpp" line="75"/>
+        <location filename="juicer.cpp" line="77"/>
         <source>&amp;Exit Core</source>
         <translation type="unfinished">Core b&amp;eenden</translation>
     </message>
     <message>
-        <location filename="juicer.cpp" line="76"/>
+        <location filename="juicer.cpp" line="78"/>
         <source>&amp;Quit GUI</source>
         <translation type="unfinished">&amp;GUI schließen</translation>
     </message>
     <message>
-        <location filename="juicer.cpp" line="87"/>
+        <location filename="juicer.cpp" line="89"/>
         <source>&amp;Help</source>
         <translation type="unfinished">&amp;Hilfe</translation>
     </message>
     <message>
-        <location filename="juicer.cpp" line="88"/>
+        <location filename="juicer.cpp" line="90"/>
         <source>&amp;About</source>
         <translation type="unfinished">&amp;Über</translation>
     </message>
     <message>
-        <location filename="juicer.cpp" line="89"/>
+        <location filename="juicer.cpp" line="91"/>
         <source>About &amp;Qt</source>
         <translation type="unfinished">Über &amp;Qt</translation>
     </message>
     <message>
-        <location filename="juicer.cpp" line="242"/>
+        <location filename="juicer.cpp" line="246"/>
         <source>Juicer Info</source>
         <translation type="unfinished">Juicer Info</translation>
     </message>
     <message>
-        <location filename="juicer.cpp" line="243"/>
-        <source>Juicer 
-
-http://ajqtgui.sf.net
-http://www.progeln.de</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="juicer.cpp" line="248"/>
+        <location filename="juicer.cpp" line="252"/>
         <source>Juicer: About Qt</source>
         <translation type="unfinished">Juicer: Über Qt</translation>
     </message>
     <message>
-        <location filename="juicer.cpp" line="334"/>
+        <location filename="juicer.cpp" line="338"/>
         <source>Downstream: </source>
         <translation type="unfinished">Downstream: </translation>
     </message>
     <message>
-        <location filename="juicer.cpp" line="335"/>
+        <location filename="juicer.cpp" line="339"/>
         <source>/s</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="juicer.cpp" line="335"/>
+        <location filename="juicer.cpp" line="339"/>
         <source>Upstream: </source>
         <translation type="unfinished">Upstream: </translation>
     </message>
     <message>
-        <location filename="juicer.cpp" line="336"/>
+        <location filename="juicer.cpp" line="340"/>
         <source>Credits: </source>
         <translation type="unfinished">Credits: </translation>
     </message>
     <message>
-        <location filename="juicer.cpp" line="337"/>
+        <location filename="juicer.cpp" line="341"/>
         <source>Downloaded: </source>
         <translation type="unfinished">Runtergeladen: </translation>
     </message>
     <message>
-        <location filename="juicer.cpp" line="338"/>
+        <location filename="juicer.cpp" line="342"/>
         <source>Uploaded: </source>
         <translation type="unfinished">Hochgeladen: </translation>
     </message>
     <message>
-        <location filename="juicer.cpp" line="461"/>
+        <location filename="juicer.cpp" line="468"/>
         <source>Confirm</source>
         <translation type="unfinished">Bestätigen</translation>
     </message>
     <message>
-        <location filename="juicer.cpp" line="477"/>
+        <location filename="juicer.cpp" line="484"/>
         <source>connected since</source>
         <translation type="unfinished">verbunden seit</translation>
     </message>
     <message>
-        <location filename="juicer.cpp" line="481"/>
+        <location filename="juicer.cpp" line="488"/>
         <source>NOT connected</source>
         <translation type="unfinished">NICHT verbunden</translation>
     </message>
     <message>
-        <location filename="juicer.cpp" line="461"/>
+        <location filename="juicer.cpp" line="468"/>
         <source>Do you realy want to exit the core?
 All your credits will be lost!</source>
         <translation type="unfinished">Möchten Sie den Core wirklich beenden?
 All Ihre Credits würden verloren gehen!</translation>
     </message>
     <message>
-        <location filename="juicer.cpp" line="411"/>
+        <location filename="juicer.cpp" line="418"/>
         <source>information</source>
         <translation type="unfinished">Information</translation>
     </message>
     <message>
-        <location filename="juicer.cpp" line="407"/>
+        <location filename="juicer.cpp" line="414"/>
         <source>The file seems to be already in the share</source>
         <translation type="unfinished">Die Datei scheint bereits in den Freigaben zu existieren</translation>
     </message>
     <message>
-        <location filename="juicer.cpp" line="411"/>
+        <location filename="juicer.cpp" line="418"/>
         <source>The file seems to be already in the download list</source>
         <translation type="unfinished">Die Datei scheint bereits in der Downloadliste zu sein</translation>
     </message>
     <message>
-        <location filename="juicer.cpp" line="447"/>
+        <location filename="juicer.cpp" line="454"/>
         <source>question</source>
         <translation type="unfinished">Frage</translation>
     </message>
     <message>
-        <location filename="juicer.cpp" line="447"/>
+        <location filename="juicer.cpp" line="454"/>
         <source>You&apos;ve changed your shares.
 Do you want to transfer the changes to the core?</source>
         <translation type="unfinished">Sie haben Ihre Freigaben verändert.
 Möchten Sie die Änderungen zum Core übermitteln?</translation>
     </message>
     <message>
-        <location filename="juicer.cpp" line="469"/>
+        <location filename="juicer.cpp" line="476"/>
         <source>Core: </source>
         <translation type="unfinished">Core: </translation>
+    </message>
+    <message>
+        <location filename="juicer.cpp" line="75"/>
+        <source>&amp;Open Aj Link List</source>
+        <translation type="unfinished">AJ Link Liste öffnen</translation>
+    </message>
+    <message>
+        <location filename="juicer.cpp" line="168"/>
+        <source>Enter core password:</source>
+        <translation type="unfinished">Bitte das Core Passwort eingeben</translation>
+    </message>
+    <message>
+        <location filename="juicer.cpp" line="184"/>
+        <source>applejuice operations</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="juicer.cpp" line="186"/>
+        <source>Open AJL file</source>
+        <translation type="unfinished">AJL Datei öffnen</translation>
+    </message>
+    <message>
+        <location filename="juicer.cpp" line="186"/>
+        <source>Open AJ link list file</source>
+        <translation type="unfinished">AJ Link Liste laden</translation>
+    </message>
+    <message>
+        <location filename="juicer.cpp" line="187"/>
+        <source>configure</source>
+        <translation type="unfinished">konfigurieren</translation>
+    </message>
+    <message>
+        <location filename="juicer.cpp" line="188"/>
+        <source>aj network info</source>
+        <translation type="unfinished">AJ Netzwerk-Info</translation>
+    </message>
+    <message>
+        <location filename="juicer.cpp" line="190"/>
+        <source>adjust columns</source>
+        <translation type="unfinished">Spalten automatisch anpassen</translation>
+    </message>
+    <message>
+        <location filename="juicer.cpp" line="193"/>
+        <source>applejuice links</source>
+        <translation type="unfinished">AJ links</translation>
+    </message>
+    <message>
+        <location filename="juicer.cpp" line="196"/>
+        <source>process link from clipboard</source>
+        <translation type="unfinished">AJ Link aus der Zwischenablage laden</translation>
+    </message>
+    <message>
+        <location filename="juicer.cpp" line="207"/>
+        <source>process link</source>
+        <translation type="unfinished">Link übernehmen</translation>
+    </message>
+    <message>
+        <location filename="juicer.cpp" line="247"/>
+        <source>Juicer 
+
+http://ajqtgui.sf.net</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="juicer.cpp" line="660"/>
+        <source>Download finished</source>
+        <translation type="unfinished">Download beendet</translation>
+    </message>
+    <message>
+        <location filename="juicer.cpp" line="671"/>
+        <source>Select AJ link list file</source>
+        <translation type="unfinished">AJ Link-Liste wählen</translation>
+    </message>
+    <message>
+        <location filename="juicer.cpp" line="673"/>
+        <source>AJ Link Lists (*.ajl)</source>
+        <translation type="unfinished">AJ Link-Listen (*.ajl)</translation>
+    </message>
+    <message>
+        <location filename="juicer.cpp" line="681"/>
+        <source>Error while opening file</source>
+        <translation type="unfinished">Fehler beim Öffnen der Datei</translation>
+    </message>
+    <message>
+        <location filename="juicer.cpp" line="688"/>
+        <source>No valid AJ list file</source>
+        <translation type="unfinished">Keine gültige AJ Link Liste</translation>
+    </message>
+    <message>
+        <location filename="juicer.cpp" line="705"/>
+        <source>Files successfully added from link list</source>
+        <translation type="unfinished">Dateien von der Link-Liste wurden erfolgreich hinzugefügt</translation>
+    </message>
+    <message>
+        <location filename="juicer.cpp" line="713"/>
+        <source>No such file</source>
+        <translation type="unfinished">Datei existiert nicht</translation>
     </message>
 </context>
 <context>
@@ -473,17 +562,17 @@ Möchten Sie die Änderungen zum Core übermitteln?</translation>
     <message>
         <location filename="qajlogindialogbase.ui" line="73"/>
         <source>Host:</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Rechner:</translation>
     </message>
     <message>
         <location filename="qajlogindialogbase.ui" line="128"/>
         <source>Password:</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Passwort:</translation>
     </message>
     <message>
         <location filename="qajlogindialogbase.ui" line="141"/>
         <source>Core-Port:</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Core Port:</translation>
     </message>
 </context>
 <context>
@@ -882,52 +971,52 @@ Möchten Sie die Änderungen zum Core übermitteln?</translation>
     <message>
         <location filename="qajoptionsdialogbase.ui" line="796"/>
         <source>show in download tab:</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Im Download-Fenster anzeigen</translation>
     </message>
     <message>
         <location filename="qajoptionsdialogbase.ui" line="831"/>
         <source>filename</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Dateiname</translation>
     </message>
     <message>
         <location filename="qajoptionsdialogbase.ui" line="836"/>
         <source>sources</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Quellen</translation>
     </message>
     <message>
         <location filename="qajoptionsdialogbase.ui" line="841"/>
         <source>speed</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Übertragungsgeschwindigkeit</translation>
     </message>
     <message>
         <location filename="qajoptionsdialogbase.ui" line="846"/>
         <source>status</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Status</translation>
     </message>
     <message>
         <location filename="qajoptionsdialogbase.ui" line="851"/>
         <source>power</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Powerdownload</translation>
     </message>
     <message>
         <location filename="qajoptionsdialogbase.ui" line="856"/>
         <source>size</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Größe</translation>
     </message>
     <message>
         <location filename="qajoptionsdialogbase.ui" line="861"/>
         <source>ready</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">fertiggestellt</translation>
     </message>
     <message>
         <location filename="qajoptionsdialogbase.ui" line="866"/>
         <source>missing</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">fehlt</translation>
     </message>
     <message>
         <location filename="qajoptionsdialogbase.ui" line="871"/>
         <source>eta</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">verbleibende Zeit</translation>
     </message>
 </context>
 <context>
@@ -1317,12 +1406,12 @@ Möchten Sie die Änderungen zum Core übermitteln?</translation>
 <context>
     <name>QXMLModule</name>
     <message>
-        <location filename="qxmlmodule.cpp" line="328"/>
+        <location filename="qxmlmodule.cpp" line="339"/>
         <source>yes</source>
         <translation type="unfinished">ja</translation>
     </message>
     <message>
-        <location filename="qxmlmodule.cpp" line="328"/>
+        <location filename="qxmlmodule.cpp" line="339"/>
         <source>no</source>
         <translation type="unfinished">nein</translation>
     </message>

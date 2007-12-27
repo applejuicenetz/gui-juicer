@@ -72,6 +72,8 @@ Juicer::Juicer( QStringList argList ) : QMainWindow()
     file->addAction( QIcon(":/small/configure.png"), tr("C&onfigure"), this, SLOT( showOptions() ), QKeySequence( Qt::CTRL+Qt::Key_O ) );
     file->addAction( QIcon(":/small/network.png"), tr("&Net Info"), networkDialog, SLOT( exec() ), QKeySequence( Qt::CTRL+Qt::Key_N ) );
     file->addSeparator();
+    file->addAction( QIcon(":/small/folder_open.png"), tr("&Open Aj Link List"), this, SLOT( openAjL() ) );
+    file->addSeparator();
     file->addAction( QIcon(":/small/exit.png"), tr("&Exit Core"), this, SLOT( exitCore() ), QKeySequence( Qt::CTRL+Qt::Key_E ) );
     file->addAction( QIcon(":/small/close.png"), tr("&Quit GUI"), qApp, SLOT( quit() ), QKeySequence( Qt::CTRL+Qt::Key_Q ) );
 
@@ -163,7 +165,7 @@ QString Juicer::getPassword() {
     if ( password.isEmpty() )
     {
         bool ok;
-        password = QInputDialog::getText( this, "Juicer", "Enter core password:", QLineEdit::Password,  QString::null, &ok );
+        password = QInputDialog::getText( this, "Juicer", tr("Enter core password:"), QLineEdit::Password,  QString::null, &ok );
         if ( !ok ) // user canceld
             qApp->quit();
         else
@@ -178,19 +180,20 @@ QString Juicer::getPassword() {
 
 void Juicer::initToolBars()
 {
-    QToolBar* ajTools = new QToolBar( "applejuice operations", this );
-    ajTools->setToolTip( "applejuice operations" );
+    QToolBar* ajTools = new QToolBar( tr("applejuice operations"), this );
+    ajTools->setToolTip( tr("applejuice operations") );
 
-    ajTools->addAction( QIcon(":/configure.png"), "configure", this, SLOT( showOptions() ) )->setToolTip("configure");
-    ajTools->addAction( QIcon(":/network.png"), "aj network info", this, SLOT( showNetworkInfo() ) )->setToolTip("aj network info");
+    ajTools->addAction( QIcon(":/folder_open.png"), tr("Open AJL file"), this, SLOT( openAjL() ) )->setToolTip(tr("Open AJ link list file"));
+    ajTools->addAction( QIcon(":/configure.png"), tr("configure"), this, SLOT( showOptions() ) )->setToolTip(tr("configure"));
+    ajTools->addAction( QIcon(":/network.png"), tr("aj network info"), this, SLOT( showNetworkInfo() ) )->setToolTip(tr("aj network info"));
 
-    ajTools->addAction( QIcon(":/adjust.png"), "adjust columns", this, SLOT( adjustColumns() ) )->setToolTip("adjust columns");
+    ajTools->addAction( QIcon(":/adjust.png"), tr("adjust columns"), this, SLOT( adjustColumns() ) )->setToolTip(tr("adjust columns"));
 
-    QToolBar* ajLinks = new QToolBar( "applejuice links", this );
-    ajLinks->setToolTip( "applejuice links" );
+    QToolBar* ajLinks = new QToolBar( tr("applejuice links"), this );
+    ajLinks->setToolTip( tr("applejuice links") );
 
-    clipboardButton = ajLinks->addAction( QIcon(":/wizard.png"), "process link from clipboard", this, SLOT( processClipboard() ) );
-    clipboardButton->setToolTip( "process link from clipboard" );
+    clipboardButton = ajLinks->addAction( QIcon(":/wizard.png"), tr("process link from clipboard"), this, SLOT( processClipboard() ) );
+    clipboardButton->setToolTip( tr("process link from clipboard") );
 
     ajAddressLabel = new QLabel(ajLinks);
     ajAddressLabel->setText("ajfsp link:");
@@ -201,7 +204,7 @@ void Juicer::initToolBars()
     ajLinks->addWidget( ajAddressEdit );
     connect( ajAddressEdit, SIGNAL( returnPressed() ), this, SLOT( processLink() ) );
 
-    ajLinks->addAction( QIcon(":/ok.png"), "process link", this, SLOT( processLink() ) );
+    ajLinks->addAction( QIcon(":/ok.png"), tr("process link"), this, SLOT( processLink() ) );
 
 
     this->setIconSize( QSize(22, 22) );
@@ -654,6 +657,63 @@ void Juicer::downloadsFinished( QList<QAjDownloadItem*> list )
         {
             msg += list[i]->text( FILENAME_DOWN_INDEX ) + "\n";
         }
-        tray->showMessage( "Download finished", msg, QSystemTrayIcon::Information, 3000 );
+        tray->showMessage( tr("Download finished"), msg, QSystemTrayIcon::Information, 3000 );
     }
+}
+
+/*!
+    \fn Juicer::openAjL()
+ */
+void Juicer::openAjL()
+{
+    QString ajListFileName = QFileDialog::getOpenFileName(
+                              this,
+                              tr("Select AJ link list file"),
+                              QString::null,
+                              tr("AJ Link Lists (*.ajl)"));
+
+    if ( !ajListFileName.isNull() ) {
+
+        QFile *ajListFile = new QFile( ajListFileName );
+
+        if ( ajListFile->exists() ) {
+            if (!ajListFile->open(QIODevice::ReadOnly | QIODevice::Text)) {
+                tray->showMessage( tr("Error while opening file"), ajListFileName, QSystemTrayIcon::Information, 3000 );
+            }
+            else {
+                QTextStream in(ajListFile);
+                QString line = in.readLine();
+                while ( line.compare("100") != 0) {
+                    if ( in.atEnd() ) {
+                        tray->showMessage( tr("No valid AJ list file"), ajListFileName,
+                                          QSystemTrayIcon::Information, 3000 );
+                        break;
+                    }
+                    line = in.readLine();
+                }
+                if ( !in.atEnd() ) {
+                    while (!in.atEnd()) {
+                        QString filename = in.readLine();
+                        QString filehash = in.readLine();
+                        QString filesize = in.readLine();
+
+                        QString link = "ajfsp://file|" + filename + "|" + filehash + "|" + filesize + "/";
+
+                        this->processLink( link );
+                    }
+
+                    tray->showMessage( tr("Files successfully added from link list"),
+                                      ajListFileName, QSystemTrayIcon::Information, 3000 );
+                }
+
+                ajListFile->close();
+            }
+        }
+        else {
+            tray->showMessage( tr("No such file"), ajListFileName, QSystemTrayIcon::Information, 3000 );
+        }
+
+        delete ajListFile;
+    }
+
 }

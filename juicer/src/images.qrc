@@ -27,6 +27,7 @@
     <file alias="dummy.png">resources/dummy.png</file>
     <file alias="juicer.png">resources/juicer.png</file>
     <file alias="text_block.png">resources/text_block.png</file>
+    <file alias="folder_open.png">resources/folder_open.png</file>
 </qresource>
 
 <qresource prefix="/small">
@@ -72,6 +73,7 @@
     <file alias="version.png">resources/small/help.png</file>
     <file alias="clock.png">resources/small/clock.png</file>
     <file alias="launch.png">resources/small/launch.png</file>
+    <file alias="folder_open.png">resources/small/folder_open.png</file>
 </qresource>
 
 <qresource prefix="/options">
