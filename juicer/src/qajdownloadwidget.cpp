@@ -126,6 +126,8 @@ void QAjDownloadWidget::initToolBar()
 
     clearDownloadButton = toolBar->addAction( QIcon(":/filter.png"), tr("remove finished/canceld download"), this, SLOT( cleanSlot() ) );
 
+    createLinkListButton = toolBar->addAction( QIcon(":/toggle_log.png"), tr("create link list from selected links"), this, SLOT( createAjL() ) );
+
     toolBar->addSeparator();
 
     powerCheck = new QCheckBox( toolBar );
@@ -385,6 +387,7 @@ void QAjDownloadWidget::selectionChanged(  bool oneSelected  )
     pauseDownloadButton->setEnabled( oneActive );
     openDownloadButton->setEnabled( oneSelected );
     copyLinkButton->setEnabled( oneSelected );
+    createLinkListButton->setEnabled( oneSelected );
 }
 
 void QAjDownloadWidget::updateView( bool force )
@@ -583,6 +586,7 @@ void QAjDownloadWidget::initPopup()
     popup->addAction( renamePlusDownloadButton );
     popup->addAction( openDownloadButton );
     popup->addAction( copyLinkButton );
+    popup->addAction( createLinkListButton );
     popup->addSeparator();
     popup->addAction( clearDownloadButton );
 }
@@ -608,3 +612,7 @@ void QAjDownloadWidget::itemChanged( QTreeWidgetItem* item, int column )
 
 }
 
+void QAjDownloadWidget::createAjL()
+{
+    xml->createAjL( selectedAjItems() );
+}

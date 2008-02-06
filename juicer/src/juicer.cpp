@@ -147,6 +147,7 @@ Juicer::Juicer( QStringList argList ) : QMainWindow()
         tray->setVisible(true);
         tray->setContextMenu( file );
         connect(tray, SIGNAL(activated(QSystemTrayIcon::ActivationReason)), this, SLOT( trayActivated( QSystemTrayIcon::ActivationReason ) ) );
+
     }
     else
     {
@@ -335,11 +336,26 @@ bool Juicer::login()
 
 void Juicer::setStatusBarText( QString downSpeed, QString upSpeed, QString credits, QString downSize, QString upSize )
 {
-    downSpeedLabel->setText( tr("Downstream: ") + QConvert::bytes( downSpeed ) + tr("/s") );
-    upSpeedLabel->setText( tr("Upstream: ") + QConvert::bytes( upSpeed ) + tr("/s") );
-    creditsLabel->setText( tr("Credits: ") + QConvert::bytesExtra( credits ) );
-    downSizeLabel->setText( tr("Downloaded: ") + QConvert::bytesExtra( downSize ) );
-    upSizeLabel->setText( tr("Uploaded: ") + QConvert::bytesExtra( upSize ) );
+    QString downStreamString = tr("Downstream: ") + QConvert::bytes( downSpeed ) + tr("/s");
+    QString upStreamString = tr("Upstream: ") + QConvert::bytes( upSpeed ) + tr("/s");
+    QString creditsString = tr("Credits: ") + QConvert::bytesExtra( credits );
+    QString downSizeString = tr("Downloaded: ") + QConvert::bytesExtra( downSize );
+    QString upSizeString = tr("Uploaded: ") + QConvert::bytesExtra( upSize );
+
+    downSpeedLabel->setText( downStreamString );
+    upSpeedLabel->setText( upStreamString );
+    creditsLabel->setText( creditsString );
+    downSizeLabel->setText( downSizeString );
+    upSizeLabel->setText( upSizeString );
+
+    // show all information via tray icon
+    tray->setToolTip( "Juicer - appleJuice Qt4 GUI\n\n" +
+        downStreamString + "\n" +
+        upStreamString + "\n" +
+        creditsString + "\n" +
+        downSizeString + "\n" +
+        upSizeString
+    );
 }
 
 void Juicer::xmlError( int code )
@@ -716,4 +732,89 @@ void Juicer::openAjL()
         delete ajListFile;
     }
 
+}
+
+void Juicer::createAjL( QList<QAjItem *>  selectedItems )
+{
+    QString ajListFileName = QFileDialog::getSaveFileName(
+                              this,
+                              tr("Enter file name"),
+                              QString::null,
+                              tr("AJ Link Lists (*.ajl)"));
+
+    if ( !ajListFileName.endsWith(".ajl") ) {
+        ajListFileName += ".ajl";
+        tray->showMessage( tr("Filename of link list changed"), tr("changed to: ") + ajListFileName, QSystemTrayIcon::Information, 3000 );
+    }
+
+    if ( !ajListFileName.isNull() ) {
+
+        QFile *ajListFile = new QFile( ajListFileName );
+
+        if ( ajListFile->exists() ) {
+            ajListFile->remove();
+        }
+
+
+        if (ajListFile->open(QIODevice::WriteOnly | QIODevice::Text)) {
+
+            QString message = "appleJuice link list\nCreated by Juicer, the appleJuice GUI for Qt4.\n\n";
+            message += "The developers of Juicer take no responsibility for the files shown in this list!\n";
+            ajListFile->write( message.toAscii());
+            ajListFile->write( "100\n" );
+
+            ajListFile->setPermissions( QFile::ReadOwner | QFile::WriteOwner |
+                                        QFile::ReadUser | QFile::WriteUser |
+                                        QFile::ReadGroup | QFile::ReadOther );
+
+            for ( int i=0; i<selectedItems.size(); i++ ) {
+
+//                 QString filename = selectedItems[i]->text(FILENAME_DOWN_INDEX) + '\n';
+//                 QString filehash = selectedItems[i]->getHash() + '\n';
+//                 QString filesize = QString::number( (int)selectedItems[i]->getSize() ) + '\n';
+
+                ajListFile->write( QString( selectedItems[i]->getFilename() + '\n' ).toAscii());
+                ajListFile->write( QString( selectedItems[i]->getHash() + '\n' ).toAscii());
+                ajListFile->write( QString( QString::number( (int)selectedItems[i]->getSize() ) + '\n' ).toAscii());
+            }
+
+            ajListFile->flush();
+            ajListFile->close();
+
+            tray->showMessage( tr("AJ link list successfully created"), ajListFileName, QSystemTrayIcon::Warning, 3000 );
+        }
+        else {
+            QFile::FileError errorCode = ajListFile->error();
+            QString error;
+            switch ( errorCode ) {
+                case QFile::ReadError: error = tr("An error occurred when reading from the file.");
+                                       break;
+                case QFile::WriteError: error = tr("An error occurred when writing to the file.");
+                                       break;
+                case QFile::FatalError: error = tr("A fatal error occurred.");
+                                       break;
+                case QFile::ResourceError: error = tr("Not enough disk space.");
+                                       break;
+                case QFile::OpenError: error = tr("The file could not be opened.");
+                                       break;
+                case QFile::AbortError: error = tr("The operation was aborted.");
+                                       break;
+                case QFile::TimeOutError: error = tr("A timeout occurred.");
+                                       break;
+                case QFile::PermissionsError: error = tr("The file could not be accessed.");
+                                       break;
+                default: error = tr("An unspecified error occurred.");
+            }
+            tray->showMessage( tr("Error while saving link list."), tr("The error message was:\n\n") + error, QSystemTrayIcon::Information, 3000 );
+        }
+
+        delete ajListFile;
+    }
+
+}
+
+
+
+void Juicer::sendToTray( QString message1, QString message2 ) {
+    tray->showMessage( message1, message2, QSystemTrayIcon::Information, 3000 );
 }

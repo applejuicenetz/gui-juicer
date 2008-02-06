@@ -231,6 +231,11 @@ void QAjDownloadItem::update( QString hash, QString fileName, QString status, QS
         this->hash = hash;
     }
 
+    if ( this->filename.isEmpty() )
+    {
+        this->filename = fileName;
+    }
+
     if ( status == DOWN_FINISHED )
     {
         readyNew = this->size;

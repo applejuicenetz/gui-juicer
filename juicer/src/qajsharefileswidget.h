@@ -66,6 +66,7 @@ private:
 
 private slots:
     void linkSlot();
+    void createAjL();
 
 };
 

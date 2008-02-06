@@ -18,7 +18,7 @@ x add enabling and disabling of the toolbarbuttons of the incomng view
 x double click at the server widget connects to the according server
 x fix adding shares again to the share list when opening the options dialog
 x share tab: fix file selection when the core runs on a different system than the gui
-- share tab: add rehashing of the share and the possibility to copy ajfsp links from share
+x share tab: add rehashing of the share and the possibility to copy ajfsp links from share
 - test share directory selection on windows
 - handle ftp erros in incoming widget
 
@@ -39,13 +39,17 @@ x nicer options dialog
 - show duration since login instead of the date
 x get aj links from share (and from the current downloads)
         x copy it to the clipboard
-- system tray icon
+x system tray icon
         - gui minimized into the tray
-        - icon indicates download speed, number of downloads, ...
-        - popup will be shown if a download was finished
+        x icon indicates download speed, number of downloads, ...
+        x popup will be shown if a download was finished
 x add support for different languages
         - improve it
 - make the whole gui more customizable, maybe by using dock widget
 x check if a requested download is already in the share and if, inform the user about it
-- add downloads from an applejuice link list
+x add downloads from an applejuice link list
+x create AJ link lists
+	x from share
+	x from download widget
+	x from search widget
 

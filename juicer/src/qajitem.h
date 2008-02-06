@@ -49,9 +49,28 @@ public:
         return id;
     }
 
+    QString getHash()
+    {
+        return hash;
+    }
+
+    QString getFilename()
+    {
+        return filename;
+    }
+
+    double getSize()
+    {
+        return size;
+    }
+
 protected:
     QString status;
     QString id;
+
+    QString hash;
+    QString filename;
+    double size;
 };
 
 #endif

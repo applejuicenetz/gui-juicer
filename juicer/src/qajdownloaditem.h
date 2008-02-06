@@ -117,10 +117,6 @@ public:
 
     QHash<QString, QAjUserItem*> users;
 
-    double getSize()
-    {
-        return size;
-    }
     double getReady()
     {
         return ready;
@@ -156,11 +152,6 @@ public:
     {
         return tempNumber;
     }
-    
-    QString getHash()
-    {
-        return hash;
-    }
 
     virtual bool operator<( const QTreeWidgetItem & other ) const;
     QAjPowerSpin* powerSpin;
@@ -169,7 +160,7 @@ public slots:
 
 protected:
     //Q_ULLONG
-    double size, ready, remainingSize;
+    double ready, remainingSize;
     double speed;
     QLinkedList<double> speeds;
     double finished;
@@ -178,12 +169,10 @@ protected:
     double missing;
     long int remainingSec;
 
-    QString hash;
-
     bool finishedChanged;
     bool first;
     bool firstFinished;
-    
+
     int activeSources, queuedSources, otherSources;
     QAjListWidget *parentWidget;
     QPixmap *pixmap;

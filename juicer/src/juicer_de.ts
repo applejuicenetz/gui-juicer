@@ -74,96 +74,96 @@
         <translation type="unfinished">Über &amp;Qt</translation>
     </message>
     <message>
-        <location filename="juicer.cpp" line="246"/>
+        <location filename="juicer.cpp" line="247"/>
         <source>Juicer Info</source>
         <translation type="unfinished">Juicer Info</translation>
     </message>
     <message>
-        <location filename="juicer.cpp" line="252"/>
+        <location filename="juicer.cpp" line="253"/>
         <source>Juicer: About Qt</source>
         <translation type="unfinished">Juicer: Über Qt</translation>
     </message>
     <message>
-        <location filename="juicer.cpp" line="338"/>
+        <location filename="juicer.cpp" line="339"/>
         <source>Downstream: </source>
         <translation type="unfinished">Downstream: </translation>
     </message>
     <message>
-        <location filename="juicer.cpp" line="339"/>
+        <location filename="juicer.cpp" line="340"/>
         <source>/s</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="juicer.cpp" line="339"/>
+        <location filename="juicer.cpp" line="340"/>
         <source>Upstream: </source>
         <translation type="unfinished">Upstream: </translation>
     </message>
     <message>
-        <location filename="juicer.cpp" line="340"/>
+        <location filename="juicer.cpp" line="341"/>
         <source>Credits: </source>
         <translation type="unfinished">Credits: </translation>
     </message>
     <message>
-        <location filename="juicer.cpp" line="341"/>
+        <location filename="juicer.cpp" line="342"/>
         <source>Downloaded: </source>
         <translation type="unfinished">Runtergeladen: </translation>
     </message>
     <message>
-        <location filename="juicer.cpp" line="342"/>
+        <location filename="juicer.cpp" line="343"/>
         <source>Uploaded: </source>
         <translation type="unfinished">Hochgeladen: </translation>
     </message>
     <message>
-        <location filename="juicer.cpp" line="468"/>
+        <location filename="juicer.cpp" line="484"/>
         <source>Confirm</source>
         <translation type="unfinished">Bestätigen</translation>
     </message>
     <message>
-        <location filename="juicer.cpp" line="484"/>
+        <location filename="juicer.cpp" line="500"/>
         <source>connected since</source>
         <translation type="unfinished">verbunden seit</translation>
     </message>
     <message>
-        <location filename="juicer.cpp" line="488"/>
+        <location filename="juicer.cpp" line="504"/>
         <source>NOT connected</source>
         <translation type="unfinished">NICHT verbunden</translation>
     </message>
     <message>
-        <location filename="juicer.cpp" line="468"/>
+        <location filename="juicer.cpp" line="484"/>
         <source>Do you realy want to exit the core?
 All your credits will be lost!</source>
         <translation type="unfinished">Möchten Sie den Core wirklich beenden?
 All Ihre Credits würden verloren gehen!</translation>
     </message>
     <message>
-        <location filename="juicer.cpp" line="418"/>
+        <location filename="juicer.cpp" line="434"/>
         <source>information</source>
         <translation type="unfinished">Information</translation>
     </message>
     <message>
-        <location filename="juicer.cpp" line="414"/>
+        <location filename="juicer.cpp" line="430"/>
         <source>The file seems to be already in the share</source>
         <translation type="unfinished">Die Datei scheint bereits in den Freigaben zu existieren</translation>
     </message>
     <message>
-        <location filename="juicer.cpp" line="418"/>
+        <location filename="juicer.cpp" line="434"/>
         <source>The file seems to be already in the download list</source>
         <translation type="unfinished">Die Datei scheint bereits in der Downloadliste zu sein</translation>
     </message>
     <message>
-        <location filename="juicer.cpp" line="454"/>
+        <location filename="juicer.cpp" line="470"/>
         <source>question</source>
         <translation type="unfinished">Frage</translation>
     </message>
     <message>
-        <location filename="juicer.cpp" line="454"/>
+        <location filename="juicer.cpp" line="470"/>
         <source>You&apos;ve changed your shares.
 Do you want to transfer the changes to the core?</source>
         <translation type="unfinished">Sie haben Ihre Freigaben verändert.
 Möchten Sie die Änderungen zum Core übermitteln?</translation>
     </message>
     <message>
-        <location filename="juicer.cpp" line="476"/>
+        <location filename="juicer.cpp" line="492"/>
         <source>Core: </source>
         <translation type="unfinished">Core: </translation>
     </message>
@@ -173,96 +173,173 @@ Möchten Sie die Änderungen zum Core übermitteln?</translation>
         <translation type="unfinished">AJ Link Liste öffnen</translation>
     </message>
     <message>
-        <location filename="juicer.cpp" line="168"/>
+        <location filename="juicer.cpp" line="169"/>
         <source>Enter core password:</source>
         <translation type="unfinished">Bitte das Core Passwort eingeben</translation>
     </message>
     <message>
-        <location filename="juicer.cpp" line="184"/>
+        <location filename="juicer.cpp" line="185"/>
         <source>applejuice operations</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">appleJuice Operationen</translation>
     </message>
     <message>
-        <location filename="juicer.cpp" line="186"/>
+        <location filename="juicer.cpp" line="187"/>
         <source>Open AJL file</source>
         <translation type="unfinished">AJL Datei öffnen</translation>
     </message>
     <message>
-        <location filename="juicer.cpp" line="186"/>
+        <location filename="juicer.cpp" line="187"/>
         <source>Open AJ link list file</source>
         <translation type="unfinished">AJ Link Liste laden</translation>
     </message>
     <message>
-        <location filename="juicer.cpp" line="187"/>
+        <location filename="juicer.cpp" line="188"/>
         <source>configure</source>
         <translation type="unfinished">konfigurieren</translation>
     </message>
     <message>
-        <location filename="juicer.cpp" line="188"/>
+        <location filename="juicer.cpp" line="189"/>
         <source>aj network info</source>
         <translation type="unfinished">AJ Netzwerk-Info</translation>
     </message>
     <message>
-        <location filename="juicer.cpp" line="190"/>
+        <location filename="juicer.cpp" line="191"/>
         <source>adjust columns</source>
         <translation type="unfinished">Spalten automatisch anpassen</translation>
     </message>
     <message>
-        <location filename="juicer.cpp" line="193"/>
+        <location filename="juicer.cpp" line="194"/>
         <source>applejuice links</source>
         <translation type="unfinished">AJ links</translation>
     </message>
     <message>
-        <location filename="juicer.cpp" line="196"/>
+        <location filename="juicer.cpp" line="197"/>
         <source>process link from clipboard</source>
         <translation type="unfinished">AJ Link aus der Zwischenablage laden</translation>
     </message>
     <message>
-        <location filename="juicer.cpp" line="207"/>
+        <location filename="juicer.cpp" line="208"/>
         <source>process link</source>
         <translation type="unfinished">Link übernehmen</translation>
     </message>
     <message>
-        <location filename="juicer.cpp" line="247"/>
+        <location filename="juicer.cpp" line="248"/>
         <source>Juicer 
 
 http://ajqtgui.sf.net</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="juicer.cpp" line="660"/>
+        <location filename="juicer.cpp" line="676"/>
         <source>Download finished</source>
         <translation type="unfinished">Download beendet</translation>
     </message>
     <message>
-        <location filename="juicer.cpp" line="671"/>
+        <location filename="juicer.cpp" line="687"/>
         <source>Select AJ link list file</source>
         <translation type="unfinished">AJ Link-Liste wählen</translation>
     </message>
     <message>
-        <location filename="juicer.cpp" line="673"/>
+        <location filename="juicer.cpp" line="743"/>
         <source>AJ Link Lists (*.ajl)</source>
         <translation type="unfinished">AJ Link-Listen (*.ajl)</translation>
     </message>
     <message>
-        <location filename="juicer.cpp" line="681"/>
+        <location filename="juicer.cpp" line="697"/>
         <source>Error while opening file</source>
         <translation type="unfinished">Fehler beim Öffnen der Datei</translation>
     </message>
     <message>
-        <location filename="juicer.cpp" line="688"/>
+        <location filename="juicer.cpp" line="704"/>
         <source>No valid AJ list file</source>
         <translation type="unfinished">Keine gültige AJ Link Liste</translation>
     </message>
     <message>
-        <location filename="juicer.cpp" line="705"/>
+        <location filename="juicer.cpp" line="721"/>
         <source>Files successfully added from link list</source>
         <translation type="unfinished">Dateien von der Link-Liste wurden erfolgreich hinzugefügt</translation>
     </message>
     <message>
-        <location filename="juicer.cpp" line="713"/>
+        <location filename="juicer.cpp" line="729"/>
         <source>No such file</source>
         <translation type="unfinished">Datei existiert nicht</translation>
+    </message>
+    <message>
+        <location filename="juicer.cpp" line="741"/>
+        <source>Enter file name</source>
+        <translation type="unfinished">Dateinamen angeben</translation>
+    </message>
+    <message>
+        <location filename="juicer.cpp" line="747"/>
+        <source>Filename of link list changed</source>
+        <translation type="unfinished">Dateiname der Linkliste wurde geändert</translation>
+    </message>
+    <message>
+        <location filename="juicer.cpp" line="747"/>
+        <source>changed to: </source>
+        <translation type="unfinished">geändert zu:</translation>
+    </message>
+    <message>
+        <location filename="juicer.cpp" line="784"/>
+        <source>AJ link list successfully created</source>
+        <translation type="unfinished">AJ Linkliste wurde erzeugt.</translation>
+    </message>
+    <message>
+        <location filename="juicer.cpp" line="790"/>
+        <source>An error occurred when reading from the file.</source>
+        <translation type="unfinished">Fehler beim Lesen der Datei</translation>
+    </message>
+    <message>
+        <location filename="juicer.cpp" line="792"/>
+        <source>An error occurred when writing to the file.</source>
+        <translation type="unfinished">Fehler beim Schreiben der Datei</translation>
+    </message>
+    <message>
+        <location filename="juicer.cpp" line="794"/>
+        <source>A fatal error occurred.</source>
+        <translation type="unfinished">Fataler Fehler!</translation>
+    </message>
+    <message>
+        <location filename="juicer.cpp" line="796"/>
+        <source>Not enough disk space.</source>
+        <translation type="unfinished">Nicht genug Speicherplatz auf dem Laufwerk.</translation>
+    </message>
+    <message>
+        <location filename="juicer.cpp" line="798"/>
+        <source>The file could not be opened.</source>
+        <translation type="unfinished">Datei konnte nicht geöffnet werden.</translation>
+    </message>
+    <message>
+        <location filename="juicer.cpp" line="800"/>
+        <source>The operation was aborted.</source>
+        <translation type="unfinished">Operation wurde abgebrochen.</translation>
+    </message>
+    <message>
+        <location filename="juicer.cpp" line="802"/>
+        <source>A timeout occurred.</source>
+        <translation type="unfinished">Abbruch wegen Timeout.</translation>
+    </message>
+    <message>
+        <location filename="juicer.cpp" line="804"/>
+        <source>The file could not be accessed.</source>
+        <translation type="unfinished">Auf die Datei konnte nicht zugegriffen werden.</translation>
+    </message>
+    <message>
+        <location filename="juicer.cpp" line="806"/>
+        <source>An unspecified error occurred.</source>
+        <translation type="unfinished">Unbekannter Fehler.</translation>
+    </message>
+    <message>
+        <location filename="juicer.cpp" line="808"/>
+        <source>Error while saving link list.</source>
+        <translation type="unfinished">Fehler beim Speichern der Linkliste</translation>
+    </message>
+    <message>
+        <location filename="juicer.cpp" line="808"/>
+        <source>The error message was:
+
+</source>
+        <translation type="unfinished">Fehlermeldung:</translation>
     </message>
 </context>
 <context>
@@ -318,12 +395,12 @@ http://ajqtgui.sf.net</source>
         <translation type="unfinished">nicht gesehen</translation>
     </message>
     <message>
-        <location filename="qajdownloadwidget.cpp" line="577"/>
+        <location filename="qajdownloadwidget.cpp" line="580"/>
         <source>&amp;Download</source>
         <translation type="unfinished">&amp;Download</translation>
     </message>
     <message>
-        <location filename="qajdownloadwidget.cpp" line="132"/>
+        <location filename="qajdownloadwidget.cpp" line="134"/>
         <source>Power Download:</source>
         <translation type="unfinished">Power Download:</translation>
     </message>
@@ -348,7 +425,7 @@ http://ajqtgui.sf.net</source>
         <translation type="unfinished">Partliste anzeigen</translation>
     </message>
     <message>
-        <location filename="qajdownloadwidget.cpp" line="269"/>
+        <location filename="qajdownloadwidget.cpp" line="271"/>
         <source>rename download</source>
         <translation type="unfinished">Download umbenennen</translation>
     </message>
@@ -373,39 +450,126 @@ http://ajqtgui.sf.net</source>
         <translation type="unfinished">Fertige/Abgebrochene Downloads entfernen</translation>
     </message>
     <message>
-        <location filename="qajdownloadwidget.cpp" line="233"/>
+        <location filename="qajdownloadwidget.cpp" line="235"/>
         <source>Confirm</source>
         <translation type="unfinished">Bestätigen</translation>
     </message>
     <message>
-        <location filename="qajdownloadwidget.cpp" line="230"/>
+        <location filename="qajdownloadwidget.cpp" line="232"/>
         <source>Do you realy want to cancel</source>
         <translation type="unfinished">Wollen Sie wirklich </translation>
     </message>
     <message>
-        <location filename="qajdownloadwidget.cpp" line="269"/>
+        <location filename="qajdownloadwidget.cpp" line="271"/>
         <source>enter new filename for </source>
         <translation type="unfinished">Geben Sie einen neuen Dateinamen ein für </translation>
     </message>
     <message>
-        <location filename="qajdownloadwidget.cpp" line="147"/>
+        <location filename="qajdownloadwidget.cpp" line="149"/>
         <source>apply power download</source>
         <translation type="unfinished">Powerdownload bestätigen</translation>
     </message>
     <message>
-        <location filename="qajdownloadwidget.cpp" line="149"/>
+        <location filename="qajdownloadwidget.cpp" line="151"/>
         <source>set all downloads to 1:50</source>
         <translation type="unfinished">Alle Downloads auf 1:50 setzen</translation>
     </message>
     <message>
-        <location filename="qajdownloadwidget.cpp" line="232"/>
+        <location filename="qajdownloadwidget.cpp" line="234"/>
         <source>download?</source>
         <translation type="unfinished">Download abbrechen?</translation>
     </message>
     <message>
-        <location filename="qajdownloadwidget.cpp" line="232"/>
+        <location filename="qajdownloadwidget.cpp" line="234"/>
         <source>downloads?</source>
         <translation type="unfinished">Downloads abbrechen?</translation>
+    </message>
+    <message>
+        <location filename="qajdownloadwidget.cpp" line="129"/>
+        <source>create link list from selected links</source>
+        <translation type="unfinished">AJ Linkliste mit den ausgewählten Dateien erzeugen.</translation>
+    </message>
+    <message>
+        <location filename="qajdownloadwidget.cpp" line="619"/>
+        <source>Enter file name</source>
+        <translation type="obsolete">Dateinamen angeben</translation>
+    </message>
+    <message>
+        <location filename="qajdownloadwidget.cpp" line="621"/>
+        <source>AJ Link Lists (*.ajl)</source>
+        <translation type="obsolete">AJ Link Listen</translation>
+    </message>
+    <message>
+        <location filename="qajdownloadwidget.cpp" line="625"/>
+        <source>Filename of link list changed</source>
+        <translation type="obsolete">Dateiname der Link Liste geändert</translation>
+    </message>
+    <message>
+        <location filename="qajdownloadwidget.cpp" line="625"/>
+        <source>changed to: </source>
+        <translation type="obsolete">geändert zu:</translation>
+    </message>
+    <message>
+        <location filename="qajdownloadwidget.cpp" line="664"/>
+        <source>AJ link list successfully created</source>
+        <translation type="obsolete">AJ Link Liste wurde erzeugt</translation>
+    </message>
+    <message>
+        <location filename="qajdownloadwidget.cpp" line="670"/>
+        <source>An error occurred when reading from the file.</source>
+        <translation type="obsolete">Fehler beim Lesen der Datei</translation>
+    </message>
+    <message>
+        <location filename="qajdownloadwidget.cpp" line="672"/>
+        <source>An error occurred when writing to the file.</source>
+        <translation type="obsolete">Fehler beim Schreiben der Datei</translation>
+    </message>
+    <message>
+        <location filename="qajdownloadwidget.cpp" line="674"/>
+        <source>A fatal error occurred.</source>
+        <translation type="obsolete">Fataler Fehler!</translation>
+    </message>
+    <message>
+        <location filename="qajdownloadwidget.cpp" line="676"/>
+        <source>Not enough disk space.</source>
+        <translation type="obsolete">Nicht genug Speicherplatz auf dem Laufwerk.</translation>
+    </message>
+    <message>
+        <location filename="qajdownloadwidget.cpp" line="678"/>
+        <source>The file could not be opened.</source>
+        <translation type="obsolete">Die Datei konnte nicht geöffnet werden</translation>
+    </message>
+    <message>
+        <location filename="qajdownloadwidget.cpp" line="680"/>
+        <source>The operation was aborted.</source>
+        <translation type="obsolete">Operation wurde abgebrochen.</translation>
+    </message>
+    <message>
+        <location filename="qajdownloadwidget.cpp" line="682"/>
+        <source>A timeout occurred.</source>
+        <translation type="obsolete">Abbruch wegen Timeout.</translation>
+    </message>
+    <message>
+        <location filename="qajdownloadwidget.cpp" line="684"/>
+        <source>The file could not be accessed.</source>
+        <translation type="obsolete">Auf die Datei konnte nicht zugegriffen werden.</translation>
+    </message>
+    <message>
+        <location filename="qajdownloadwidget.cpp" line="686"/>
+        <source>An unspecified error occurred.</source>
+        <translation type="obsolete">Unbekannter Fehler.</translation>
+    </message>
+    <message>
+        <location filename="qajdownloadwidget.cpp" line="688"/>
+        <source>Error while saving link list.</source>
+        <translation type="obsolete">Fehler beim Speichern der Link Liste</translation>
+    </message>
+    <message>
+        <location filename="qajdownloadwidget.cpp" line="688"/>
+        <source>The error message was:
+
+</source>
+        <translation type="obsolete">Fehlermeldung:</translation>
     </message>
 </context>
 <context>
@@ -1022,7 +1186,7 @@ http://ajqtgui.sf.net</source>
 <context>
     <name>QAjSearchWidget</name>
     <message>
-        <location filename="qajsearchwidget.cpp" line="79"/>
+        <location filename="qajsearchwidget.cpp" line="80"/>
         <source>search</source>
         <translation type="unfinished">Suche</translation>
     </message>
@@ -1037,7 +1201,7 @@ http://ajqtgui.sf.net</source>
         <translation type="unfinished">Treffer</translation>
     </message>
     <message>
-        <location filename="qajsearchwidget.cpp" line="283"/>
+        <location filename="qajsearchwidget.cpp" line="286"/>
         <source>&amp;Search</source>
         <translation type="unfinished">&amp;Suche</translation>
     </message>
@@ -1057,9 +1221,14 @@ http://ajqtgui.sf.net</source>
         <translation type="unfinished">ajfsp-link in die Zwischenablage kopieren</translation>
     </message>
     <message>
-        <location filename="qajsearchwidget.cpp" line="73"/>
+        <location filename="qajsearchwidget.cpp" line="74"/>
         <source>search for:</source>
         <translation type="unfinished">Suche nach:</translation>
+    </message>
+    <message>
+        <location filename="qajsearchwidget.cpp" line="69"/>
+        <source>create AJ link list from selected files</source>
+        <translation type="unfinished">AJ Linkliste mit den ausgewählten Dateien erzeugen.</translation>
     </message>
 </context>
 <context>
@@ -1150,6 +1319,88 @@ http://ajqtgui.sf.net</source>
         <source>priority</source>
         <translation type="unfinished">Priorität</translation>
     </message>
+    <message>
+        <location filename="qajsharefileswidget.cpp" line="124"/>
+        <source>Enter file name</source>
+        <translation type="obsolete">Dateiname angeben</translation>
+    </message>
+    <message>
+        <location filename="qajsharefileswidget.cpp" line="126"/>
+        <source>AJ Link Lists (*.ajl)</source>
+        <translation type="obsolete">AJ Link Listen</translation>
+    </message>
+    <message>
+        <location filename="qajsharefileswidget.cpp" line="130"/>
+        <source>Filename of link list changed</source>
+        <translation type="obsolete">Dateiname der Link Liste geändert.</translation>
+    </message>
+    <message>
+        <location filename="qajsharefileswidget.cpp" line="130"/>
+        <source>changed to: </source>
+        <translation type="obsolete">geändert zu:</translation>
+    </message>
+    <message>
+        <location filename="qajsharefileswidget.cpp" line="169"/>
+        <source>AJ link list successfully created</source>
+        <translation type="obsolete">AJ Link Liste wurde erstellt.</translation>
+    </message>
+    <message>
+        <location filename="qajsharefileswidget.cpp" line="175"/>
+        <source>An error occurred when reading from the file.</source>
+        <translation type="obsolete">Fehler beim Lesen der Datei.</translation>
+    </message>
+    <message>
+        <location filename="qajsharefileswidget.cpp" line="177"/>
+        <source>An error occurred when writing to the file.</source>
+        <translation type="obsolete">Fehler beim Schreiben der Datei.</translation>
+    </message>
+    <message>
+        <location filename="qajsharefileswidget.cpp" line="179"/>
+        <source>A fatal error occurred.</source>
+        <translation type="obsolete">Fataler Fehler!</translation>
+    </message>
+    <message>
+        <location filename="qajsharefileswidget.cpp" line="181"/>
+        <source>Not enough disk space.</source>
+        <translation type="obsolete">Nicht genug Speicherplatz auf dem Laufwerk.</translation>
+    </message>
+    <message>
+        <location filename="qajsharefileswidget.cpp" line="183"/>
+        <source>The file could not be opened.</source>
+        <translation type="obsolete">Die Datei konnte nicht geöffnet werden.</translation>
+    </message>
+    <message>
+        <location filename="qajsharefileswidget.cpp" line="185"/>
+        <source>The operation was aborted.</source>
+        <translation type="obsolete">Operation wurde abgebrochen.</translation>
+    </message>
+    <message>
+        <location filename="qajsharefileswidget.cpp" line="187"/>
+        <source>A timeout occurred.</source>
+        <translation type="obsolete">Abbruch wegen Timeout.</translation>
+    </message>
+    <message>
+        <location filename="qajsharefileswidget.cpp" line="189"/>
+        <source>The file could not be accessed.</source>
+        <translation type="obsolete">Auf die Datei konnte nicht zugegriffen werden.</translation>
+    </message>
+    <message>
+        <location filename="qajsharefileswidget.cpp" line="191"/>
+        <source>An unspecified error occurred.</source>
+        <translation type="obsolete">Unbekannter Fehler.</translation>
+    </message>
+    <message>
+        <location filename="qajsharefileswidget.cpp" line="193"/>
+        <source>Error while saving link list.</source>
+        <translation type="obsolete">Fehler beim Speichern der Link Liste.</translation>
+    </message>
+    <message>
+        <location filename="qajsharefileswidget.cpp" line="193"/>
+        <source>The error message was:
+
+</source>
+        <translation type="obsolete">Fehlermeldung:</translation>
+    </message>
 </context>
 <context>
     <name>QAjShareMetaWidget</name>
@@ -1159,7 +1410,7 @@ http://ajqtgui.sf.net</source>
         <translation type="unfinished">Dateien</translation>
     </message>
     <message>
-        <location filename="qajsharemetawidget.cpp" line="90"/>
+        <location filename="qajsharemetawidget.cpp" line="97"/>
         <source>Priority:</source>
         <translation type="unfinished">Priorität</translation>
     </message>
@@ -1174,9 +1425,14 @@ http://ajqtgui.sf.net</source>
         <translation type="unfinished">ajfsp-link in die Zwischenablage kopieren</translation>
     </message>
     <message>
-        <location filename="qajsharemetawidget.cpp" line="101"/>
+        <location filename="qajsharemetawidget.cpp" line="108"/>
         <source>apply priority</source>
         <translation type="unfinished">Neue Priorität bestätigen</translation>
+    </message>
+    <message>
+        <location filename="qajsharemetawidget.cpp" line="82"/>
+        <source>create AJ link list from selected files</source>
+        <translation type="unfinished">AJ Linkliste mit den ausgewählten Dateien erzeugen.</translation>
     </message>
 </context>
 <context>

@@ -32,6 +32,7 @@
 #include "types.h"
 #include "md5class.h"
 #include "qconvert.h"
+#include "qajitem.h"
 
 /**
 @author Matthias Reif
@@ -67,6 +68,9 @@ public:
     void abort() {
         abort();
     }
+
+    void createAjL( QList<QAjItem *>  selectedItems );
+    void sendToTray( QString message1, QString message2 );
 
 protected:
     QString host;

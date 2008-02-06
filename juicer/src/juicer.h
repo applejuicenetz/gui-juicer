@@ -102,6 +102,9 @@ public:
     void queueLinks( QStringList links );
     void setUploadFilename( QString shareId, QString filename );
 
+    void createAjL( QList<QAjItem *>  selectedItems );
+    void sendToTray(  QString message1, QString message2  );
+
     static QStringList getExec();
 
 protected:

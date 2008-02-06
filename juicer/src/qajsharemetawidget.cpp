@@ -79,10 +79,17 @@ void QAjShareMetaWidget::setShareFilesWidget(QAjShareFilesWidget* shareFilesWidg
 
     shareWidget->copyLinkButton->setEnabled( false );
 
+    shareWidget->createLinkListButton = shareWidget->toolBar->addAction( QIcon(":/toggle_log.png"), tr("create AJ link list from selected files"), sharedFilesWidget, SLOT(createAjL()) );
+
+    shareWidget->createLinkListButton->setEnabled( false );
+
     sharedFilesWidget->popup->addAction( shareWidget->copyLinkButton );
+    sharedFilesWidget->popup->addAction( shareWidget->createLinkListButton );
 
     QObject::connect( sharedFilesWidget, SIGNAL( newSelection( bool ) ) ,
                       shareWidget->copyLinkButton, SLOT( setEnabled( bool ) ) );
+    QObject::connect( sharedFilesWidget, SIGNAL( newSelection( bool ) ) ,
+                      shareWidget->createLinkListButton, SLOT( setEnabled( bool ) ) );
 
     shareWidget->toolBar->addSeparator();
 
@@ -117,6 +124,7 @@ void QAjShareMetaWidget::selectionChanged( bool oneSelected )
       sharedFilesWidget->updateVisibleFiles( shareItem->path );
 // std::cout << "Share Path: " << shareItem->path.toStdString() << std::endl;
       shareWidget->copyLinkButton->setEnabled( ! sharedFilesWidget->selectedItems().isEmpty() );
+      shareWidget->createLinkListButton->setEnabled( ! sharedFilesWidget->selectedItems().isEmpty() );
     }
 }
 

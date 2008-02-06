@@ -110,8 +110,14 @@ QAjShareFileItem* QAjShareFilesWidget::findFile( QString size, QString hash )
     int i;
     for( i=0; i<list.size(); i++ )
     {
-        if( list[i]->getSize() == size && list[i]->getHash() == hash )
+        if( list[i]->getSize() == size.toDouble() && list[i]->getHash() == hash )
             return list[i];
     }
     return NULL;
+}
+
+
+void QAjShareFilesWidget::createAjL()
+{
+    xml->createAjL( selectedAjItems() );
 }

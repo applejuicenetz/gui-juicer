@@ -79,6 +79,7 @@ public:
     QAction *renameDownloadButton, *renamePlusDownloadButton;
     QAction *openDownloadButton;
     QAction *copyLinkButton;
+    QAction *createLinkListButton;
 
     QDoubleSpinBox* powerSpin;
     QCheckBox *powerCheck;
@@ -106,6 +107,7 @@ private slots:
     void renamePlusSlot();
     void openSlot();
     void linkSlot();
+    void createAjL();
 
     void processSelected( QString request, QString para = "" );
     void requestSelected( QString request, QString para = "" );

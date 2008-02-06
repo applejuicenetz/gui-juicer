@@ -34,11 +34,12 @@ public:
 
     ~QAjSearchEntryItem();
 
-    QString checksum;
-    unsigned long long size;
+//     QString checksum;
     QAjSearchItem* search;
 
     virtual bool operator<( const QTreeWidgetItem & other ) const;
+
+    void setFilename( QString filename );
 };
 
 #endif

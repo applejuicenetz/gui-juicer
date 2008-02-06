@@ -14,8 +14,8 @@
     <projectname>juicer</projectname>
     <projectdirectory>.</projectdirectory>
     <absoluteprojectpath>false</absoluteprojectpath>
-    <description/>
-    <defaultencoding/>
+    <description></description>
+    <defaultencoding></defaultencoding>
   </general>
   <kdevfileview>
     <groups>
@@ -72,7 +72,7 @@
       <resolveIncludePathsUsingMakeExperimental>false</resolveIncludePathsUsingMakeExperimental>
     </codecompletion>
     <creategettersetter>
-      <prefixGet/>
+      <prefixGet></prefixGet>
       <prefixSet>set</prefixSet>
       <prefixVariable>m_,_</prefixVariable>
       <parameterName>theValue</parameterName>
@@ -125,16 +125,16 @@
   </kdevdoctreeview>
   <kdevdebugger>
     <general>
-      <dbgshell/>
+      <dbgshell></dbgshell>
       <breakpoints/>
       <programargs/>
       <gdbpath>/usr/bin/gdb</gdbpath>
       <breakonloadinglibs>true</breakonloadinglibs>
       <separatetty>false</separatetty>
       <floatingtoolbar>false</floatingtoolbar>
-      <configGdbScript/>
-      <runShellScript/>
-      <runGdbScript/>
+      <configGdbScript></configGdbScript>
+      <runShellScript></runShellScript>
+      <runGdbScript></runGdbScript>
       <raiseGDBOnStart>false</raiseGDBOnStart>
     </general>
     <display>
@@ -146,8 +146,8 @@
   </kdevdebugger>
   <kdevtrollproject>
     <run>
-      <mainprogram/>
-      <programargs/>
+      <mainprogram>/home/holg/projects/juicer/bin/juicer</mainprogram>
+      <programargs></programargs>
       <directoryradio>executable</directoryradio>
       <runarguments>
         <ajqt4gui/>
@@ -161,9 +161,9 @@
         <ajqt4gui/>
         <juicer/>
       </debugarguments>
-      <globaldebugarguments/>
-      <globalcwd/>
-      <useglobalprogram>false</useglobalprogram>
+      <globaldebugarguments></globaldebugarguments>
+      <globalcwd>/home/holg/projects/juicer</globalcwd>
+      <useglobalprogram>true</useglobalprogram>
       <terminal>false</terminal>
       <autocompile>true</autocompile>
       <autoinstall>false</autoinstall>
@@ -178,7 +178,7 @@
       <runmultiplejobs>false</runmultiplejobs>
       <numberofjobs>1</numberofjobs>
       <dontact>false</dontact>
-      <makebin/>
+      <makebin></makebin>
       <prio>0</prio>
       <envvars/>
     </make>

@@ -47,6 +47,7 @@ public:
     void initToolBar();
     QAction* removeId;
     QAction* copyLinkButton, *prioOkButton;
+    QAction* createLinkListButton;
     QCheckBox* prioCheck;
     QDoubleSpinBox* prioSpin;
     bool changed;

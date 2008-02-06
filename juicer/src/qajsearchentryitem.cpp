@@ -24,8 +24,10 @@
 QAjSearchEntryItem::QAjSearchEntryItem( QString id, QAjSearchItem* search, QString checksum, QString size, QTreeWidgetItem* parent ) : QAjItem( parent, id )
 {
     this->search = search;
-    this->checksum = checksum;
-    this->size = size.toULongLong();
+    if ( this->hash.isEmpty() ) {
+        this->hash = checksum;
+    }
+    this->size = size.toDouble();
 }
 
 QAjSearchEntryItem::~QAjSearchEntryItem()
@@ -44,3 +46,8 @@ bool QAjSearchEntryItem::operator<( const QTreeWidgetItem & other ) const
         return this->text( sortIndex ) < other.text( sortIndex );
     }
 }
+
+void QAjSearchEntryItem::setFilename( QString filename ) {
+    this->filename = filename;
+}
+

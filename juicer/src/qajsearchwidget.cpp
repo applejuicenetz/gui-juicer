@@ -66,6 +66,7 @@ void QAjSearchWidget::initToolBar()
     downloadButton = toolBar->addAction( QIcon(":/save.png"), tr("download"), this, SLOT( downloadSlot() ) );
     removeButton = toolBar->addAction( QIcon(":/cancel.png"), tr("cancel search"), this, SLOT( removeSlot() ) );
     copyLinkButton = toolBar->addAction( QIcon(":/text_block.png"), tr("copy ajfsp link to clipboard"), this, SLOT( linkSlot() ) );
+    createLinkListButton = toolBar->addAction( QIcon(":/toggle_log.png"), tr("create AJ link list from selected files"), this, SLOT( createAjL() ) );
 
     toolBar->addSeparator();
 
@@ -121,6 +122,7 @@ void QAjSearchWidget::insertSearchEntry( QString id, QString searchId, QString s
                 if ( searchEntryItem->text( TEXT_SEARCH_INDEX ) == "" )
                 {
                     searchEntryItem->setText( TEXT_SEARCH_INDEX, filename);
+                    searchEntryItem->setFilename( filename );
                 }
 /*                else
                 {
@@ -213,8 +215,8 @@ void QAjSearchWidget::downloadSlot()
         {
             QString link = "ajfsp://file|";
             link += searchEntryItem->text( TEXT_SEARCH_INDEX );
-            link += "|" + searchEntryItem->checksum;
-            link += "|" + QString::number(searchEntryItem->size) + "/";
+            link += "|" + searchEntryItem->getHash();
+            link += "|" + QString::number( (int)searchEntryItem->getSize() ) + "/";
             link = QString( QUrl::toPercentEncoding(link) );
             xml->set( "processlink", "&link=" +link );
         }
@@ -238,6 +240,7 @@ void QAjSearchWidget::selectionChanged( bool oneSelected )
     downloadButton->setEnabled( entrySelected );
     removeButton->setEnabled( searchSelected );
     copyLinkButton->setEnabled( entrySelected );
+    createLinkListButton->setEnabled( entrySelected );
 }
 
 void QAjSearchWidget::linkSlot()
@@ -251,8 +254,8 @@ void QAjSearchWidget::linkSlot()
     {
         link += "ajfsp://file|";
         link += searchEntryItem->text( TEXT_SEARCH_INDEX );
-        link += "|" + searchEntryItem->checksum;
-        link += "|" + QString::number(searchEntryItem->size) + "/";
+        link += "|" + searchEntryItem->getHash();
+        link += "|" + QString::number( (int)searchEntryItem->getSize() ) + "/";
     }
 
     QApplication::clipboard()->setText(link);
@@ -284,4 +287,12 @@ void QAjSearchWidget::initPopup()
     popup->addAction( downloadButton );
     popup->addAction( removeButton );
     popup->addAction( copyLinkButton );
+    popup->addAction( createLinkListButton );
 }
+
+
+void QAjSearchWidget::createAjL()
+{
+    xml->createAjL( selectedAjItems() );
+}
+
