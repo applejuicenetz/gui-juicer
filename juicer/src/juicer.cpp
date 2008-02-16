@@ -255,24 +255,29 @@ void Juicer::aboutQt()
 
 void Juicer::timerSlot()
 {
-    if ( xml->session == "" )
-        return;
-    xml->get( "modified" );
+//     if ( xml->session == "" )
+//         return;
+    if(connected)
+        xml->get( "modified" );
 }
 
 void Juicer::partListTimerSlot()
 {
-    QString id = ajDownloadWidget->getNextIdRoundRobin();
-    if (!id.isEmpty())
-    {
-        xml->get( "downloadpartlist", "&simple&id=" + id);
-        ajDownloadWidget->doItemsLayout();
+    if(connected) {
+        QString id = ajDownloadWidget->getNextIdRoundRobin();
+        if (!id.isEmpty())
+        {
+            xml->get( "downloadpartlist", "&simple&id=" + id);
+            ajDownloadWidget->doItemsLayout();
+        }
     }
 }
 
 void Juicer::showOptions()
 {
-    xml->get( "settings" );
+    if(connected)
+        xml->get( "settings" );
+    optionsDialog->setConnected(connected);
     if ( optionsDialog->exec() == QDialog::Accepted )
     {
         // save options
@@ -291,21 +296,22 @@ void Juicer::showOptions()
         timer->setSingleShot( false );
         timer->start( QAjOptionsDialog::getSetting("refresh", 3).toInt() * 1000 );
 
-        QString settingsString = "";
-        settingsString += "&Nickname=" + settings.nick;
-        settingsString += "&Port=" + settings.tcpPort;
-        settingsString += "&XMLPort=" + settings.xmlPort;
-        settingsString += "&MaxUpload=" + QString::number(settings.maxUp.toInt() * 1024);
-        settingsString += "&MaxDownload=" + QString::number(settings.maxDown.toInt() * 1024);
-        settingsString += "&MaxSourcesPerFile=" + settings.maxSources;
-        settingsString += "&MaxConnections=" + settings.maxCon;
-        settingsString += "&AutoConnect=" + settings.autoconnect;
-        settingsString += "&Speedperslot=" + settings.maxSlot;
-        settingsString += "&Incomingdirectory=" + settings.incomingDir;
-        settingsString += "&Temporarydirectory=" + settings.tempDir;
-        settingsString += "&MaxNewConnectionsPerTurn=" + settings.maxNewCon;
-        xml->set( "setsettings", settingsString );
-
+        if(connected) {
+            QString settingsString = "";
+            settingsString += "&Nickname=" + settings.nick;
+            settingsString += "&Port=" + settings.tcpPort;
+            settingsString += "&XMLPort=" + settings.xmlPort;
+            settingsString += "&MaxUpload=" + QString::number(settings.maxUp.toInt() * 1024);
+            settingsString += "&MaxDownload=" + QString::number(settings.maxDown.toInt() * 1024);
+            settingsString += "&MaxSourcesPerFile=" + settings.maxSources;
+            settingsString += "&MaxConnections=" + settings.maxCon;
+            settingsString += "&AutoConnect=" + settings.autoconnect;
+            settingsString += "&Speedperslot=" + settings.maxSlot;
+            settingsString += "&Incomingdirectory=" + settings.incomingDir;
+            settingsString += "&Temporarydirectory=" + settings.tempDir;
+            settingsString += "&MaxNewConnectionsPerTurn=" + settings.maxNewCon;
+            xml->set( "setsettings", settingsString );
+        }
     }
 }
 
@@ -349,13 +355,15 @@ void Juicer::setStatusBarText( QString downSpeed, QString upSpeed, QString credi
     upSizeLabel->setText( upSizeString );
 
     // show all information via tray icon
-    tray->setToolTip( "Juicer - appleJuice Qt4 GUI\n\n" +
-        downStreamString + "\n" +
-        upStreamString + "\n" +
-        creditsString + "\n" +
-        downSizeString + "\n" +
-        upSizeString
-    );
+    if(tray != NULL ) {
+        tray->setToolTip( "Juicer - appleJuice Qt4 GUI\n\n" +
+            downStreamString + "\n" +
+            upStreamString + "\n" +
+            creditsString + "\n" +
+            downSizeString + "\n" +
+            upSizeString
+        );
+    }
 }
 
 void Juicer::xmlError( int code )
@@ -376,23 +384,23 @@ void Juicer::xmlError( int code )
     loginDialog.setPassword( QAjOptionsDialog::getSetting( "password", "" ).toString() );
     loginDialog.setHeader( errorString );
     int result = loginDialog.exec();
-    if (result  == QDialog::Accepted )
-    {
-        password = loginDialog.getPassword();
-        xml->abort();
-        xml->setPassword( loginDialog.getPassword() );
-        xml->setHost( loginDialog.getHost(), loginDialog.getPort() );
-        lokalSettings.setValue( "coreAddress", loginDialog.getHost() );
-        lokalSettings.setValue( "xmlPort", loginDialog.getPort() );
-        if ( lokalSettings.value( "savePassword", "false" ).toString() == "true" ) {
-            lokalSettings.setValue( "password",  password);
-        }
-        
-        login();
-//    } else if( result == QDialog::Ignore) {
-//        printf("ignoreded\n");
+    if(loginDialog.ignore) {
+        this->show();
     } else {
-        qApp->quit();
+        if (result == QDialog::Accepted) {
+            password = loginDialog.getPassword();
+            xml->abort();
+            xml->setPassword( loginDialog.getPassword() );
+            xml->setHost( loginDialog.getHost(), loginDialog.getPort() );
+            lokalSettings.setValue( "coreAddress", loginDialog.getHost() );
+            lokalSettings.setValue( "xmlPort", loginDialog.getPort() );
+            if ( lokalSettings.value( "savePassword", "false" ).toString() == "true" ) {
+                lokalSettings.setValue( "password",  password);
+            }
+            login();
+        } else {
+            qApp->quit();
+        }
     }
 }
 

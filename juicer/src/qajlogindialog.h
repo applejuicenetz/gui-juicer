@@ -31,12 +31,15 @@ public:
   void setPort( int port ) { portSpinBox->setValue( port ); }
   void setPassword( QString password ) { passwordEdit->setText( password ); }
   void setHeader( QString text ) { headerLabel->setText( text ); }
+  bool ignore;
 public slots:
 
 protected:
 
 protected slots:
 
+public slots:
+    void clicked(QAbstractButton* button);
 };
 
 #endif

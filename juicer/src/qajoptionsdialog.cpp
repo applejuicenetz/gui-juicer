@@ -410,3 +410,37 @@ QFont QAjOptionsDialog::getFont() {
     font.setPointSize(fontSizeComboBox->currentText().toInt());
     return font;
 }
+
+
+/*!
+    \fn QAjOptionsDialog::setConnected(bool connected)
+ */
+void QAjOptionsDialog::setConnected(bool connected)
+{
+    nickLabel->setEnabled(connected);
+    nickEdit->setEnabled(connected);
+    passwordLabel->setEnabled(connected);
+    passwordEdit->setEnabled(connected);
+    retypeLabel->setEnabled(connected);
+    retypeEdit->setEnabled(connected);
+    incomingLabel->setEnabled(connected);
+    incomingEdit->setEnabled(connected);
+    incomingButton->setEnabled(connected);
+    tempLabel->setEnabled(connected);
+    tempEdit->setEnabled(connected);
+    tempButton->setEnabled(connected);
+    tcpLabel->setEnabled(connected);
+    tcpEdit->setEnabled(connected);
+    upLabel->setEnabled(connected);
+    upSpin->setEnabled(connected);
+    downLabel->setEnabled(connected);
+    downSpin->setEnabled(connected);
+    slotLabel->setEnabled(connected);
+    slotSpin->setEnabled(connected);
+    sourcesLabel->setEnabled(connected);
+    sourcesSpin->setEnabled(connected);
+    connectionsLabel->setEnabled(connected);
+    connectionsSpin->setEnabled(connected);
+    newLabel->setEnabled(connected);
+    newSpin->setEnabled(connected);
+}

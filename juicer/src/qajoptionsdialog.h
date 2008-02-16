@@ -54,6 +54,7 @@ public:
     static void setSetting( QString key, QVariant value );
     static QVariant getSetting( QString group, QString key, QVariant defaultValue );
     static void setSetting( QString group, QString key, QVariant value );
+    void setConnected(bool connected);
 
 private:
     QFontDatabase fontDatabase;
