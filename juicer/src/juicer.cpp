@@ -20,8 +20,9 @@
 
 #include "juicer.h"
 
-Juicer::Juicer( QStringList argList ) : QMainWindow()
+Juicer::Juicer( QStringList argList, QSplashScreen *splash ) : QMainWindow()
 {
+    this->splash = splash;
     connect( qApp, SIGNAL( lastWindowClosed () ), this, SLOT ( lastWindowClosed () ) );
 
     zeroTime = QDateTime( QDate(1970,1,1), QTime(0,0), Qt::UTC );
@@ -373,7 +374,11 @@ void Juicer::xmlError( int code )
     else
         errorString = xml->getErrorString() + ".";
 
+    if(splash->isVisible()) {
+        splash->close();
+    }
     QAjLoginDialog loginDialog(this);// = new QAjLoginDialog( this );
+                // -- close splash screen if used --
     loginDialog.setHost( QAjOptionsDialog::getSetting( "coreAddress", "localhost" ).toString() );
     loginDialog.setPort( QAjOptionsDialog::getSetting("xmlPort", 9851 ).toInt() );
     loginDialog.setPassword( QAjOptionsDialog::getSetting( "password", "" ).toString() );
@@ -524,7 +529,11 @@ void Juicer::firstModified()
             ajServerWidget->sortItems( 0, Qt::AscendingOrder );
             ajShareWidget->sortItems( 0, Qt::AscendingOrder );
             this->show();
-
+            // -- close splash screen if used --
+            if(splash->isVisible()) {
+                splash->finish(this);
+            }
+            
             QSettings lokalSettings;
             if(lokalSettings.value( "fetchServersOnStartup", false ).toBool())
             {

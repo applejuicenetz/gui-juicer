@@ -72,7 +72,7 @@ class Juicer: public QMainWindow
 {
     Q_OBJECT
 public:
-    Juicer( QStringList argList );
+    Juicer( QStringList argList, QSplashScreen *splash );
     ~Juicer();
     QString getPassword();
     bool login();
@@ -152,6 +152,7 @@ protected:
     QDateTime zeroTime;
 
     int firstModifiedCnt, firstModifiedMax;
+    QSplashScreen *splash;
 
 private slots:
 

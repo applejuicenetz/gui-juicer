@@ -148,11 +148,11 @@ void QXMLModule::requestFinished( int id, bool error )
                     }
                     else if ( e.tagName() == "search" )
                     {
-                        handleSearch( e );
+                         handleSearch( e );
                     }
                     else if ( e.tagName() == "searchentry" )
                     {
-                        handleSearchEntry( e );
+                         handleSearchEntry( e );
                     }
                     else if ( e.tagName() == "part" )
                     {

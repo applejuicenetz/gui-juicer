@@ -165,7 +165,6 @@ void QAjDownloadWidget::insertDownload(QString id, QString hash, QString fileNam
     if ( downloadItem == NULL )
     {
         downloadItem = new QAjDownloadItem( id, this );
-        connect(downloadItem->powerSpin, SIGNAL(powerChanged(QString, double)), this, SLOT(applyPowerDownload(QString, double)));
         downloads[ id ] = downloadItem;
         if(powerMaxButton->isVisible())
         {
@@ -174,6 +173,7 @@ void QAjDownloadWidget::insertDownload(QString id, QString hash, QString fileNam
         downloadItem->update( hash, fileName, status, size, ready, power, tempNumber );
 //         downloadItem->initPowerSpin();
         updateView( true );
+        connect(downloadItem->powerSpin, SIGNAL(powerChanged(QString, double)), this, SLOT(applyPowerDownload(QString, double)));
     } else {
         downloadItem->update( hash, fileName, status, size, ready, power, tempNumber );
     }

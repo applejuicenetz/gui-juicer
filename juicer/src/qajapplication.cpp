@@ -54,21 +54,10 @@ int QAjApplication::exec()
 
 void QAjApplication::start()
 {
-    QSplashScreen *splash = NULL;
-    if ( QAjOptionsDialog::getSetting( "showSplash", true ).toBool() )
-    {
-        splash = new QSplashScreen(QPixmap(":/splash.png"));
-        splash->show();
-    }
+    QSplashScreen *splash = new QSplashScreen(QPixmap(":/splash.png"));
+    splash->setVisible( QAjOptionsDialog::getSetting( "showSplash", true ).toBool() );
 
-    Juicer* juicer = new Juicer( argList );
+    Juicer* juicer = new Juicer( argList, splash );
     juicer->setWindowTitle( "Juicer" );
     //setQuitOnLastWindowClosed( true );
-
-    if ( splash != NULL )
-    {
-        splash->finish( juicer );
-        delete splash;
-    }
-
 }
