@@ -141,17 +141,14 @@ Juicer::Juicer( QStringList argList ) : QMainWindow()
     login();
     queueLinks( argList );
 
+    tray = new QSystemTrayIcon( QIcon(":/juicer.png"), this );
     if( QAjOptionsDialog::getSetting( "useTray", false ).toBool() )
     {
-        tray = new QSystemTrayIcon( QIcon(":/juicer.png"), this );
         tray->setVisible(true);
         tray->setContextMenu( file );
         connect(tray, SIGNAL(activated(QSystemTrayIcon::ActivationReason)), this, SLOT( trayActivated( QSystemTrayIcon::ActivationReason ) ) );
-
-    }
-    else
-    {
-        tray = NULL;
+    } else {
+        tray->setVisible(false);
     }
     connect( ajDownloadWidget, SIGNAL( downloadsFinished( QList<QAjDownloadItem*>  ) ),this, SLOT( downloadsFinished( QList<QAjDownloadItem*> ) ) );
 
@@ -355,15 +352,13 @@ void Juicer::setStatusBarText( QString downSpeed, QString upSpeed, QString credi
     upSizeLabel->setText( upSizeString );
 
     // show all information via tray icon
-    if(tray != NULL ) {
-        tray->setToolTip( "Juicer - appleJuice Qt4 GUI\n\n" +
-            downStreamString + "\n" +
-            upStreamString + "\n" +
-            creditsString + "\n" +
-            downSizeString + "\n" +
-            upSizeString
-        );
-    }
+    tray->setToolTip( "Juicer - appleJuice Qt4 GUI\n\n" +
+        downStreamString + "\n" +
+        upStreamString + "\n" +
+        creditsString + "\n" +
+        downSizeString + "\n" +
+        upSizeString
+    );
 }
 
 void Juicer::xmlError( int code )
@@ -660,7 +655,7 @@ void Juicer::trayActivated( QSystemTrayIcon::ActivationReason reason )
  */
 void Juicer::lastWindowClosed()
 {
-    if(tray == NULL) {
+    if(!tray->isVisible()) {
         qApp->quit();
     } else {
         delete this;
@@ -673,7 +668,7 @@ void Juicer::lastWindowClosed()
  */
 void Juicer::downloadsFinished( QList<QAjDownloadItem*> list )
 {
-    if( tray != NULL && QSystemTrayIcon::supportsMessages() )
+    if(QSystemTrayIcon::supportsMessages() )
     {
         QString msg = "";
         int i;

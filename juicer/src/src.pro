@@ -15,7 +15,6 @@ HEADERS += ftp.h \
            qajdownloadwidget.h \
            qajitem.h \
            qajlistwidget.h \
-           qajlogindialog.h \
            qajoptionsdialog.h \
            qajpartlistwidget.h \
            qajpartswidget.h \
@@ -46,6 +45,7 @@ HEADERS += ftp.h \
            qajfileitem.h\
            qajiconwidget.h \
            qajfilewidget.h \
+           qajlogindialog.h \
            qajpowerspin.h
 SOURCES += ftp.cpp \
            main.cpp \
@@ -56,7 +56,6 @@ SOURCES += ftp.cpp \
            qajdownloadwidget.cpp \
            qajitem.cpp \
            qajlistwidget.cpp \
-           qajlogindialog.cpp \
            qajoptionsdialog.cpp \
            qajpartlistwidget.cpp \
            qajpartswidget.cpp \
@@ -85,6 +84,7 @@ SOURCES += ftp.cpp \
            qajfiledialog.cpp \
            qajfileitem.cpp \
            qajiconwidget.cpp \
+           qajlogindialog.cpp \
            qajfilewidget.cpp \
            qajpowerspin.cpp
 CONFIG += warn_on \
