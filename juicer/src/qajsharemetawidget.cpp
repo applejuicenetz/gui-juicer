@@ -42,6 +42,7 @@ void QAjShareMetaWidget::shareFilesDockChanged( Qt::DockWidgetArea area )
     QSettings localSettings;
     localSettings.beginGroup("FilesDock");
     localSettings.setValue("pos", area);
+    localSettings.endGroup();
 }
 
 

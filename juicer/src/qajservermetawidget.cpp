@@ -34,8 +34,8 @@ QAjServerMetaWidget::QAjServerMetaWidget(QWidget *parent) : QMainWindow(parent)
     QSettings localSettings;
     localSettings.beginGroup("WelcomeDock");
     addDockWidget((Qt::DockWidgetArea)localSettings.value("pos", Qt::RightDockWidgetArea).toInt(), dock);
-    dock->setVisible(localSettings.value("visible", true).toBool());
     dock->resize(localSettings.value("size", true).toSize());
+    dock->setVisible(localSettings.value("visible", true).toBool());
     localSettings.endGroup();
 }
 
@@ -53,6 +53,7 @@ void QAjServerMetaWidget::welcomeDockLocationChanged( Qt::DockWidgetArea area )
     QSettings localSettings;
     localSettings.beginGroup("WelcomeDock");
     localSettings.setValue("pos", area);
+    localSettings.endGroup();
 }
 
 
@@ -67,12 +68,14 @@ void QAjServerMetaWidget::setServerWidget(QAjServerWidget* serverWidget)
     serverWidget->popup->addSeparator();
     showWelcomeAction = new QAction(tr("show welcome message"), this );
     showWelcomeAction->setCheckable( true );
+    serverWidget->popup->addAction( showWelcomeAction );
     QObject::connect(showWelcomeAction, SIGNAL(toggled(bool)), dock, SLOT(setVisible(bool)));
     QObject::connect(showWelcomeAction, SIGNAL(toggled(bool)), this, SLOT(dockVisibleSlot(bool)));
-    serverWidget->popup->addAction( showWelcomeAction );
 
     QSettings localSettings;
-    showWelcomeAction->setChecked(localSettings.value("welcomeVisible", true).toBool());
+    localSettings.beginGroup("WelcomeDock");
+    showWelcomeAction->setChecked(localSettings.value("visible", true).toBool());
+    localSettings.endGroup();
 }
 
 
@@ -81,5 +84,6 @@ void QAjServerMetaWidget::setServerWidget(QAjServerWidget* serverWidget)
  */
 void QAjServerMetaWidget::dockVisibleSlot( bool visible )
 {
+    printf("dock visible %s\n", visible?"yes":"no");
     dock->enabled = visible;
 }

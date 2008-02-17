@@ -142,15 +142,8 @@ Juicer::Juicer( QStringList argList, QSplashScreen *splash ) : QMainWindow()
     login();
     queueLinks( argList );
 
-    tray = new QSystemTrayIcon( QIcon(":/juicer.png"), this );
-    if( QAjOptionsDialog::getSetting( "useTray", false ).toBool() )
-    {
-        tray->setVisible(true);
-        tray->setContextMenu( file );
-        connect(tray, SIGNAL(activated(QSystemTrayIcon::ActivationReason)), this, SLOT( trayActivated( QSystemTrayIcon::ActivationReason ) ) );
-    } else {
-        tray->setVisible(false);
-    }
+    initTrayIcon();
+    
     connect( ajDownloadWidget, SIGNAL( downloadsFinished( QList<QAjDownloadItem*>  ) ),this, SLOT( downloadsFinished( QList<QAjDownloadItem*> ) ) );
 
 }
@@ -218,6 +211,19 @@ void Juicer::initToolBars()
     this->addToolBar( ajShareWidget->toolBar );
     this->addToolBar( ajIncomingWidget->toolBar );
 
+}
+
+void Juicer::initTrayIcon()
+{
+    tray = new QSystemTrayIcon( QIcon(":/juicer.png"), this );
+    if( QAjOptionsDialog::getSetting( "useTray", false ).toBool() )
+    {
+        tray->setVisible(true);
+        tray->setContextMenu( file );
+        connect(tray, SIGNAL(activated(QSystemTrayIcon::ActivationReason)), this, SLOT( trayActivated( QSystemTrayIcon::ActivationReason ) ) );
+    } else {
+        tray->setVisible(false);
+    }
 }
 
 void Juicer::closeEvent( QCloseEvent* ce )
@@ -459,7 +465,7 @@ void Juicer::processClipboard()
 
 void Juicer::tabChanged( int index )
 {
-    tabChanged(ajTab->widget( index ));
+    //tabChanged(ajTab->widget( index ));
 }
 
 
@@ -483,6 +489,14 @@ void Juicer::tabChanged( QWidget *tab )
 
     if(tab == ajIncomingWidget)
         ajIncomingWidget->reload();
+    
+//     if(tab == ajServerMetaWidget) {
+//         QSettings localSettings;
+//         localSettings.beginGroup("WelcomeDock");
+//         ajServerMetaWidget->dock->resize(localSettings.value("size", true).toSize());
+//         localSettings.endGroup();
+//         printf("size: %d %d\n", ajServerMetaWidget->dock->size().width(), ajServerMetaWidget->dock->size().height());
+//     }
 
     prevTab = tab;
 }
@@ -657,14 +671,12 @@ void Juicer::trayActivated( QSystemTrayIcon::ActivationReason reason )
 }
 
 
-
-
 /*!
     \fn Juicer::lastWindowClosed()
  */
 void Juicer::lastWindowClosed()
 {
-    if(!tray->isVisible()) {
+    if( !tray->isVisible() ) {
         qApp->quit();
     } else {
         delete this;
@@ -677,7 +689,7 @@ void Juicer::lastWindowClosed()
  */
 void Juicer::downloadsFinished( QList<QAjDownloadItem*> list )
 {
-    if(QSystemTrayIcon::supportsMessages() )
+    if( QSystemTrayIcon::supportsMessages() )
     {
         QString msg = "";
         int i;
@@ -770,7 +782,7 @@ void Juicer::createAjL( QList<QAjItem *>  selectedItems )
 
         if (ajListFile->open(QIODevice::WriteOnly | QIODevice::Text)) {
 
-            QString message = "appleJuice link list\nCreated by Juicer, the appleJuice GUI for Qt4.\n\n";
+            QString message = "appleJuice link list\nCreated by Juicer, the appleJuice GUI based on Qt4.\n\n";
             message += "The developers of Juicer take no responsibility for the files shown in this list!\n";
             ajListFile->write( message.toAscii());
             ajListFile->write( "100\n" );
@@ -824,8 +836,6 @@ void Juicer::createAjL( QList<QAjItem *>  selectedItems )
     }
 
 }
-
-
 
 void Juicer::sendToTray( QString message1, QString message2 ) {
     tray->showMessage( message1, message2, QSystemTrayIcon::Information, 3000 );

@@ -109,9 +109,11 @@ public:
 
 protected:
     void initToolBars();
+    void initStatusBar();
+    void initTrayIcon();
     void closeEvent( QCloseEvent* );
     void processQueuedLinks();
-    void initStatusBar();
+    
 
     QTabWidget* ajTab;
     QSystemTrayIcon* tray;
