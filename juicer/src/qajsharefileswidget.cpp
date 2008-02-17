@@ -49,6 +49,7 @@ void QAjShareFilesWidget::insertFile( QString id, QString hash, QString fileName
         sharedFiles[ id ] = shareFileItem;
     }
     shareFileItem->update( hash, fileName, size, priority, filesystemSeperator );
+    this->adjustSizeOfColumns();
 }
 
 QAjShareFileItem* QAjShareFilesWidget::findFile( QString id )
@@ -97,8 +98,6 @@ void QAjShareFilesWidget::setPriority( int prio ) {
 
     xml->get( "share" );
 }
-
-
 
 
 /*!
