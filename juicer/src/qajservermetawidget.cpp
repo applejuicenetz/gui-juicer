@@ -84,6 +84,5 @@ void QAjServerMetaWidget::setServerWidget(QAjServerWidget* serverWidget)
  */
 void QAjServerMetaWidget::dockVisibleSlot( bool visible )
 {
-    printf("dock visible %s\n", visible?"yes":"no");
     dock->enabled = visible;
 }

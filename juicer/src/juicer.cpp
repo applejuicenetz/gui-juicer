@@ -489,14 +489,6 @@ void Juicer::tabChanged( QWidget *tab )
 
     if(tab == ajIncomingWidget)
         ajIncomingWidget->reload();
-    
-//     if(tab == ajServerMetaWidget) {
-//         QSettings localSettings;
-//         localSettings.beginGroup("WelcomeDock");
-//         ajServerMetaWidget->dock->resize(localSettings.value("size", true).toSize());
-//         localSettings.endGroup();
-//         printf("size: %d %d\n", ajServerMetaWidget->dock->size().width(), ajServerMetaWidget->dock->size().height());
-//     }
 
     prevTab = tab;
 }
