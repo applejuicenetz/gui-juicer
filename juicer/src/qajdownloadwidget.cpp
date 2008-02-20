@@ -178,6 +178,8 @@ void QAjDownloadWidget::insertDownload(QString id, QString hash, QString fileNam
     } else {
         downloadItem->update( hash, fileName, status, size, ready, power, tempNumber );
     }
+    // -- trigger change of selection to update the active/inactive toolbar buttons on a status change --
+    selectionChanged( !this->selectedItems().empty() );
 }
 
 
