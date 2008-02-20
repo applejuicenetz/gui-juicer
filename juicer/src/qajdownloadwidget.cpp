@@ -219,7 +219,6 @@ bool QAjDownloadWidget::remove( QString id )
         DownloadUser du = findParent( id );
         if( du.user != NULL )
         {
-            du.download->decSources( du.user->getStatus() );
             du.download->removeUser( id );
             return true;
         }
@@ -609,7 +608,9 @@ QAjDownloadItem* QAjDownloadWidget::findDownload( QString size, QString hash )
 
 void QAjDownloadWidget::itemChanged( QTreeWidgetItem* item, int column )
 {
-
+    // -- get rid of compiler warnings about unused parameters --
+    item = item;
+    column = column;
 }
 
 void QAjDownloadWidget::createAjL()

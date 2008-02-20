@@ -61,9 +61,6 @@ public:
     void update( QString hash, QString fileName, QString status, QString size, QString ready, QString power, QString tempNumber );
     void updateUser( QString id, QString fileName, QString speed, QString status, QString power, QString queuePos, QString statusString, QIcon *osIcon, QTime time );
 
-    void decSources( QString type );
-    void incSources( QString type );
-
     QAjUserItem* findUser( QString id );
     void removeUser( QString id );
 
@@ -72,35 +69,10 @@ public:
     QTreeWidgetItem* activeSourcesItem;
     QTreeWidgetItem* queuedSourcesItem;
     QTreeWidgetItem* otherSourcesItem;
-    void incActiveSources()
-    {
-        activeSources++;
-    }
-    void incQueuedSources()
-    {
-        queuedSources++;
-    }
-    void incOtherSources()
-    {
-        otherSources++;
-    }
-
-    void decActiveSources()
-    {
-        activeSources--;
-    } //  = (activeSources>0)?activeSources-1:0; }
-    void decQueuedSources()
-    {
-        queuedSources--;
-    } // = (queuedSources>0)?queuedSources-1:0; }
-    void decOtherSources()
-    {
-        otherSources--;
-    } // = (otherSources>0)?otherSources-1:0; }
 
     int getActiveSources()
     {
-        return activeSources;
+        return activeSourcesItem->childCount();
     }
 
     void setFinishedPixmap(int newWidth, int newHeight, double newReady);
@@ -173,7 +145,6 @@ protected:
     bool first;
     bool firstFinished;
 
-    int activeSources, queuedSources, otherSources;
     QAjListWidget *parentWidget;
     QPixmap *pixmap;
 

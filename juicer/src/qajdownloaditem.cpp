@@ -27,7 +27,6 @@ QAjDownloadItem::QAjDownloadItem( QString id, QAjListWidget *parent ) : QAjItem(
         setTextAlignment( i, Qt::AlignRight );
     }
     parentWidget = parent;
-    activeSources = queuedSources = otherSources = 0;
 
     size = 0.0;
     ready = 0.0;
@@ -37,10 +36,6 @@ QAjDownloadItem::QAjDownloadItem( QString id, QAjListWidget *parent ) : QAjItem(
     finishedChanged = true;
     firstFinished = false;
     first = true;
-
-    setText( SOURCES_DOWN_INDEX, getSourcesString() );
-    setText( SPEED_DOWN_INDEX, QString("0 b/s") );
-    setText( REMAIN_TIME_DOWN_INDEX, QString( "n.a." ) );
 
     activeSourcesItem = new QAjItem( this );
     activeSourcesItem->setText(FILENAME_DOWN_INDEX, QObject::tr("1. active"));
@@ -61,6 +56,10 @@ QAjDownloadItem::QAjDownloadItem( QString id, QAjListWidget *parent ) : QAjItem(
     QSize sizeH = powerSpin->sizeHint();
     sizeH.setHeight(sizeHint(FILENAME_DOWN_INDEX).height());
     setSizeHint(POWER_DOWN_INDEX, sizeH);
+
+    setText( SOURCES_DOWN_INDEX, getSourcesString() );
+    setText( SPEED_DOWN_INDEX, QString("0 b/s") );
+    setText( REMAIN_TIME_DOWN_INDEX, QString( "n.a." ) );
 
 //     initPowerSpin();
     QTimer::singleShot(10, this, SLOT(initPowerSpin()));
@@ -149,29 +148,6 @@ void QAjDownloadItem::moveItem( QAjUserItem *userItem, QString oldStatus )
     }
 }
 
-
-void QAjDownloadItem::decSources( QString type )
-{
-    if ( type == NEW_SOURCE );
-    else if ( type == ACTIVE_SOURCE )
-        decActiveSources();
-    else if ( type == QUEUED_SOURCE )
-        decQueuedSources();
-    else
-        decOtherSources();
-}
-
-void QAjDownloadItem::incSources( QString type )
-{
-    if ( type == NEW_SOURCE );
-    else if ( type == ACTIVE_SOURCE )
-        incActiveSources();
-    else if ( type == QUEUED_SOURCE )
-        incQueuedSources();
-    else
-        incOtherSources();
-}
-
 QAjUserItem* QAjDownloadItem::findUser( QString id )
 {
     if ( users.contains( id ) )
@@ -200,15 +176,9 @@ void QAjDownloadItem::updateUser( QString id, QString fileName, QString speed, Q
             userItem = new QAjUserItem( id, otherSourcesItem );
         users[ id ] = userItem;
     }
-    else
-    {
-        decSources( userItem->getStatus() );
-    }
     QString oldStatus = userItem->getStatus();
 
     userItem->update( fileName, speed, status, power, queuePos, statusString, osIcon, time );
-
-    incSources( userItem->getStatus() );
 
     this->speed += userItem->getSpeedDif();
 
@@ -322,7 +292,11 @@ void QAjDownloadItem::setFinishedPixmap(int newWidth, int newHeight, double newR
 
 QString QAjDownloadItem::getSourcesString()
 {
-    return QString( " " + QString::number(activeSources) + "-" + QString::number(queuedSources) + "-" + QString::number(otherSources) + " " );
+    //return QString( " " + QString::number(activeSources) + "-" + QString::number(queuedSources) + "-" + QString::number(otherSources) + " " );
+    QString sources = " " + QString::number(activeSourcesItem->childCount());
+    sources += "-" + QString::number(queuedSourcesItem->childCount());
+    sources += "-" + QString::number(otherSourcesItem->childCount());
+    return sources;
 }
 
 bool QAjDownloadItem::updateView( QHash<QString, QString>* downloadStatusDescr )
