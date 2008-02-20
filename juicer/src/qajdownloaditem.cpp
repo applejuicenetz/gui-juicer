@@ -251,6 +251,8 @@ void QAjDownloadItem::update( QString hash, QString fileName, QString status, QS
         else
             this->setTextColor( FILENAME_DOWN_INDEX, Qt::black );
         this->status = status;
+        // -- trigger change of selection to update the active/inactive toolbar buttons on a status change --
+        parentWidget->selectionChanged();
     }
 }
 

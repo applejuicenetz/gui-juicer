@@ -59,7 +59,7 @@ protected:
     QAjItem *popupItem;
     QXMLModule* xml;
 
-private slots:
+public slots:
     void selectionChanged();
     void contextMenuRequested( const QPoint &pos );
 signals:
