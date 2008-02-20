@@ -92,3 +92,22 @@ void QAjListWidget::setActive( bool active )
     if( toolBar != NULL )
         toolBar->setVisible( active );
 }
+
+void QAjListWidget::sortItemsInitially(QString settingsGroup)
+{
+    QSettings lokalSettings;
+    lokalSettings.beginGroup(settingsGroup);
+    int column = lokalSettings.value("sortColumn", 0 ).toInt(NULL);
+    int order = lokalSettings.value("sortOrder", Qt::AscendingOrder ).toInt(NULL);
+    this->sortItems(column, (Qt::SortOrder)order );
+    lokalSettings.endGroup();
+}
+
+void QAjListWidget::saveSortOrder(QString settingsGroup)
+{
+    QSettings lokalSettings;
+    lokalSettings.beginGroup(settingsGroup);
+    lokalSettings.setValue( "sortColumn", sortColumn() );
+    lokalSettings.setValue( "sortOrder", header()->sortIndicatorOrder() );
+    lokalSettings.endGroup();
+}

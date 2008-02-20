@@ -243,6 +243,12 @@ void Juicer::closeEvent( QCloseEvent* ce )
     lokalSettings.setValue( "size", ajShareMetaWidget->dock->size() );
     lokalSettings.setValue( "visible", ajShareMetaWidget->dock->enabled );
     lokalSettings.endGroup();
+    ajDownloadWidget->saveSortOrder("DownloadWidget");
+    ajUploadWidget->saveSortOrder("UploadWidget");
+    ajServerWidget->saveSortOrder("ServerWidget");
+    ajSearchWidget->saveSortOrder("SearchWidget");
+    ajIncomingWidget->saveSortOrder("IncomingWidget");
+    ajShareWidget->saveSortOrder("ShareWidget");
     ce->accept();
 }
 
@@ -530,10 +536,12 @@ void Juicer::firstModified()
             ajUploadWidget->adjustSizeOfColumns();
             ajServerWidget->adjustSizeOfColumns();
             ajShareWidget->adjustSizeOfColumns();
-            ajDownloadWidget->sortItems( 0, Qt::AscendingOrder );
-            ajUploadWidget->sortItems( 0, Qt::AscendingOrder );
-            ajServerWidget->sortItems( 0, Qt::AscendingOrder );
-            ajShareWidget->sortItems( 0, Qt::AscendingOrder );
+            ajDownloadWidget->sortItemsInitially("DownloadWidget");
+            ajUploadWidget->sortItemsInitially("UploadWidget");
+            ajServerWidget->sortItemsInitially("ServerWidget");
+            ajShareWidget->sortItemsInitially( "ShareWidget");
+            ajIncomingWidget->sortItemsInitially("IncomingWidget");
+            ajSearchWidget->sortItemsInitially("SearchWidget");
             this->show();
             // -- close splash screen if used --
             if(splash->isVisible()) {

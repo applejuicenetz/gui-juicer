@@ -88,6 +88,7 @@ QAjDownloadWidget::QAjDownloadWidget( QXMLModule* xml, QWidget *parent ) : QAjLi
     initToolBar();
     initPopup();
     selectionChanged( false );
+    
 }
 
 QAjDownloadWidget::~QAjDownloadWidget()

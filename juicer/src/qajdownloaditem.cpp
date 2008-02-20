@@ -212,16 +212,13 @@ void QAjDownloadItem::update( QString hash, QString fileName, QString status, QS
         this->remainingSize = 0.0;
     }
 
+    this->finishedChanged = false;
     if ( (readyNew != this->ready) || this->first )
     {
         this->ready = readyNew;
         this->remainingSize = this->size - this->ready;
         this->first = false;
         this->finishedChanged = true;
-    }
-    else
-    {
-        this->finishedChanged = false;
     }
 
     if ( this->text( SIZE_DOWN_INDEX ).isEmpty() )
@@ -348,9 +345,9 @@ bool QAjDownloadItem::updateView( QHash<QString, QString>* downloadStatusDescr )
         setText( REMAIN_TIME_DOWN_INDEX, QString( " n.a. " ) );
     }
 
-    bool ret = firstFinished;
+    bool returnValue = firstFinished;
     firstFinished = false;
-    return ret;
+    return returnValue;
 }
 
 

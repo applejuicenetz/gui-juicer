@@ -50,6 +50,8 @@ public:
     void adjustSizeOfColumns();
     QList<QAjItem *> selectedAjItems () const;
     void setActive( bool active );
+    void sortItemsInitially(QString settingsGroup);
+    void saveSortOrder(QString settingsGroup);
 
     QMutex mutex;
 protected:
