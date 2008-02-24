@@ -181,8 +181,6 @@ private slots:
 
     void firstModified();
 
-    void linkServerLine( QString line );
-
     void adjustColumns();
     void trayActivated ( QSystemTrayIcon::ActivationReason reason );
     void lastWindowClosed();

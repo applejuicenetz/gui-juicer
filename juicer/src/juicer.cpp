@@ -26,10 +26,10 @@ Juicer::Juicer( QStringList argList, QSplashScreen *splash ) : QMainWindow()
     connect( qApp, SIGNAL( lastWindowClosed () ), this, SLOT ( lastWindowClosed () ) );
 
     zeroTime = QDateTime( QDate(1970,1,1), QTime(0,0), Qt::UTC );
-    firstModifiedMax = 4 + argList.size();
+    firstModifiedMax = 4;// + argList.size();
 
     linkServer = new QAjServerSocket( QAjApplication::APP_PORT );
-    connect( linkServer, SIGNAL( lineReady( QString ) ), this, SLOT( linkServerLine( QString ) ) );
+    connect( linkServer, SIGNAL( lineReady( QString ) ), this, SLOT( processLink( QString ) ) );
 
     setWindowIcon(QIcon(":/juicer.png"));
 
@@ -421,7 +421,6 @@ void Juicer::gotSession()
     connected = true;
     xml->get( "information" );
     xml->get( "settings" );
-    processQueuedLinks();
     QSettings lokalSettings;
     timerSlot();
     timer->setSingleShot( false );
@@ -438,23 +437,30 @@ void Juicer::showNetworkInfo()
 
 void Juicer::processLink( QString link)
 {
+    link = QUrl::fromPercentEncoding( link.trimmed().toUtf8() );
     QStringList s = link.split("|");
-    if(s.size() > 3 )
+    if(s.size() > 3)
     {
-        QString size = s[3].split("/")[0];
+        QString name = s[1];
         QString hash = s[2];
-        QAjShareFileItem* file;
-        QAjDownloadItem* download;
-        if( (file = ajShareFilesWidget->findFile( size, hash )) != NULL )
-        {
-            QMessageBox::information( this, tr("information"), tr("The file seems to be already in the share")+":\n\n"+file->getFilename());
+        QString size = s[3].split("/")[0];
+        printf("%s\n%s\n", hash.toLatin1().data(), size.toLatin1().data() );
+        if(s[0].toLower() == "ajfsp://file" ) {
+            QAjShareFileItem* file;
+            QAjDownloadItem* download;
+            if( (file = ajShareFilesWidget->findFile( size, hash )) != NULL )
+            {
+                QMessageBox::information( this, tr("information"), tr("The file seems to be already in the share")+":\n\n"+file->getFilename());
+            }
+            else if( (download = ajDownloadWidget->findDownload( size, hash )) != NULL )
+            {
+                QMessageBox::information( this, tr("information"), tr("The file seems to be already in the download list")+":\n\n"+download->text( FILENAME_DOWN_INDEX ));
+            }
         }
-        else if( (download = ajDownloadWidget->findDownload( size, hash )) != NULL )
-        {
-            QMessageBox::information( this, tr("information"), tr("The file seems to be already in the download list")+":\n\n"+download->text( FILENAME_DOWN_INDEX ));
-        }
+        link = s[0] + "|" + QUrl::toPercentEncoding( name )  + "|" + hash + "|" + size + "/";
     }
-    xml->set( "processlink", "&link=" + QString( QUrl::toPercentEncoding( link ) ) );
+//     QMessageBox::information(this, "title", link);
+    xml->set( "processlink", "&link=" + link );
 }
 
 void Juicer::processLink()
@@ -542,6 +548,7 @@ void Juicer::firstModified()
             ajShareWidget->sortItemsInitially( "ShareWidget");
             ajIncomingWidget->sortItemsInitially("IncomingWidget");
             ajSearchWidget->sortItemsInitially("SearchWidget");
+            processQueuedLinks();
             this->show();
             // -- close splash screen if used --
             if(splash->isVisible()) {
@@ -556,12 +563,6 @@ void Juicer::firstModified()
         }
         firstModifiedCnt++;
     }
-}
-
-void Juicer::linkServerLine( QString line )
-{
-    line = QString( QUrl::toPercentEncoding( line.trimmed() ) );
-    xml->set( "processlink", "&link=" + line );
 }
 
 void Juicer::processQueuedLinks()
