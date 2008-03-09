@@ -31,10 +31,11 @@ documentation and/or software.
 #define _MD5CONTEXT_H
 
 #include "global.h"
+#include "inttypes.h"
 
 typedef struct {
-	UINT4 state[4];                                   /* state (ABCD) */
-	UINT4 count[2];        /* number of bits, modulo 2^64 (lsb first) */
+	uint32_t state[4];                                   /* state (ABCD) */
+	uint32_t count[2];        /* number of bits, modulo 2^64 (lsb first) */
 	unsigned char buffer[64];                         /* input buffer */
 } MD5_CTX;
 

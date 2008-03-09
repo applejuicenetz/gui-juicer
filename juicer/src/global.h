@@ -2,12 +2,6 @@
 /* GLOBAL.H - RSAREF types and constants
  */
 
-#ifndef WIN32
-	#ifndef _WIN32
-		#include <bits/wordsize.h>
-	#endif
-#endif
-
 #ifndef _MD5_GLOBAL_H
 #define _MD5_GLOBAL_H
 
@@ -24,15 +18,6 @@ The following makes PROTOTYPES default to 0 if it has not already
 /* POINTER defines a generic pointer type */
 typedef unsigned char *POINTER;
 
-/* UINT2 defines a two byte word */
-typedef unsigned short int UINT2;
-
-/* UINT4 defines a four byte word */
-#if __WORDSIZE == 64
-	typedef unsigned int UINT4;
-#else
-	typedef unsigned long int UINT4;
-#endif
 
 /* PROTO_LIST is defined depending on how PROTOTYPES is defined above.
 If using PROTOTYPES, then PROTO_LIST returns the list, otherwise it
