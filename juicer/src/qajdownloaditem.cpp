@@ -24,7 +24,7 @@ QAjDownloadItem::QAjDownloadItem( QString id, QAjListWidget *parent ) : QAjItem(
 {
     for( int i=1; i<NUM_DOWN_COL; i++ )
     {
-        setTextAlignment( i, Qt::AlignRight );
+        setTextAlignment( i, Qt::AlignLeft | Qt::AlignVCenter );
     }
     parentWidget = parent;
 
@@ -81,6 +81,7 @@ QAjDownloadItem::~QAjDownloadItem()
 
 void QAjDownloadItem::initPowerSpin() {
     treeWidget()->setItemWidget(this, POWER_DOWN_INDEX, powerSpin);
+    setSizeHint(POWER_DOWN_INDEX, powerSpin->sizeHint());
 }
 
 void QAjDownloadItem::moveItem( QAjUserItem *userItem, QString oldStatus )
