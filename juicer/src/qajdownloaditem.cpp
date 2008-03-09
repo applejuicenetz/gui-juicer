@@ -53,15 +53,12 @@ QAjDownloadItem::QAjDownloadItem( QString id, QAjListWidget *parent ) : QAjItem(
     partListWidget->hide();
 
     powerSpin = new QAjPowerSpin(id);
-    QSize sizeH = powerSpin->sizeHint();
-    sizeH.setHeight(sizeHint(FILENAME_DOWN_INDEX).height());
-    setSizeHint(POWER_DOWN_INDEX, sizeH);
+    setSizeHint(POWER_DOWN_INDEX, powerSpin->sizeHint());
 
     setText( SOURCES_DOWN_INDEX, getSourcesString() );
     setText( SPEED_DOWN_INDEX, QString("0 b/s") );
     setText( REMAIN_TIME_DOWN_INDEX, QString( "n.a." ) );
 
-//     initPowerSpin();
     QTimer::singleShot(10, this, SLOT(initPowerSpin()));
 }
 
@@ -81,7 +78,6 @@ QAjDownloadItem::~QAjDownloadItem()
 
 void QAjDownloadItem::initPowerSpin() {
     treeWidget()->setItemWidget(this, POWER_DOWN_INDEX, powerSpin);
-    setSizeHint(POWER_DOWN_INDEX, powerSpin->sizeHint());
 }
 
 void QAjDownloadItem::moveItem( QAjUserItem *userItem, QString oldStatus )
