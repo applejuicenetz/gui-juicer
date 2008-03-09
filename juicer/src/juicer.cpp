@@ -401,7 +401,7 @@ void Juicer::xmlError( int code )
     } else {
         if (result == QDialog::Accepted) {
             password = loginDialog.getPassword();
-            xml->abort();
+            //xml->abort();
             xml->setPassword( loginDialog.getPassword() );
             xml->setHost( loginDialog.getHost(), loginDialog.getPort() );
             lokalSettings.setValue( "coreAddress", loginDialog.getHost() );

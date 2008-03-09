@@ -66,7 +66,7 @@ public:
         return errorString();
     }
     void abort() {
-        abort();
+        QHttp::abort();
     }
 
     void createAjL( QList<QAjItem *>  selectedItems );
