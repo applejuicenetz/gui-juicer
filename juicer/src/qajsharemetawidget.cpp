@@ -11,10 +11,6 @@
 //
 #include "qajsharemetawidget.h"
 
-// #include <iostream>
-
-#include "juicer.h"
-
 QAjShareMetaWidget::QAjShareMetaWidget( QWidget *parent ) : QMainWindow(parent)
 {
     dock = new AjShareFilesDockWidget( tr("files"), this );
@@ -122,7 +118,6 @@ void QAjShareMetaWidget::selectionChanged( bool oneSelected )
     if ( oneSelected && (this->sharedFilesWidget != NULL ) ) {
       QAjShareItem *shareItem = (QAjShareItem*)this->shareWidget->selectedAjItems()[0];
       sharedFilesWidget->updateVisibleFiles( shareItem->path );
-// std::cout << "Share Path: " << shareItem->path.toStdString() << std::endl;
       shareWidget->copyLinkButton->setEnabled( ! sharedFilesWidget->selectedItems().isEmpty() );
       shareWidget->createLinkListButton->setEnabled( ! sharedFilesWidget->selectedItems().isEmpty() );
     }

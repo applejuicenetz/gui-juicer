@@ -289,10 +289,3 @@ void QAjSearchWidget::initPopup()
     popup->addAction( copyLinkButton );
     popup->addAction( createLinkListButton );
 }
-
-
-void QAjSearchWidget::createAjL()
-{
-    xml->createAjL( selectedAjItems() );
-}
-

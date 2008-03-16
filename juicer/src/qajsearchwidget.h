@@ -73,7 +73,6 @@ private slots:
     void downloadSlot();
     void searchSlot();
     void linkSlot();
-    void createAjL();
     void selectionChanged( bool oneSelected );
 private:
     void initPopup();

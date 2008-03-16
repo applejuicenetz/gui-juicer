@@ -519,10 +519,6 @@ void QXMLModule::handlePartList( int id )
     }
 }
 
-void QXMLModule::createAjL( QList<QAjItem *>  selectedItems ) {
-    juicer->createAjL( selectedItems );
-}
-
 void QXMLModule::sendToTray( QString message1, QString message2 ) {
     juicer->sendToTray( message1, message2 );
 }

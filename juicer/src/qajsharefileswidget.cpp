@@ -11,12 +11,8 @@
 //
 #include "qajsharefileswidget.h"
 
-// #include<iostream>
-
 QAjShareFilesWidget::QAjShareFilesWidget( QXMLModule* xml, QWidget *parent ) : QAjListWidget( xml, parent )
 {
-
-//     currIdRoundRobin = -1;
     QStringList headers;
     for ( int i = 0; i < NUM_SHARED_FILES_OVERVIEW_COL; i++ )
     {
@@ -47,6 +43,7 @@ void QAjShareFilesWidget::insertFile( QString id, QString hash, QString fileName
     {
         shareFileItem = new QAjShareFileItem( id, this );
         sharedFiles[ id ] = shareFileItem;
+        shareFileItem->setHidden(true);
     }
     shareFileItem->update( hash, fileName, size, priority, filesystemSeperator );
     this->adjustSizeOfColumns();
@@ -64,7 +61,9 @@ void QAjShareFilesWidget::updateSharedFilesList() {
     xml->get("share");
 }
 
-// show only the files in the choosen directory
+/*!
+ * show only the files in the choosen directory
+ */
 void QAjShareFilesWidget::updateVisibleFiles( QString path ) {
 
     if (this->sharedFiles.isEmpty()) return;
@@ -72,9 +71,8 @@ void QAjShareFilesWidget::updateVisibleFiles( QString path ) {
     QList<QAjShareFileItem*> files = sharedFiles.values();
     for ( int i = 0; i < files.size(); i++ ) {
         files.at(i)->setHidden(!files.at(i)->getPath().startsWith( path ));
-
-// std::cout << "File path: " << files.at(i)->getPath().toStdString() << std::endl;
     }
+    this->adjustSizeOfColumns();
 }
 
 void QAjShareFilesWidget::linkSlot() {
@@ -113,10 +111,4 @@ QAjShareFileItem* QAjShareFilesWidget::findFile( QString size, QString hash )
             return list[i];
     }
     return NULL;
-}
-
-
-void QAjShareFilesWidget::createAjL()
-{
-    xml->createAjL( selectedAjItems() );
 }

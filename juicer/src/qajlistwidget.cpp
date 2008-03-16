@@ -111,3 +111,53 @@ void QAjListWidget::saveSortOrder(QString settingsGroup)
     lokalSettings.setValue( "sortOrder", header()->sortIndicatorOrder() );
     lokalSettings.endGroup();
 }
+
+
+/*!
+    \fn QAjListWidget::createAjL()
+ */
+void QAjListWidget::createAjL()
+{
+    QFileDialog fileDialog(this, tr("Enter file name"), QString::null, tr("AJ Link Lists (*.ajl)"));
+    fileDialog.setFileMode(QFileDialog::AnyFile);
+    fileDialog.setAcceptMode(QFileDialog::AcceptSave);
+    fileDialog.setConfirmOverwrite(true);
+    fileDialog.setDefaultSuffix("ajl");
+    
+    if ( fileDialog.exec() ) {
+        QFile ajListFile( fileDialog.selectedFiles().takeFirst() );
+        if ( ajListFile.exists() ) {
+            ajListFile.remove();
+        }
+
+        bool error = !ajListFile.open(QIODevice::WriteOnly | QIODevice::Text);
+    
+        if(!error) {
+            QString message = "appleJuice link list\nCreated by Juicer, the appleJuice GUI based on Qt4.\n\n";
+            message += "The developers of Juicer take no responsibility for the files listed below!\n100\n";
+            if(ajListFile.write( message.toAscii()) == -1) {
+                error = true;
+            } else {
+                ajListFile.setPermissions( QFile::ReadOwner | QFile::WriteOwner |
+                        QFile::ReadUser | QFile::WriteUser |
+                        QFile::ReadGroup | QFile::ReadOther );
+                
+                QList<QAjItem *>  selectedItems = selectedAjItems();
+                
+                for ( int i=0; i<selectedItems.size() && !error; i++ ) {
+                    error =
+                        ajListFile.write( QString( selectedItems[i]->getFilename() + '\n' ).toAscii()) == -1
+                        || ajListFile.write( QString( selectedItems[i]->getHash() + '\n' ).toAscii()) == -1
+                        || ajListFile.write( QString( QString::number( (int)selectedItems[i]->getSize() ) + '\n' ).toAscii()) == -1;
+                }
+            }
+            ajListFile.flush();
+            ajListFile.close();
+        }
+        if(error) {
+            QString error = QConvert::getFileErrorString(ajListFile.error());
+            QMessageBox::critical(this,tr("Error while saving link list."), tr("The error message was:\n\n") + error);
+        }
+    }
+}
+

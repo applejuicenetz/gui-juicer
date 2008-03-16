@@ -27,6 +27,7 @@
 #include <QToolBar>
 #include <QMutex>
 #include <QMutexLocker>
+#include <QMessageBox>
 
 #include "qconvert.h"
 #include "qajitem.h"
@@ -54,12 +55,14 @@ public:
     void saveSortOrder(QString settingsGroup);
 
     QMutex mutex;
+    
 protected:
     bool isOneSelected();
     QAjItem *popupItem;
     QXMLModule* xml;
 
 public slots:
+    void createAjL();
     void selectionChanged();
     void contextMenuRequested( const QPoint &pos );
 signals:

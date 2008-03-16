@@ -759,6 +759,9 @@ void Juicer::openAjL()
 
 }
 
+/*!
+ * @deprecated
+ */
 void Juicer::createAjL( QList<QAjItem *>  selectedItems )
 {
     QString ajListFileName = QFileDialog::getSaveFileName(
@@ -784,7 +787,7 @@ void Juicer::createAjL( QList<QAjItem *>  selectedItems )
         if (ajListFile->open(QIODevice::WriteOnly | QIODevice::Text)) {
 
             QString message = "appleJuice link list\nCreated by Juicer, the appleJuice GUI based on Qt4.\n\n";
-            message += "The developers of Juicer take no responsibility for the files shown in this list!\n";
+            message += "The developers of Juicer take no responsibility for the files listed below!\n";
             ajListFile->write( message.toAscii());
             ajListFile->write( "100\n" );
 

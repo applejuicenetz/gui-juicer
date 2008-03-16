@@ -613,8 +613,3 @@ void QAjDownloadWidget::itemChanged( QTreeWidgetItem* item, int column )
     item = item;
     column = column;
 }
-
-void QAjDownloadWidget::createAjL()
-{
-    xml->createAjL( selectedAjItems() );
-}

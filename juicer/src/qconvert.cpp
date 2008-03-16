@@ -180,3 +180,30 @@ QString QConvert::time( long int seconds )
         time = num( hours ) + ":" + num( minutes ) + ":" + num( seconds );
     return time;
 }
+
+
+/*!
+    \fn QConvert::getFileErrorString(QFile::FileError error)
+ */
+QString QConvert::getFileErrorString(QFile::FileError error)
+{
+    switch ( error ) {
+        case QFile::ReadError: return tr("An error occurred when reading from the file.");
+        break;
+        case QFile::WriteError: return tr("An error occurred when writing to the file.");
+        break;
+        case QFile::FatalError: return tr("A fatal error occurred.");
+        break;
+        case QFile::ResourceError: return tr("Not enough disk space.");
+        break;
+        case QFile::OpenError: return tr("The file could not be opened.");
+        break;
+        case QFile::AbortError: return tr("The operation was aborted.");
+        break;
+        case QFile::TimeOutError: return tr("A timeout occurred.");
+        break;
+        case QFile::PermissionsError: return tr("The file could not be accessed.");
+        break;
+        default: return tr("An unspecified error occurred.");
+    }
+}

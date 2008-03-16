@@ -69,7 +69,6 @@ public:
         QHttp::abort();
     }
 
-    void createAjL( QList<QAjItem *>  selectedItems );
     void sendToTray( QString message1, QString message2 );
 
 protected:

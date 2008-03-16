@@ -50,6 +50,7 @@ public:
     static float powerValue( QString x );
     static QString power( float power );
     static QString time( long int seconds );
+    static QString getFileErrorString(QFile::FileError error);
 };
 
 #endif
