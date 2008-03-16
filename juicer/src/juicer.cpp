@@ -175,10 +175,10 @@ void Juicer::initToolBars()
     QToolBar* ajTools = new QToolBar( tr("applejuice operations"), this );
     ajTools->setToolTip( tr("applejuice operations") );
 
-    ajTools->addAction( QIcon(":/folder_open.png"), tr("Open AJL file"), this, SLOT( openAjL() ) )->setToolTip(tr("Open AJ link list file"));
     ajTools->addAction( QIcon(":/configure.png"), tr("configure"), this, SLOT( showOptions() ) )->setToolTip(tr("configure"));
     ajTools->addAction( QIcon(":/network.png"), tr("aj network info"), this, SLOT( showNetworkInfo() ) )->setToolTip(tr("aj network info"));
-
+    ajTools->addAction( QIcon(":/folder_open.png"), tr("Open AJL file"), this, SLOT( openAjL() ) )->setToolTip(tr("Open AJ link list file"));
+    
     ajTools->addAction( QIcon(":/adjust.png"), tr("adjust columns"), this, SLOT( adjustColumns() ) )->setToolTip(tr("adjust columns"));
 
     QToolBar* ajLinks = new QToolBar( tr("applejuice links"), this );
