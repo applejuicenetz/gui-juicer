@@ -24,7 +24,7 @@
 #include <QFileDialog>
 #include <QMessageBox>
 #include <QCheckBox>
-#include <QDoubleSpinBox>
+#include <QSpinBox>
 
 #include "qajlistwidget.h"
 #include "qajshareitem.h"
@@ -49,7 +49,7 @@ public:
     QAction* copyLinkButton, *prioOkButton;
     QAction* createLinkListButton;
     QCheckBox* prioCheck;
-    QDoubleSpinBox* prioSpin;
+    QSpinBox* prioSpin;
     bool changed;
 
 public slots:

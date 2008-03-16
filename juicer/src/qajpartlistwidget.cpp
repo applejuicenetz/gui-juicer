@@ -19,7 +19,7 @@
  ***************************************************************************/
 #include "qajpartlistwidget.h"
 
-QAjPartListWidget::QAjPartListWidget( QWidget *parent, const char *name ) : QWidget( parent )
+QAjPartListWidget::QAjPartListWidget( QWidget *parent ) : QWidget( parent )
 {
     this->setWindowIcon( QIcon(":/juicer.png") );
     this->setFixedSize( 600, 300 );

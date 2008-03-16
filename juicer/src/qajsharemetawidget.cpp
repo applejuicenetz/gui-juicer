@@ -100,10 +100,9 @@ void QAjShareMetaWidget::setShareFilesWidget(QAjShareFilesWidget* shareFilesWidg
     shareWidget->prioCheck->adjustSize();
     shareWidget->toolBar->addWidget( shareWidget->prioCheck );
 
-    shareWidget->prioSpin = new QDoubleSpinBox( shareWidget->toolBar );
+    shareWidget->prioSpin = new QSpinBox( shareWidget->toolBar );
     shareWidget->prioSpin->setRange( 1, 250 );
     shareWidget->prioSpin->setSingleStep( 1 );
-    shareWidget->prioSpin->setDecimals( 0 );
     shareWidget->toolBar->addWidget( shareWidget->prioSpin );
 
     shareWidget->prioOkButton = shareWidget->toolBar->addAction( QIcon(":/ok.png"), tr("apply priority"), this, SLOT( setPrioritySlot() ) );

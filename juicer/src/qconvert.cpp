@@ -44,7 +44,7 @@ QString QConvert::bytes( long int x )
 
 QString QConvert::bytes( double x, int precision )
 {
-    double absX = abs( x );
+    double absX = x>0.0?x:-x;
 
     if ( absX >= ONE_GIG )
         return QString::number( x / ( ONE_GIG ), 'f', precision ) + " Gb";

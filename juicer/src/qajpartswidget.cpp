@@ -19,7 +19,7 @@
  ***************************************************************************/
 #include "qajpartswidget.h"
 
-QAjPartsWidget::QAjPartsWidget( QWidget *parent, const char *name ) : QWidget( parent )
+QAjPartsWidget::QAjPartsWidget( QWidget *parent ) : QWidget( parent )
 {
   setFixedSize( 560, 200 );
   move( 20, 20 );
@@ -66,8 +66,8 @@ void QAjPartsWidget::paintEvent( QPaintEvent* )
         fromPart = toPart;
         toPart = it.next();
 
-    fromPixel = fromPart.fromPosition * pixelPerByte;
-    toPixel = ( toPart.fromPosition - 1 ) * pixelPerByte;
+    fromPixel = (int)(fromPart.fromPosition * pixelPerByte);
+    toPixel = (int)((toPart.fromPosition - 1) * pixelPerByte);
     partSize = toPart.fromPosition - fromPart.fromPosition;
 
     if( fromPart.fromPosition != toPart.fromPosition )

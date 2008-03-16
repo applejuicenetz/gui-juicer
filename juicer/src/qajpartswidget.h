@@ -32,7 +32,7 @@ class QAjPartsWidget : public QWidget
 {
 Q_OBJECT
 public:
-  QAjPartsWidget(QWidget *parent = 0, const char *name = 0);
+  QAjPartsWidget( QWidget *parent = 0 );
 
   ~QAjPartsWidget();
   void update( qulonglong size, QLinkedList<Part> partList );

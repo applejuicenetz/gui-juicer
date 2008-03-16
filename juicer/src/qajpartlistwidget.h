@@ -40,7 +40,7 @@ class QAjPartListWidget : public QWidget
 {
     Q_OBJECT
 public:
-    QAjPartListWidget( QWidget *parent = 0, const char *name = 0 );
+    QAjPartListWidget( QWidget *parent = 0 );
 
     ~QAjPartListWidget();
     void update( qulonglong size, QLinkedList<Part> partList );
