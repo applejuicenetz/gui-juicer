@@ -59,6 +59,12 @@ public:
       return tmpDir;
     }
     QAjShareFileItem* findFile( QString size, QString hash );
+    
+    QSize sizeHint() const {
+        QSettings localSettings;
+        localSettings.beginGroup("FilesDock");
+        return localSettings.value("size", true).toSize();
+    }
 
 private:
     QHash<QString, QAjShareFileItem*> sharedFiles;

@@ -26,15 +26,13 @@ QAjServerMetaWidget::QAjServerMetaWidget(QWidget *parent) : QMainWindow(parent)
         connect( dock, SIGNAL(dockLocationChanged( Qt::DockWidgetArea )), this, SLOT(welcomeDockLocationChanged(Qt::DockWidgetArea)));
     #endif
 
-    welcomeMessage = new QTextEdit( dock );
+    welcomeMessage = new AjTextEdit( dock );
     welcomeMessage->setReadOnly( true );
-    welcomeMessage->adjustSize();
     dock->setWidget(welcomeMessage);
 
     QSettings localSettings;
     localSettings.beginGroup("WelcomeDock");
     addDockWidget((Qt::DockWidgetArea)localSettings.value("pos", Qt::RightDockWidgetArea).toInt(), dock);
-    dock->resize(localSettings.value("size", true).toSize());
     dock->setVisible(localSettings.value("visible", true).toBool());
     localSettings.endGroup();
 }

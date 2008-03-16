@@ -42,7 +42,6 @@ public:
     void setServerWidget(QAjServerWidget* serverWidget);
 
     QAjServerWidget* serverWidget;
-    QTextEdit *welcomeMessage;
     QAction* showWelcomeAction;
 
     class AjDockWidget : public QDockWidget
@@ -65,6 +64,17 @@ public:
             QWidget::closeEvent( event );
         }
     } *dock;
+    
+    class AjTextEdit : public QTextEdit
+    {
+        public:
+            AjTextEdit(QWidget* parent) : QTextEdit(parent) {}
+            QSize sizeHint() const {
+                QSettings localSettings;
+                localSettings.beginGroup("WelcomeDock");
+                return localSettings.value("size", true).toSize();
+            }
+    } *welcomeMessage;
 
 
 private slots:
