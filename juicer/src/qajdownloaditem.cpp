@@ -442,7 +442,11 @@ bool QAjDownloadItem::operator<( const QTreeWidgetItem & other ) const
     case SIZE_DOWN_INDEX:
         return size < downItem->getSize();
     case FINISHED_SIZE_DOWN_INDEX:
-        return ready < downItem->getReady();
+        if(ready == downItem->getReady()) {
+            return this->text( FILENAME_DOWN_INDEX ) < other.text( FILENAME_DOWN_INDEX );
+        } else {
+            return ready < downItem->getReady();
+        }
     case REMAIN_SIZE_DOWN_INDEX:
         return remainingSize < downItem->getRemainingSize();
     case REMAIN_TIME_DOWN_INDEX:
@@ -452,7 +456,11 @@ bool QAjDownloadItem::operator<( const QTreeWidgetItem & other ) const
     case MISSING_DOWN_INDEX:
         return this->missing < downItem->getMissing();
     case FINISHED_DOWN_INDEX:
-        return this->finished < downItem->getFinished();
+        if(this->finished == downItem->getFinished()) {
+            return this->text( FILENAME_DOWN_INDEX ) < other.text( FILENAME_DOWN_INDEX );
+        } else {
+            return this->finished < downItem->getFinished();
+        }
     default:
         return this->text( sortIndex ) < other.text( sortIndex );
     }
