@@ -128,6 +128,8 @@ void QAjDownloadWidget::initToolBar()
     clearDownloadButton = toolBar->addAction( QIcon(":/filter.png"), tr("remove finished/canceld download"), this, SLOT( cleanSlot() ) );
 
     createLinkListButton = toolBar->addAction( QIcon(":/toggle_log.png"), tr("create link list from selected links"), this, SLOT( createAjL() ) );
+    hidePausedButton = toolBar->addAction( QIcon(":/pause_fade.png"), tr("hide paused downloads"), this, SLOT( hidePausedSlot(bool) ) );
+    hidePausedButton->setCheckable(true);
 
     toolBar->addSeparator();
 
@@ -357,6 +359,16 @@ void QAjDownloadWidget::linkSlot() {
     link = ajDownloadItem->getLinkAJFSP();
 
     QApplication::clipboard()->setText(link);
+}
+
+void QAjDownloadWidget::hidePausedSlot(bool checked) {
+    QHashIterator<QString, QAjDownloadItem*> i(downloads);
+    while (i.hasNext()) {
+        i.next();
+        if(i.value()->getStatus() == DOWN_PAUSED) {
+            i.value()->setHidden(checked);
+        }
+    }
 }
 
 void QAjDownloadWidget::selectionChanged(  bool oneSelected  )

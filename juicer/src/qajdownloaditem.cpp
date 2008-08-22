@@ -185,6 +185,7 @@ void QAjDownloadItem::updateUser( QString id, QString fileName, QString speed, Q
 
 void QAjDownloadItem::update( QString hash, QString fileName, QString status, QString size, QString ready, QString power, QString tempNumber )
 {
+//     this->status = status;
     this->tempNumber = tempNumber;
     if ( this->size == 0.0 )
     {

@@ -80,6 +80,7 @@ public:
     QAction *openDownloadButton;
     QAction *copyLinkButton;
     QAction *createLinkListButton;
+    QAction *hidePausedButton;
 
     QDoubleSpinBox* powerSpin;
     QCheckBox *powerCheck;
@@ -107,6 +108,7 @@ private slots:
     void renamePlusSlot();
     void openSlot();
     void linkSlot();
+    void hidePausedSlot(bool checked);
 
     void processSelected( QString request, QString para = "" );
     void requestSelected( QString request, QString para = "" );
