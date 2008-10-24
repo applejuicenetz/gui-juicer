@@ -89,19 +89,98 @@ SOURCES += ftp.cpp \
            qajpowerspin.cpp
 CONFIG += warn_on \
           qt \
-          x11 \
-          stl \
-          debug \
- console
+          stl
 TEMPLATE = app 
 QT += core gui network xml
 
 RESOURCES += images.qrc \
 translations.qrc
 RC_FILE = resources/juicer.rc
-TARGET = ../bin/juicer
+
+
+DISTFILES += resources/juicer.rc \
+ resources/translations/juicer_de.qm \
+resources/button_ok.png \
+resources/configure.png \
+resources/connect_creating.png \
+resources/dummy.png \
+resources/editpaste.png \
+resources/edit.png \
+resources/emptytrash.png \
+resources/exec.png \
+resources/filesave.png \
+resources/find.png \
+resources/folder_open.png \
+resources/juicer.png \
+resources/launch.png \
+resources/network.png \
+resources/partlist.png \
+resources/pause_fade.png \
+resources/player_pause.png \
+resources/player_play.png \
+resources/reload.png \
+resources/show_table_column.png \
+resources/splash.png \
+resources/stop.png \
+resources/text_block.png \
+resources/toggle_log.png \
+resources/vcs_add.png \
+resources/vcs_commit.png \
+resources/vcs_remove.png \
+resources/vcs_update.png \
+resources/wizard.png \
+ resources/small/arrow_down.png \
+ resources/small/arrow_up.png \
+ resources/small/basket_put.png \
+ resources/small/basket_remove.png \
+ resources/small/clock.png \
+ resources/small/coins.png \
+ resources/small/configure.png \
+ resources/small/connect_creating.png \
+ resources/small/connect_established.png \
+ resources/small/down.png \
+ resources/small/editpaste.png \
+ resources/small/edit.png \
+ resources/small/exec.png \
+ resources/small/exit.png \
+ resources/small/fileclose.png \
+ resources/small/filesave.png \
+ resources/small/find.png \
+ resources/small/folder_open.png \
+ resources/small/freebsd.png \
+ resources/small/help.png \
+ resources/small/launch.png \
+ resources/small/mac.png \
+ resources/small/netware.png \
+ resources/small/network_local.png \
+ resources/small/network.png \
+ resources/small/ok.png \
+ resources/small/partlist.png \
+ resources/small/player_pause.png \
+ resources/small/player_play.png \
+ resources/small/server.png \
+ resources/small/solaris.png \
+ resources/small/stop.png \
+ resources/small/text_block.png \
+ resources/small/toggle_log.png \
+ resources/small/trashcan_empty.png \
+ resources/small/tux.png \
+ resources/small/up.png \
+ resources/small/vcs_add.png \
+ resources/small/vcs_commit.png \
+ resources/small/vcs_remove.png \
+ resources/small/vcs_update.png \
+ resources/small/viewmag.png \
+ resources/small/windows.png \
+ resources/options/de.png \
+ resources/options/fonts.png \
+ resources/options/gb.png \
+ resources/options/kcmsystem.png \
+ resources/options/launch.png \
+ resources/options/network_local.png \
+ resources/options/player_playlist.png \
+ resources/options/superkaramba.png
+TARGET = juicer
 
 TRANSLATIONS += juicer_de.ts
-
-DISTFILES += resources/juicer.rc
 

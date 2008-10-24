@@ -156,6 +156,8 @@ protected:
     int firstModifiedCnt, firstModifiedMax;
     QSplashScreen *splash;
 
+    bool started;
+
 private slots:
 
     void openAjL();

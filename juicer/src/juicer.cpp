@@ -22,6 +22,7 @@
 
 Juicer::Juicer( QStringList argList, QSplashScreen *splash ) : QMainWindow()
 {
+    started = false;
     this->splash = splash;
     connect( qApp, SIGNAL( lastWindowClosed () ), this, SLOT ( lastWindowClosed () ) );
 
@@ -398,6 +399,7 @@ void Juicer::xmlError( int code )
     int result = loginDialog.exec();
     if(loginDialog.ignore) {
         this->show();
+        started = true;
     } else {
         if (result == QDialog::Accepted) {
             password = loginDialog.getPassword();
@@ -550,6 +552,7 @@ void Juicer::firstModified()
             ajSearchWidget->sortItemsInitially("SearchWidget");
             processQueuedLinks();
             this->show();
+            started = true;
             // -- close splash screen if used --
             if(splash->isVisible()) {
                 splash->finish(this);
@@ -677,8 +680,10 @@ void Juicer::trayActivated( QSystemTrayIcon::ActivationReason reason )
  */
 void Juicer::lastWindowClosed()
 {
-    if( !tray->isVisible() ) {
-        qApp->quit();
+   if( !tray->isVisible() ) {
+        if(started) {
+            qApp->quit();
+        }
     } else {
         delete this;
     }
