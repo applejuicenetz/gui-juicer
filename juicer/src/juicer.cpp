@@ -36,80 +36,13 @@ Juicer::Juicer( QStringList argList, QSplashScreen *splash ) : QMainWindow()
 
     xml = new QXMLModule( this );
 
-    ajTab = new QTabWidget(this);
-    ajDownloadWidget = new QAjDownloadWidget( xml, ajTab );
-    ajUploadWidget = new QAjUploadWidget( xml, ajTab );
-    ajSearchWidget = new QAjSearchWidget( xml, ajTab );
-
-    ajServerMetaWidget = new QAjServerMetaWidget( ajTab );
-    ajServerWidget = new QAjServerWidget( xml, ajServerMetaWidget );
-    ajServerMetaWidget->setServerWidget( ajServerWidget );
-
-    ajShareMetaWidget = new QAjShareMetaWidget( ajTab );
-    ajShareWidget = new QAjShareWidget( xml, ajShareMetaWidget );
-    ajShareFilesWidget = new QAjShareFilesWidget( xml, ajShareMetaWidget );
-    ajShareMetaWidget->setShareWidget( ajShareWidget );
-    ajShareMetaWidget->setShareFilesWidget( ajShareFilesWidget );
-
-    ajTab->setTabToolTip( ajTab->addTab( ajDownloadWidget, QIcon(":/small/down.png"), tr("Downloads") ), tr("Dowloads") );
-    ajTab->setTabToolTip( ajTab->addTab( ajUploadWidget, QIcon(":/small/up.png"), tr("Uploads") ), tr("Uploads") );
-    ajTab->setTabToolTip( ajTab->addTab( ajSearchWidget, QIcon(":/small/searching.png"), tr("Search") ), tr("Search") );
-    ajTab->setTabToolTip( ajTab->addTab( ajServerMetaWidget, QIcon(":/small/server.png"), tr("Server") ), tr("Servers") );
-    ajTab->setTabToolTip( ajTab->addTab( ajShareMetaWidget, QIcon(":/small/shares.png"), tr("Shares") ), tr("Shares") );
-
-    ajIncomingWidget = new QAjIncomingWidget( xml, ajTab );
-    ajTab->setTabToolTip( ajTab->addTab( ajIncomingWidget, QIcon(":/small/ftp.png"), tr("Incoming") ), tr("Incoming") );
-
-    setCentralWidget( ajTab );
-    prevTab = ajDownloadWidget;
+    initTabs();
 
     networkDialog = new QAjNetworkDialog( this );
     optionsDialog = new QAjOptionsDialog( this );
 
     initToolBars();
-
-    file = new QMenu( tr("&AppleJuice"), this );
-    menuBar()->addMenu( file );
-
-    file->addAction( QIcon(":/small/configure.png"), tr("C&onfigure"), this, SLOT( showOptions() ), QKeySequence( Qt::CTRL+Qt::Key_O ) );
-    file->addAction( QIcon(":/small/network.png"), tr("&Net Info"), networkDialog, SLOT( exec() ), QKeySequence( Qt::CTRL+Qt::Key_N ) );
-    file->addSeparator();
-    file->addAction( QIcon(":/small/folder_open.png"), tr("&Open Aj Link List"), this, SLOT( openAjL() ) );
-    file->addSeparator();
-    file->addAction( QIcon(":/small/exit.png"), tr("&Exit Core"), this, SLOT( exitCore() ), QKeySequence( Qt::CTRL+Qt::Key_E ) );
-    file->addAction( QIcon(":/small/close.png"), tr("&Quit GUI"), qApp, SLOT( quit() ), QKeySequence( Qt::CTRL+Qt::Key_Q ) );
-
-    menuBar()->addMenu( ajDownloadWidget->popup );
-    menuBar()->addMenu( ajSearchWidget->popup );
-    menuBar()->addMenu( ajServerWidget->popup );
-    menuBar()->addMenu( ajShareWidget->popup );
-    menuBar()->addMenu( ajIncomingWidget->popup );
-
-    menuBar()->addSeparator();
-
-    help = new QMenu( this );
-    help->setTitle( tr("&Help") );
-    help->addAction( tr("&About"), this, SLOT(about()), QKeySequence( Qt::Key_F1  ) );
-    help->addAction( tr("About &Qt"), this, SLOT(aboutQt()) );
-    help->addSeparator();
-
-    menuBar()->addMenu( help );
-
-    downSpeedLabel = new QAjIconWidget(":/small/downstream.png", "0", QBoxLayout::LeftToRight, this, 2, 2);
-    upSpeedLabel = new QAjIconWidget(":/small/upstream.png", "0", QBoxLayout::LeftToRight, this, 2, 2);
-    creditsLabel = new QAjIconWidget(":/small/credits.png", "0", QBoxLayout::LeftToRight, this, 2, 2);
-    downSizeLabel = new QAjIconWidget(":/small/downloaded.png", "0", QBoxLayout::LeftToRight, this, 2, 2);
-    upSizeLabel = new QAjIconWidget(":/small/uploaded.png", "0", QBoxLayout::LeftToRight, this, 2, 2);
-    coreVersionLabel = new QAjIconWidget(":/small/version.png", "0", QBoxLayout::LeftToRight, this, 2, 2);
-    connectedLabel = new QAjIconWidget(":/small/connected.png", "0", QBoxLayout::LeftToRight, this, 2, 2);
-
-    statusBar()->addPermanentWidget( connectedLabel );
-    statusBar()->addPermanentWidget( coreVersionLabel );
-    statusBar()->addPermanentWidget( downSpeedLabel );
-    statusBar()->addPermanentWidget( upSpeedLabel );
-    statusBar()->addPermanentWidget( downSizeLabel );
-    statusBar()->addPermanentWidget( upSizeLabel );
-    statusBar()->addPermanentWidget( creditsLabel );
+    initMenuBar();
     initStatusBar();
 
     QSettings lokalSettings;
@@ -135,10 +68,9 @@ Juicer::Juicer( QStringList argList, QSplashScreen *splash ) : QMainWindow()
     partListTimer = new QTimer( this );
     connect( partListTimer, SIGNAL( timeout() ), this, SLOT( partListTimerSlot() ) );
 
-    connect( ajTab, SIGNAL( currentChanged( QWidget* ) ), this, SLOT( tabChanged( QWidget* ) ) );
     connect( ajTab, SIGNAL( currentChanged( int ) ), this, SLOT( tabChanged( int ) ) );
 
-    tabChanged( ajDownloadWidget );
+    tabChanged( ajTab->indexOf(ajDownloadWidget) );
 
     login();
     queueLinks( argList );
@@ -146,24 +78,26 @@ Juicer::Juicer( QStringList argList, QSplashScreen *splash ) : QMainWindow()
     initTrayIcon();
     
     connect( ajDownloadWidget, SIGNAL( downloadsFinished( QList<QAjDownloadItem*>  ) ),this, SLOT( downloadsFinished( QList<QAjDownloadItem*> ) ) );
-
 }
 
 Juicer::~Juicer()
 {}
 
+/*!
+    \fn Juicer::getPassword()
+    gets the password of the core, either from a local file or by asking the user
+    @return the password in clear text
+ */
 QString Juicer::getPassword() {
     QString password = QAjOptionsDialog::getSetting( "password", "" ).toString();
-    // no password in local file? => ask for it
-    if ( password.isEmpty() )
-    {
+    // -- no password in local file? => ask for it --
+    if ( password.isEmpty() ) {
         bool ok;
         password = QInputDialog::getText( this, "Juicer", tr("Enter core password:"), QLineEdit::Password,  QString::null, &ok );
-        if ( !ok ) // user canceld
+        if ( !ok ) { // -- user canceld --
             qApp->quit();
-        else
-        {
-            // save password in local file if user wants it
+        } else {
+            // -- save password in local file if user wants it --
             if ( QAjOptionsDialog::getSetting( "savePassword", false ).toBool() )
                 QAjOptionsDialog::setSetting( "password", password );
         }
@@ -171,6 +105,10 @@ QString Juicer::getPassword() {
     return password;
 }
 
+/*!
+    \fn Juicer::initToolBars()
+    initializes the tool bars
+ */
 void Juicer::initToolBars()
 {
     QToolBar* ajTools = new QToolBar( tr("applejuice operations"), this );
@@ -199,21 +137,89 @@ void Juicer::initToolBars()
 
     ajLinks->addAction( QIcon(":/ok.png"), tr("process link"), this, SLOT( processLink() ) );
 
-
-    this->setIconSize( QSize(22, 22) );
-    this->addToolBar( ajTools );
-    this->addToolBar( ajLinks );
-    this->addToolBarBreak( );
+    setIconSize( QSize(22, 22) );
+    addToolBar( ajTools );
+    addToolBar( ajLinks );
+    addToolBarBreak( );
     ajDownloadWidget->toolBar->setIconSize( QSize(22, 22) );
-    this->addToolBar( ajDownloadWidget->toolBar );
-    this->addToolBar( ajUploadWidget->toolBar );
-    this->addToolBar( ajSearchWidget->toolBar );
-    this->addToolBar( ajServerWidget->toolBar );
-    this->addToolBar( ajShareWidget->toolBar );
-    this->addToolBar( ajIncomingWidget->toolBar );
-
+    addToolBar( ajDownloadWidget->toolBar );
+    addToolBar( ajUploadWidget->toolBar );
+    addToolBar( ajSearchWidget->toolBar );
+    addToolBar( ajServerWidget->toolBar );
+    addToolBar( ajShareWidget->toolBar );
+    addToolBar( ajIncomingWidget->toolBar );
 }
 
+/*!
+    \fn Juicer::initMenuBar()
+    initializes the menu bar
+ */
+void Juicer::initMenuBar() {
+    file = new QMenu( tr("&AppleJuice"), this );
+    menuBar()->addMenu( file );
+
+    file->addAction( QIcon(":/small/configure.png"), tr("C&onfigure"), this, SLOT( showOptions() ), QKeySequence( Qt::CTRL+Qt::Key_O ) );
+    file->addAction( QIcon(":/small/network.png"), tr("&Net Info"), networkDialog, SLOT( exec() ), QKeySequence( Qt::CTRL+Qt::Key_N ) );
+    file->addSeparator();
+    file->addAction( QIcon(":/small/folder_open.png"), tr("&Open Aj Link List"), this, SLOT( openAjL() ) );
+    file->addSeparator();
+    file->addAction( QIcon(":/small/exit.png"), tr("&Exit Core"), this, SLOT( exitCore() ), QKeySequence( Qt::CTRL+Qt::Key_E ) );
+    file->addAction( QIcon(":/small/close.png"), tr("&Quit GUI"), qApp, SLOT( quit() ), QKeySequence( Qt::CTRL+Qt::Key_Q ) );
+
+    menuBar()->addMenu( ajDownloadWidget->popup );
+    menuBar()->addMenu( ajSearchWidget->popup );
+    menuBar()->addMenu( ajServerWidget->popup );
+    menuBar()->addMenu( ajShareWidget->popup );
+    menuBar()->addMenu( ajIncomingWidget->popup );
+
+    menuBar()->addSeparator();
+
+    help = new QMenu( this );
+    help->setTitle( tr("&Help") );
+    help->addAction( tr("&About"), this, SLOT(about()), QKeySequence( Qt::Key_F1  ) );
+    help->addAction( tr("About &Qt"), this, SLOT(aboutQt()) );
+    help->addSeparator();
+
+    menuBar()->addMenu( help );
+}
+
+/*!
+    \fn Juicer::initTabs()
+    initializes the tab widgets
+ */
+void Juicer::initTabs() {
+    ajTab = new QTabWidget(this);
+    ajDownloadWidget = new QAjDownloadWidget( xml, ajTab );
+    ajUploadWidget = new QAjUploadWidget( xml, ajTab );
+    ajSearchWidget = new QAjSearchWidget( xml, ajTab );
+
+    ajServerMetaWidget = new QAjServerMetaWidget( ajTab );
+    ajServerWidget = new QAjServerWidget( xml, ajServerMetaWidget );
+    ajServerMetaWidget->setServerWidget( ajServerWidget );
+
+    ajShareMetaWidget = new QAjShareMetaWidget( ajTab );
+    ajShareWidget = new QAjShareWidget( xml, ajShareMetaWidget );
+    ajShareFilesWidget = new QAjShareFilesWidget( xml, ajShareMetaWidget );
+    ajShareMetaWidget->setShareWidget( ajShareWidget );
+    ajShareMetaWidget->setShareFilesWidget( ajShareFilesWidget );
+
+    ajTab->setTabToolTip( ajTab->addTab( ajDownloadWidget, QIcon(":/small/down.png"), tr("Downloads") ), tr("Dowloads") );
+    ajTab->setTabToolTip( ajTab->addTab( ajUploadWidget, QIcon(":/small/up.png"), tr("Uploads") ), tr("Uploads") );
+    ajTab->setTabToolTip( ajTab->addTab( ajSearchWidget, QIcon(":/small/searching.png"), tr("Search") ), tr("Search") );
+    ajTab->setTabToolTip( ajTab->addTab( ajServerMetaWidget, QIcon(":/small/server.png"), tr("Server") ), tr("Servers") );
+    ajTab->setTabToolTip( ajTab->addTab( ajShareMetaWidget, QIcon(":/small/shares.png"), tr("Shares") ), tr("Shares") );
+
+    ajIncomingWidget = new QAjIncomingWidget( xml, ajTab );
+    ajTab->setTabToolTip( ajTab->addTab( ajIncomingWidget, QIcon(":/small/ftp.png"), tr("Incoming") ), tr("Incoming") );
+
+    setCentralWidget( ajTab );
+    prevTab = ajDownloadWidget;
+}
+
+/*!
+    \fn Juicer::initTrayIcon()
+    initializes the tray icon if necessarry
+ */
 void Juicer::initTrayIcon()
 {
     tray = new QSystemTrayIcon( QIcon(":/juicer.png"), this );
@@ -227,8 +233,12 @@ void Juicer::initTrayIcon()
     }
 }
 
-void Juicer::closeEvent( QCloseEvent* ce )
-{
+/*!
+    \fn Juicer::closeEvent( QCloseEvent* ce )
+    handler when closing the app, saves a lot of settings
+    @param ce the close event
+ */
+void Juicer::closeEvent( QCloseEvent* ce ) {
     QSettings lokalSettings;
     lokalSettings.beginGroup("MainWindow");
     lokalSettings.setValue( "size", size() );
@@ -253,31 +263,43 @@ void Juicer::closeEvent( QCloseEvent* ce )
     ce->accept();
 }
 
-void Juicer::about()
-{
-    QMessageBox::about( this, tr("Juicer Info"),
-                        tr("Juicer \n\nhttp://ajqtgui.sf.net"));
+/*!
+    \fn Juicer::login()
+    logs into the core by requesting a session
+    @return always true (may change this)
+ */
+bool Juicer::login() {
+    firstModifiedCnt = 0;
+    ajDownloadWidget->clear();
+    ajServerWidget->clear();
+    ajSearchWidget->clear();
+    ajIncomingWidget->clear();
+    ajShareWidget->clear();
+    connected = false;
+    xml->get( "getsession" );
+    return true;
 }
 
-void Juicer::aboutQt()
-{
-    QMessageBox::aboutQt( this, tr("Juicer: About Qt") );
-}
-
-void Juicer::timerSlot()
-{
+/*!
+    \fn Juicer::timerSlot()
+    base timer slot, requests modifications from the core
+ */
+void Juicer::timerSlot() {
 //     if ( xml->session == "" )
 //         return;
-    if(connected)
+    if(connected) {
         xml->get( "modified" );
+    }
 }
 
-void Juicer::partListTimerSlot()
-{
+/*!
+    \fn Juicer::partListTimerSlot()
+    requests the part list of the 'next' download
+ */
+void Juicer::partListTimerSlot() {
     if(connected) {
         QString id = ajDownloadWidget->getNextIdRoundRobin();
-        if (!id.isEmpty())
-        {
+        if (!id.isEmpty()) {
             xml->get( "downloadpartlist", "&simple&id=" + id);
             ajDownloadWidget->doItemsLayout();
         }
@@ -286,11 +308,11 @@ void Juicer::partListTimerSlot()
 
 void Juicer::showOptions()
 {
-    if(connected)
+    if(connected) {
         xml->get( "settings" );
+    }
     optionsDialog->setConnected(connected);
-    if ( optionsDialog->exec() == QDialog::Accepted )
-    {
+    if ( optionsDialog->exec() == QDialog::Accepted ) {
         // save options
         AjSettings settings = optionsDialog->getAjSettings();
         QApplication::setFont(optionsDialog->getFont());
@@ -333,46 +355,8 @@ void Juicer::settingsReady( AjSettings settings )
     if ( optionsDialog != NULL )
     {
         optionsDialog->setAjSettings( settings );
-        optionsDialog->setSettings();
+//         optionsDialog->setSettings();
     }
-}
-
-bool Juicer::login()
-{
-    firstModifiedCnt = 0;
-    ajDownloadWidget->clear();
-    ajServerWidget->clear();
-    ajSearchWidget->clear();
-    ajIncomingWidget->clear();
-    ajShareWidget->clear();
-    connected = false;
-//     qApp->processEvents();
-    xml->get( "getsession" );
-    return true;
-}
-
-void Juicer::setStatusBarText( QString downSpeed, QString upSpeed, QString credits, QString downSize, QString upSize )
-{
-    QString downStreamString = tr("Downstream: ") + QConvert::bytes( downSpeed ) + tr("/s");
-    QString upStreamString = tr("Upstream: ") + QConvert::bytes( upSpeed ) + tr("/s");
-    QString creditsString = tr("Credits: ") + QConvert::bytesExtra( credits );
-    QString downSizeString = tr("Downloaded: ") + QConvert::bytesExtra( downSize );
-    QString upSizeString = tr("Uploaded: ") + QConvert::bytesExtra( upSize );
-
-    downSpeedLabel->setText( downStreamString );
-    upSpeedLabel->setText( upStreamString );
-    creditsLabel->setText( creditsString );
-    downSizeLabel->setText( downSizeString );
-    upSizeLabel->setText( upSizeString );
-
-    // show all information via tray icon
-    tray->setToolTip( "Juicer - appleJuice Qt4 GUI\n\n" +
-        downStreamString + "\n" +
-        upStreamString + "\n" +
-        creditsString + "\n" +
-        downSizeString + "\n" +
-        upSizeString
-    );
 }
 
 void Juicer::xmlError( int code )
@@ -386,12 +370,10 @@ void Juicer::xmlError( int code )
         errorString = "Either wrong password or connection lost.";
     else
         errorString = xml->getErrorString() + ".";
-
     if(splash->isVisible()) {
         splash->close();
     }
-    QAjLoginDialog loginDialog(this);// = new QAjLoginDialog( this );
-                // -- close splash screen if used --
+    QAjLoginDialog loginDialog(this);
     loginDialog.setHost( QAjOptionsDialog::getSetting( "coreAddress", "localhost" ).toString() );
     loginDialog.setPort( QAjOptionsDialog::getSetting("xmlPort", 9851 ).toInt() );
     loginDialog.setPassword( QAjOptionsDialog::getSetting( "password", "" ).toString() );
@@ -437,6 +419,30 @@ void Juicer::showNetworkInfo()
     networkDialog->exec();
 }
 
+void Juicer::setStatusBarText( QString downSpeed, QString upSpeed, QString credits, QString downSize, QString upSize )
+{
+    QString downStreamString = tr("Downstream: ") + QConvert::bytes( downSpeed ) + tr("/s");
+    QString upStreamString = tr("Upstream: ") + QConvert::bytes( upSpeed ) + tr("/s");
+    QString creditsString = tr("Credits: ") + QConvert::bytesExtra( credits );
+    QString downSizeString = tr("Downloaded: ") + QConvert::bytesExtra( downSize );
+    QString upSizeString = tr("Uploaded: ") + QConvert::bytesExtra( upSize );
+
+    downSpeedLabel->setText( downStreamString );
+    upSpeedLabel->setText( upStreamString );
+    creditsLabel->setText( creditsString );
+    downSizeLabel->setText( downSizeString );
+    upSizeLabel->setText( upSizeString );
+
+    // show all information via tray icon
+    tray->setToolTip( "Juicer - appleJuice Qt4 GUI\n\n" +
+        downStreamString + "\n" +
+        upStreamString + "\n" +
+        creditsString + "\n" +
+        downSizeString + "\n" +
+        upSizeString
+    );
+}
+
 void Juicer::processLink( QString link)
 {
     link = QUrl::fromPercentEncoding( link.trimmed().toUtf8() );
@@ -479,12 +485,7 @@ void Juicer::processClipboard()
 
 void Juicer::tabChanged( int index )
 {
-    //tabChanged(ajTab->widget( index ));
-}
-
-
-void Juicer::tabChanged( QWidget *tab )
-{
+    QWidget *tab = ajTab->widget( index );
     QSettings lokalSettings;
     ajDownloadWidget->setActive( tab == ajDownloadWidget );
     ajUploadWidget->setActive( tab == ajUploadWidget );
@@ -651,6 +652,24 @@ QStringList Juicer::getExec()
  */
 void Juicer::initStatusBar()
 {
+    static bool first = true;
+    if(first) {
+        downSpeedLabel = new QAjIconWidget(":/small/downstream.png", "0", QBoxLayout::LeftToRight, this, 2, 2);
+        upSpeedLabel = new QAjIconWidget(":/small/upstream.png", "0", QBoxLayout::LeftToRight, this, 2, 2);
+        creditsLabel = new QAjIconWidget(":/small/credits.png", "0", QBoxLayout::LeftToRight, this, 2, 2);
+        downSizeLabel = new QAjIconWidget(":/small/downloaded.png", "0", QBoxLayout::LeftToRight, this, 2, 2);
+        upSizeLabel = new QAjIconWidget(":/small/uploaded.png", "0", QBoxLayout::LeftToRight, this, 2, 2);
+        coreVersionLabel = new QAjIconWidget(":/small/version.png", "0", QBoxLayout::LeftToRight, this, 2, 2);
+        connectedLabel = new QAjIconWidget(":/small/connected.png", "0", QBoxLayout::LeftToRight, this, 2, 2);
+        statusBar()->addPermanentWidget( connectedLabel );
+        statusBar()->addPermanentWidget( coreVersionLabel );
+        statusBar()->addPermanentWidget( downSpeedLabel );
+        statusBar()->addPermanentWidget( upSpeedLabel );
+        statusBar()->addPermanentWidget( downSizeLabel );
+        statusBar()->addPermanentWidget( upSizeLabel );
+        statusBar()->addPermanentWidget( creditsLabel );
+        first = false;
+    }
     QStringList show = QAjOptionsDialog::getSetting( "statusbarComponents", optionsDialog->getDefaultStatusbarComponents() ).toStringList();
     connectedLabel->setVisible(show.contains(CONNECTED_SINCE));
     coreVersionLabel->setVisible(show.contains(CORE_VERSION));
@@ -692,6 +711,8 @@ void Juicer::lastWindowClosed()
 
 /*!
     \fn Juicer::downloadsFinished( QList<QAjDownloadItem*> list )
+    show a message with all finished downloads in tray icon
+    @param list list with all finished downloads to show
  */
 void Juicer::downloadsFinished( QList<QAjDownloadItem*> list )
 {
@@ -848,4 +869,14 @@ void Juicer::createAjL( QList<QAjItem *>  selectedItems )
 
 void Juicer::sendToTray( QString message1, QString message2 ) {
     tray->showMessage( message1, message2, QSystemTrayIcon::Information, 3000 );
+}
+
+
+void Juicer::about() {
+    QMessageBox::about( this, tr("Juicer Info"),
+                        tr("Juicer \n\nhttp://ajqtgui.sf.net"));
+}
+
+void Juicer::aboutQt() {
+    QMessageBox::aboutQt( this, tr("Juicer: About Qt") );
 }

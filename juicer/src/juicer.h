@@ -109,6 +109,8 @@ public:
 
 protected:
     void initToolBars();
+    void initMenuBar();
+    void initTabs();
     void initStatusBar();
     void initTrayIcon();
     void closeEvent( QCloseEvent* );
@@ -177,7 +179,6 @@ private slots:
     void processClipboard();
 
     void tabChanged( int index );
-    void tabChanged( QWidget *tab );
 
     void exitCore();
 

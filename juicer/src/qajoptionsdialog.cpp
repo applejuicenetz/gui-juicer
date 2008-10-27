@@ -98,6 +98,8 @@ QAjOptionsDialog::QAjOptionsDialog( QWidget* parent ) : QDialog( parent )
     connect( this, SIGNAL( accepted() ), this, SLOT( acceptedSlot() ) );
 
     listWidget->setCurrentRow( 0 );
+
+    setSettings();
 }
 
 QAjOptionsDialog::~QAjOptionsDialog()

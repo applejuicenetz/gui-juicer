@@ -89,8 +89,9 @@ SOURCES += ftp.cpp \
            qajpowerspin.cpp
 CONFIG += warn_on \
           qt \
-          stl
-TEMPLATE = app 
+          stl \
+          releae
+TEMPLATE = app
 QT += core gui network xml
 
 RESOURCES += images.qrc \
@@ -183,4 +184,6 @@ resources/wizard.png \
 TARGET = juicer
 
 TRANSLATIONS += juicer_de.ts
+
+CONFIG -= release
 
