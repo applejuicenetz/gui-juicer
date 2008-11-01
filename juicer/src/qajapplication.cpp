@@ -32,7 +32,7 @@ QAjApplication::QAjApplication( int & argc, char ** argv ) : QApplication( argc,
         QString arg(*argv++);
         if(arg == "--reset") {
             QSettings lokalSettings;
-            lokalSettings.remove("");
+            lokalSettings.clear();
         } else {
             argList << QString(arg);
         }

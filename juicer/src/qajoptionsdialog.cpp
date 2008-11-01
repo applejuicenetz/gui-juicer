@@ -98,8 +98,6 @@ QAjOptionsDialog::QAjOptionsDialog( QWidget* parent ) : QDialog( parent )
     connect( this, SIGNAL( accepted() ), this, SLOT( acceptedSlot() ) );
 
     listWidget->setCurrentRow( 0 );
-
-    setSettings();
 }
 
 QAjOptionsDialog::~QAjOptionsDialog()
@@ -218,9 +216,9 @@ void QAjOptionsDialog::selectTempDir()
 void QAjOptionsDialog::selectLauncher()
 {
     #ifdef Q_WS_WIN
-    QString file = QFileDialog::getOpenFileName( this, "Select a executable", launchCombo->currentText(), "Executable (*.exe)" );
+    QString file = QFileDialog::getOpenFileName(this, "Select a executable", launchCombo->currentText(), "Executable (*.exe)");
     #else
-    QString file = QFileDialog::getOpenFileName( this, "Select a executable", launchCombo->currentText(), "Executable (*.exe)" );
+    QString file = QFileDialog::getOpenFileName(this, "Select a executable", launchCombo->currentText());
     #endif
     if( ! file.isEmpty() )
         launchCombo->setEditText( file );
@@ -283,7 +281,11 @@ void QAjOptionsDialog::jumpToFtpSlot()
  */
 void QAjOptionsDialog::writeSettings()
 {
-    setSetting( "corePassword", savePassword->isChecked()?passwordEdit->text():"" );
+    if(savePassword->isChecked()) {
+        setSetting("password", passwordEdit->text());
+    } else {
+        removeSetting("password");
+    }
 
     setSetting( "coreAddress", coreEdit->text() );
     setSetting( "savePassword", savePassword->isChecked() );
@@ -469,4 +471,26 @@ bool QAjOptionsDialog::hasSetting(QString group, QString key)
     bool ret = lokalSettings.contains(key);
     lokalSettings.endGroup();
     return ret;
+}
+
+
+/*!
+    \fn QAjOptionsDialog::removeSetting(QString key)
+ */
+void QAjOptionsDialog::removeSetting(QString key)
+{
+    QSettings lokalSettings;
+    lokalSettings.remove(key);
+}
+
+
+/*!
+    \fn QAjOptionsDialog::removeSetting(QString group, QString key)
+ */
+void QAjOptionsDialog::removeSetting(QString group, QString key)
+{
+    QSettings lokalSettings;
+    lokalSettings.beginGroup( group );
+    lokalSettings.remove(key);
+    lokalSettings.endGroup();
 }

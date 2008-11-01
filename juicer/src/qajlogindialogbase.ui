@@ -175,6 +175,7 @@
  </widget>
  <tabstops>
   <tabstop>passwordEdit</tabstop>
+  <tabstop>savePasswordCheckBox</tabstop>
   <tabstop>buttonBox</tabstop>
   <tabstop>hostEdit</tabstop>
   <tabstop>portSpinBox</tabstop>

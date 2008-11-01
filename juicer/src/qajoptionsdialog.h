@@ -57,10 +57,10 @@ public:
     void setConnected(bool connected);
     static bool hasSetting(QString group, QString key);
     static bool hasSetting(QString key);
-
+    static void removeSetting(QString group, QString key);
+    static void removeSetting(QString key);
 private:
     QFontDatabase fontDatabase;
-//     QFont currentFont;
 
 protected slots:
     void selectIncomingDir();

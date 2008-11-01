@@ -289,6 +289,7 @@ bool Juicer::login(QString message) {
         xml->setHost(host, port);
         xml->get("getsession");
     } else {
+        optionsDialog->setSettings();
         this->show();
         started = true;
     }
@@ -568,6 +569,7 @@ void Juicer::firstModified()
             processQueuedLinks();
             this->show();
             started = true;
+            optionsDialog->setSettings();
             // -- close splash screen if used --
             if(splash->isVisible()) {
                 splash->finish(this);
