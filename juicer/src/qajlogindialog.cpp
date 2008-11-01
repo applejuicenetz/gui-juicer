@@ -15,8 +15,9 @@
 
 QAjLoginDialog::QAjLoginDialog(QWidget* parent, Qt::WFlags fl): QDialog( parent, fl ), Ui::QAjLoginDialogBase()
 {
-	setupUi(this);
-	connect(buttonBox, SIGNAL(clicked(QAbstractButton*)), this, SLOT(clicked(QAbstractButton*)));
+    setupUi(this);
+    connect(buttonBox, SIGNAL(clicked(QAbstractButton*)), this, SLOT(clicked(QAbstractButton*)));
+    connect(resetPortButton, SIGNAL(clicked()), this, SLOT(resetPort()));
 }
 
 QAjLoginDialog::~QAjLoginDialog()
@@ -30,4 +31,13 @@ QAjLoginDialog::~QAjLoginDialog()
 void QAjLoginDialog::clicked(QAbstractButton* button)
 {
 	ignore = (buttonBox->standardButton(button) == QDialogButtonBox::Ignore);
+}
+
+
+/*!
+    \fn QAjLoginDialog::resetPort()
+ */
+void QAjLoginDialog::resetPort()
+{
+    portSpinBox->setValue(9851);
 }

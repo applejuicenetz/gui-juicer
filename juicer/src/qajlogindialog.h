@@ -27,9 +27,11 @@ public:
   QString getHost() { return hostEdit->text(); }
   int getPort() { return portSpinBox->value(); }
   QString getPassword() { return passwordEdit->text(); }
+  bool getSavePassword() { return savePasswordCheckBox->isChecked(); }
   void setHost( QString host ) { hostEdit->setText( host ); }
   void setPort( int port ) { portSpinBox->setValue( port ); }
   void setPassword( QString password ) { passwordEdit->setText( password ); }
+  void setSavePassword( bool save ) { savePasswordCheckBox->setChecked(save); }
   void setHeader( QString text ) { headerLabel->setText( text ); }
   bool ignore;
 public slots:
@@ -40,6 +42,7 @@ protected slots:
 
 public slots:
     void clicked(QAbstractButton* button);
+    void resetPort();
 };
 
 #endif

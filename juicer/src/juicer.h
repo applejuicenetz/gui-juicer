@@ -74,8 +74,8 @@ class Juicer: public QMainWindow
 public:
     Juicer( QStringList argList, QSplashScreen *splash );
     ~Juicer();
-    QString getPassword();
-    bool login();
+//     QString getPassword();
+    bool login(QString message);
 
     void setStatusBarText( QString downSpeed, QString upSpeed, QString credits, QString downSize, QString upSize );
     QAjNetworkDialog *networkDialog;
@@ -115,7 +115,7 @@ protected:
     void initTrayIcon();
     void closeEvent( QCloseEvent* );
     void processQueuedLinks();
-    
+    QString showLoginDialog(QString message = "");
 
     QTabWidget* ajTab;
     QSystemTrayIcon* tray;

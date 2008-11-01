@@ -198,6 +198,7 @@ void QAjOptionsDialog::setSettings()
     QFont font = getSetting( "font", QApplication::font() ).value<QFont>();
     QApplication::setFont( font );
     fontComboBox->setCurrentFont( font );
+    setFontSizes(font);
 }
 
 void QAjOptionsDialog::selectIncomingDir()
@@ -445,4 +446,27 @@ void QAjOptionsDialog::setConnected(bool connected)
     connectionsSpin->setEnabled(connected);
     newLabel->setEnabled(connected);
     newSpin->setEnabled(connected);
+}
+
+
+/*!
+    \fn QAjOptionsDialog::hasSetting(QString key)
+ */
+bool QAjOptionsDialog::hasSetting(QString key)
+{
+    QSettings lokalSettings;
+    return lokalSettings.contains(key);
+}
+
+
+/*!
+    \fn QAjOptionsDialog::hasSetting(QString group, QString key)
+ */
+bool QAjOptionsDialog::hasSetting(QString group, QString key)
+{
+    QSettings lokalSettings;
+    lokalSettings.beginGroup( group );
+    bool ret = lokalSettings.contains(key);
+    lokalSettings.endGroup();
+    return ret;
 }

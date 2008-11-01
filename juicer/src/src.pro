@@ -90,7 +90,8 @@ SOURCES += ftp.cpp \
 CONFIG += warn_on \
           qt \
           stl \
-          releae
+          releae \
+ debug
 TEMPLATE = app
 QT += core gui network xml
 
@@ -183,7 +184,12 @@ resources/wizard.png \
  resources/options/superkaramba.png
 TARGET = juicer
 
+INSTALLS += TARGET \
+ target
+
 TRANSLATIONS += juicer_de.ts
 
 CONFIG -= release
+
+target.path = /usr/local/bin/
 

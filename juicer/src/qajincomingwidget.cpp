@@ -317,8 +317,13 @@ void QAjIncomingWidget::reload()
         QString actDir;
         if(location == AjSettings::SAME)
         {
-            if(this->dir.isEmpty())
+            if(this->dir.isEmpty()) {
+                QLabel* l = new QLabel(tr("There is no connection to the core.\nYou may want to define the incoming directory manually at the options dialog."), this);
+                l->adjustSize();
+                l->move((this->width() - l->width()) / 2, (this->height() - l->height()) / 2);
+                l->show();
                 return;
+            }
             actDir = this->dir;
         }
         else

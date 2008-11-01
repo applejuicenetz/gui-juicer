@@ -29,7 +29,13 @@ QAjApplication::QAjApplication( int & argc, char ** argv ) : QApplication( argc,
     *argv++;
     while (argc-- > 1)
     {
-        argList << QString( *argv++ );
+        QString arg(*argv++);
+        if(arg == "--reset") {
+            QSettings lokalSettings;
+            lokalSettings.remove("");
+        } else {
+            argList << QString(arg);
+        }
     }
     if( ! argList.isEmpty() )
     {

@@ -27,7 +27,7 @@ Juicer::Juicer( QStringList argList, QSplashScreen *splash ) : QMainWindow()
     connect( qApp, SIGNAL( lastWindowClosed () ), this, SLOT ( lastWindowClosed () ) );
 
     zeroTime = QDateTime( QDate(1970,1,1), QTime(0,0), Qt::UTC );
-    firstModifiedMax = 4;// + argList.size();
+    firstModifiedMax = 2;// + argList.size();
 
     linkServer = new QAjServerSocket( QAjApplication::APP_PORT );
     connect( linkServer, SIGNAL( lineReady( QString ) ), this, SLOT( processLink( QString ) ) );
@@ -59,10 +59,6 @@ Juicer::Juicer( QStringList argList, QSplashScreen *splash ) : QMainWindow()
 
     connected = false;
 
-    xml->setPassword( getPassword() );
-    xml->setHost( QAjOptionsDialog::getSetting("coreAddress", "localhost").toString(),
-                  QAjOptionsDialog::getSetting("xmlPort", 9851).toInt() );
-
     timer = new QTimer( this );
     connect( timer, SIGNAL( timeout() ), this, SLOT( timerSlot() ) );
     partListTimer = new QTimer( this );
@@ -72,7 +68,7 @@ Juicer::Juicer( QStringList argList, QSplashScreen *splash ) : QMainWindow()
 
     tabChanged( ajTab->indexOf(ajDownloadWidget) );
 
-    login();
+    login("Login:");
     queueLinks( argList );
 
     initTrayIcon();
@@ -86,24 +82,27 @@ Juicer::~Juicer()
 /*!
     \fn Juicer::getPassword()
     gets the password of the core, either from a local file or by asking the user
+    @deprecated use showLoginDialog()
     @return the password in clear text
  */
-QString Juicer::getPassword() {
-    QString password = QAjOptionsDialog::getSetting( "password", "" ).toString();
-    // -- no password in local file? => ask for it --
-    if ( password.isEmpty() ) {
-        bool ok;
-        password = QInputDialog::getText( this, "Juicer", tr("Enter core password:"), QLineEdit::Password,  QString::null, &ok );
-        if ( !ok ) { // -- user canceld --
-            qApp->quit();
-        } else {
-            // -- save password in local file if user wants it --
-            if ( QAjOptionsDialog::getSetting( "savePassword", false ).toBool() )
-                QAjOptionsDialog::setSetting( "password", password );
-        }
-    }
-    return password;
-}
+// QString Juicer::getPassword() {
+//     QString password = QAjOptionsDialog::getSetting( "password", "" ).toString();
+//     // -- no password in local file? => ask for it --
+//     if ( password.isEmpty() ) {
+//         showLoginDialog("Enter core password:");
+//         bool ok;
+//         password = QInputDialog::getText( this, "Juicer", tr("Enter core password:"), QLineEdit::Password,  QString::null, &ok );
+//         if ( !ok ) { // -- user canceld --
+//             qApp->quit();
+//         } else {
+//             // -- save password in local file if user wants it --
+//             if ( QAjOptionsDialog::getSetting( "savePassword", false ).toBool() )
+//                 QAjOptionsDialog::setSetting( "password", password );
+//         }
+//     }
+//     return password;
+// }
+
 
 /*!
     \fn Juicer::initToolBars()
@@ -263,21 +262,68 @@ void Juicer::closeEvent( QCloseEvent* ce ) {
     ce->accept();
 }
 
+
 /*!
     \fn Juicer::login()
     logs into the core by requesting a session
     @return always true (may change this)
  */
-bool Juicer::login() {
-    firstModifiedCnt = 0;
+bool Juicer::login(QString message) {
     ajDownloadWidget->clear();
     ajServerWidget->clear();
     ajSearchWidget->clear();
     ajIncomingWidget->clear();
     ajShareWidget->clear();
     connected = false;
-    xml->get( "getsession" );
+    QString password = "";
+    if(!QAjOptionsDialog::hasSetting("coreAddress") || !QAjOptionsDialog::hasSetting("password")) {
+        password = showLoginDialog(message);
+    } else {
+        password = QAjOptionsDialog::getSetting("password", "").toString();
+    }
+    QString host = QAjOptionsDialog::getSetting("coreAddress", "localhost").toString();
+    int port = QAjOptionsDialog::getSetting("xmlPort", 9851 ).toInt();
+    if(!password.isEmpty()) {
+        firstModifiedCnt = 0;
+        xml->setPassword(password);
+        xml->setHost(host, port);
+        xml->get("getsession");
+    } else {
+        this->show();
+        started = true;
+    }
     return true;
+}
+
+QString Juicer::showLoginDialog(QString message) {
+    if(splash->isVisible()) {
+        splash->close();
+    }
+    QAjLoginDialog loginDialog(this);
+    loginDialog.setHost( QAjOptionsDialog::getSetting( "coreAddress", "localhost" ).toString() );
+    loginDialog.setPort( QAjOptionsDialog::getSetting("xmlPort", 9851 ).toInt() );
+    loginDialog.setPassword( QAjOptionsDialog::getSetting( "password", "" ).toString() );
+    loginDialog.setSavePassword( QAjOptionsDialog::getSetting( "savePassword", false ).toBool() );
+    loginDialog.setHeader( message );
+    int result = loginDialog.exec();
+    QString ret = "";
+    if(!loginDialog.ignore) {
+        if (result == QDialog::Accepted) {
+            ret = loginDialog.getPassword();
+            QSettings lokalSettings;
+            lokalSettings.setValue("coreAddress", loginDialog.getHost());
+            lokalSettings.setValue("xmlPort", loginDialog.getPort());
+            bool savePassword = loginDialog.getSavePassword();
+            lokalSettings.setValue("savePassword", savePassword);
+            if(savePassword) {
+                printf("%s\n", ret.toLatin1().data());
+                lokalSettings.setValue( "password", ret);
+            }
+        } else {
+            qApp->quit();
+        }
+    }
+    return ret;
 }
 
 /*!
@@ -285,8 +331,6 @@ bool Juicer::login() {
     base timer slot, requests modifications from the core
  */
 void Juicer::timerSlot() {
-//     if ( xml->session == "" )
-//         return;
     if(connected) {
         xml->get( "modified" );
     }
@@ -364,39 +408,10 @@ void Juicer::xmlError( int code )
     connected = false;
     timer->stop();
     partListTimer->stop();
-    QSettings lokalSettings;
-    QString errorString;
-    if ( code == 302 )
-        errorString = "Either wrong password or connection lost.";
-    else
-        errorString = xml->getErrorString() + ".";
-    if(splash->isVisible()) {
-        splash->close();
-    }
-    QAjLoginDialog loginDialog(this);
-    loginDialog.setHost( QAjOptionsDialog::getSetting( "coreAddress", "localhost" ).toString() );
-    loginDialog.setPort( QAjOptionsDialog::getSetting("xmlPort", 9851 ).toInt() );
-    loginDialog.setPassword( QAjOptionsDialog::getSetting( "password", "" ).toString() );
-    loginDialog.setHeader( errorString );
-    int result = loginDialog.exec();
-    if(loginDialog.ignore) {
-        this->show();
-        started = true;
+    if ( code == 302 ) {
+        login("Either wrong password or connection lost.");
     } else {
-        if (result == QDialog::Accepted) {
-            password = loginDialog.getPassword();
-            //xml->abort();
-            xml->setPassword( loginDialog.getPassword() );
-            xml->setHost( loginDialog.getHost(), loginDialog.getPort() );
-            lokalSettings.setValue( "coreAddress", loginDialog.getHost() );
-            lokalSettings.setValue( "xmlPort", loginDialog.getPort() );
-            if ( lokalSettings.value( "savePassword", "false" ).toString() == "true" ) {
-                lokalSettings.setValue( "password",  password);
-            }
-            login();
-        } else {
-            qApp->quit();
-        }
+        login(xml->getErrorString() + ".");
     }
 }
 
@@ -452,7 +467,7 @@ void Juicer::processLink( QString link)
         QString name = s[1];
         QString hash = s[2];
         QString size = s[3].split("/")[0];
-        printf("%s\n%s\n", hash.toLatin1().data(), size.toLatin1().data() );
+//         printf("%s\n%s\n", hash.toLatin1().data(), size.toLatin1().data() );
         if(s[0].toLower() == "ajfsp://file" ) {
             QAjShareFileItem* file;
             QAjDownloadItem* download;
@@ -467,7 +482,6 @@ void Juicer::processLink( QString link)
         }
         link = s[0] + "|" + QUrl::toPercentEncoding( name )  + "|" + hash + "|" + size + "/";
     }
-//     QMessageBox::information(this, "title", link);
     xml->set( "processlink", "&link=" + link );
 }
 
