@@ -275,7 +275,7 @@ bool Juicer::login(QString message) {
     ajIncomingWidget->clear();
     ajShareWidget->clear();
     connected = false;
-    QString password = "";
+    QString password;
     if(!QAjOptionsDialog::hasSetting("coreAddress") || !QAjOptionsDialog::hasSetting("password")) {
         password = showLoginDialog(message);
     } else {

@@ -945,7 +945,7 @@ http://ajqtgui.sf.net</source>
     <message>
         <location filename="qajoptionsdialogbase.ui" line="598"/>
         <source>show splash screen on startup</source>
-        <translation type="unfinished">zeige Splah-Screen beim Starten</translation>
+        <translation type="unfinished">zeige Splash-Screen beim Starten</translation>
     </message>
     <message>
         <location filename="qajoptionsdialogbase.ui" line="569"/>
