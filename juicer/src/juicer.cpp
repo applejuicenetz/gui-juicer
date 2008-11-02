@@ -441,8 +441,6 @@ void Juicer::showNetworkInfo()
 
 void Juicer::setStatusBarText( QString downSpeed, QString upSpeed, QString credits, QString downSize, QString upSize )
 {
-    credits = "14356799";
-    downSize = "65272902";
     QString downStreamString = tr("Downstream: ") + QConvert::bytes( downSpeed ) + tr("/s");
     QString upStreamString = tr("Upstream: ") + QConvert::bytes( upSpeed ) + tr("/s");
     QString creditsString = tr("Credits: ") + QConvert::bytesExtra( credits );
