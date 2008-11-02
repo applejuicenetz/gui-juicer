@@ -41,14 +41,14 @@ int QXMLModule::setHost( const QString & hostname, quint16 portnumber )
     return QHttp::setHost( hostname, portnumber );
 }
 
-int QXMLModule::exec( const QString request, int nErrors ) {
+int QXMLModule::exec( const QString & request, int nErrors ) {
     int id = QHttp::get(request);
     requests[id] = request;
     errors[id] = nErrors;
     return id;
 }
 
-int QXMLModule::get( QString request, QString param )
+int QXMLModule::get( const QString & request, QString param )
 {
     if(request == "modified")
     {
@@ -69,7 +69,7 @@ int QXMLModule::get( QString request, QString param )
     return httpRequest;
 }
 
-int QXMLModule::set( QString request, QString param )
+int QXMLModule::set( const QString & request, QString param )
 {
     return exec( "/function/" + request + "?password=" + passwordMD5 + param );
 }
@@ -217,7 +217,7 @@ void QXMLModule::responseHeaderReceived ( const QHttpResponseHeader & resp )
     }
 }
 
-void QXMLModule::setPassword( QString password )
+void QXMLModule::setPassword( const QString & password )
 {
     CMD5 md5( password.toAscii().data() );
     passwordMD5 = md5.getMD5Digest();
@@ -530,6 +530,6 @@ void QXMLModule::handlePartList( int id )
     }
 }
 
-void QXMLModule::sendToTray( QString message1, QString message2 ) {
+void QXMLModule::sendToTray( QString & message1, QString & message2 ) {
     juicer->sendToTray( message1, message2 );
 }

@@ -49,16 +49,16 @@ public:
 
     ~QXMLModule();
 
-    int setHost( const QString & hostname, quint16 portnumber = 80 );
+    int setHost( const QString & hostname, quint16 portnumber );
 
-    int exec( const QString request, int nErrors = 0 );
-    int get( QString request, QString param = "" );
-    int set( QString request, QString param = "" );
+    int exec( const QString & request, int nErrors = 0 );
+    int get( const QString & request, QString param = "" );
+    int set( const QString & request, QString param = "" );
 
     QString session;
 
-    void setPassword( QString password );
-    void setPasswordMD5( QString passwordMD5 )
+    void setPassword( const QString & password );
+    void setPasswordMD5( const QString & passwordMD5 )
     {
         this->passwordMD5 = passwordMD5;
     }
@@ -69,7 +69,7 @@ public:
         QHttp::abort();
     }
 
-    void sendToTray( QString message1, QString message2 );
+    void sendToTray( QString & message1, QString & message2 );
 
 protected:
     QString host;
