@@ -90,7 +90,6 @@ SOURCES += ftp.cpp \
 CONFIG += warn_on \
           qt \
           stl \
-          releae \
  debug
 TEMPLATE = app
 QT += core gui network xml
