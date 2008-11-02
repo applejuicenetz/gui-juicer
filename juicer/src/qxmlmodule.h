@@ -97,21 +97,24 @@ signals:
     void gotSession();
     void modifiedDone();
 private:
-    void handleSettings( QDomElement e );
-    void handleShare( QDomElement e );
-    void handleShares( QDomElement e );
-    void handleIds( QDomNode node );
-    void handleNetworkInfo( QDomElement e );
-    void handleUpload( QDomElement e );
-    void handleDownload( QDomElement e );
-    void handleUser( QDomElement e, QTime time );
-    void handleServer( QDomElement e );
-    void handleSearch( QDomElement e );
-    void handleSearchEntry( QDomElement e );
-    void handleGeneralInformation( QDomNode node );
-    void handleRemoved( QDomElement e );
-    void handlePart( QDomElement e );
+    void handleSettings( QDomElement& e );
+    void handleShare( QDomElement& e );
+    void handleShares( QDomElement& e );
+    void handleIds( QDomNode& node );
+    void handleNetworkInfo( QDomElement& e );
+    void handleUpload( QDomElement& e );
+    void handleDownload( QDomElement& e );
+    void handleUser( QDomElement& e, QTime& time );
+    void handleServer( QDomElement& e );
+    void handleSearch( QDomElement& e );
+    void handleSearchEntry( QDomElement& e );
+    void handleGeneralInformation( QDomNode& node );
+    void handleRemoved( QDomElement& e );
+    void handlePart( QDomElement& e );
     void handlePartList( int id );
+    void processUsers();
+    QList<QDomElement> users;
+    QList<QTime> userTimes;
 };
 
 #endif

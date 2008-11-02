@@ -187,6 +187,7 @@ void QXMLModule::requestFinished( int id, bool error )
                     }
                 }
             }
+            processUsers();
             handlePartList(id);
             modifiedDone();
         }
@@ -224,9 +225,9 @@ void QXMLModule::setPassword( QString password )
 
 
 /*!
-    \fn QXMLModule::handleSettings( QDomElement e )
+    \fn QXMLModule::handleSettings( QDomElement& e )
  */
-void QXMLModule::handleSettings( QDomElement e )
+void QXMLModule::handleSettings( QDomElement& e )
 {
     AjSettings settings;
     settings.nick = e.firstChildElement("nick").text();
@@ -258,9 +259,9 @@ void QXMLModule::handleSettings( QDomElement e )
 
 
 /*!
-    \fn QXMLModule::handleShare( QDomElement e )
+    \fn QXMLModule::handleShare( QDomElement& e )
  */
-void QXMLModule::handleShare( QDomElement e )
+void QXMLModule::handleShare( QDomElement& e )
 {
     juicer->setUploadFilename( e.attribute("id"), e.attribute("filename") );
 
@@ -268,9 +269,9 @@ void QXMLModule::handleShare( QDomElement e )
 
 
 /*!
-    \fn QXMLModule::handleShares( QDomElement e )
+    \fn QXMLModule::handleShares( QDomElement& e )
  */
-void QXMLModule::handleShares( QDomElement e )
+void QXMLModule::handleShares( QDomElement& e )
 {
     QDomNode n;
     {
@@ -294,9 +295,9 @@ void QXMLModule::handleShares( QDomElement e )
 
 
 /*!
-    \fn QXMLModule::handleIds( QDomNode node )
+    \fn QXMLModule::handleIds( QDomNode& node )
  */
-void QXMLModule::handleIds( QDomNode node )
+void QXMLModule::handleIds( QDomNode& node )
 {
     node = node;
     // TODO
@@ -327,9 +328,9 @@ void QXMLModule::handleIds( QDomNode node )
 
 
 /*!
-    \fn QXMLModule::handleNetworkInfo( QDomElement e )
+    \fn QXMLModule::handleNetworkInfo( QDomElement& e )
  */
-void QXMLModule::handleNetworkInfo( QDomElement e )
+void QXMLModule::handleNetworkInfo( QDomElement& e )
 {
     juicer->networkDialog->setValues(
         e.attribute("users"),
@@ -345,9 +346,9 @@ void QXMLModule::handleNetworkInfo( QDomElement e )
 
 
 /*!
-    \fn QXMLModule::handleUpload( QDomElement e )
+    \fn QXMLModule::handleUpload( QDomElement& e )
  */
-void QXMLModule::handleUpload( QDomElement e )
+void QXMLModule::handleUpload( QDomElement& e )
 {
     if( ! juicer->ajUploadWidget->insertUpload(
             e.attribute("id"),
@@ -366,29 +367,37 @@ void QXMLModule::handleUpload( QDomElement e )
 
 
 /*!
-    \fn QXMLModule::handleUser( QDomElement e, QTime time )
+    \fn QXMLModule::handleUser( QDomElement& e, QTime& time )
  */
-void QXMLModule::handleUser( QDomElement e, QTime time )
+void QXMLModule::handleUser( QDomElement& e, QTime& time )
 {
-//     juicer->ajDownloadWidget->mutex.lock();
-    juicer->ajDownloadWidget->insertUser(
-        e.attribute("downloadid"),
-        e.attribute("id"),
-        e.attribute("filename"),
-        e.attribute("speed"),
-        e.attribute("status"),
-        e.attribute("powerdownload"),
-        e.attribute("queueposition"),
-        e.attribute("operatingsystem"),
-        time);
-//     juicer->ajDownloadWidget->mutex.unlock();
+    // -- try to insert users after down- and uploads --
+    // -- store them in a lists and process them when the end of the xml was reached --
+    users.append(e);
+    userTimes.append(time);
 }
 
+void QXMLModule::processUsers() {
+    while(!users.empty()) {
+        QDomElement e = users.takeFirst();
+        QTime time = userTimes.takeFirst();
+        juicer->ajDownloadWidget->insertUser(
+            e.attribute("downloadid"),
+            e.attribute("id"),
+            e.attribute("filename"),
+            e.attribute("speed"),
+            e.attribute("status"),
+            e.attribute("powerdownload"),
+            e.attribute("queueposition"),
+            e.attribute("operatingsystem"),
+            time);
+    }
+}
 
 /*!
-    \fn QXMLModule::handleDownload( QDomElement e )
+    \fn QXMLModule::handleDownload( QDomElement& e )
  */
-void QXMLModule::handleDownload( QDomElement e )
+void QXMLModule::handleDownload( QDomElement& e )
 {
 //     juicer->ajDownloadWidget->mutex.lock();
     juicer->ajDownloadWidget->insertDownload(
@@ -405,9 +414,9 @@ void QXMLModule::handleDownload( QDomElement e )
 
 
 /*!
-    \fn QXMLModule::handleServer( QDomElement e )
+    \fn QXMLModule::handleServer( QDomElement& e )
  */
-void QXMLModule::handleServer( QDomElement e )
+void QXMLModule::handleServer( QDomElement& e )
 {
     juicer->ajServerWidget->insertServer(
         e.attribute("id"),
@@ -420,9 +429,9 @@ void QXMLModule::handleServer( QDomElement e )
 
 
 /*!
-    \fn QXMLModule::handleSearch( QDomElement e )
+    \fn QXMLModule::handleSearch( QDomElement& e )
  */
-void QXMLModule::handleSearch( QDomElement e )
+void QXMLModule::handleSearch( QDomElement& e )
 {
     juicer->ajSearchWidget->insertSearch(
         e.attribute("id"),
@@ -433,9 +442,9 @@ void QXMLModule::handleSearch( QDomElement e )
 
 
 /*!
-    \fn QXMLModule::handleSearchEntry( QDomElement e )
+    \fn QXMLModule::handleSearchEntry( QDomElement& e )
  */
-void QXMLModule::handleSearchEntry( QDomElement e )
+void QXMLModule::handleSearchEntry( QDomElement& e )
 {
     QStringList filenames;
     QDomElement fileE;
@@ -452,9 +461,9 @@ void QXMLModule::handleSearchEntry( QDomElement e )
 
 
 /*!
-    \fn QXMLModule::handleGeneralInformation( QDomNode node )
+    \fn QXMLModule::handleGeneralInformation( QDomNode& node )
  */
-void QXMLModule::handleGeneralInformation( QDomNode node )
+void QXMLModule::handleGeneralInformation( QDomNode& node )
 {
     juicer->setFilesystemSeparator(
         node.firstChildElement("filesystem").attribute("seperator"));
@@ -463,9 +472,9 @@ void QXMLModule::handleGeneralInformation( QDomNode node )
 
 
 /*!
-    \fn QXMLModule::handleRemoved( QDomElement e )
+    \fn QXMLModule::handleRemoved( QDomElement& e )
  */
-void QXMLModule::handleRemoved( QDomElement e )
+void QXMLModule::handleRemoved( QDomElement& e )
 {
     QDomElement objectE;
     for(objectE = e.firstChildElement("object");
@@ -482,9 +491,9 @@ void QXMLModule::handleRemoved( QDomElement e )
 }
 
 /*!
-    \fn QXMLModule::handlePart( QDomElement e )
+    \fn QXMLModule::handlePart( QDomElement& e )
  */
-void QXMLModule::handlePart( QDomElement e )
+void QXMLModule::handlePart( QDomElement& e )
 {
     Part part;
     part.type = e.attribute("type").toInt();

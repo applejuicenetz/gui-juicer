@@ -174,7 +174,6 @@ void QAjDownloadWidget::insertDownload(QString id, QString hash, QString fileNam
             xml->set( "setpowerdownload", "&Powerdownload="+QConvert::power( 50 )+"&id="+id );
         }
         downloadItem->update( hash, fileName, status, size, ready, power, tempNumber );
-//         downloadItem->initPowerSpin();
         updateView( true );
         connect(downloadItem->powerSpin, SIGNAL(powerChanged(QString, double)), this, SLOT(applyPowerDownload(QString, double)));
     } else {
@@ -186,11 +185,13 @@ void QAjDownloadWidget::insertDownload(QString id, QString hash, QString fileNam
 void QAjDownloadWidget::insertUser(QString downloadId, QString id, QString fileName, QString speed, QString status, QString power, QString queuePos, QString os, QTime time)
 {
     QAjDownloadItem *downloadItem = findDownload( downloadId );
-    if ( downloadItem == NULL )
+    if ( downloadItem == NULL )  // -- this shouldn't happen, just in case... --
     {
-        downloadItem = new QAjDownloadItem( downloadId, this );
-        downloads[ downloadId ] = downloadItem;
-        downloadItem->setText( FILENAME_DOWN_INDEX, fileName );
+        insertDownload(downloadId, "", "", "", "", "", "", "");
+        downloadItem = findDownload( downloadId );
+//        downloadItem = new QAjDownloadItem( downloadId, this );
+//        downloads[ downloadId ] = downloadItem;
+//       downloadItem->setText( FILENAME_DOWN_INDEX, fileName );
     }
     QIcon *osIcon;
     if ( os == LINUX )
