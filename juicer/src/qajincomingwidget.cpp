@@ -437,6 +437,7 @@ AjSettings::LOCATION QAjIncomingWidget::getLocation()
  */
 void QAjIncomingWidget::ftpReadyRead( QFile* dstFile, FTP* ftp )
 {
+    ftp = ftp;
     QStringList args = Juicer::getExec();
     QString exec = args.takeFirst();
 

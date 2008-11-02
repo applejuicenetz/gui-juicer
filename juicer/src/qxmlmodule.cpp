@@ -298,6 +298,7 @@ void QXMLModule::handleShares( QDomElement e )
  */
 void QXMLModule::handleIds( QDomNode node )
 {
+    node = node;
     // TODO
     /*
     QDomNode childNode;

@@ -68,11 +68,11 @@ Juicer::Juicer( QStringList argList, QSplashScreen *splash ) : QMainWindow()
 
     tabChanged( ajTab->indexOf(ajDownloadWidget) );
 
-    login("Login:");
-    queueLinks( argList );
+    // -- we need to do this as an event, because we can quit the application only if the application is already in the event loop --
+    QTimer::singleShot(0, this, SLOT(login()));
 
+    queueLinks( argList );
     initTrayIcon();
-    
     connect( ajDownloadWidget, SIGNAL( downloadsFinished( QList<QAjDownloadItem*>  ) ),this, SLOT( downloadsFinished( QList<QAjDownloadItem*> ) ) );
 }
 
@@ -283,15 +283,16 @@ bool Juicer::login(QString message) {
     }
     QString host = QAjOptionsDialog::getSetting("coreAddress", "localhost").toString();
     int port = QAjOptionsDialog::getSetting("xmlPort", 9851 ).toInt();
+    // -- ok -> login --
     if(!password.isEmpty()) {
         firstModifiedCnt = 0;
         xml->setPassword(password);
         xml->setHost(host, port);
         xml->get("getsession");
-    } else {
+    // -- no password <- ignore at login --
+    } else if(started) {
         optionsDialog->setSettings();
         this->show();
-        started = true;
     }
     return true;
 }
@@ -308,21 +309,24 @@ QString Juicer::showLoginDialog(QString message) {
     loginDialog.setHeader( message );
     int result = loginDialog.exec();
     QString ret = "";
-    if(!loginDialog.ignore) {
-        if (result == QDialog::Accepted) {
-            ret = loginDialog.getPassword();
-            QSettings lokalSettings;
-            lokalSettings.setValue("coreAddress", loginDialog.getHost());
-            lokalSettings.setValue("xmlPort", loginDialog.getPort());
-            bool savePassword = loginDialog.getSavePassword();
-            lokalSettings.setValue("savePassword", savePassword);
-            if(savePassword) {
-                printf("%s\n", ret.toLatin1().data());
-                lokalSettings.setValue( "password", ret);
-            }
-        } else {
-            qApp->quit();
+    // -- Ignore --
+    if(loginDialog.ignore) {
+        // -- force started (don't wait for the core) --
+        started = true;
+    // -- OK --
+    } else if (result == QDialog::Accepted) {
+        ret = loginDialog.getPassword();
+        QSettings lokalSettings;
+        lokalSettings.setValue("coreAddress", loginDialog.getHost());
+        lokalSettings.setValue("xmlPort", loginDialog.getPort());
+        bool savePassword = loginDialog.getSavePassword();
+        lokalSettings.setValue("savePassword", savePassword);
+        if(savePassword) {
+            lokalSettings.setValue( "password", ret);
         }
+    // -- Cancel --
+    } else {
+        qApp->quit();
     }
     return ret;
 }

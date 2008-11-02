@@ -75,7 +75,6 @@ public:
     Juicer( QStringList argList, QSplashScreen *splash );
     ~Juicer();
 //     QString getPassword();
-    bool login(QString message);
 
     void setStatusBarText( QString downSpeed, QString upSpeed, QString credits, QString downSize, QString upSize );
     QAjNetworkDialog *networkDialog;
@@ -161,7 +160,7 @@ protected:
     bool started;
 
 private slots:
-
+    bool login(QString message = "<h3>Login</h3>");
     void openAjL();
 
     void about();
