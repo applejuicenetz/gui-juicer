@@ -147,7 +147,7 @@ void QAjDownloadItem::moveItem( QAjUserItem *userItem, QString oldStatus )
     }
 }
 
-QAjUserItem* QAjDownloadItem::findUser( QString id )
+QAjUserItem* QAjDownloadItem::findUser( const QString& id )
 {
     if ( users.contains( id ) )
         return users[ id ];
@@ -155,14 +155,14 @@ QAjUserItem* QAjDownloadItem::findUser( QString id )
         return NULL;
 }
 
-void QAjDownloadItem::removeUser( QString id )
+void QAjDownloadItem::removeUser( const QString& id )
 {
     QAjUserItem* item = users[ id ];
     users.remove( id );
     delete item;
 }
 
-void QAjDownloadItem::updateUser( QString id, QString fileName, QString speed, QString status, QString power, QString queuePos, QString statusString, QIcon* osIcon, QTime time )
+void QAjDownloadItem::updateUser( const QString& id, const QString& fileName, const QString& speed, const QString& status, const QString& power, const QString& queuePos, const QString& statusString, QIcon* osIcon, const QTime& time )
 {
     QAjUserItem* userItem = findUser( id );
     if ( userItem == NULL )
@@ -185,7 +185,7 @@ void QAjDownloadItem::updateUser( QString id, QString fileName, QString speed, Q
 
 }
 
-void QAjDownloadItem::update( QString hash, QString fileName, QString status, QString size, QString ready, QString power, QString tempNumber )
+void QAjDownloadItem::update( const QString& hash, const QString& fileName, const QString& status, const QString& size, const QString& ready, const QString& power, const QString& tempNumber )
 {
 //     this->status = status;
     this->tempNumber = tempNumber;
