@@ -58,11 +58,11 @@ public:
     ~QAjDownloadItem();
 
     void moveItem( QAjUserItem *userItem, QString oldStatus );
-    void update( QString hash, QString fileName, QString status, QString size, QString ready, QString power, QString tempNumber );
-    void updateUser( QString id, QString fileName, QString speed, QString status, QString power, QString queuePos, QString statusString, QIcon *osIcon, QTime time );
+    void update( const QString& hash, const QString& fileName, const QString& status, const QString& size, const QString& ready, const QString& power, const QString& tempNumber );
+    void updateUser( const QString& id, const QString& fileName, const QString& speed, const QString& status, const QString& power, const QString& queuePos, const QString& statusString, QIcon *osIcon, const QTime& time );
 
-    QAjUserItem* findUser( QString id );
-    void removeUser( QString id );
+    QAjUserItem* findUser( const QString& id );
+    void removeUser( const QString& id );
 
     QString getLinkAJFSP();
 

@@ -125,7 +125,7 @@ AjSettings QAjOptionsDialog::getAjSettings()
     return settings;
 }
 
-void QAjOptionsDialog::setAjSettings( AjSettings settings )
+void QAjOptionsDialog::setAjSettings( AjSettings& settings )
 {
     nickEdit->setText( settings.nick );
     xmlEdit->setText( settings.xmlPort );

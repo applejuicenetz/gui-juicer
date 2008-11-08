@@ -91,7 +91,7 @@ public slots:
     void responseHeaderReceived ( const QHttpResponseHeader & resp );
     void requestFinished(int id, bool error);
 signals:
-    void settingsReady( AjSettings settings );
+    void settingsReady( AjSettings& settings );
     void error( int code );
     void gotSession();
     void modifiedDone();

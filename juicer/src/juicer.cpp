@@ -51,7 +51,7 @@ Juicer::Juicer( QStringList argList, QSplashScreen *splash ) : QMainWindow()
     move( lokalSettings.value( "pos", QPoint(100, 100) ).toPoint() );
     lokalSettings.endGroup();
 
-    connect( xml, SIGNAL( settingsReady( AjSettings ) ), this, SLOT( settingsReady( AjSettings ) ) );
+    connect( xml, SIGNAL( settingsReady( AjSettings& ) ), this, SLOT( settingsReady( AjSettings& ) ) );
     connect( xml, SIGNAL( error( int ) ), this, SLOT( xmlError( int ) ) );
     connect( xml, SIGNAL( gotSession() ), this, SLOT( gotSession() ) );
     connect( xml, SIGNAL( modifiedDone( ) ), ajDownloadWidget, SLOT( updateView( ) ) );
@@ -73,7 +73,7 @@ Juicer::Juicer( QStringList argList, QSplashScreen *splash ) : QMainWindow()
 
     queueLinks( argList );
     initTrayIcon();
-    connect( ajDownloadWidget, SIGNAL( downloadsFinished( QList<QAjDownloadItem*>  ) ),this, SLOT( downloadsFinished( QList<QAjDownloadItem*> ) ) );
+    connect( ajDownloadWidget, SIGNAL( downloadsFinished( const QList<QAjDownloadItem*>&  ) ),this, SLOT( downloadsFinished( const QList<QAjDownloadItem*>& ) ) );
 }
 
 Juicer::~Juicer()
@@ -414,7 +414,7 @@ void Juicer::showOptions()
     }
 }
 
-void Juicer::settingsReady( AjSettings settings )
+void Juicer::settingsReady( AjSettings& settings )
 {
     ajDownloadWidget->setDirs( QFileInfo( settings.tempDir ), QFileInfo( settings.incomingDir ) );
     ajIncomingWidget->setDir( settings.incomingDir );
@@ -735,11 +735,11 @@ void Juicer::lastWindowClosed()
 
 
 /*!
-    \fn Juicer::downloadsFinished( QList<QAjDownloadItem*> list )
+    \fn Juicer::downloadsFinished( const QList<QAjDownloadItem*>& list )
     show a message with all finished downloads in tray icon
     @param list list with all finished downloads to show
  */
-void Juicer::downloadsFinished( QList<QAjDownloadItem*> list )
+void Juicer::downloadsFinished( const QList<QAjDownloadItem*>& list )
 {
     if( QSystemTrayIcon::supportsMessages() )
     {

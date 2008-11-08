@@ -42,7 +42,7 @@ public:
     ~QAjOptionsDialog();
 
     AjSettings getAjSettings();
-    void setAjSettings( AjSettings settings );
+    void setAjSettings( AjSettings& settings );
     void setSettings();
     void writeSettings();
     QFont getFont();

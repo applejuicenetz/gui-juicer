@@ -169,7 +169,7 @@ private slots:
     void partListTimerSlot();
     void showOptions();
     void showNetworkInfo();
-    void settingsReady( AjSettings settings );
+    void settingsReady( AjSettings& settings );
     void xmlError( int code );
     void gotSession();
 
@@ -186,7 +186,7 @@ private slots:
     void adjustColumns();
     void trayActivated ( QSystemTrayIcon::ActivationReason reason );
     void lastWindowClosed();
-    void downloadsFinished( QList<QAjDownloadItem*> list );
+    void downloadsFinished( const QList<QAjDownloadItem*>& list );
 };
 
 

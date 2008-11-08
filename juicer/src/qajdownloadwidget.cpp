@@ -162,7 +162,8 @@ void QAjDownloadWidget::initToolBar()
 }
 
 
-void QAjDownloadWidget::insertDownload(QString id, QString hash, QString fileName, QString status, QString size, QString ready, QString power, QString tempNumber)
+void QAjDownloadWidget::insertDownload(const QString& id, const QString& hash, const QString& fileName, const QString& status,
+                        const QString& size, const QString& ready, const QString& power, const QString& tempNumber)
 {
     QAjDownloadItem *downloadItem = findDownload( id );
     if ( downloadItem == NULL )
@@ -182,7 +183,8 @@ void QAjDownloadWidget::insertDownload(QString id, QString hash, QString fileNam
 }
 
 
-void QAjDownloadWidget::insertUser(QString downloadId, QString id, QString fileName, QString speed, QString status, QString power, QString queuePos, QString os, QTime time)
+void QAjDownloadWidget::insertUser(const QString& downloadId, const QString& id, const QString& fileName, const QString& speed,
+                        const QString& status, const QString& power, const QString& queuePos, const QString& os, QTime& time)
 {
     QAjDownloadItem *downloadItem = findDownload( downloadId );
     if ( downloadItem == NULL )  // -- this shouldn't happen, just in case... --
@@ -212,7 +214,7 @@ void QAjDownloadWidget::insertUser(QString downloadId, QString id, QString fileN
 }
 
 
-bool QAjDownloadWidget::remove( QString id )
+bool QAjDownloadWidget::remove( const QString& id )
 {
     if( removeDownload( id ) )
     {
@@ -420,7 +422,7 @@ void QAjDownloadWidget::updateView( bool force )
         downloadsFinished( finished );
 }
 
-QAjDownloadItem* QAjDownloadWidget::findDownload( QString id )
+QAjDownloadItem* QAjDownloadWidget::findDownload( const QString& id )
 {
     if (downloads.contains( id ))
         return downloads[id];
@@ -428,7 +430,7 @@ QAjDownloadItem* QAjDownloadWidget::findDownload( QString id )
         return NULL;
 }
 
-bool QAjDownloadWidget::removeDownload( QString id )
+bool QAjDownloadWidget::removeDownload( const QString& id )
 {
     if( downloads.contains( id ) )
     {
@@ -442,7 +444,7 @@ bool QAjDownloadWidget::removeDownload( QString id )
 }
 
 
-DownloadUser QAjDownloadWidget::findParent( QString id )
+DownloadUser QAjDownloadWidget::findParent( const QString& id )
 {
     DownloadUser du;
     du.download = NULL;
@@ -471,9 +473,9 @@ QString QAjDownloadWidget::getNextIdRoundRobin()
 
 
 /*!
-    \fn QAjDownloadWidget::findDownloadByTempNum( QFileInfo tempFile )
+    \fn QAjDownloadWidget::findDownloadByTempNum( const QFileInfo& tempFile )
  */
-QString QAjDownloadWidget::findDownloadByTempNum( QFileInfo tempFile )
+QString QAjDownloadWidget::findDownloadByTempNum( const QFileInfo& tempFile )
 {
     if (tempDir.absolutePath() == tempFile.absolutePath())
     {
@@ -526,7 +528,7 @@ void QAjDownloadWidget::storeDownloadFtp()
     ftp->start();
 }
 
-void QAjDownloadWidget::processSelected( QString request, QString para )
+void QAjDownloadWidget::processSelected( const QString& request, const QString& para )
 {
     QList<QAjItem *>  selectedItems = selectedAjItems();
     int i;
@@ -536,7 +538,7 @@ void QAjDownloadWidget::processSelected( QString request, QString para )
     }
 }
 
-void QAjDownloadWidget::requestSelected( QString request, QString para )
+void QAjDownloadWidget::requestSelected( const QString& request, const QString& para )
 {
     QList<QAjItem *>  selectedItems = selectedAjItems();
     int i;
@@ -575,9 +577,9 @@ void QAjDownloadWidget::maxPowerDownload()
 
 
 /*!
-    \fn QAjDownloadWidget::setDirs( QFileInfo tmpDir, QFileInfo inDir )
+    \fn QAjDownloadWidget::setDirs( const QFileInfo& tmpDir, const QFileInfo& inDir )
  */
-void QAjDownloadWidget::setDirs( QFileInfo tmpDir, QFileInfo inDir )
+void QAjDownloadWidget::setDirs( const QFileInfo& tmpDir, const QFileInfo& inDir )
 {
     this->tempDir = tmpDir;
     this->incomingDir = inDir;
@@ -606,9 +608,9 @@ void QAjDownloadWidget::initPopup()
 
 
 /*!
-    \fn QAjDownloadWidget::findDownload( QString size, QString hash )
+    \fn QAjDownloadWidget::findDownload( const QString& size, const QString& hash )
  */
-QAjDownloadItem* QAjDownloadWidget::findDownload( QString size, QString hash )
+QAjDownloadItem* QAjDownloadWidget::findDownload( const QString& size, const QString& hash )
 {
     QList<QAjDownloadItem*> list = downloads.values();
     int i;

@@ -58,20 +58,22 @@ public:
 
     ~QAjDownloadWidget();
 
-    void insertDownload(QString id, QString hash, QString fileName, QString status, QString size, QString ready, QString power, QString tempNumber);
-    void insertUser(QString downloadId, QString id, QString fileName, QString speed, QString status, QString power, QString queuePos, QString os, QTime time);
-    bool remove( QString id );
+    void insertDownload(const QString& id, const QString& hash, const QString& fileName, const QString& status,
+                        const QString& size, const QString& ready, const QString& power, const QString& tempNumber);
+    void insertUser(const QString& downloadId, const QString& id, const QString& fileName, const QString& speed,
+                        const QString& status, const QString& power, const QString& queuePos, const QString& os, QTime& time);
+    bool remove( const QString& id );
 
-    QAjDownloadItem* findDownload( QString id );
-    bool removeDownload( QString id );
-    DownloadUser findParent( QString id );
+    QAjDownloadItem* findDownload( const QString& id );
+    bool removeDownload( const QString& id );
+    DownloadUser findParent( const QString& id );
 
     QString getNextIdRoundRobin();
-    QString findDownloadByTempNum( QFileInfo tempFile );
+    QString findDownloadByTempNum( const QFileInfo& tempFile );
     void initToolBar();
-    void setDirs( QFileInfo tmpDir, QFileInfo inDir );
+    void setDirs( const QFileInfo& tmpDir, const QFileInfo& inDir );
     void initPopup();
-    QAjDownloadItem* findDownload( QString size, QString hash );
+    QAjDownloadItem* findDownload( const QString& size, const QString& hash );
 
     QAction *powerUpButton, *powerDownButton, *powerOkButton, *powerMaxButton;
     QAction *pauseDownloadButton, *resumeDownloadButton;
@@ -97,6 +99,9 @@ private:
 
     QFileInfo tempDir, incomingDir;
 
+    void processSelected( const QString& request, const QString& para = "" );
+    void requestSelected( const QString& request, const QString& para = "" );
+
 private slots:
     void selectionChanged( bool oneSelected );
     void pauseSlot();
@@ -110,8 +115,6 @@ private slots:
     void linkSlot();
     void hidePausedSlot(bool checked);
 
-    void processSelected( QString request, QString para = "" );
-    void requestSelected( QString request, QString para = "" );
     void applyPowerDownload();
     void applyPowerDownload(QString id, double value);
     void maxPowerDownload();
@@ -123,7 +126,7 @@ public slots:
     void storeDownloadFtp();
 
 signals:
-    void downloadsFinished( QList<QAjDownloadItem*> downloads );
+    void downloadsFinished( const QList<QAjDownloadItem*>& downloads );
 };
 
 #endif
