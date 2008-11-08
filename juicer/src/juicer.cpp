@@ -266,9 +266,11 @@ void Juicer::closeEvent( QCloseEvent* ce ) {
 /*!
     \fn Juicer::login()
     logs into the core by requesting a session
+    @param message text to show at the login dialog
+    @param error is this an retry? (force showing the login dialog)
     @return always true (may change this)
  */
-bool Juicer::login(QString message) {
+bool Juicer::login(QString message, bool error) {
     ajDownloadWidget->clear();
     ajServerWidget->clear();
     ajSearchWidget->clear();
@@ -276,7 +278,7 @@ bool Juicer::login(QString message) {
     ajShareWidget->clear();
     connected = false;
     QString password;
-    if(!QAjOptionsDialog::hasSetting("coreAddress") || !QAjOptionsDialog::hasSetting("password")) {
+    if(error || !QAjOptionsDialog::hasSetting("coreAddress") || !QAjOptionsDialog::hasSetting("password")) {
         password = showLoginDialog(message);
     } else {
         password = QAjOptionsDialog::getSetting("password", "").toString();
@@ -289,10 +291,13 @@ bool Juicer::login(QString message) {
         xml->setPassword(password);
         xml->setHost(host, port);
         xml->get("getsession");
-    // -- no password <- ignore at login --
+    // -- ignore at login --
     } else if(started) {
+        printf("ignore\n");
         optionsDialog->setSettings();
         this->show();
+    } else {
+        login("empty password", true);
     }
     return true;
 }
@@ -329,6 +334,18 @@ QString Juicer::showLoginDialog(QString message) {
         qApp->quit();
     }
     return ret;
+}
+
+void Juicer::xmlError( int code )
+{
+    connected = false;
+    timer->stop();
+    partListTimer->stop();
+    if ( code == 302 ) {
+        login("Either wrong password or connection lost.", true);
+    } else {
+        login(xml->getErrorString() + ".", true);
+    }
 }
 
 /*!
@@ -405,18 +422,6 @@ void Juicer::settingsReady( AjSettings settings )
     {
         optionsDialog->setAjSettings( settings );
 //         optionsDialog->setSettings();
-    }
-}
-
-void Juicer::xmlError( int code )
-{
-    connected = false;
-    timer->stop();
-    partListTimer->stop();
-    if ( code == 302 ) {
-        login("Either wrong password or connection lost.");
-    } else {
-        login(xml->getErrorString() + ".");
     }
 }
 

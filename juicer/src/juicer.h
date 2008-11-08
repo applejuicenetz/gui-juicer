@@ -160,7 +160,7 @@ protected:
     bool started;
 
 private slots:
-    bool login(QString message = "<h3>Login</h3>");
+    bool login(QString message = "<h3>Login</h3>", bool error = false);
     void openAjL();
 
     void about();

@@ -34,11 +34,12 @@ QXMLModule::~QXMLModule()
 {
 }
 
-int QXMLModule::setHost( const QString & hostname, quint16 portnumber )
+int QXMLModule::setHost( const QString & host, quint16 port )
 {
-    host = hostname;
-    port = portnumber;
-    return QHttp::setHost( hostname, portnumber );
+    this->host = host;
+    this->port = port;
+    QHttp::abort();
+    return QHttp::setHost( host, port );
 }
 
 int QXMLModule::exec( const QString & request, int nErrors ) {
@@ -203,7 +204,8 @@ void QXMLModule::requestFinished( int id, bool error )
 
 /*    } else if(errors[id] < 1) {
         exec("requests[id]", errors[id] + 1);*/
-    } else {
+    } else if (QHttp::error() != QHttp::Aborted) {
+        abort();
         QXMLModule::error(-1);
     }
 }

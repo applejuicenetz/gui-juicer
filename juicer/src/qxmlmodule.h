@@ -45,11 +45,11 @@ class QXMLModule : protected QHttp
 {
     Q_OBJECT
 public:
-    QXMLModule(Juicer *juicer, QObject *parent = 0 );
+    QXMLModule(Juicer *juicer, QObject *parent = 0);
 
     ~QXMLModule();
 
-    int setHost( const QString & hostname, quint16 portnumber );
+    int setHost(const QString & host, quint16 port);
 
     int exec( const QString & request, int nErrors = 0 );
     int get( const QString & request, QString param = "" );
@@ -68,7 +68,6 @@ public:
     void abort() {
         QHttp::abort();
     }
-
     void sendToTray( QString & message1, QString & message2 );
 
 protected:

@@ -173,6 +173,7 @@ resources/wizard.png \
  resources/small/vcs_update.png \
  resources/small/viewmag.png \
  resources/small/windows.png \
+ resources/small/undo.png \
  resources/options/de.png \
  resources/options/fonts.png \
  resources/options/gb.png \
@@ -181,14 +182,14 @@ resources/wizard.png \
  resources/options/network_local.png \
  resources/options/player_playlist.png \
  resources/options/superkaramba.png
-TARGET = juicer
-
-INSTALLS += TARGET \
- target
 
 TRANSLATIONS += juicer_de.ts
 
+TARGET = juicer
+
 CONFIG -= release
 
-target.path = /usr/local/bin/
+INSTALLS += target
+
+target.path = /usr/local/bin
 
