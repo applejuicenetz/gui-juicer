@@ -19,6 +19,8 @@
  ***************************************************************************/
 #include "qajapplication.h"
 
+#include <QMessageBox>
+
 QAjApplication::QAjApplication( int & argc, char ** argv ) : QApplication( argc, argv )
 {
     QCoreApplication::setOrganizationName("progeln.de");
@@ -26,6 +28,23 @@ QAjApplication::QAjApplication( int & argc, char ** argv ) : QApplication( argc,
     QCoreApplication::setApplicationName("Juicer");
     setQuitOnLastWindowClosed( false );
     socket = NULL;
+/*
+    #ifdef Q_WS_WIN
+	    QString appPath = QString(argv[0]).replace("\\","\\\\");
+        appPath = "\"" + appPath + "\" \"%1\"";
+
+        QSettings settings("HKEY_CLASSES_ROOT\\ajfsp", QSettings::NativeFormat);
+        settings.setValue("Default","URL:ajfsp Protocol");
+        settings.setValue("URL Protocol","");
+        if(settings.value("shell/open/command/Default") != appPath) {
+            QMessageBox* handlerDialog = new QMessageBox(QMessageBox::Question, "Protocol handler",
+                "Juicer seems to be not the default application for ajfsp:// links.\nWould you like to change this?");
+            handlerDialog->addButton(new QCheckBox("don't ask me again", handlerDialog), QMessageBox::HelpRole);
+            handlerDialog->exec();
+            //settings.setValue("shell/open/command/Default",appPath);
+        }
+    #endif
+*/
     *argv++;
     while (argc-- > 1)
     {
