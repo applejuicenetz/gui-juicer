@@ -24,6 +24,10 @@
 QAjOptionsDialog::QAjOptionsDialog( QWidget* parent ) : QDialog( parent )
 {
     setupUi( this );
+#ifndef Q_WS_WIN
+     handlerGroupBox->setHidden(true);
+#endif
+
     okButton->setIcon(QIcon(QString::fromUtf8(":/ok.png")));
     cancelButton->setIcon(QIcon(QString::fromUtf8(":/cancel.png")));
 
@@ -188,8 +192,7 @@ void QAjOptionsDialog::setSettings()
     QStringList statusbarComponents = getSetting( "statusbarComponents", getDefaultStatusbarComponents() ).toStringList();
     statusbarList->clearSelection();
     int i;
-    for(i=0; i<statusbarComponents.size(); i++)
-    {
+    for(i=0; i<statusbarComponents.size(); i++) {
         statusbarList->item( statusbarComponents[i].toInt() )->setSelected( true );
     }
 
@@ -197,6 +200,11 @@ void QAjOptionsDialog::setSettings()
     QApplication::setFont( font );
     fontComboBox->setCurrentFont( font );
     setFontSizes(font);
+#ifdef Q_WS_WIN
+    handlerCheckCheckBox->setChecked(!QAjOptionsDialog::hasSetting("handler") || QAjOptionsDialog::getSetting("handler", false).toBool());
+    handlerDefaultCheckBox->setChecked(QAjOptionsDialog::hasSetting("handler") && QAjOptionsDialog::getSetting("handler", false).toBool());
+    handlerDefaultCheckBox->setEnabled(handlerCheckCheckBox->isChecked());
+#endif
 }
 
 void QAjOptionsDialog::selectIncomingDir()
@@ -328,6 +336,14 @@ void QAjOptionsDialog::writeSettings()
     }
     setSetting( "statusbarComponents",  statusbarComponents );
     setSetting( "font", getFont() );
+
+#ifdef Q_WS_WIN
+    if(handlerCheckCheckBox->isChecked() && !handlerDefaultCheckBox->isChecked()) {
+        QAjOptionsDialog::removeSetting("handler");
+    } else {
+        QAjOptionsDialog::setSetting("handler", handlerCheckCheckBox->isChecked() && handlerDefaultCheckBox->isChecked());
+    }
+#endif
 }
 
 
