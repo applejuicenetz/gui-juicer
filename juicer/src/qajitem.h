@@ -30,8 +30,8 @@ class QAjItem : public QTreeWidgetItem, public QObject
 {
 // Q_OBJECT
 public:
-    QAjItem( QTreeWidget *parent, QString id="generic" );
-    QAjItem( QTreeWidgetItem *parent, QString id="generic" );
+    QAjItem( QTreeWidget *parent, const QString& id="generic" );
+    QAjItem( QTreeWidgetItem *parent, const QString& id="generic" );
 
     virtual ~QAjItem();
 
@@ -39,7 +39,7 @@ public:
     {
         return status;
     }
-    void setStatus( QString newStatus )
+    void setStatus( const QString& newStatus )
     {
         status = newStatus;
     }

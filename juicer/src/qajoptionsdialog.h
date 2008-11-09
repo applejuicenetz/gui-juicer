@@ -42,7 +42,7 @@ public:
     ~QAjOptionsDialog();
 
     AjSettings getAjSettings();
-    void setAjSettings( AjSettings& settings );
+    void setAjSettings( const AjSettings& settings );
     void setSettings();
     void writeSettings();
     QFont getFont();
@@ -50,15 +50,15 @@ public:
     QStringList getDefaultStatusbarComponents();
     QString defaultLauncher;
 
-    static QVariant getSetting( QString key, QVariant defaultValue );
-    static void setSetting( QString key, QVariant value );
-    static QVariant getSetting( QString group, QString key, QVariant defaultValue );
-    static void setSetting( QString group, QString key, QVariant value );
+    static QVariant getSetting( const QString& key, QVariant defaultValue );
+    static void setSetting( const QString& key, QVariant value );
+    static QVariant getSetting( const QString& group, const QString& key, QVariant defaultValue );
+    static void setSetting( const QString& group, const QString& key, QVariant value );
     void setConnected(bool connected);
-    static bool hasSetting(QString group, QString key);
-    static bool hasSetting(QString key);
-    static void removeSetting(QString group, QString key);
-    static void removeSetting(QString key);
+    static bool hasSetting(const QString& group, const QString& key);
+    static bool hasSetting(const QString& key);
+    static void removeSetting(const QString& group, const QString& key);
+    static void removeSetting(const QString& key);
 private:
     QFontDatabase fontDatabase;
 

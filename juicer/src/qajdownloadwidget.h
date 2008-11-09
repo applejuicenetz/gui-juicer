@@ -116,7 +116,7 @@ private slots:
     void hidePausedSlot(bool checked);
 
     void applyPowerDownload();
-    void applyPowerDownload(QString id, double value);
+    void applyPowerDownload(const QString& id, double value);
     void maxPowerDownload();
     void itemChanged( QTreeWidgetItem* item, int column );
 

@@ -118,7 +118,7 @@ public:
         return percent;
     }
     QAjPartListWidget* getPartListWidget();
-    void setParts( qulonglong size, QLinkedList<Part> partList );
+    void setParts( qulonglong size, QLinkedList<Part>& partList );
 
     QString getTempNumber()
     {

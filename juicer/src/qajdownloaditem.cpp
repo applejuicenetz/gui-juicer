@@ -383,9 +383,9 @@ QAjPartListWidget* QAjDownloadItem::getPartListWidget()
 
 
 /*!
-    \fn QAjDownloadItem::setParts( Q_ULLONG size, QLinkedList<Part> partList )
+    \fn QAjDownloadItem::setParts( Q_ULLONG size, QLinkedList<Part>& partList )
  */
-void QAjDownloadItem::setParts( qulonglong size, QLinkedList<Part> partList )
+void QAjDownloadItem::setParts( qulonglong size, QLinkedList<Part>& partList )
 {
     if ( partListWidget->isVisible() )
         partListWidget->update( size, partList );

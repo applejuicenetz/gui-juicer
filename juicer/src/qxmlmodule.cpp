@@ -34,14 +34,6 @@ QXMLModule::~QXMLModule()
 {
 }
 
-int QXMLModule::setHost( const QString & host, quint16 port )
-{
-    this->host = host;
-    this->port = port;
-    QHttp::abort();
-    return QHttp::setHost( host, port );
-}
-
 int QXMLModule::exec( const QString & request, int nErrors ) {
     int id = QHttp::get(request);
     requests[id] = request;
@@ -205,17 +197,36 @@ void QXMLModule::requestFinished( int id, bool error )
 /*    } else if(errors[id] < 1) {
         exec("requests[id]", errors[id] + 1);*/
     } else if (QHttp::error() != QHttp::Aborted) {
-        abort();
-        QXMLModule::error(-1);
+        // -- use a timer (it does NOT work calling it directly) --
+        QTimer::singleShot(0, this, SLOT(networkErrorSlot()));
     }
 }
 
+
+/*!
+    \fn QXMLModule::networkErrorSlot()
+ */
+void QXMLModule::networkErrorSlot()
+{
+    abort();
+    QXMLModule::error(errorString());
+}
+
+/*!
+    \fn QXMLModule::httpErrorSlot()
+ */
+void QXMLModule::httpErrorSlot()
+{
+    abort();
+    QXMLModule::error("Either wrong password or connection lost.");
+}
 
 void QXMLModule::responseHeaderReceived ( const QHttpResponseHeader & resp )
 {
     if( resp.statusCode() != 200 )
     {
-        error( resp.statusCode() );
+        // -- use a timer (it does NOT work calling it directly) --
+        QTimer::singleShot(0, this, SLOT(httpErrorSlot()));
     }
 }
 

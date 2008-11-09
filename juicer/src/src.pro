@@ -5,7 +5,8 @@
 
 FORMS += qajoptionsdialogbase.ui  \
 qajnetworkdialogbase.ui \
-qajlogindialogbase.ui
+qajlogindialogbase.ui \
+ qajhandlerdialogbase.ui
 HEADERS += ftp.h \
            global.h \
            md5class.h \
@@ -46,7 +47,8 @@ HEADERS += ftp.h \
            qajiconwidget.h \
            qajfilewidget.h \
            qajlogindialog.h \
-           qajpowerspin.h
+           qajpowerspin.h \
+ qajhandlerdialog.h
 SOURCES += ftp.cpp \
            main.cpp \
            md5c.c \
@@ -86,7 +88,8 @@ SOURCES += ftp.cpp \
            qajiconwidget.cpp \
            qajlogindialog.cpp \
            qajfilewidget.cpp \
-           qajpowerspin.cpp
+           qajpowerspin.cpp \
+ qajhandlerdialog.cpp
 CONFIG += warn_on \
           qt \
           stl \

@@ -125,7 +125,7 @@ AjSettings QAjOptionsDialog::getAjSettings()
     return settings;
 }
 
-void QAjOptionsDialog::setAjSettings( AjSettings& settings )
+void QAjOptionsDialog::setAjSettings( const AjSettings& settings )
 {
     nickEdit->setText( settings.nick );
     xmlEdit->setText( settings.xmlPort );
@@ -332,9 +332,9 @@ void QAjOptionsDialog::writeSettings()
 
 
 /*!
-    \fn QAjOptionsDialog::getSetting( QString key, QVariant defaultValue )
+    \fn QAjOptionsDialog::getSetting( const QString& key, QVariant defaultValue )
  */
-QVariant QAjOptionsDialog::getSetting( QString key, QVariant defaultValue )
+QVariant QAjOptionsDialog::getSetting( const QString& key, QVariant defaultValue )
 {
     QSettings lokalSettings;
     return lokalSettings.value( key, defaultValue);
@@ -342,9 +342,9 @@ QVariant QAjOptionsDialog::getSetting( QString key, QVariant defaultValue )
 
 
 /*!
-    \fn QAjOptionsDialog::setSetting( QString key, QVariant value )
+    \fn QAjOptionsDialog::setSetting( const QString& key, QVariant value )
  */
-void QAjOptionsDialog::setSetting( QString key, QVariant value )
+void QAjOptionsDialog::setSetting( const QString& key, QVariant value )
 {
     QSettings lokalSettings;
     lokalSettings.setValue(key, value);
@@ -353,9 +353,9 @@ void QAjOptionsDialog::setSetting( QString key, QVariant value )
 
 
 /*!
-    \fn QAjOptionsDialog::getSetting( QString group, QString key, QVariant defaultValue )
+    \fn QAjOptionsDialog::getSetting( const QString& group, const QString& key, QVariant defaultValue )
  */
-QVariant QAjOptionsDialog::getSetting( QString group, QString key, QVariant defaultValue )
+QVariant QAjOptionsDialog::getSetting( const QString& group, const QString& key, QVariant defaultValue )
 {
     QSettings lokalSettings;
     lokalSettings.beginGroup( group );
@@ -366,9 +366,9 @@ QVariant QAjOptionsDialog::getSetting( QString group, QString key, QVariant defa
 
 
 /*!
-    \fn QAjOptionsDialog::setSetting( QString group, QString key, QVariant value )
+    \fn QAjOptionsDialog::setSetting( const QString& group, const QString& key, QVariant value )
  */
-void QAjOptionsDialog::setSetting( QString group, QString key, QVariant value )
+void QAjOptionsDialog::setSetting( const QString& group, const QString& key, QVariant value )
 {
     QSettings lokalSettings;
     lokalSettings.beginGroup( group );
@@ -452,9 +452,9 @@ void QAjOptionsDialog::setConnected(bool connected)
 
 
 /*!
-    \fn QAjOptionsDialog::hasSetting(QString key)
+    \fn QAjOptionsDialog::hasSetting(const QString& key)
  */
-bool QAjOptionsDialog::hasSetting(QString key)
+bool QAjOptionsDialog::hasSetting(const QString& key)
 {
     QSettings lokalSettings;
     return lokalSettings.contains(key);
@@ -462,9 +462,9 @@ bool QAjOptionsDialog::hasSetting(QString key)
 
 
 /*!
-    \fn QAjOptionsDialog::hasSetting(QString group, QString key)
+    \fn QAjOptionsDialog::hasSetting(const QString& group, const QString& key)
  */
-bool QAjOptionsDialog::hasSetting(QString group, QString key)
+bool QAjOptionsDialog::hasSetting(const QString& group, const QString& key)
 {
     QSettings lokalSettings;
     lokalSettings.beginGroup( group );
@@ -475,9 +475,9 @@ bool QAjOptionsDialog::hasSetting(QString group, QString key)
 
 
 /*!
-    \fn QAjOptionsDialog::removeSetting(QString key)
+    \fn QAjOptionsDialog::removeSetting(const QString& key)
  */
-void QAjOptionsDialog::removeSetting(QString key)
+void QAjOptionsDialog::removeSetting(const QString& key)
 {
     QSettings lokalSettings;
     lokalSettings.remove(key);
@@ -485,9 +485,9 @@ void QAjOptionsDialog::removeSetting(QString key)
 
 
 /*!
-    \fn QAjOptionsDialog::removeSetting(QString group, QString key)
+    \fn QAjOptionsDialog::removeSetting(const QString& group, const QString& key)
  */
-void QAjOptionsDialog::removeSetting(QString group, QString key)
+void QAjOptionsDialog::removeSetting(const QString& group, const QString& key)
 {
     QSettings lokalSettings;
     lokalSettings.beginGroup( group );

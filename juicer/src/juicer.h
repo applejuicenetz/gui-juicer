@@ -74,9 +74,8 @@ class Juicer: public QMainWindow
 public:
     Juicer( QStringList argList, QSplashScreen *splash );
     ~Juicer();
-//     QString getPassword();
 
-    void setStatusBarText( QString downSpeed, QString upSpeed, QString credits, QString downSize, QString upSize );
+    void setStatusBarText( const QString& downSpeed, const QString& upSpeed, const QString& credits, const QString& downSize, const QString& upSize );
     QAjNetworkDialog *networkDialog;
     QAjDownloadWidget *ajDownloadWidget;
     QAjUploadWidget *ajUploadWidget;
@@ -88,7 +87,7 @@ public:
     QAjShareFilesWidget *ajShareFilesWidget;
     QAjIncomingWidget *ajIncomingWidget;
 
-    void setFilesystemSeparator( QString separator )
+    void setFilesystemSeparator( const QString& separator )
     {
         filesystemSeparator = separator;
     }
@@ -96,13 +95,13 @@ public:
     {
         return filesystemSeparator;
     }
-    void setCoreVersion( QString version );
-    void connectedSince( QString since );
-    void queueLinks( QStringList links );
-    void setUploadFilename( QString shareId, QString filename );
+    void setCoreVersion( const QString& version );
+    void connectedSince( const QString& since );
+    void queueLinks( const QStringList& links );
+    void setUploadFilename( const QString& shareId, const QString& filename );
 
-    void createAjL( QList<QAjItem *>  selectedItems );
-    void sendToTray(  QString message1, QString message2  );
+    void createAjL( const QList<QAjItem *>& selectedItems );
+    void sendToTray(  const QString& message1, const QString& message2  );
 
     static QStringList getExec();
 
@@ -114,7 +113,7 @@ protected:
     void initTrayIcon();
     void closeEvent( QCloseEvent* );
     void processQueuedLinks();
-    QString showLoginDialog(QString message = "");
+    QString showLoginDialog(const QString& message = "");
 
     QTabWidget* ajTab;
     QSystemTrayIcon* tray;
@@ -169,11 +168,11 @@ private slots:
     void partListTimerSlot();
     void showOptions();
     void showNetworkInfo();
-    void settingsReady( AjSettings& settings );
-    void xmlError( int code );
+    void settingsReady( const AjSettings& settings );
+    void xmlError( QString reason );
     void gotSession();
 
-    void processLink( QString link );
+    void processLink( const QString& link );
     void processLink();
     void processClipboard();
 

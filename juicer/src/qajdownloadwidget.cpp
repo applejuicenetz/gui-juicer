@@ -176,7 +176,7 @@ void QAjDownloadWidget::insertDownload(const QString& id, const QString& hash, c
         }
         downloadItem->update( hash, fileName, status, size, ready, power, tempNumber );
         updateView( true );
-        connect(downloadItem->powerSpin, SIGNAL(powerChanged(QString, double)), this, SLOT(applyPowerDownload(QString, double)));
+        connect(downloadItem->powerSpin, SIGNAL(powerChanged(QString, double)), this, SLOT(applyPowerDownload(const QString &, double)));
     } else {
         downloadItem->update( hash, fileName, status, size, ready, power, tempNumber );
     }
@@ -559,7 +559,7 @@ void QAjDownloadWidget::applyPowerDownload()
 }
 
 
-void QAjDownloadWidget::applyPowerDownload(QString id, double value)
+void QAjDownloadWidget::applyPowerDownload(const QString& id, double value)
 {
     xml->set( "setpowerdownload", "&Powerdownload="+QConvert::power( value )+"&id="+id );
 }

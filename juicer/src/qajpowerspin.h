@@ -34,7 +34,7 @@ class QAjPowerSpin : public QWidget
 {
 Q_OBJECT
 public:
-    QAjPowerSpin(QString id, QWidget *parent = 0);
+    QAjPowerSpin(const QString& id, QWidget *parent = 0);
 
     ~QAjPowerSpin();
     QDoubleSpinBox* spin;
@@ -43,7 +43,7 @@ public:
 protected slots:
     void powerChanged();
 signals:
-    void powerChanged( QString id, double value );
+    void powerChanged( const QString& id, double value );
 };
 
 #endif

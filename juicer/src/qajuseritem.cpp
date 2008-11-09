@@ -19,12 +19,12 @@
  ***************************************************************************/
 #include "qajuseritem.h"
 
-QAjUserItem::QAjUserItem( QString id, QTreeWidget *parent ) : QAjItem( parent, id )
+QAjUserItem::QAjUserItem( const QString& id, QTreeWidget *parent ) : QAjItem( parent, id )
 {
     init();
 }
 
-QAjUserItem::QAjUserItem( QString id, QTreeWidgetItem *parent ) : QAjItem( parent, id )
+QAjUserItem::QAjUserItem( const QString& id, QTreeWidgetItem *parent ) : QAjItem( parent, id )
 {
     init();
 }
@@ -40,7 +40,7 @@ void QAjUserItem::init()
     setFlags( Qt::ItemIsEnabled );
 }
 
-void QAjUserItem::setSpeed( QString newSpeedString, QTime time )
+void QAjUserItem::setSpeed( const QString& newSpeedString, const QTime& time )
 {
     newSpeed = newSpeedString.toInt();
     speedDif = newSpeed - speed;
@@ -52,7 +52,7 @@ void QAjUserItem::setSpeed( QString newSpeedString, QTime time )
         setText( SPEED_DOWN_INDEX, "" );
 }
 
-void QAjUserItem::update( QString fileName, QString speed, QString status, QString power, QString queuePos, QString statusString, QIcon* osIcon, QTime time )
+void QAjUserItem::update( const QString& fileName, const QString& speed, const QString& status, const QString& power, const QString& queuePos, const QString& statusString, QIcon* osIcon, const QTime& time )
 {
     this->fileName = fileName;
     this->status = status;
@@ -60,9 +60,11 @@ void QAjUserItem::update( QString fileName, QString speed, QString status, QStri
     this->queuePos = queuePos.toInt();
     setSpeed( speed, time );
 
-    if ( this->status == QUEUED_SOURCE ) // queueing? print position
-        statusString += " (" + queuePos + ")";
-    setText( STATUS_DOWN_INDEX,  statusString );
+    if ( this->status == QUEUED_SOURCE ) { // queueing? print position
+        setText( STATUS_DOWN_INDEX,  statusString + " (" + queuePos + ")" );
+    } else {
+        setText( STATUS_DOWN_INDEX,  statusString );
+    }
     setText( POWER_DOWN_INDEX,  QConvert::power( power ) );
     if ( !fileNameSet && !fileName.isEmpty() )
     {

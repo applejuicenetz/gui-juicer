@@ -35,7 +35,7 @@ public:
   QAjPartsWidget( QWidget *parent = 0 );
 
   ~QAjPartsWidget();
-  void update( qulonglong size, QLinkedList<Part> partList );
+  void update( qulonglong size, QLinkedList<Part>& partList );
 
   double ready;
   double available;

@@ -34,14 +34,14 @@
 class QAjUserItem : public QAjItem
 {
 public:
-    QAjUserItem( QString id, QTreeWidget *parent );
-    QAjUserItem( QString id, QTreeWidgetItem *parent );
+    QAjUserItem( const QString& id, QTreeWidget *parent );
+    QAjUserItem( const QString& id, QTreeWidgetItem *parent );
 
     ~QAjUserItem();
 
-    void update( QString fileName, QString speed, QString status, QString power, QString queuePos, QString statusString, QIcon* osIcon, QTime time );
+    void update( const QString& fileName, const QString& speed, const QString& status, const QString& power, const QString& queuePos, const QString& statusString, QIcon* osIcon, const QTime& time );
 
-    void setSpeed( QString newSpeedString, QTime time );
+    void setSpeed( const QString& newSpeedString, const QTime& time );
 
     int getSpeedDif()
     {

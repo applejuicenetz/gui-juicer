@@ -19,7 +19,7 @@
  ***************************************************************************/
 #include "qajpowerspin.h"
 
-QAjPowerSpin::QAjPowerSpin(QString id, QWidget *parent) : QWidget(parent)
+QAjPowerSpin::QAjPowerSpin(const QString& id, QWidget *parent) : QWidget(parent)
 {
     this->id = id;
     QHBoxLayout *layout = new QHBoxLayout;

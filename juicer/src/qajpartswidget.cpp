@@ -123,9 +123,9 @@ void QAjPartsWidget::paintEvent( QPaintEvent* )
 
 
 /*!
-    \fn QAjPartsWidget::update( qulonglong size, QLinkedList<Part> partList )
+    \fn QAjPartsWidget::update( qulonglong size, QLinkedList<Part>& partList )
  */
-void QAjPartsWidget::update( qulonglong size, QLinkedList<Part> partList )
+void QAjPartsWidget::update( qulonglong size, QLinkedList<Part>& partList )
 {
   this->size = size;
   this->partList = partList;

@@ -41,7 +41,7 @@
 class Juicer;
 class QXMLHandler;
 
-class QXMLModule : protected QHttp
+class QXMLModule : public QHttp
 {
     Q_OBJECT
 public:
@@ -49,7 +49,7 @@ public:
 
     ~QXMLModule();
 
-    int setHost(const QString & host, quint16 port);
+    void resetHttp();
 
     int exec( const QString & request, int nErrors = 0 );
     int get( const QString & request, QString param = "" );
@@ -62,18 +62,9 @@ public:
     {
         this->passwordMD5 = passwordMD5;
     }
-    QString getErrorString() {
-        return errorString();
-    }
-    void abort() {
-        QHttp::abort();
-    }
     void sendToTray( QString & message1, QString & message2 );
 
 protected:
-    QString host;
-    quint16 port;
-
     Juicer *juicer;
     QString timeStamp;
     QString passwordMD5;
@@ -91,8 +82,8 @@ public slots:
     void responseHeaderReceived ( const QHttpResponseHeader & resp );
     void requestFinished(int id, bool error);
 signals:
-    void settingsReady( AjSettings& settings );
-    void error( int code );
+    void settingsReady( const AjSettings& settings );
+    void error( QString message );
     void gotSession();
     void modifiedDone();
 private:
@@ -114,6 +105,9 @@ private:
     void processUsers();
     QList<QDomElement> users;
     QList<QTime> userTimes;
+private slots:
+    void networkErrorSlot();
+    void httpErrorSlot();
 };
 
 #endif

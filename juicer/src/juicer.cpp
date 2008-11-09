@@ -51,8 +51,8 @@ Juicer::Juicer( QStringList argList, QSplashScreen *splash ) : QMainWindow()
     move( lokalSettings.value( "pos", QPoint(100, 100) ).toPoint() );
     lokalSettings.endGroup();
 
-    connect( xml, SIGNAL( settingsReady( AjSettings& ) ), this, SLOT( settingsReady( AjSettings& ) ) );
-    connect( xml, SIGNAL( error( int ) ), this, SLOT( xmlError( int ) ) );
+    connect( xml, SIGNAL( settingsReady( const AjSettings& ) ), this, SLOT( settingsReady( const AjSettings& ) ) );
+    connect( xml, SIGNAL( error( QString ) ), this, SLOT( xmlError( QString ) ) );
     connect( xml, SIGNAL( gotSession() ), this, SLOT( gotSession() ) );
     connect( xml, SIGNAL( modifiedDone( ) ), ajDownloadWidget, SLOT( updateView( ) ) );
     connect( xml, SIGNAL( modifiedDone( ) ), this, SLOT( firstModified() ) );
@@ -78,31 +78,6 @@ Juicer::Juicer( QStringList argList, QSplashScreen *splash ) : QMainWindow()
 
 Juicer::~Juicer()
 {}
-
-/*!
-    \fn Juicer::getPassword()
-    gets the password of the core, either from a local file or by asking the user
-    @deprecated use showLoginDialog()
-    @return the password in clear text
- */
-// QString Juicer::getPassword() {
-//     QString password = QAjOptionsDialog::getSetting( "password", "" ).toString();
-//     // -- no password in local file? => ask for it --
-//     if ( password.isEmpty() ) {
-//         showLoginDialog("Enter core password:");
-//         bool ok;
-//         password = QInputDialog::getText( this, "Juicer", tr("Enter core password:"), QLineEdit::Password,  QString::null, &ok );
-//         if ( !ok ) { // -- user canceld --
-//             qApp->quit();
-//         } else {
-//             // -- save password in local file if user wants it --
-//             if ( QAjOptionsDialog::getSetting( "savePassword", false ).toBool() )
-//                 QAjOptionsDialog::setSetting( "password", password );
-//         }
-//     }
-//     return password;
-// }
-
 
 /*!
     \fn Juicer::initToolBars()
@@ -271,11 +246,6 @@ void Juicer::closeEvent( QCloseEvent* ce ) {
     @return always true (may change this)
  */
 bool Juicer::login(QString message, bool error) {
-    ajDownloadWidget->clear();
-    ajServerWidget->clear();
-    ajSearchWidget->clear();
-    ajIncomingWidget->clear();
-    ajShareWidget->clear();
     connected = false;
     QString password;
     if(error || !QAjOptionsDialog::hasSetting("coreAddress") || !QAjOptionsDialog::hasSetting("password")) {
@@ -289,11 +259,10 @@ bool Juicer::login(QString message, bool error) {
     if(!password.isEmpty()) {
         firstModifiedCnt = 0;
         xml->setPassword(password);
-        xml->setHost(host, port);
+         xml->setHost(host, port);
         xml->get("getsession");
     // -- ignore at login --
     } else if(started) {
-        printf("ignore\n");
         optionsDialog->setSettings();
         this->show();
     } else {
@@ -302,7 +271,7 @@ bool Juicer::login(QString message, bool error) {
     return true;
 }
 
-QString Juicer::showLoginDialog(QString message) {
+QString Juicer::showLoginDialog(const QString& message) {
     if(splash->isVisible()) {
         splash->close();
     }
@@ -336,16 +305,12 @@ QString Juicer::showLoginDialog(QString message) {
     return ret;
 }
 
-void Juicer::xmlError( int code )
+void Juicer::xmlError( QString reason )
 {
     connected = false;
     timer->stop();
     partListTimer->stop();
-    if ( code == 302 ) {
-        login("Either wrong password or connection lost.", true);
-    } else {
-        login(xml->getErrorString() + ".", true);
-    }
+    login(reason, true);
 }
 
 /*!
@@ -414,7 +379,7 @@ void Juicer::showOptions()
     }
 }
 
-void Juicer::settingsReady( AjSettings& settings )
+void Juicer::settingsReady( const AjSettings& settings )
 {
     ajDownloadWidget->setDirs( QFileInfo( settings.tempDir ), QFileInfo( settings.incomingDir ) );
     ajIncomingWidget->setDir( settings.incomingDir );
@@ -444,7 +409,7 @@ void Juicer::showNetworkInfo()
     networkDialog->exec();
 }
 
-void Juicer::setStatusBarText( QString downSpeed, QString upSpeed, QString credits, QString downSize, QString upSize )
+void Juicer::setStatusBarText( const QString& downSpeed, const QString& upSpeed, const QString& credits, const QString& downSize, const QString& upSize )
 {
     QString downStreamString = tr("Downstream: ") + QConvert::bytes( downSpeed ) + tr("/s");
     QString upStreamString = tr("Upstream: ") + QConvert::bytes( upSpeed ) + tr("/s");
@@ -468,16 +433,15 @@ void Juicer::setStatusBarText( QString downSpeed, QString upSpeed, QString credi
     );
 }
 
-void Juicer::processLink( QString link)
+void Juicer::processLink( const QString& link)
 {
-    link = QUrl::fromPercentEncoding( link.trimmed().toUtf8() );
-    QStringList s = link.split("|");
+    QString encodedLink = QUrl::fromPercentEncoding( link.trimmed().toUtf8() );
+    QStringList s = encodedLink.split("|");
     if(s.size() > 3)
     {
         QString name = s[1];
         QString hash = s[2];
         QString size = s[3].split("/")[0];
-//         printf("%s\n%s\n", hash.toLatin1().data(), size.toLatin1().data() );
         if(s[0].toLower() == "ajfsp://file" ) {
             QAjShareFileItem* file;
             QAjDownloadItem* download;
@@ -490,7 +454,7 @@ void Juicer::processLink( QString link)
                 QMessageBox::information( this, tr("information"), tr("The file seems to be already in the download list")+":\n\n"+download->text( FILENAME_DOWN_INDEX ));
             }
         }
-        link = s[0] + "|" + QUrl::toPercentEncoding( name )  + "|" + hash + "|" + size + "/";
+        encodedLink = s[0] + "|" + QUrl::toPercentEncoding( name )  + "|" + hash + "|" + size + "/";
     }
     xml->set( "processlink", "&link=" + link );
 }
@@ -540,12 +504,12 @@ void Juicer::exitCore()
     }
 }
 
-void Juicer::setCoreVersion( QString version )
+void Juicer::setCoreVersion( const QString& version )
 {
     coreVersionLabel->setText( tr("Core: ") + version );
 }
 
-void Juicer::connectedSince( QString since )
+void Juicer::connectedSince( const QString& since )
 {
     if( since != "0" )
     {
@@ -600,16 +564,16 @@ void Juicer::processQueuedLinks()
         processLink( queuedLinks.takeFirst() );
 }
 
-void Juicer::queueLinks( QStringList links )
+void Juicer::queueLinks( const QStringList& links )
 {
     queuedLinks = links;
 }
 
 
 /*!
-    \fn Juicer::setUploadFilename( QString shareId, QString filename )
+    \fn Juicer::setUploadFilename( const QString& shareId, const QString& filename )
  */
-void Juicer::setUploadFilename( QString shareId, QString filename )
+void Juicer::setUploadFilename( const QString& shareId, const QString& filename )
 {
     ajUploadWidget->setFilename( shareId, ajDownloadWidget->findDownloadByTempNum( QFileInfo(filename) ) );
 }
@@ -813,7 +777,7 @@ void Juicer::openAjL()
 /*!
  * @deprecated
  */
-void Juicer::createAjL( QList<QAjItem *>  selectedItems )
+void Juicer::createAjL( const QList<QAjItem *>&  selectedItems )
 {
     QString ajListFileName = QFileDialog::getSaveFileName(
                               this,
@@ -892,7 +856,7 @@ void Juicer::createAjL( QList<QAjItem *>  selectedItems )
 
 }
 
-void Juicer::sendToTray( QString message1, QString message2 ) {
+void Juicer::sendToTray( const QString& message1, const QString& message2 ) {
     tray->showMessage( message1, message2, QSystemTrayIcon::Information, 3000 );
 }
 
