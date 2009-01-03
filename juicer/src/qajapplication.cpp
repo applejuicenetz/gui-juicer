@@ -29,23 +29,23 @@ QAjApplication::QAjApplication( int & argc, char ** argv ) : QApplication( argc,
     QCoreApplication::setApplicationName("Juicer");
     setQuitOnLastWindowClosed( false );
     socket = NULL;
-
+    appPath = QString(argv[0]);
     // -- check if juicer is default application for ajfsp links --
     #ifdef Q_WS_WIN
-        QString appPath = QString(argv[0]).replace("\\","\\\\");
-        appPath = "\"" + appPath + "\" \"%1\"";
+        QStrign appCmd = appPath.replace("\\","\\\\");
+        appCmd = "\"" + appCmd + "\" \"%1\"";
         QSettings settings("HKEY_CLASSES_ROOT\\ajfsp", QSettings::NativeFormat);
         settings.setValue("Default","URL:ajfsp Protocol");
         settings.setValue("URL Protocol","");
-        if(settings.value("shell/open/command/Default") != appPath) {
+        if(settings.value("shell/open/command/Default") != appCmd) {
             if(QAjOptionsDialog::hasSetting("handler")) {
                 if(QAjOptionsDialog::getSetting("handler", false).toBool()) {
-                    settings.setValue("shell/open/command/Default",appPath);
+                    settings.setValue("shell/open/command/Default",appCmd);
                 }
             } else {
                 QAjHandlerDialog* handlerDialog = new QAjHandlerDialog(NULL);
                 if(handlerDialog->exec() == QDialog::Accepted) {
-                    settings.setValue("shell/open/command/Default",appPath);
+                    settings.setValue("shell/open/command/Default",appCmd);
                 }
             }
         }

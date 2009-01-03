@@ -34,11 +34,19 @@ QXMLModule::~QXMLModule()
 {
 }
 
-int QXMLModule::exec( const QString & request, int nErrors ) {
+int QXMLModule::exec(const QString & request, int nErrors) {
     int id = QHttp::get(request);
     requests[id] = request;
     errors[id] = nErrors;
     return id;
+}
+
+int QXMLModule::make(Type type, const QString & request, QString param) {
+    if(type == GET) {
+        return get(request, param);
+    } else {
+        return set(request, param);
+    }
 }
 
 int QXMLModule::get( const QString & request, QString param )
@@ -161,8 +169,8 @@ void QXMLModule::requestFinished( int id, bool error )
                     }
                     else if ( e.tagName() == "dir" )
                     {
-                        if ( juicer->ajShareWidget->fileSystem != NULL ) {
-                        juicer->ajShareWidget->fileSystem->insertDirectory(
+                        if ( juicer->shareModule->fileSystem != NULL ) {
+                        juicer->shareModule->fileSystem->insertDirectory(
                               e.attribute("name"),
                               e.attribute("path"),
                               e.attribute("type").toInt() );
@@ -170,8 +178,8 @@ void QXMLModule::requestFinished( int id, bool error )
                     }
                     else if ( e.tagName() == "filesystem" )
                     {
-                        if ( juicer->ajShareWidget->fileSystem != NULL ) {
-                        juicer->ajShareWidget->fileSystem->insertSeperator(e.attribute("seperator"));
+                        if ( juicer->shareModule->fileSystem != NULL ) {
+                        juicer->shareModule->fileSystem->insertSeperator(e.attribute("seperator"));
                         }
                     }
                     else
@@ -257,14 +265,14 @@ void QXMLModule::handleSettings( QDomElement& e )
     settings.tempDir = e.firstChildElement("temporarydirectory").text();
     settingsReady(settings);
 
-    juicer->ajShareFilesWidget->setTmpDir(settings.tempDir);
+    juicer->shareModule->setTmpDir(settings.tempDir);
 
-    juicer->ajShareWidget->clear();
+    juicer->sharesTreeWidget->clear();
     QDomElement shareE;
     for(shareE=e.firstChildElement("share").firstChildElement("directory");
         !shareE.isNull(); shareE = shareE.nextSiblingElement("directory"))
     {
-        juicer->ajShareWidget->insertShare(
+        juicer->shareModule->insertShare(
             shareE.attribute("name"), shareE.attribute("sharemode"),
             juicer->getFilesystemSeparator());
     }
@@ -292,9 +300,9 @@ void QXMLModule::handleShares( QDomElement& e )
         {
             QDomElement shareE = n.toElement();
             if (!shareE.isNull() &&
-                !shareE.attribute("filename").contains(juicer->ajShareFilesWidget->getTmpDir()))
+                !shareE.attribute("filename").contains(juicer->shareModule->getTmpDir()))
             {
-            juicer->ajShareFilesWidget->insertFile(
+            juicer->shareModule->insertFile(
             shareE.attribute("id"),
             shareE.attribute("checksum"),
             shareE.attribute("filename"),
@@ -351,10 +359,10 @@ void QXMLModule::handleNetworkInfo( QDomElement& e )
         QConvert::bytesLong( e.attribute("filesize")),
         e.attribute("ip"),
         e.attribute("firewalled")=="true"?tr("yes"):tr("no"));
-    juicer->ajServerWidget->connectedWith( e.attribute("connectedwithserverid") );
-    juicer->ajServerWidget->connectingTo( e.attribute("tryconnecttoserver") );
+    juicer->serverModule->connectedWith( e.attribute("connectedwithserverid") );
+    juicer->serverModule->connectingTo( e.attribute("tryconnecttoserver") );
     juicer->connectedSince( e.attribute("connectedsince") );
-    juicer->ajServerMetaWidget->welcomeMessage->setHtml( e.firstChildElement("welcomemessage").text().trimmed() );
+    juicer->welcomeEdit->setHtml( e.firstChildElement("welcomemessage").text().trimmed() );
 }
 
 
@@ -363,7 +371,7 @@ void QXMLModule::handleNetworkInfo( QDomElement& e )
  */
 void QXMLModule::handleUpload( QDomElement& e )
 {
-    if( ! juicer->ajUploadWidget->insertUpload(
+    if( ! juicer->uploadModule->insertUpload(
             e.attribute("id"),
             e.attribute("shareid"),
             e.attribute("version"),
@@ -394,7 +402,7 @@ void QXMLModule::processUsers() {
     while(!users.empty()) {
         QDomElement e = users.takeFirst();
         QTime time = userTimes.takeFirst();
-        juicer->ajDownloadWidget->insertUser(
+        juicer->downloadModule->insertUser(
             e.attribute("downloadid"),
             e.attribute("id"),
             e.attribute("filename"),
@@ -412,8 +420,7 @@ void QXMLModule::processUsers() {
  */
 void QXMLModule::handleDownload( QDomElement& e )
 {
-//     juicer->ajDownloadWidget->mutex.lock();
-    juicer->ajDownloadWidget->insertDownload(
+    juicer->downloadModule->insertDownload(
         e.attribute("id"),
         e.attribute("hash"),
         e.attribute("filename"),
@@ -422,7 +429,6 @@ void QXMLModule::handleDownload( QDomElement& e )
         e.attribute("ready"),
         e.attribute("powerdownload"),
         e.attribute("temporaryfilenumber"));
-//     juicer->ajDownloadWidget->mutex.unlock();
 }
 
 
@@ -431,7 +437,7 @@ void QXMLModule::handleDownload( QDomElement& e )
  */
 void QXMLModule::handleServer( QDomElement& e )
 {
-    juicer->ajServerWidget->insertServer(
+    juicer->serverModule->insertServer(
         e.attribute("id"),
         e.attribute("name"),
         e.attribute("host"),
@@ -446,7 +452,7 @@ void QXMLModule::handleServer( QDomElement& e )
  */
 void QXMLModule::handleSearch( QDomElement& e )
 {
-    juicer->ajSearchWidget->insertSearch(
+    juicer->searchModule->insertSearch(
         e.attribute("id"),
         e.attribute("searchtext"),
         e.attribute("running"),
@@ -464,7 +470,7 @@ void QXMLModule::handleSearchEntry( QDomElement& e )
     for(fileE=e.firstChildElement("filename"); !fileE.isNull(); fileE = fileE.nextSiblingElement("filename")) {
         filenames.append(fileE.attribute("name"));
     }
-    juicer->ajSearchWidget->insertSearchEntry(
+    juicer->searchModule->insertSearchEntry(
         e.attribute("id"),
         e.attribute("searchid"),
         e.attribute("size"),
@@ -494,12 +500,10 @@ void QXMLModule::handleRemoved( QDomElement& e )
         !objectE.isNull(); objectE = objectE.nextSiblingElement("object"))
     {
         QString id = objectE.attribute("id");
-//         juicer->ajDownloadWidget->mutex.lock();
-        if ( ! juicer->ajDownloadWidget->remove( id ) )
-            if ( ! juicer->ajUploadWidget->remove( id ) )
-                if ( ! juicer->ajServerWidget->remove( id ) )
-                    juicer->ajSearchWidget->remove( id );
-//         juicer->ajDownloadWidget->mutex.unlock();
+        if ( ! juicer->downloadModule->remove( id ) )
+            if ( ! juicer->uploadModule->remove( id ) )
+                if ( ! juicer->serverModule->remove( id ) )
+                    juicer->searchModule->remove( id );
     }
 }
 
@@ -524,16 +528,16 @@ void QXMLModule::handlePartList( int id )
     {
         if( partListRequests.contains( id ) )
         {
-            QAjDownloadItem* item = juicer->ajDownloadWidget->findDownload( partListRequests[id] );
+            QAjDownloadItem* item = juicer->downloadModule->findDownload( partListRequests[id] );
             if( item != NULL )
             {
-                item->getPartListWidget()->update( partsSize, partList );
+                item->getPartListDialog()->update( partsSize, partList );
             }
             partListRequests.remove( id );
         }
         else if( partListSimpleRequests.contains( id ) )
         {
-            QAjDownloadItem* item = juicer->ajDownloadWidget->findDownload( partListSimpleRequests[id] );
+            QAjDownloadItem* item = juicer->downloadModule->findDownload( partListSimpleRequests[id] );
             if ( item != NULL )
             {
                 item->setParts( partsSize, partList );

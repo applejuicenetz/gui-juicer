@@ -22,6 +22,8 @@
 
 Juicer::Juicer( QStringList argList, QSplashScreen *splash ) : QMainWindow()
 {
+    setupUi( this );
+
     started = false;
     this->splash = splash;
     connect( qApp, SIGNAL( lastWindowClosed () ), this, SLOT ( lastWindowClosed () ) );
@@ -33,16 +35,29 @@ Juicer::Juicer( QStringList argList, QSplashScreen *splash ) : QMainWindow()
     connect( linkServer, SIGNAL( lineReady( QString ) ), this, SLOT( processLink( QString ) ) );
 
     setWindowIcon(QIcon(":/juicer.png"));
+    osIcons[LINUX] = QIcon(":/small/linux.png");
+    osIcons[WINDOWS] = QIcon(":/small/windows.png");
+    osIcons[MAC] = QIcon(":/small/mac.png");
+    osIcons[SOLARIS] = QIcon(":/small/solaris.png");
+    osIcons[FREEBSD] = QIcon(":/small/freebsd.png");
+    osIcons[NETWARE] = QIcon(":/small/netware.png");
 
-    xml = new QXMLModule( this );
 
-    initTabs();
+    xml = new QXMLModule(this);
+    downloadModule = new QAjDownloadModule(this);
+    uploadModule = new QAjUploadModule(this);
+    searchModule = new QAjSearchModule(this);
+    serverModule = new QAjServerModule(this);
+    shareModule = new QAjShareModule(this);
+    incomingModule = new QAjIncomingModule(this);
+
+    prevTab = downloads;
 
     networkDialog = new QAjNetworkDialog( this );
     optionsDialog = new QAjOptionsDialog( this );
 
     initToolBars();
-    initMenuBar();
+    connectActions();
     initStatusBar();
 
     QSettings lokalSettings;
@@ -54,30 +69,31 @@ Juicer::Juicer( QStringList argList, QSplashScreen *splash ) : QMainWindow()
     connect( xml, SIGNAL( settingsReady( const AjSettings& ) ), this, SLOT( settingsReady( const AjSettings& ) ) );
     connect( xml, SIGNAL( error( QString ) ), this, SLOT( xmlError( QString ) ) );
     connect( xml, SIGNAL( gotSession() ), this, SLOT( gotSession() ) );
-    connect( xml, SIGNAL( modifiedDone( ) ), ajDownloadWidget, SLOT( updateView( ) ) );
+    connect( xml, SIGNAL( modifiedDone( ) ), downloadModule, SLOT( updateView( ) ) );
     connect( xml, SIGNAL( modifiedDone( ) ), this, SLOT( firstModified() ) );
 
     connected = false;
 
     timer = new QTimer( this );
-    connect( timer, SIGNAL( timeout() ), this, SLOT( timerSlot() ) );
     partListTimer = new QTimer( this );
+    connect( timer, SIGNAL( timeout() ), this, SLOT( timerSlot() ) );
     connect( partListTimer, SIGNAL( timeout() ), this, SLOT( partListTimerSlot() ) );
 
     connect( ajTab, SIGNAL( currentChanged( int ) ), this, SLOT( tabChanged( int ) ) );
 
-    tabChanged( ajTab->indexOf(ajDownloadWidget) );
+    tabChanged( ajTab->indexOf(downloads) );
 
     // -- we need to do this as an event, because we can quit the application only if the application is already in the event loop --
     QTimer::singleShot(0, this, SLOT(login()));
 
     queueLinks( argList );
     initTrayIcon();
-    connect( ajDownloadWidget, SIGNAL( downloadsFinished( const QList<QAjDownloadItem*>&  ) ),this, SLOT( downloadsFinished( const QList<QAjDownloadItem*>& ) ) );
+    connect(downloadModule, SIGNAL( downloadsFinished( const QList<QAjDownloadItem*>&  ) ),this, SLOT( downloadsFinished( const QList<QAjDownloadItem*>& ) ) );
 }
 
-Juicer::~Juicer()
-{}
+Juicer::~Juicer() {
+
+}
 
 /*!
     \fn Juicer::initToolBars()
@@ -85,21 +101,6 @@ Juicer::~Juicer()
  */
 void Juicer::initToolBars()
 {
-    QToolBar* ajTools = new QToolBar( tr("applejuice operations"), this );
-    ajTools->setToolTip( tr("applejuice operations") );
-
-    ajTools->addAction( QIcon(":/configure.png"), tr("configure"), this, SLOT( showOptions() ) )->setToolTip(tr("configure"));
-    ajTools->addAction( QIcon(":/network.png"), tr("aj network info"), this, SLOT( showNetworkInfo() ) )->setToolTip(tr("aj network info"));
-    ajTools->addAction( QIcon(":/folder_open.png"), tr("Open AJL file"), this, SLOT( openAjL() ) )->setToolTip(tr("Open AJ link list file"));
-    
-    ajTools->addAction( QIcon(":/adjust.png"), tr("adjust columns"), this, SLOT( adjustColumns() ) )->setToolTip(tr("adjust columns"));
-
-    QToolBar* ajLinks = new QToolBar( tr("applejuice links"), this );
-    ajLinks->setToolTip( tr("applejuice links") );
-
-    clipboardButton = ajLinks->addAction( QIcon(":/wizard.png"), tr("process link from clipboard"), this, SLOT( processClipboard() ) );
-    clipboardButton->setToolTip( tr("process link from clipboard") );
-
     ajAddressLabel = new QLabel(ajLinks);
     ajAddressLabel->setText("ajfsp link:");
     ajAddressLabel->adjustSize();
@@ -110,84 +111,21 @@ void Juicer::initToolBars()
     connect( ajAddressEdit, SIGNAL( returnPressed() ), this, SLOT( processLink() ) );
 
     ajLinks->addAction( QIcon(":/ok.png"), tr("process link"), this, SLOT( processLink() ) );
-
-    setIconSize( QSize(22, 22) );
-    addToolBar( ajTools );
-    addToolBar( ajLinks );
-    addToolBarBreak( );
-    ajDownloadWidget->toolBar->setIconSize( QSize(22, 22) );
-    addToolBar( ajDownloadWidget->toolBar );
-    addToolBar( ajUploadWidget->toolBar );
-    addToolBar( ajSearchWidget->toolBar );
-    addToolBar( ajServerWidget->toolBar );
-    addToolBar( ajShareWidget->toolBar );
-    addToolBar( ajIncomingWidget->toolBar );
 }
 
 /*!
-    \fn Juicer::initMenuBar()
-    initializes the menu bar
+    \fn Juicer::connectActions()
  */
-void Juicer::initMenuBar() {
-    file = new QMenu( tr("&AppleJuice"), this );
-    menuBar()->addMenu( file );
-
-    file->addAction( QIcon(":/small/configure.png"), tr("C&onfigure"), this, SLOT( showOptions() ), QKeySequence( Qt::CTRL+Qt::Key_O ) );
-    file->addAction( QIcon(":/small/network.png"), tr("&Net Info"), networkDialog, SLOT( exec() ), QKeySequence( Qt::CTRL+Qt::Key_N ) );
-    file->addSeparator();
-    file->addAction( QIcon(":/small/folder_open.png"), tr("&Open Aj Link List"), this, SLOT( openAjL() ) );
-    file->addSeparator();
-    file->addAction( QIcon(":/small/exit.png"), tr("&Exit Core"), this, SLOT( exitCore() ), QKeySequence( Qt::CTRL+Qt::Key_E ) );
-    file->addAction( QIcon(":/small/close.png"), tr("&Quit GUI"), qApp, SLOT( quit() ), QKeySequence( Qt::CTRL+Qt::Key_Q ) );
-
-    menuBar()->addMenu( ajDownloadWidget->popup );
-    menuBar()->addMenu( ajSearchWidget->popup );
-    menuBar()->addMenu( ajServerWidget->popup );
-    menuBar()->addMenu( ajShareWidget->popup );
-    menuBar()->addMenu( ajIncomingWidget->popup );
-
-    menuBar()->addSeparator();
-
-    help = new QMenu( this );
-    help->setTitle( tr("&Help") );
-    help->addAction( tr("&About"), this, SLOT(about()), QKeySequence( Qt::Key_F1  ) );
-    help->addAction( tr("About &Qt"), this, SLOT(aboutQt()) );
-    help->addSeparator();
-
-    menuBar()->addMenu( help );
-}
-
-/*!
-    \fn Juicer::initTabs()
-    initializes the tab widgets
- */
-void Juicer::initTabs() {
-    ajTab = new QTabWidget(this);
-    ajDownloadWidget = new QAjDownloadWidget( xml, ajTab );
-    ajUploadWidget = new QAjUploadWidget( xml, ajTab );
-    ajSearchWidget = new QAjSearchWidget( xml, ajTab );
-
-    ajServerMetaWidget = new QAjServerMetaWidget( ajTab );
-    ajServerWidget = new QAjServerWidget( xml, ajServerMetaWidget );
-    ajServerMetaWidget->setServerWidget( ajServerWidget );
-
-    ajShareMetaWidget = new QAjShareMetaWidget( ajTab );
-    ajShareWidget = new QAjShareWidget( xml, ajShareMetaWidget );
-    ajShareFilesWidget = new QAjShareFilesWidget( xml, ajShareMetaWidget );
-    ajShareMetaWidget->setShareWidget( ajShareWidget );
-    ajShareMetaWidget->setShareFilesWidget( ajShareFilesWidget );
-
-    ajTab->setTabToolTip( ajTab->addTab( ajDownloadWidget, QIcon(":/small/down.png"), tr("Downloads") ), tr("Dowloads") );
-    ajTab->setTabToolTip( ajTab->addTab( ajUploadWidget, QIcon(":/small/up.png"), tr("Uploads") ), tr("Uploads") );
-    ajTab->setTabToolTip( ajTab->addTab( ajSearchWidget, QIcon(":/small/searching.png"), tr("Search") ), tr("Search") );
-    ajTab->setTabToolTip( ajTab->addTab( ajServerMetaWidget, QIcon(":/small/server.png"), tr("Server") ), tr("Servers") );
-    ajTab->setTabToolTip( ajTab->addTab( ajShareMetaWidget, QIcon(":/small/shares.png"), tr("Shares") ), tr("Shares") );
-
-    ajIncomingWidget = new QAjIncomingWidget( xml, ajTab );
-    ajTab->setTabToolTip( ajTab->addTab( ajIncomingWidget, QIcon(":/small/ftp.png"), tr("Incoming") ), tr("Incoming") );
-
-    setCentralWidget( ajTab );
-    prevTab = ajDownloadWidget;
+void Juicer::connectActions() {
+    connect(actionConfigure, SIGNAL(triggered()), this, SLOT(showOptions()));
+    connect(actionNet_Info, SIGNAL(triggered()), networkDialog, SLOT(exec()));
+    connect(actionOpen_Aj_Link_List, SIGNAL(triggered()), this, SLOT(openAjL()));
+    connect(actionAdjust_Columns, SIGNAL(triggered()), this, SLOT( adjustColumns()));
+    connect(actionProcess_Link_From_Clipboard, SIGNAL(triggered()), this, SLOT(processClipboard()));
+    connect(actionExit_Core, SIGNAL(triggered()), this, SLOT(exitCore()));
+    connect(actionQuit_GUI, SIGNAL(triggered()), qApp, SLOT(quit()));
+    connect(actionAbout, SIGNAL(triggered()), this, SLOT(about()));
+    connect(actionAbout_Qt, SIGNAL(triggered()), this, SLOT(aboutQt()));
 }
 
 /*!
@@ -200,7 +138,7 @@ void Juicer::initTrayIcon()
     if( QAjOptionsDialog::getSetting( "useTray", false ).toBool() )
     {
         tray->setVisible(true);
-        tray->setContextMenu( file );
+        tray->setContextMenu(menuAppleJuice);
         connect(tray, SIGNAL(activated(QSystemTrayIcon::ActivationReason)), this, SLOT( trayActivated( QSystemTrayIcon::ActivationReason ) ) );
     } else {
         tray->setVisible(false);
@@ -218,22 +156,12 @@ void Juicer::closeEvent( QCloseEvent* ce ) {
     lokalSettings.setValue( "size", size() );
     lokalSettings.setValue( "pos", pos() );
     lokalSettings.endGroup();
-    lokalSettings.beginGroup("WelcomeDock");
-    lokalSettings.setValue( "pos", ajServerMetaWidget->dockWidgetArea(ajServerMetaWidget->dock) );
-    lokalSettings.setValue( "size", ajServerMetaWidget->dock->size() );
-    lokalSettings.setValue( "visible", ajServerMetaWidget->dock->enabled );
-    lokalSettings.endGroup();
-    lokalSettings.beginGroup("FilesDock");
-    lokalSettings.setValue( "pos", ajShareMetaWidget->dockWidgetArea(ajShareMetaWidget->dock) );
-    lokalSettings.setValue( "size", ajShareMetaWidget->dock->size() );
-    lokalSettings.setValue( "visible", ajShareMetaWidget->dock->enabled );
-    lokalSettings.endGroup();
-    ajDownloadWidget->saveSortOrder("DownloadWidget");
-    ajUploadWidget->saveSortOrder("UploadWidget");
-    ajServerWidget->saveSortOrder("ServerWidget");
-    ajSearchWidget->saveSortOrder("SearchWidget");
-    ajIncomingWidget->saveSortOrder("IncomingWidget");
-    ajShareWidget->saveSortOrder("ShareWidget");
+    downloadModule->saveSortOrder("DownloadWidget");
+    uploadModule->saveSortOrder("UploadWidget");
+    searchModule->saveSortOrder("SearchWidget");
+    serverModule->saveSortOrder("ServerWidget");
+    shareModule->saveSortOrder("ShareWidget");
+    incomingModule->saveSortOrder("IncomingWidget");
     ce->accept();
 }
 
@@ -245,7 +173,7 @@ void Juicer::closeEvent( QCloseEvent* ce ) {
     @param error is this an retry? (force showing the login dialog)
     @return always true (may change this)
  */
-bool Juicer::login(QString message, bool error) {
+bool Juicer::login(const QString& message, bool error) {
     connected = false;
     QString password;
     if(error || !QAjOptionsDialog::hasSetting("coreAddress") || !QAjOptionsDialog::hasSetting("password")) {
@@ -305,8 +233,7 @@ QString Juicer::showLoginDialog(const QString& message) {
     return ret;
 }
 
-void Juicer::xmlError( QString reason )
-{
+void Juicer::xmlError(const QString& reason) {
     connected = false;
     timer->stop();
     partListTimer->stop();
@@ -329,10 +256,10 @@ void Juicer::timerSlot() {
  */
 void Juicer::partListTimerSlot() {
     if(connected) {
-        QString id = ajDownloadWidget->getNextIdRoundRobin();
+        QString id = downloadModule->getNextIdRoundRobin();
         if (!id.isEmpty()) {
             xml->get( "downloadpartlist", "&simple&id=" + id);
-            ajDownloadWidget->doItemsLayout();
+            downloadsTreeWidget->doItemsLayout();
         }
     }
 }
@@ -348,12 +275,12 @@ void Juicer::showOptions()
         AjSettings settings = optionsDialog->getAjSettings();
         QApplication::setFont(optionsDialog->getFont());
         bool altRows = optionsDialog->altRowsCheckBox->isChecked();
-        ajDownloadWidget->setAlternatingRowColors( altRows );
-        ajUploadWidget->setAlternatingRowColors( altRows );
-        ajServerWidget->setAlternatingRowColors( altRows );
-        ajIncomingWidget->setAlternatingRowColors( altRows );
-        ajSearchWidget->setAlternatingRowColors( altRows );
-        ajShareFilesWidget->setAlternatingRowColors( altRows );
+        downloadsTreeWidget->setAlternatingRowColors( altRows );
+        uploadsTreeWidget->setAlternatingRowColors( altRows );
+        serverTreeWidget->setAlternatingRowColors( altRows );
+        searchsTreeWidget->setAlternatingRowColors( altRows );
+        sharesTreeWidget->setAlternatingRowColors( altRows );
+        incomingTreeWidget->setAlternatingRowColors( altRows );
         initStatusBar();
 
         timer->stop();
@@ -381,8 +308,8 @@ void Juicer::showOptions()
 
 void Juicer::settingsReady( const AjSettings& settings )
 {
-    ajDownloadWidget->setDirs( QFileInfo( settings.tempDir ), QFileInfo( settings.incomingDir ) );
-    ajIncomingWidget->setDir( settings.incomingDir );
+    downloadModule->setDirs( QFileInfo( settings.tempDir ), QFileInfo( settings.incomingDir ) );
+    incomingModule->setDir( settings.incomingDir );
     if ( optionsDialog != NULL )
     {
         optionsDialog->setAjSettings( settings );
@@ -433,30 +360,25 @@ void Juicer::setStatusBarText( const QString& downSpeed, const QString& upSpeed,
     );
 }
 
-void Juicer::processLink( const QString& link)
-{
-    QString encodedLink = QUrl::fromPercentEncoding( link.trimmed().toUtf8() );
+void Juicer::processLink( const QString& link) {
+    QString encodedLink = QUrl::fromPercentEncoding(link.trimmed().toUtf8());
     QStringList s = encodedLink.split("|");
-    if(s.size() > 3)
-    {
+    if(s.size() > 3) {
         QString name = s[1];
         QString hash = s[2];
         QString size = s[3].split("/")[0];
-        if(s[0].toLower() == "ajfsp://file" ) {
+        if(s[0].toLower() == "ajfsp://file") {
             QAjShareFileItem* file;
             QAjDownloadItem* download;
-            if( (file = ajShareFilesWidget->findFile( size, hash )) != NULL )
-            {
+            if((file = shareModule->findFile( size, hash )) != NULL) {
                 QMessageBox::information( this, tr("information"), tr("The file seems to be already in the share")+":\n\n"+file->getFilename());
-            }
-            else if( (download = ajDownloadWidget->findDownload( size, hash )) != NULL )
-            {
-                QMessageBox::information( this, tr("information"), tr("The file seems to be already in the download list")+":\n\n"+download->text( FILENAME_DOWN_INDEX ));
+            } else if((download = downloadModule->findDownload(size, hash)) != NULL) {
+                QMessageBox::information( this, tr("information"), tr("The file seems to be already in the download list")+":\n\n"+download->text(FILENAME_DOWN_INDEX));
             }
         }
         encodedLink = s[0] + "|" + QUrl::toPercentEncoding( name )  + "|" + hash + "|" + size + "/";
     }
-    xml->set( "processlink", "&link=" + link );
+    xml->set("processlink", "&link=" + link);
 }
 
 void Juicer::processLink()
@@ -471,27 +393,23 @@ void Juicer::processClipboard()
 }
 
 
-void Juicer::tabChanged( int index )
-{
+void Juicer::tabChanged( int index ) {
     QWidget *tab = ajTab->widget( index );
-    QSettings lokalSettings;
-    ajDownloadWidget->setActive( tab == ajDownloadWidget );
-    ajUploadWidget->setActive( tab == ajUploadWidget );
-    ajSearchWidget->setActive( tab == ajSearchWidget );
-    ajServerWidget->setActive( tab == ajServerMetaWidget );
-    ajShareWidget->setActive( tab == ajShareMetaWidget );
-    ajIncomingWidget->setActive( tab == ajIncomingWidget );
 
-    if ( (prevTab == ajShareWidget) && ( ajShareWidget->changed ) )
-    {
-        if ( QMessageBox::question( this, tr("question"), tr("You've changed your shares.\nDo you want to transfer the changes to the core?"), QMessageBox::Yes, QMessageBox::No ) == QMessageBox::Yes)
-        {
-            ajShareWidget->commitSlot();
-        }
+    downloadToolBar->setVisible(tab == downloads);
+    uploadToolBar->setVisible(tab == uploads);
+    searchToolBar->setVisible(tab == search);
+    serverToolBar->setVisible(tab == server);
+    shareToolBar->setVisible(tab == shares);
+    incomingToolBar->setVisible(tab == incoming);
+
+    if((prevTab == shares) && (shareModule->changed) && (QMessageBox::question( this, tr("question"), tr("You've changed your shares.\nDo you want to transfer the changes to the core?"), QMessageBox::Yes, QMessageBox::No ) == QMessageBox::Yes)) {
+        shareModule->commitSlot();
     }
 
-    if(tab == ajIncomingWidget)
-        ajIncomingWidget->reload();
+    if(tab == incoming) {
+        incomingModule->reload();
+    }
 
     prevTab = tab;
 }
@@ -504,41 +422,33 @@ void Juicer::exitCore()
     }
 }
 
-void Juicer::setCoreVersion( const QString& version )
-{
-    coreVersionLabel->setText( tr("Core: ") + version );
+void Juicer::setCoreVersion(const QString& version) {
+    coreVersionLabel->setText(tr("Core: ") + version);
 }
 
-void Juicer::connectedSince( const QString& since )
-{
-    if( since != "0" )
-    {
-        QString time = zeroTime.addMSecs( since.toULongLong() ).toLocalTime().toString( Qt::LocalDate );
-        connectedLabel->setText( tr("connected since") + " " + time );
-    }
-    else
-    {
-        connectedLabel->setText( tr("NOT connected") );
+void Juicer::connectedSince(const QString& since) {
+    if(since != "0") {
+        QString time = zeroTime.addMSecs( since.toULongLong()).toLocalTime().toString(Qt::LocalDate);
+        connectedLabel->setText(tr("connected since") + " " + time);
+    } else {
+        connectedLabel->setText(tr("NOT connected"));
     }
 }
 
-void Juicer::firstModified()
-{
-    if (firstModifiedCnt <= firstModifiedMax)
-    {
-        if (firstModifiedCnt == firstModifiedMax)
-        {
-            ajDownloadWidget->updateView( true );
-            ajDownloadWidget->adjustSizeOfColumns();
-            ajUploadWidget->adjustSizeOfColumns();
-            ajServerWidget->adjustSizeOfColumns();
-            ajShareWidget->adjustSizeOfColumns();
-            ajDownloadWidget->sortItemsInitially("DownloadWidget");
-            ajUploadWidget->sortItemsInitially("UploadWidget");
-            ajServerWidget->sortItemsInitially("ServerWidget");
-            ajShareWidget->sortItemsInitially( "ShareWidget");
-            ajIncomingWidget->sortItemsInitially("IncomingWidget");
-            ajSearchWidget->sortItemsInitially("SearchWidget");
+void Juicer::firstModified() {
+    if (firstModifiedCnt <= firstModifiedMax) {
+        if (firstModifiedCnt == firstModifiedMax) {
+            downloadModule->updateView( true );
+            downloadModule->adjustSizeOfColumns();
+            uploadModule->adjustSizeOfColumns();
+            serverModule->adjustSizeOfColumns();
+            shareModule->adjustSizeOfColumns();
+            downloadModule->sortItemsInitially("DownloadWidget");
+            uploadModule->sortItemsInitially("UploadWidget");
+            serverModule->sortItemsInitially("ServerWidget");
+            shareModule->sortItemsInitially( "ShareWidget");
+            incomingModule->sortItemsInitially("IncomingWidget");
+            searchModule->sortItemsInitially("SearchWidget");
             processQueuedLinks();
             this->show();
             started = true;
@@ -547,11 +457,9 @@ void Juicer::firstModified()
             if(splash->isVisible()) {
                 splash->finish(this);
             }
-            
             QSettings lokalSettings;
-            if(lokalSettings.value( "fetchServersOnStartup", false ).toBool())
-            {
-                ajServerWidget->findSlot();
+            if(lokalSettings.value("fetchServersOnStartup", false).toBool()) {
+                serverModule->searchSlot();
             }
         }
         firstModifiedCnt++;
@@ -575,7 +483,7 @@ void Juicer::queueLinks( const QStringList& links )
  */
 void Juicer::setUploadFilename( const QString& shareId, const QString& filename )
 {
-    ajUploadWidget->setFilename( shareId, ajDownloadWidget->findDownloadByTempNum( QFileInfo(filename) ) );
+    uploadModule->setFilename( shareId, downloadModule->findDownloadByTempNum( QFileInfo(filename) ) );
 }
 
 
@@ -584,16 +492,14 @@ void Juicer::setUploadFilename( const QString& shareId, const QString& filename 
  */
 void Juicer::adjustColumns()
 {
-    if ( ajDownloadWidget->isVisible() )
-        ajDownloadWidget->adjustSizeOfColumns();
-    if ( ajUploadWidget->isVisible() )
-        ajUploadWidget->adjustSizeOfColumns();
-    if ( ajServerWidget->isVisible() )
-        ajServerWidget->adjustSizeOfColumns();
-    if ( ajShareWidget->isVisible() )
-        ajShareWidget->adjustSizeOfColumns();
-    if ( ajShareMetaWidget->sharedFilesWidget->isVisible() )
-        ajShareMetaWidget->sharedFilesWidget->adjustSizeOfColumns();
+    if(downloads->isVisible())
+        downloadModule->adjustSizeOfColumns();
+    if(uploads->isVisible())
+        uploadModule->adjustSizeOfColumns();
+    if(server->isVisible())
+        serverModule->adjustSizeOfColumns();
+    if(shares->isVisible())
+        shareModule->adjustSizeOfColumns();
 }
 
 

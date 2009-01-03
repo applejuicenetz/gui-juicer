@@ -29,7 +29,7 @@
 class QAjUploadItem : public QAjItem
 {
 public:
-    QAjUploadItem( QString id, QString shareId, QTreeWidgetItem *parent );
+    QAjUploadItem( QString id, QString shareId, QTreeWidget *parent );
     ~QAjUploadItem();
 
     QString shareId;

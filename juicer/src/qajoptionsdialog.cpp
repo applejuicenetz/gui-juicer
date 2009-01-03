@@ -19,6 +19,7 @@
  ***************************************************************************/
 
 #include "qajoptionsdialog.h"
+#include "qajapplication.h"
 
 
 QAjOptionsDialog::QAjOptionsDialog( QWidget* parent ) : QDialog( parent )
@@ -100,6 +101,8 @@ QAjOptionsDialog::QAjOptionsDialog( QWidget* parent ) : QDialog( parent )
     connect( fontComboBox, SIGNAL( currentFontChanged( const QFont& ) ), this, SLOT( setFontSizes( const QFont& ) ) );
 
     connect( this, SIGNAL( accepted() ), this, SLOT( acceptedSlot() ) );
+
+    connect(this->handlerPushButton, SIGNAL(clicked()), this, SLOT(setAjfspHandler()));
 
     listWidget->setCurrentRow( 0 );
 }
@@ -509,4 +512,13 @@ void QAjOptionsDialog::removeSetting(const QString& group, const QString& key)
     lokalSettings.beginGroup( group );
     lokalSettings.remove(key);
     lokalSettings.endGroup();
+}
+
+
+/*!
+    \fn QAjOptionsDialog::setAjfspHandler()
+ */
+void QAjOptionsDialog::setAjfspHandler()
+{
+    printf("%s\n", ((QAjApplication*)qApp)->appPath.toLatin1().data());
 }

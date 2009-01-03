@@ -17,84 +17,50 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
-#include "qajserverwidget.h"
+#include "qajservermodule.h"
+#include "juicer.h"
 
-QAjServerWidget::QAjServerWidget( QXMLModule* xml, QWidget *parent ) : QAjListWidget( xml, parent )
+QAjServerModule::QAjServerModule(Juicer* juicer) : QAjModuleBase(juicer, juicer->serverTreeWidget, juicer->serverToolBar)
 {
     zeroTime = QDateTime( QDate(1970,1,1), QTime(0,0), Qt::UTC );
     connectedWithId = "";
     connectingToId = "";
-    setColumnCount( NUM_SERVER_COL );
-    QStringList headers;
-    int i;
-    for ( i=0; i<NUM_SERVER_COL; i++)
-    {
-        switch (i)
-        {
-        case NAME_SERVER_INDEX:
-            headers.append( tr("name") );
-            break;
-        case HOST_SERVER_INDEX:
-            headers.append( tr("host") );
-            break;
-        case PORT_SERVER_INDEX:
-            headers.append( tr("port") );
-            break;
-        case LASTSEEN_SERVER_INDEX:
-            headers.append( tr("last seen") );
-            break;
-        case TESTS_SERVER_INDEX:
-            headers.append( tr("tests") );
-            break;
-        }
-    }
-    setHeaderLabels( headers );
 
-    QObject::connect( this, SIGNAL( itemDoubleClicked ( QTreeWidgetItem*, int ) ), this, SLOT( connectSlot() ) );
+    QObject::connect(treeWidget, SIGNAL( itemDoubleClicked ( QTreeWidgetItem*, int ) ), this, SLOT( connectSlot() ) );
+    QObject::connect(juicer->actionConnect_Server, SIGNAL(triggered()), this, SLOT(connectSlot()));
+    QObject::connect(juicer->actionRemove_Server, SIGNAL(triggered()), this, SLOT(removeSlot()));
+    QObject::connect(juicer->actionSearch_Server, SIGNAL(triggered()), this, SLOT(searchSlot()));
 
     serverHttp = new QHttp( this );
     QObject::connect( serverHttp, SIGNAL( requestFinished ( int , bool ) ), this, SLOT( gotServer( int , bool ) ) );
 
-    initToolBar();
-    initPopup();
-    newSelection(false);
+    QObject::connect(juicer->actionShow_Welcome_Message, SIGNAL(triggered(bool)), juicer->welcomeDock, SLOT(setVisible(bool)));
+    QObject::connect(juicer->welcomeDock, SIGNAL(visibilityChanged(bool)), juicer->actionShow_Welcome_Message, SLOT(setChecked(bool)));
+//     QObject::connect(juicer->actionShow_Welcome_Message, SIGNAL(triggered(bool)), this, SLOT(welcomeDockVisible(bool)));
+    QObject::connect(juicer->welcomeDock->toggleViewAction(), SIGNAL(triggered(bool)), this, SLOT(welcomeDockVisible(bool)));
+
+    juicer->welcomeDock->setVisible(QAjOptionsDialog::getSetting("WelcomeDock", "visible", true).toBool());
+    selectionChanged();
 }
 
 
-QAjServerWidget::~QAjServerWidget()
-{}
-
-
-/*!
-    \fn QAjServerWidget::initToolBar()
- */
-void QAjServerWidget::initToolBar()
-{
-    toolBar = new QToolBar( "server operations", this );
-
-    connectButton = toolBar->addAction( QIcon(":/connect.png"), tr("connect to this server"), this, SLOT( connectSlot() ) );
-    removeButton = toolBar->addAction( QIcon(":/cancel.png"), tr("remove server"), this, SLOT( removeSlot() ) );
-    findButton = toolBar->addAction( QIcon(":/find.png"), tr("find server"), this, SLOT( findSlot() ) );
-
-    QObject::connect( this, SIGNAL( newSelection( bool ) ) , connectButton, SLOT( setEnabled( bool ) ) );
-    QObject::connect( this, SIGNAL( newSelection( bool ) ) , removeButton, SLOT( setEnabled( bool ) ) );
+QAjServerModule::~QAjServerModule() {
 }
 
 
-void QAjServerWidget::insertServer( QString id, QString name, QString host, QString port, QString lastseen, QString tests )
+void QAjServerModule::insertServer( QString id, QString name, QString host, QString port, QString lastseen, QString tests )
 {
     QAjServerItem *item = findServer( id );
     if ( item == NULL )
     {
         QString time = zeroTime.addMSecs( lastseen.toULongLong() ).toLocalTime().toString( Qt::LocalDate );
-        item = new QAjServerItem( id, this );
+        item = new QAjServerItem( id, treeWidget );
         servers[ id ] = item;
         item->setText( NAME_SERVER_INDEX, name );
         item->setText( HOST_SERVER_INDEX, host );
         item->setText( PORT_SERVER_INDEX, port );
         item->setText( LASTSEEN_SERVER_INDEX, time );
         item->setText( TESTS_SERVER_INDEX, tests );
-        item->setTextAlignment( TESTS_SERVER_INDEX, Qt::AlignRight );
         if( id == connectedWithId )
             item->setIcon( NAME_SERVER_INDEX, QIcon(":/small/connected.png") );
         else if( id == connectingToId )
@@ -102,26 +68,23 @@ void QAjServerWidget::insertServer( QString id, QString name, QString host, QStr
     }
 }
 
-void QAjServerWidget::removeSlot()
+void QAjServerModule::removeSlot()
 {
-    QList<QAjItem *>  selectedItems = selectedAjItems();
-    int i;
-    for ( i=0; i<selectedItems.size(); i++ )
-    {
-        xml->set( "removeserver", "&id=" + selectedItems[i]->getId() );
+    QList<QTreeWidgetItem*> items = treeWidget->selectedItems();
+    for(QList<QTreeWidgetItem*>::iterator i = items.begin(); i!=items.end(); i++) {
+        xml->set( "removeserver", "&id=" + ((QAjItem*)(*i))->getId() );
     }
 }
 
-void QAjServerWidget::connectSlot()
+void QAjServerModule::connectSlot()
 {
-    QList<QAjItem *>  selectedItems = selectedAjItems();
-    if ( ! selectedItems.empty() )
-    {
-        xml->set( "serverlogin", "&id=" + selectedItems.first()->getId() );
+    QList<QTreeWidgetItem*> items = treeWidget->selectedItems();
+    if(!items.empty()) {
+        xml->set("serverlogin", "&id=" + ((QAjItem*)items.first())->getId());
     }
 }
 
-void QAjServerWidget::findSlot()
+void QAjServerModule::searchSlot()
 {
     QString serverURL = QAjOptionsDialog::getSetting( "serverURL", "http://www.applejuicenet.de/18.0.html" ).toString();
 
@@ -135,7 +98,7 @@ void QAjServerWidget::findSlot()
     serverHttp->get( serverURL );
 }
 
-void QAjServerWidget::connectedWith( QString id )
+void QAjServerModule::connectedWith( QString id )
 {
     if ( ! connectingToId.isEmpty() && servers.contains( connectingToId ) )
     {
@@ -154,7 +117,7 @@ void QAjServerWidget::connectedWith( QString id )
     connectingToId = "";
 }
 
-void QAjServerWidget::connectingTo( QString id )
+void QAjServerModule::connectingTo( QString id )
 {
     if ( ! connectingToId.isEmpty() && servers.contains( connectingToId ) )
     {
@@ -167,7 +130,7 @@ void QAjServerWidget::connectingTo( QString id )
     connectingToId = id;
 }
 
-QAjServerItem* QAjServerWidget::findServer( QString id )
+QAjServerItem* QAjServerModule::findServer( QString id )
 {
     if ( servers.contains( id ) )
         return servers[ id ];
@@ -175,7 +138,7 @@ QAjServerItem* QAjServerWidget::findServer( QString id )
         return NULL;
 }
 
-bool QAjServerWidget::remove( QString id )
+bool QAjServerModule::remove( QString id )
 {
     QTreeWidgetItem *item = findServer( id );
     if( item != NULL )
@@ -187,7 +150,7 @@ bool QAjServerWidget::remove( QString id )
     return false;
 }
 
-void QAjServerWidget::gotServer( int , bool error )
+void QAjServerModule::gotServer( int , bool error )
 {
     if ( error )
     {
@@ -213,13 +176,19 @@ void QAjServerWidget::gotServer( int , bool error )
 
 
 /*!
-    \fn QAjServerWidget::initPopup()
+    \fn QAjServerModule::selectionChanged()
  */
-void QAjServerWidget::initPopup()
-{
-    popup->setTitle( tr("Ser&ver") );
-    popup->addAction( connectButton );
-    popup->addAction( removeButton );
-    popup->addSeparator();
-    popup->addAction( findButton );
+void QAjServerModule::selectionChanged() {
+
+    bool oneSelected = !treeWidget->selectedItems().empty();
+    juicer->actionConnect_Server->setEnabled(oneSelected);
+    juicer->actionRemove_Server->setEnabled(oneSelected);
+}
+
+
+/*!
+    \fn QAjServerModule::welcomeDockVisible(bool visible)
+ */
+void QAjServerModule::welcomeDockVisible(bool visible) {
+    QAjOptionsDialog::setSetting("WelcomeDock", "visible", visible);
 }

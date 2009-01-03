@@ -17,57 +17,80 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
-#ifndef QAJSERVERWIDGET_H
-#define QAJSERVERWIDGET_H
+#ifndef QAJSHAREWIDGET_H
+#define QAJSHAREWIDGET_H
 
-#include <QHash>
-#include <QHttp>
-#include <QSettings>
+#include <QStringList>
+#include <QFileDialog>
 #include <QMessageBox>
+#include <QCheckBox>
+#include <QSpinBox>
 
-#include <time.h>
-
-#include "qajlistwidget.h"
-#include "qajserveritem.h"
-#include "qajoptionsdialog.h"
+#include "qajmodulebase.h"
+#include "qajshareitem.h"
+#include "qajsharefileitem.h"
+#include "qajfiledialog.h"
 
 /**
 @author Matthias Reif
 */
-class QAjServerWidget : public QAjListWidget
+class QAjShareModule : public QAjModuleBase
 {
     Q_OBJECT
 public:
-    QAjServerWidget( QXMLModule* xml, QWidget *parent = 0 );
+    QAjShareModule(Juicer* juicer);
 
-    ~QAjServerWidget();
+    ~QAjShareModule();
 
-    void insertServer( QString id, QString name, QString host, QString port, QString lastseen, QString tests );
+    QAjFileDialog* fileSystem;
 
-    void connectedWith( QString id );
-    void connectingTo( QString id );
-    QAjServerItem* findServer( QString id );
-    bool remove( QString id );
+    void insertShare( QString path, QString shareMode, QString filesystemSeperator );
 
-private:
-    void initToolBar();
-    void initPopup();
-    QString connectedWithId, connectingToId;
-    QHash<QString, QAjServerItem*> servers;
-    QAction *removeButton, *connectButton, *findButton;
-
-    QHttp *serverHttp;
-    QDateTime zeroTime;
+    QAction* prioOkButton;
+    QCheckBox* prioCheck;
+    QSpinBox* prioSpin;
+    bool changed;
 
 public slots:
-    void findSlot();
+    void commitSlot();
+    void selectionChanged();
+
+protected:
+    QAjShareItem* findShare(const QString& fileName);
+    void insertDirList( QTreeWidgetItem* parent, QStringList* dirList );
+    QString filesystemSeparator;
+
+private slots:
+    void insertSlot();
     void removeSlot();
-    void connectSlot();
-    void gotServer( int id, bool error );
-signals:
-    void remove();
-    void connect();
-    void find();
+    void reloadSlot();
+
+public:
+    void insertFile( QString id, QString hash, QString fileName, QString size, QString priority, QString filesystemSeperator );
+    
+    void updateSharedFilesList();
+    void setPriority( int prio );
+
+    void setTmpDir ( const QString& theValue ) { tmpDir = theValue; }
+    QString getTmpDir() const { return tmpDir; }
+
+    QAjShareFileItem* findFile( QString id );
+    QAjShareFileItem* findFile( QString size, QString hash );
+    
+    QSize sizeHint() const {
+        QSettings localSettings;
+        localSettings.beginGroup("FilesDock");
+        return localSettings.value("size", true).toSize();
+    }
+
+private:
+    QHash<QString, QAjShareFileItem*> sharedFiles;
+    QString tmpDir;
+
+private slots:
+    void linkSlot();
+
+
 };
 
 #endif

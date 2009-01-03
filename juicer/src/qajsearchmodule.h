@@ -27,7 +27,7 @@
 #include <QApplication>
 #include <QClipboard>
 
-#include "qajlistwidget.h"
+#include "qajmodulebase.h"
 #include "qajsearchitem.h"
 #include "qajsearchentryitem.h"
 #include "types.h"
@@ -38,44 +38,32 @@
 /**
 @author Matthias Reif
 */
-class QAjSearchWidget : public QAjListWidget
-{
+class QAjSearchModule : public QAjModuleBase {
     Q_OBJECT
 public:
-    QAjSearchWidget( QXMLModule* xml, QWidget *parent = 0 );
-
-    ~QAjSearchWidget();
+    QAjSearchModule(Juicer* juicer);
+    ~QAjSearchModule();
 
     void insertSearch( QString id, QString searchText, QString running, QString foundFiles );
     void insertSearchEntry( QString id, QString searchId, QString size, QString checksum, QStringList filenames );
     bool remove( QString id );
     QAjSearchItem* findSearch( QString id );
     QAjSearchEntryItem* findSearchEntry( QString id );
-    void initToolBar();
 
 protected:
-
-    QAction *downloadButton, *removeButton, *copyLinkButton;
-    QAction *createLinkListButton;
-
     bool removeSearch( QString id );
     bool removeSearchEntry( QString id );
     QHash<QString, QAjSearchItem*> searches;
     QHash<QString, QAjSearchEntryItem*> searchEntries;
 
-    QLabel *searchLabel;
     QLineEdit *searchEdit;
-    QAction *searchButton;
-
 
 private slots:
     void removeSlot();
     void downloadSlot();
     void searchSlot();
     void linkSlot();
-    void selectionChanged( bool oneSelected );
-private:
-    void initPopup();
+    void selectionChanged();
 };
 
 #endif

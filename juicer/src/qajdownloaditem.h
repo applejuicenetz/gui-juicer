@@ -30,6 +30,7 @@
 
 #include <QHeaderView>
 #include <QLinkedList>
+#include <QProgressBar>
 
 #include "qajuseritem.h"
 #include "qajdownloaditem.h"
@@ -41,7 +42,7 @@
 
 #include "qconvert.h"
 
-#include "qajpartlistwidget.h"
+#include "qajpartlistdialog.h"
 #include "qajpowerspin.h"
 
 class QAjUserItem;
@@ -53,13 +54,13 @@ class QAjDownloadItem : public QAjItem
 {
 Q_OBJECT
 public:
-    QAjDownloadItem( QString id, QAjListWidget *parent = 0 );
+    QAjDownloadItem( QString id, QTreeWidget *parent = 0 );
 
     ~QAjDownloadItem();
 
     void moveItem( QAjUserItem *userItem, QString oldStatus );
     void update( const QString& hash, const QString& fileName, const QString& status, const QString& size, const QString& ready, const QString& power, const QString& tempNumber );
-    void updateUser( const QString& id, const QString& fileName, const QString& speed, const QString& status, const QString& power, const QString& queuePos, const QString& statusString, QIcon *osIcon, const QTime& time );
+    void updateUser( const QString& id, const QString& fileName, const QString& speed, const QString& status, const QString& power, const QString& queuePos, const QString& statusString, QIcon& osIcon, const QTime& time );
 
     QAjUserItem* findUser( const QString& id );
     void removeUser( const QString& id );
@@ -74,9 +75,6 @@ public:
     {
         return activeSourcesItem->childCount();
     }
-
-    void setFinishedPixmap(int newWidth, int newHeight, double newReady);
-
 
     QString getSourcesString();
 
@@ -117,7 +115,7 @@ public:
     {
         return percent;
     }
-    QAjPartListWidget* getPartListWidget();
+    QAjPartListDialog* getPartListDialog();
     void setParts( qulonglong size, QLinkedList<Part>& partList );
 
     QString getTempNumber()
@@ -127,17 +125,16 @@ public:
 
     virtual bool operator<( const QTreeWidgetItem & other ) const;
     QAjPowerSpin* powerSpin;
+    QProgressBar* progressBar;
 public slots:
     void initPowerSpin();
 
 protected:
-    //Q_ULLONG
     double ready, remainingSize;
     double speed;
     QLinkedList<double> speeds;
     double finished;
     int percent;
-    int width, height;
     double missing;
     long int remainingSec;
 
@@ -145,10 +142,7 @@ protected:
     bool first;
     bool firstFinished;
 
-    QAjListWidget *parentWidget;
-    QPixmap *pixmap;
-
-    QAjPartListWidget* partListWidget;
+    QAjPartListDialog* partListDialog;
 
     QString tempNumber;
 };

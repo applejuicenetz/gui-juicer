@@ -43,8 +43,8 @@ public:
     QAjPartListWidget( QWidget *parent = 0 );
 
     ~QAjPartListWidget();
-    void update( qulonglong size, QLinkedList<Part> partList );
-    void setFilename( QString filename );
+    void update( qulonglong size, QLinkedList<Part>& partList );
+    void setFilename( const QString& filename );
     void setId( QString id );
 protected:
     QString id;

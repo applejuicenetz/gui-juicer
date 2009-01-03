@@ -17,75 +17,39 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
-#include "qajsearchwidget.h"
 
-QAjSearchWidget::QAjSearchWidget( QXMLModule* xml, QWidget *parent ) : QAjListWidget( xml, parent )
-{
-    setColumnCount( NUM_SEARCH_COL );
-    QStringList headers;
-    int i;
-    for ( i=0; i<NUM_SEARCH_COL; i++)
-    {
-        switch (i)
-        {
-        case TEXT_SEARCH_INDEX:
-            headers.append( tr("search") );
-            break;
-        case SIZE_SEARCH_INDEX:
-            headers.append( tr("size") );
-            break;
-        case COUNT_SEARCH_INDEX:
-            headers.append( tr("hits") );
-            break;
-        }
-    }
-    setHeaderLabels( headers );
-    header()->resizeSection( TEXT_SEARCH_INDEX, 300 );
-    header()->resizeSection( SIZE_SEARCH_INDEX, 100 );
-    header()->resizeSection( COUNT_SEARCH_INDEX, 50 );
+#include "qajsearchmodule.h"
+#include "juicer.h"
 
-    connect( this, SIGNAL( itemDoubleClicked ( QTreeWidgetItem *, int ) ), this, SLOT( downloadSlot() ) );
-    QObject::connect( this, SIGNAL( newSelection( bool ) ) , this, SLOT( selectionChanged( bool ) ) );
+QAjSearchModule::QAjSearchModule(Juicer* juicer) : QAjModuleBase(juicer, juicer->searchsTreeWidget, juicer->searchToolBar) {
+    connect(treeWidget, SIGNAL(itemDoubleClicked(QTreeWidgetItem *, int)), this, SLOT(downloadSlot()));
 
-    initToolBar();
-    initPopup();
-    selectionChanged( false );
+    connect(juicer->actionDownload, SIGNAL(triggered()), this, SLOT(downloadSlot()));
+    connect(juicer->actionCancel_Search, SIGNAL(triggered()), this, SLOT(removeSlot()));
+    connect(juicer->actionCopy_Link_Search, SIGNAL(triggered()), this, SLOT(linkSlot()));
+    connect(juicer->actionCreate_Link_List_Search, SIGNAL(triggered()), this, SLOT(linkListSlot()));
+
+    juicer->searchToolBar->addSeparator();
+    juicer->searchToolBar->addWidget(new QLabel(tr("search for:"), juicer->searchToolBar));
+    searchEdit = new QLineEdit(juicer->searchToolBar);
+    searchEdit->setMinimumWidth( 200 );
+    juicer->searchToolBar->addWidget(searchEdit);
+    connect(searchEdit, SIGNAL(returnPressed()), this, SLOT(searchSlot()));
+    juicer->searchToolBar->addAction(tr("search"), this, SLOT(searchSlot()));
+
+    selectionChanged();
 }
 
-QAjSearchWidget::~QAjSearchWidget()
+QAjSearchModule::~QAjSearchModule()
 {}
 
 
-/*!
-    \fn QAjSearchWidget::initToolBar()
- */
-void QAjSearchWidget::initToolBar()
-{
-    toolBar = new QToolBar( "search operations", this );
-
-    downloadButton = toolBar->addAction( QIcon(":/save.png"), tr("download"), this, SLOT( downloadSlot() ) );
-    removeButton = toolBar->addAction( QIcon(":/cancel.png"), tr("cancel search"), this, SLOT( removeSlot() ) );
-    copyLinkButton = toolBar->addAction( QIcon(":/text_block.png"), tr("copy ajfsp link to clipboard"), this, SLOT( linkSlot() ) );
-    createLinkListButton = toolBar->addAction( QIcon(":/toggle_log.png"), tr("create AJ link list from selected files"), this, SLOT( createAjL() ) );
-
-    toolBar->addSeparator();
-
-    searchLabel = new QLabel( toolBar );
-    searchLabel->setText( tr("search for:") );
-    toolBar->addWidget( searchLabel );
-    searchEdit = new QLineEdit(toolBar );
-    searchEdit->setMinimumWidth( 200 );
-    toolBar->addWidget( searchEdit );
-    connect( searchEdit, SIGNAL( returnPressed() ), this, SLOT( searchSlot() ) );
-    searchButton = toolBar->addAction( tr("search"), this, SLOT( searchSlot() )  );
-}
-
-void QAjSearchWidget::insertSearch( QString id, QString searchText, QString running, QString foundFiles )
+void QAjSearchModule::insertSearch( QString id, QString searchText, QString running, QString foundFiles )
 {
     QAjSearchItem *item = findSearch( id );
     if ( item == NULL )
     {
-        item = new QAjSearchItem( id, this );
+        item = new QAjSearchItem(id, treeWidget);
         searches[id] = item;
         item->setText( TEXT_SEARCH_INDEX, searchText );
         item->setText( COUNT_SEARCH_INDEX, "0" );
@@ -98,12 +62,12 @@ void QAjSearchWidget::insertSearch( QString id, QString searchText, QString runn
 
 }
 
-void QAjSearchWidget::insertSearchEntry( QString id, QString searchId, QString size, QString checksum, QStringList filenames )
+void QAjSearchModule::insertSearchEntry( QString id, QString searchId, QString size, QString checksum, QStringList filenames )
 {
     QAjSearchItem *searchItem = findSearch( searchId );
     if ( searchItem == NULL )
     {
-        searchItem = new QAjSearchItem( searchId, this );
+        searchItem = new QAjSearchItem( searchId, treeWidget );
         searches[searchId] = searchItem;
     }
 
@@ -124,11 +88,6 @@ void QAjSearchWidget::insertSearchEntry( QString id, QString searchId, QString s
                     searchEntryItem->setText( TEXT_SEARCH_INDEX, filename);
                     searchEntryItem->setFilename( filename );
                 }
-/*                else
-                {
-                    QAjSearchItem *searchSubEntryItem = new QAjSearchItem( id, searchEntryItem );
-                    searchSubEntryItem->setText( TEXT_SEARCH_INDEX, filename);
-                }*/
             }
             searchItem->hits++;
             searchItem->setText( COUNT_SEARCH_INDEX, QString::number(searchItem->hits) );
@@ -137,7 +96,7 @@ void QAjSearchWidget::insertSearchEntry( QString id, QString searchId, QString s
     }
 }
 
-bool QAjSearchWidget::removeSearch( QString id )
+bool QAjSearchModule::removeSearch( QString id )
 {
     QAjSearchItem* item = findSearch( id );
     if( item != NULL )
@@ -160,7 +119,7 @@ bool QAjSearchWidget::removeSearch( QString id )
 }
 
 
-bool QAjSearchWidget::removeSearchEntry( QString id )
+bool QAjSearchModule::removeSearchEntry( QString id )
 {
     QAjSearchEntryItem* item = findSearchEntry( id );
     if( item != NULL )
@@ -175,7 +134,7 @@ bool QAjSearchWidget::removeSearchEntry( QString id )
 }
 
 
-bool QAjSearchWidget::remove( QString id )
+bool QAjSearchModule::remove( QString id )
 {
     if(removeSearch( id ))
         return true;
@@ -186,7 +145,7 @@ bool QAjSearchWidget::remove( QString id )
 }
 
 
-void QAjSearchWidget::searchSlot()
+void QAjSearchModule::searchSlot()
 {
     QString text( QUrl::toPercentEncoding( searchEdit->text() ) );
     xml->set( "search", "&search=" + text );
@@ -194,25 +153,18 @@ void QAjSearchWidget::searchSlot()
 }
 
 
-void QAjSearchWidget::removeSlot()
-{
-    QList<QTreeWidgetItem *>  selectedItems = QTreeWidget::selectedItems();
-    int i;
-    for ( i=0; i<selectedItems.size(); i++ )
-    {
-        xml->set( "cancelsearch", "&id=" + ((QAjSearchItem*)selectedItems[i])->getId() );
+void QAjSearchModule::removeSlot() {
+    QList<QTreeWidgetItem *>  selectedItems = treeWidget->selectedItems();
+    for(int i=0; i<selectedItems.size(); i++) {
+        xml->set("cancelsearch", "&id=" + ((QAjSearchItem*)selectedItems[i])->getId());
     }
 }
 
-void QAjSearchWidget::downloadSlot()
-{
-    QList<QAjItem *>  selectedItems = selectedAjItems();
-    int i;
-    for ( i=0; i<selectedItems.size(); i++ )
-    {
-        QAjSearchEntryItem *searchEntryItem = findSearchEntry( selectedItems[i]->getId() );
-        if( searchEntryItem != NULL )
-        {
+void QAjSearchModule::downloadSlot() {
+    QList<QTreeWidgetItem *>  selectedItems = treeWidget->selectedItems();
+    for(int i=0; i<selectedItems.size(); i++) {
+        QAjSearchEntryItem *searchEntryItem = findSearchEntry(((QAjSearchItem*)selectedItems[i])->getId());
+        if( searchEntryItem != NULL ) {
             QString link = "ajfsp://file|";
             link += searchEntryItem->text( TEXT_SEARCH_INDEX );
             link += "|" + searchEntryItem->getHash();
@@ -223,69 +175,44 @@ void QAjSearchWidget::downloadSlot()
     }
 }
 
-void QAjSearchWidget::selectionChanged( bool oneSelected )
-{
+void QAjSearchModule::selectionChanged() {
     bool searchSelected = false;
     bool entrySelected = false;
-    if( oneSelected )
-    {
-        QList<QAjItem *> selectedItems = selectedAjItems();
-        int i;
-        for( i=0; i<selectedItems.size() && (!searchSelected || !entrySelected); i++ )
-        {
-            searchSelected |= searches.contains( selectedItems[i]->getId() );
-            entrySelected |= searchEntries.contains( selectedItems[i]->getId() );
-        }
+    QList<QTreeWidgetItem *>  selectedItems = treeWidget->selectedItems();
+    for(int i=0; i<selectedItems.size() && (!searchSelected || !entrySelected); i++) {
+        searchSelected |= searches.contains(((QAjSearchItem*)selectedItems[i])->getId());
+        entrySelected |= searchEntries.contains(((QAjSearchItem*)selectedItems[i])->getId());
     }
-    downloadButton->setEnabled( entrySelected );
-    removeButton->setEnabled( searchSelected );
-    copyLinkButton->setEnabled( entrySelected );
-    createLinkListButton->setEnabled( entrySelected );
+    juicer->actionDownload->setEnabled(entrySelected);
+    juicer->actionCancel_Search->setEnabled(searchSelected);
+    juicer->actionCopy_Link_Search->setEnabled(entrySelected);
+    juicer->actionCreate_Link_List_Search->setEnabled(entrySelected);
 }
 
-void QAjSearchWidget::linkSlot()
+void QAjSearchModule::linkSlot()
 {
     QString link;
-
-    QList<QAjItem *>  selectedItems = selectedAjItems();
-
-    QAjSearchEntryItem *searchEntryItem = findSearchEntry( selectedItems[0]->getId() );
-    if( searchEntryItem != NULL )
-    {
+    QList<QTreeWidgetItem *>  selectedItems = treeWidget->selectedItems();
+    QAjSearchEntryItem *searchEntryItem = findSearchEntry(((QAjSearchItem*)selectedItems[0])->getId() );
+    if( searchEntryItem != NULL ) {
         link += "ajfsp://file|";
         link += searchEntryItem->text( TEXT_SEARCH_INDEX );
         link += "|" + searchEntryItem->getHash();
         link += "|" + QString::number( (int)searchEntryItem->getSize() ) + "/";
     }
-
     QApplication::clipboard()->setText(link);
 }
 
-QAjSearchItem* QAjSearchWidget::findSearch( QString id )
-{
-    if (searches.contains( id ))
+QAjSearchItem* QAjSearchModule::findSearch( QString id ) {
+    if (searches.contains( id )) {
         return searches[ id ];
-    else
-        return NULL;
+    }
+    return NULL;
 }
 
-QAjSearchEntryItem* QAjSearchWidget::findSearchEntry( QString id )
-{
-    if (searchEntries.contains( id ))
+QAjSearchEntryItem* QAjSearchModule::findSearchEntry( QString id ) {
+    if (searchEntries.contains( id )) {
         return searchEntries[ id ];
-    else
-        return NULL;
-}
-
-
-/*!
-    \fn QAjSearchWidget::initPopup()
- */
-void QAjSearchWidget::initPopup()
-{
-    popup->setTitle( tr("&Search") );
-    popup->addAction( downloadButton );
-    popup->addAction( removeButton );
-    popup->addAction( copyLinkButton );
-    popup->addAction( createLinkListButton );
+    }
+    return NULL;
 }

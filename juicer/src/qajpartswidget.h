@@ -32,25 +32,31 @@ class QAjPartsWidget : public QWidget
 {
 Q_OBJECT
 public:
-  QAjPartsWidget( QWidget *parent = 0 );
+    QAjPartsWidget( QWidget *parent = 0 );
+    
+    ~QAjPartsWidget();
+    void update( qulonglong size, QLinkedList<Part>& partList );
+    
+    double ready;
+    double available;
+    double lessSources;
+    double missing;
+    qulonglong size;
 
-  ~QAjPartsWidget();
-  void update( qulonglong size, QLinkedList<Part>& partList );
-
-  double ready;
-  double available;
-  double lessSources;
-  double missing;
+    static const int READY_COLOR = 0x00DC00;
+    static const int MISSING_COLOR = 0xF00000;
+    static const int AVAILABLE_COLOR = 0x0000DC;
+    static const int RARE_COLOR =  0xDCDC00;
 
 protected:
-  void paintEvent( QPaintEvent* );
-  qulonglong size;
-  QLinkedList<Part> partList;
-  static const int BLOCK_ROWS = 6;
-  int blockHeight;
-  int numPixels;
-  float pixelPerByte;
-
+    void paintEvent( QPaintEvent* );
+    QLinkedList<Part> partList;
+    static const int BLOCK_ROWS = 6;
+    int blockHeight;
+    int numPixels;
+    float pixelPerByte;
+signals:
+    void painted();
 };
 
 #endif

@@ -59,9 +59,9 @@ QAjPartListWidget::~QAjPartListWidget()
 
 
 /*!
-    \fn QAjPartListWidget::update( Q_ULLONG size, QLinkedList<Part> partList )
+    \fn QAjPartListWidget::update( Q_ULLONG size, QLinkedList<Part>& partList )
  */
-void QAjPartListWidget::update( qulonglong size, QLinkedList<Part> partList )
+void QAjPartListWidget::update( qulonglong size, QLinkedList<Part>& partList )
 {
     if ( !isVisible() )
     {
@@ -112,9 +112,9 @@ void QAjPartListWidget::paintEvent( QPaintEvent* )
 
 
 /*!
-    \fn QAjPartListWidget::setFilename( QString filename )
+    \fn QAjPartListWidget::setFilename( const QString& filename )
  */
-void QAjPartListWidget::setFilename( QString filename )
+void QAjPartListWidget::setFilename( const QString& filename )
 {
     setWindowTitle( "Juicer - " + filename );
 }

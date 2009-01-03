@@ -17,61 +17,40 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
-#ifndef QAJSHAREWIDGET_H
-#define QAJSHAREWIDGET_H
+#ifndef QAJUPLOADWIDGET_H
+#define QAJUPLOADWIDGET_H
 
-#include <QStringList>
-#include <QFileDialog>
-#include <QMessageBox>
-#include <QCheckBox>
-#include <QSpinBox>
-
-#include "qajlistwidget.h"
-#include "qajshareitem.h"
-#include "qajfiledialog.h"
+#include <QHash>
+#include <QIcon>
+#include <QFileInfo>
+#include "qajmodulebase.h"
+#include "qajuploaditem.h"
+#include "qconvert.h"
+#include "types.h"
 
 /**
 @author Matthias Reif
 */
-class QAjShareWidget : public QAjListWidget
-{
+class QAjUploadModule : public QAjModuleBase {
     Q_OBJECT
 public:
-    QAjShareWidget( QXMLModule* xml, QWidget *parent = 0 );
+    QAjUploadModule(Juicer* juicer);
 
-    ~QAjShareWidget();
+    ~QAjUploadModule();
 
-    QAjFileDialog* fileSystem;
+    bool insertUpload(QString id, QString shareId, QString version, QString os, QString status, QString directState, QString priority, QString nick, QString speed);
 
-    void insertShare( QString path, QString shareMode, QString filesystemSeperator );
-    void initToolBar();
-    QAction* removeId;
-    QAction* copyLinkButton, *prioOkButton;
-    QAction* createLinkListButton;
-    QCheckBox* prioCheck;
-    QSpinBox* prioSpin;
-    bool changed;
-
+    bool remove(QString id);
+    void setFilename(QString shareId, QString filename);
 public slots:
-    void commitSlot();
-
-protected:
-    void insertDirList( QTreeWidgetItem* parent, QStringList* dirList );
-    QString filesystemSeparator;
-    QAction *removeButton, *applyButton, *reloadButton, *insertButton;
-
-private slots:
-    void insertSlot();
-    void removeSlot();
-    void reloadSlot();
-
-signals:
-    void insert();
-    void remove();
-    void reload();
-    void commit();
+    void adjustSizeOfColumns();
+    void selectionChanged();
+    void hideQueuedSlot(bool checked);
 private:
-    void initPopup();
+    QAjUploadItem* findUpload( QString id );
+    QHash<QString, QString> uploadStatusDescr;
+    QHash<QString, QString> uploadDirectStateDescr;
+    QHash<QString, QAjUploadItem*> uploads;
 };
 
 #endif

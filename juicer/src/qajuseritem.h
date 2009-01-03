@@ -39,7 +39,7 @@ public:
 
     ~QAjUserItem();
 
-    void update( const QString& fileName, const QString& speed, const QString& status, const QString& power, const QString& queuePos, const QString& statusString, QIcon* osIcon, const QTime& time );
+    void update( const QString& fileName, const QString& speed, const QString& status, const QString& power, const QString& queuePos, const QString& statusString, QIcon& osIcon, const QTime& time );
 
     void setSpeed( const QString& newSpeedString, const QTime& time );
 

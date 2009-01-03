@@ -52,7 +52,7 @@ void QAjUserItem::setSpeed( const QString& newSpeedString, const QTime& time )
         setText( SPEED_DOWN_INDEX, "" );
 }
 
-void QAjUserItem::update( const QString& fileName, const QString& speed, const QString& status, const QString& power, const QString& queuePos, const QString& statusString, QIcon* osIcon, const QTime& time )
+void QAjUserItem::update( const QString& fileName, const QString& speed, const QString& status, const QString& power, const QString& queuePos, const QString& statusString, QIcon& osIcon, const QTime& time )
 {
     this->fileName = fileName;
     this->status = status;
@@ -73,7 +73,7 @@ void QAjUserItem::update( const QString& fileName, const QString& speed, const Q
     }
     if ( this->icon(SOURCES_DOWN_INDEX).isNull() )
     {
-        setIcon( SOURCES_DOWN_INDEX, *osIcon );
+        setIcon( SOURCES_DOWN_INDEX, osIcon );
     }
 }
 

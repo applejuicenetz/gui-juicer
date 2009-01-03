@@ -30,9 +30,11 @@
 class QAjShareItem : public QAjItem
 {
 public:
-    QAjShareItem( QTreeWidget* parent );
-
+    QAjShareItem(QTreeWidget* parent, const QString& path, bool recursive);
     virtual ~QAjShareItem();
+    QString getPath() { return path; }
+    bool isRecursive() { return recursive; }
+private:
     bool recursive;
     QString path;
 };

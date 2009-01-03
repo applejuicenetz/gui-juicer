@@ -40,6 +40,7 @@ public:
     ~QAjApplication();
     int exec();
     static const int APP_PORT = 21456;
+    QString appPath;
 public slots:
     void start();
 private:

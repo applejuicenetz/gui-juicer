@@ -143,16 +143,14 @@
 #include <QFile>
 #include <QVariant>
 
-class AjSettings
-{
+class AjSettings {
     public:
     enum LOCATION{SAME=0,SPECIFIC=1,FTP=2};
     QString nick, tcpPort, xmlPort, incomingDir, tempDir, autoconnect;
     QString maxDown, maxUp, maxCon, maxSlot, maxSources, maxNewCon;
 };
 
-class Part
-{
+class Part {
     public:
     qulonglong fromPosition;
     int type;
@@ -160,15 +158,14 @@ class Part
 
 class QAjDownloadItem;
 class QAjUserItem;
-class DownloadUser
-{
+class DownloadUser {
     public:
+    DownloadUser() {download = NULL; user = NULL; }
     QAjDownloadItem* download;
     QAjUserItem* user;
 };
 
-class StoreInfo
-{
+class StoreInfo {
     public:
     QString srcFile;
     QFile* dstFile;

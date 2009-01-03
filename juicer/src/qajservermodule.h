@@ -17,46 +17,51 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
-#ifndef QAJUPLOADWIDGET_H
-#define QAJUPLOADWIDGET_H
+#ifndef QAJSERVERWIDGET_H
+#define QAJSERVERWIDGET_H
 
 #include <QHash>
-#include <QIcon>
-#include <QFileInfo>
-#include "qajlistwidget.h"
-#include "qajuploaditem.h"
-#include "qconvert.h"
-#include "types.h"
+#include <QHttp>
+#include <QSettings>
+#include <QMessageBox>
+
+#include "qajmodulebase.h"
+#include "qajserveritem.h"
+#include "qajoptionsdialog.h"
 
 /**
 @author Matthias Reif
 */
-class QAjUploadWidget : public QAjListWidget
+class QAjServerModule : public QAjModuleBase
 {
     Q_OBJECT
 public:
-    QAjUploadWidget( QXMLModule* xml, QWidget *parent = 0 );
+    QAjServerModule(Juicer* juicer);
 
-    ~QAjUploadWidget();
-
-    bool insertUpload( QString id, QString shareId, QString version, QString os, QString status, QString directState, QString priority, QString nick, QString speed );
-
+    ~QAjServerModule();
+    void insertServer( QString id, QString name, QString host, QString port, QString lastseen, QString tests );
+    void connectedWith( QString id );
+    void connectingTo( QString id );
+    QAjServerItem* findServer( QString id );
     bool remove( QString id );
-    void setFilename( QString shareId, QString filename );
-    void initToolBar();
-
-    QTreeWidgetItem *activeUpload;
-    QTreeWidgetItem *queuedUpload;
 
 private:
-    QAjUploadItem* findUpload( QString id );
-    bool isOtherUpload( QString status );
-    void setFilename( QTreeWidgetItem* uploadState, QString shareId, QString filename );
-    QHash<QString, QString> uploadStatusDescr;
-    QHash<QString, QString> uploadDirectStateDescr;
-    QHash<QString, QAjUploadItem*> uploads;
+    QString connectedWithId, connectingToId;
+    QHash<QString, QAjServerItem*> servers;
+    QHttp *serverHttp;
+    QDateTime zeroTime;
 
-    QIcon *linuxIcon, *windowsIcon, *macIcon, *solarisIcon, *freeBsdIcon, *netwareIcon;
+public slots:
+    void connectSlot();
+    void removeSlot();
+    void searchSlot();
+    void gotServer( int id, bool error );
+    void selectionChanged();
+    void welcomeDockVisible(bool visible);
+signals:
+    void remove();
+    void connect();
+    void find();
 };
 
 #endif

@@ -25,7 +25,7 @@
 
 #include "qajoptionsdialog.h"
 #include "qajincomingitem.h"
-#include "qajlistwidget.h"
+#include "qajmodulebase.h"
 #include "ftp.h"
 
 class Juicer;
@@ -33,50 +33,44 @@ class Juicer;
 /**
 	@author Matthias Reif <matthias.reif@informatik.tu-chemnitz.de>
 */
-class QAjIncomingWidget : public QAjListWidget
+class QAjIncomingModule : public QAjModuleBase
 {
 Q_OBJECT
 public:
-    QAjIncomingWidget( QXMLModule* xml, QWidget *parent = 0 );
-
-    ~QAjIncomingWidget();
-    void setDir( QString dir );
+    QAjIncomingModule(Juicer* juicer);
+    ~QAjIncomingModule();
+    void setDir(QString dir);
 
 private:
     void initToolBar();
     QString dir;
-    QAction *reloadButton, *openButton, *saveButton, *removeButton;
     void storeFtp();
     void reloadFtp();
     void openFtp();
     void removeFtp();
     void initPopup();
     AjSettings::LOCATION getLocation();
-    bool confirmRemove( QList<QAjItem *> items );
+    bool confirmRemove(QList<QTreeWidgetItem *>& items);
     QFtp* ftp;
     QLabel* waitLabel;
 
 public slots:
     void reload();
     void open();
-    void save();
+    void copy();
     void remove();
-    void insert( QUrlInfo info );
-
+    void insert(QUrlInfo info);
+    void selectionChanged();
 private:
-    class CopyThread : public QThread
-    {
+    class CopyThread : public QThread {
         public:
-        CopyThread(QString oldFilename, QString newFilename)
-        {
+        CopyThread(QString oldFilename, QString newFilename) {
             this->oldFilename = oldFilename;
             this->newFilename = newFilename;
         }
         QString oldFilename, newFilename;
-        void run()
-        {
-            if(!QFile::copy(oldFilename, newFilename))
-            {
+        void run() {
+            if(!QFile::copy(oldFilename, newFilename)) {
                 QMessageBox::critical(NULL, "error", "copy process failed");
             }
         }

@@ -28,7 +28,7 @@
 class QAjShareFileItem : public QAjItem
 {
 public:
-    QAjShareFileItem( QString id, QAjListWidget *parent = 0 );
+    QAjShareFileItem( QString id, QTreeWidgetItem *parent = 0 );
 
     ~QAjShareFileItem();
 
@@ -51,8 +51,6 @@ public:
 
 protected:
     QString path;
-    QAjListWidget *parentWidget;
-
 };
 
 #endif

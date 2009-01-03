@@ -27,7 +27,6 @@
 #include <QFtp>
 #include <QFontDialog>
 #include "ui_qajoptionsdialogbase.h"
-
 #include "qajiconwidget.h"
 
 #include "types.h"
@@ -69,10 +68,10 @@ protected slots:
     void selectTempDirSpecific();
     void selectLauncher();
     void specificRadioToggled( bool checked );
-private slots:
     void jumpToFtpSlot();
     void acceptedSlot();
     void setFontSizes( const QFont& font );
+    void setAjfspHandler();
 };
 
 #endif

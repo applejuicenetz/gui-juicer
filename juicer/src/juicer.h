@@ -48,15 +48,14 @@
 
 #include <QSystemTrayIcon>
 
-#include "qajdownloadwidget.h"
-#include "qajuploadwidget.h"
-#include "qajsearchwidget.h"
-#include "qajserverwidget.h"
-#include "qajservermetawidget.h"
-#include "qajsharewidget.h"
-#include "qajsharefileswidget.h"
-#include "qajsharemetawidget.h"
-#include "qajincomingwidget.h"
+#include "ui_qajmainwindowbase.h"
+
+#include "qajdownloadmodule.h"
+#include "qajuploadmodule.h"
+#include "qajsearchmodule.h"
+#include "qajservermodule.h"
+#include "qajsharemodule.h"
+#include "qajincomingmodule.h"
 
 #include "qxmlmodule.h"
 #include "qajoptionsdialog.h"
@@ -68,7 +67,7 @@
 
 #include "qajiconwidget.h"
 
-class Juicer: public QMainWindow
+class Juicer: public QMainWindow, public Ui::QAjMainWindowBase
 {
     Q_OBJECT
 public:
@@ -76,16 +75,15 @@ public:
     ~Juicer();
 
     void setStatusBarText( const QString& downSpeed, const QString& upSpeed, const QString& credits, const QString& downSize, const QString& upSize );
+    QXMLModule *xml;
+    QAjDownloadModule* downloadModule;
+    QAjUploadModule *uploadModule;
     QAjNetworkDialog *networkDialog;
-    QAjDownloadWidget *ajDownloadWidget;
-    QAjUploadWidget *ajUploadWidget;
-    QAjSearchWidget *ajSearchWidget;
-    QAjServerMetaWidget *ajServerMetaWidget;
-    QAjServerWidget *ajServerWidget;
-    QAjShareWidget *ajShareWidget;
-    QAjShareMetaWidget *ajShareMetaWidget;
-    QAjShareFilesWidget *ajShareFilesWidget;
-    QAjIncomingWidget *ajIncomingWidget;
+    QAjSearchModule *searchModule;
+    QAjServerModule *serverModule;
+    QAjShareModule *shareModule;
+    QAjIncomingModule *incomingModule;
+    QHash<QString, QIcon> osIcons;
 
     void setFilesystemSeparator( const QString& separator )
     {
@@ -107,15 +105,14 @@ public:
 
 protected:
     void initToolBars();
-    void initMenuBar();
-    void initTabs();
+    void connectActions();
     void initStatusBar();
     void initTrayIcon();
     void closeEvent( QCloseEvent* );
     void processQueuedLinks();
     QString showLoginDialog(const QString& message = "");
 
-    QTabWidget* ajTab;
+//    QTabWidget* ajTab;
     QSystemTrayIcon* tray;
     QString password;
     QString filesystemSeparator;
@@ -125,7 +122,6 @@ protected:
 
     QWidget *prevTab;
     QAjOptionsDialog *optionsDialog;
-    QXMLModule *xml;
 
     QAjServerSocket *linkServer;
 
@@ -133,22 +129,9 @@ protected:
     QLineEdit *ajAddressEdit;
     QToolButton *ajAddressButton;
 
-    QMenu* file;
-    QMenu* help;
+    QAjIconWidget *downSpeedLabel, *upSpeedLabel, *creditsLabel, *downSizeLabel, *upSizeLabel, *coreVersionLabel, *connectedLabel;
 
-    QAjIconWidget *downSpeedLabel;
-    QAjIconWidget *upSpeedLabel;
-    QAjIconWidget *creditsLabel;
-    QAjIconWidget *downSizeLabel;
-    QAjIconWidget *upSizeLabel;
-    QAjIconWidget *coreVersionLabel;
-    QAjIconWidget *connectedLabel;
-
-    QAction *clipboardButton;
-
-    bool connected;
-
-    QAction *openIncomingButton;
+    bool started, connected;
 
     QStringList queuedLinks;
     QDateTime zeroTime;
@@ -156,10 +139,8 @@ protected:
     int firstModifiedCnt, firstModifiedMax;
     QSplashScreen *splash;
 
-    bool started;
-
 private slots:
-    bool login(QString message = "<h3>Login</h3>", bool error = false);
+    bool login(const QString& message = "<h3>Login</h3>", bool error = false);
     void openAjL();
 
     void about();
@@ -168,24 +149,24 @@ private slots:
     void partListTimerSlot();
     void showOptions();
     void showNetworkInfo();
-    void settingsReady( const AjSettings& settings );
-    void xmlError( QString reason );
+    void settingsReady(const AjSettings& settings);
+    void xmlError(const QString& reason);
     void gotSession();
 
-    void processLink( const QString& link );
+    void processLink(const QString& link);
     void processLink();
     void processClipboard();
 
-    void tabChanged( int index );
+    void tabChanged(int index);
 
     void exitCore();
 
     void firstModified();
 
     void adjustColumns();
-    void trayActivated ( QSystemTrayIcon::ActivationReason reason );
+    void trayActivated(QSystemTrayIcon::ActivationReason reason);
     void lastWindowClosed();
-    void downloadsFinished( const QList<QAjDownloadItem*>& list );
+    void downloadsFinished(const QList<QAjDownloadItem*>& list);
 };
 
 

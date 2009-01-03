@@ -78,6 +78,8 @@
     <file alias="folder_open.png">resources/small/folder_open.png</file>
     <file alias="toggle_log.png">resources/small/toggle_log.png</file>
     <file alias="undo.png">resources/small/undo.png</file>
+    <file alias="recursive.png">resources/small/view_tree.png</file>
+    <file alias="not_recursive.png">resources/small/view_detailed.png</file>
 </qresource>
 
 <qresource prefix="/options">

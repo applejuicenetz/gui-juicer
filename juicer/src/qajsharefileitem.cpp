@@ -11,9 +11,8 @@
 //
 #include "qajsharefileitem.h"
 
-QAjShareFileItem::QAjShareFileItem( QString id, QAjListWidget *parent ) : QAjItem( parent, id )
+QAjShareFileItem::QAjShareFileItem(QString id, QTreeWidgetItem *parent) : QAjItem(parent, id)
 {
-    parentWidget = parent;
 }
 
 
@@ -42,8 +41,6 @@ void QAjShareFileItem::update( QString hash, QString fileName, QString size, QSt
     this->setText( FILENAME_SHARED_FILE_INDEX, f.fileName() );
     this->setText( SIZE_SHARED_FILE_INDEX, QConvert::bytesExtra(size) );
     this->setText( PRIORITY_SHARED_FILE_INDEX, priority );
-
-    setHidden( true );
 }
 
 
