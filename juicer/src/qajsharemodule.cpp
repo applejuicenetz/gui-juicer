@@ -26,12 +26,20 @@ QAjShareModule::QAjShareModule(Juicer* juicer) : QAjModuleBase(juicer, juicer->s
     this->filesystemSeparator = filesystemSeparator;
     changed = false;
 
+    prioLabel = new QLabel("Priority:", juicer->shareToolBar);
+    juicer->shareToolBar->addWidget(prioLabel);
+    prioSpin = new QSpinBox(juicer->shareToolBar);
+    prioSpin->setRange(1, 250);
+    juicer->shareToolBar->addWidget(prioSpin);
+
     connect(treeWidget, SIGNAL(itemSelectionChanged()), this, SLOT(selectionChanged()));
     connect(juicer->actionAdd_Share, SIGNAL(triggered()), this, SLOT(insertSlot()));
     connect(juicer->actionRemove_Share, SIGNAL(triggered()), this, SLOT(removeSlot()));
     connect(juicer->actionReload_Share, SIGNAL(triggered()), this, SLOT(reloadSlot()));
     connect(juicer->actionCommit_Share, SIGNAL(triggered()), this, SLOT(commitSlot()));
     connect(juicer->actionCopy_Link_Share, SIGNAL(triggered()), this, SLOT(linkSlot()));
+
+    connect(prioSpin, SIGNAL(valueChanged(int)), this, SLOT(setPriority(int)));
 
     selectionChanged();
 }
@@ -43,14 +51,16 @@ QAjShareModule::~QAjShareModule()
 
 void QAjShareModule::insertShare( QString path, QString shareMode, QString filesystemSeperator )
 {
-    if ( !path.endsWith( filesystemSeparator.data()[0] ) )
+    if(!path.endsWith(filesystemSeparator.data()[0])) {
         path += filesystemSeperator;
+    }
     QAjShareItem *item = new QAjShareItem(treeWidget, path, (shareMode == "subdirectory"));
-    item->setText( PATH_SHARE_INDEX, path );
-    if(item->isRecursive())
-        item->setIcon( PATH_SHARE_INDEX, QIcon(":/small/recursive.png") );
-    else
-        item->setIcon( PATH_SHARE_INDEX, QIcon(":/small/not_recursive.png") );
+    item->setText(PATH_SHARE_INDEX, path);
+    if(item->isRecursive()) {
+        item->setIcon(PATH_SHARE_INDEX, QIcon(":/small/recursive.png"));
+    } else {
+        item->setIcon(PATH_SHARE_INDEX, QIcon(":/small/not_recursive.png"));
+    }
 }
 
 void QAjShareModule::insertSlot()
@@ -202,7 +212,7 @@ void QAjShareModule::setPriority(int prio) {
             xml->set("setpriority", "&priority=" + QString::number(prio) + "&id=" + ajShareItem->getId());
         }
     }
-    xml->get( "share" );
+    xml->get("share");
 }
 
 
@@ -236,4 +246,6 @@ void QAjShareModule::selectionChanged() {
     juicer->actionRemove_Share->setEnabled(shareSelected);
     juicer->actionCopy_Link_Share->setEnabled(fileSelected);
     juicer->actionCreate_Link_List_Share->setEnabled(fileSelected);
+    prioLabel->setEnabled(fileSelected);
+    prioSpin->setEnabled(fileSelected);
 }

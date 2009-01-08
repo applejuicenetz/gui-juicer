@@ -31,6 +31,28 @@
 
 #include "types.h"
 
+static const QString CONNECTED_SINCE = "0";
+static const QString CORE_VERSION = "1";
+static const QString DOWNSTREAM = "2";
+static const QString UPSTREAM = "3";
+static const QString DOWNLOADED = "4";
+static const QString UPLOADED = "5";
+static const QString CREDITS = "6";
+
+static const QString WIN_LAUNCHER = "Windows default";
+static const QString MAC_LAUNCHER = "MacOS default";
+static const QString KDE_LAUNCHER = "kfmclient (KDE)";
+static const QString GNOME_LAUNCHER = "gnome-open (Gnome)";
+
+#ifdef Q_WS_WIN
+    static const QString DEFAULT_LAUNCHER = WIN_LAUNCHER;
+#else
+#ifdef Q_WS_MAC
+    static const QString DEFAULT_LAUNCHER = MAC_LAUNCHER;
+#else
+    static const QString DEFAULT_LAUNCHER = KDE_LAUNCHER;
+#endif
+#endif
 
 class QAjOptionsDialog : public QDialog, public Ui::QAjOptionsDialogBase
 {

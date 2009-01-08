@@ -26,13 +26,8 @@ QAjOptionsDialog::QAjOptionsDialog( QWidget* parent ) : QDialog( parent )
 {
     setupUi( this );
 #ifndef Q_WS_WIN
-     handlerGroupBox->setHidden(true);
+    handlerGroupBox->setHidden(true);
 #endif
-
-    okButton->setIcon(QIcon(QString::fromUtf8(":/ok.png")));
-    cancelButton->setIcon(QIcon(QString::fromUtf8(":/cancel.png")));
-
-#if QT_VERSION >= 0x040203
     QAjIconWidget* l = new QAjIconWidget(":/options/core.png", tr("Core"), QBoxLayout::TopToBottom, listWidget);
     QListWidgetItem* item = new QListWidgetItem(listWidget);
     item->setSizeHint(l->size());
@@ -62,23 +57,10 @@ QAjOptionsDialog::QAjOptionsDialog( QWidget* parent ) : QDialog( parent )
     item = new QListWidgetItem(listWidget);
     item->setSizeHint(l->size());
     listWidget->setItemWidget(item, l);
-#else
-    listWidget->setIconSize(QSize(32,32));
-    listWidget->setWrapping(true);
-    listWidget->setSpacing( 5 );
-    QListWidgetItem* item;
-    item = new QListWidgetItem(QIcon(":/options/core.png"), tr("Core"), listWidget);
-    item = new QListWidgetItem(QIcon(":/options/limits.png"), tr("Limits"), listWidget);
-    item = new QListWidgetItem(QIcon(":/options/appearance.png"), tr("Appearance"), listWidget);
-    item = new QListWidgetItem(QIcon(":/options/behaviour.png"), tr("Behaviour"), listWidget);
-    item = new QListWidgetItem(QIcon(":/options/launching.png"), tr("Launching"), listWidget);
-    item = new QListWidgetItem(QIcon(":/options/ftp.png"), tr("FTP"), listWidget);
-#endif
 
     languageComboBox->addItem(QIcon(":/options/de.png"), "deutsch", "de");
     languageComboBox->addItem(QIcon(":/options/gb.png"), "english", "en");
 
-    this->setWindowIcon( QIcon(":/juicer.png") );
     connect( incomingButton, SIGNAL( clicked() ), this, SLOT( selectIncomingDir() ) );
     connect( tempButton, SIGNAL( clicked() ), this, SLOT( selectTempDir() ) );
 
@@ -90,7 +72,7 @@ QAjOptionsDialog::QAjOptionsDialog( QWidget* parent ) : QDialog( parent )
     connect( specificRadio, SIGNAL( toggled( bool ) ), this, SLOT( specificRadioToggled( bool ) ) );
 
     launchCombo->addItem( DEFAULT_LAUNCHER );
-    if( QString(DEFAULT_LAUNCHER) == QString(KDE_LAUNCHER) )
+    if(DEFAULT_LAUNCHER == KDE_LAUNCHER)
         launchCombo->addItem( GNOME_LAUNCHER );
 
     specificRadioToggled( false );
@@ -102,7 +84,7 @@ QAjOptionsDialog::QAjOptionsDialog( QWidget* parent ) : QDialog( parent )
 
     connect( this, SIGNAL( accepted() ), this, SLOT( acceptedSlot() ) );
 
-    connect(this->handlerPushButton, SIGNAL(clicked()), this, SLOT(setAjfspHandler()));
+    connect(handlerPushButton, SIGNAL(clicked()), this, SLOT(setAjfspHandler()));
 
     listWidget->setCurrentRow( 0 );
 }

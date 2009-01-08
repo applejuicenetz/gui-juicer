@@ -39,15 +39,11 @@ class QAjShareModule : public QAjModuleBase
     Q_OBJECT
 public:
     QAjShareModule(Juicer* juicer);
-
     ~QAjShareModule();
-
-    QAjFileDialog* fileSystem;
-
     void insertShare( QString path, QString shareMode, QString filesystemSeperator );
 
-    QAction* prioOkButton;
-    QCheckBox* prioCheck;
+    QAjFileDialog* fileSystem;
+    QLabel* prioLabel;
     QSpinBox* prioSpin;
     bool changed;
 
@@ -64,32 +60,22 @@ private slots:
     void insertSlot();
     void removeSlot();
     void reloadSlot();
+    void linkSlot();
+    void setPriority(int prio);
 
 public:
     void insertFile( QString id, QString hash, QString fileName, QString size, QString priority, QString filesystemSeperator );
     
     void updateSharedFilesList();
-    void setPriority( int prio );
-
     void setTmpDir ( const QString& theValue ) { tmpDir = theValue; }
     QString getTmpDir() const { return tmpDir; }
 
     QAjShareFileItem* findFile( QString id );
     QAjShareFileItem* findFile( QString size, QString hash );
-    
-    QSize sizeHint() const {
-        QSettings localSettings;
-        localSettings.beginGroup("FilesDock");
-        return localSettings.value("size", true).toSize();
-    }
 
 private:
     QHash<QString, QAjShareFileItem*> sharedFiles;
     QString tmpDir;
-
-private slots:
-    void linkSlot();
-
 
 };
 

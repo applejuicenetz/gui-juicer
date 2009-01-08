@@ -18,6 +18,11 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
+#include <QString>
+#include <QStringList>
+#include <QFile>
+#include <QVariant>
+
 #ifndef TYPES_H_12345678901
 #define TYPES_H_12345678901
 
@@ -99,14 +104,6 @@
 #define FILESYSTEM_TYPE_FOLDER 4
 #define FILESYSTEM_TYPE_DESKTOP 5
 
-#define CONNECTED_SINCE "0"
-#define CORE_VERSION "1"
-#define DOWNSTREAM "2"
-#define UPSTREAM "3"
-#define DOWNLOADED "4"
-#define UPLOADED "5"
-#define CREDITS "6"
-
 #define ONE_DAY 86400
 #define ONE_HOUR 3600
 #define ONE_MINUTE 60
@@ -115,33 +112,12 @@
 #define ONE_MEG 1048576
 #define ONE_KILO 1024
 
-#define WINDOWS "1"
-#define LINUX "2"
-#define MAC "3"
-#define SOLARIS "4"
-#define FREEBSD "6"
-#define NETWARE "7"
-
-#ifdef Q_WS_WIN
-    #define DEFAULT_LAUNCHER WIN_LAUNCHER
-#else
-#ifdef Q_WS_MAC
-    #define DEFAULT_LAUNCHER MAC_LAUNCHER
-#else
-    #define DEFAULT_LAUNCHER KDE_LAUNCHER
-#endif
-#endif
-
-
-#define WIN_LAUNCHER "Windows default"
-#define MAC_LAUNCHER "MacOS default"
-#define KDE_LAUNCHER "kfmclient (KDE)"
-#define GNOME_LAUNCHER "gnome-open (Gnome)"
-
-#include <QString>
-#include <QStringList>
-#include <QFile>
-#include <QVariant>
+static const QString WINDOWS = "1";
+static const QString LINUX = "2";
+static const QString MAC = "3";
+static const QString SOLARIS = "4";
+static const QString FREEBSD = "6";
+static const QString NETWARE = "7";
 
 class AjSettings {
     public:
