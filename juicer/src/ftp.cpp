@@ -148,7 +148,7 @@ void FTP::getNext()
 {
     if ( ! queue.empty() )
     {
-        StoreInfo s = queue.takeFirst();
+        FTP::StoreInfo s = queue.takeFirst();
         dstFile = s.dstFile;
         getFile = ftp->get( s.srcFile, s.dstFile );//, binary?(QFtp::Binary):(QFtp::Ascii) );
     }
@@ -160,7 +160,7 @@ void FTP::getNext()
  */
 void FTP::add( QString srcFilename, QFile* dstFile )
 {
-    StoreInfo s;
+    FTP::StoreInfo s;
     s.srcFile = srcFilename;
     s.dstFile = dstFile;
     queue.append( s );

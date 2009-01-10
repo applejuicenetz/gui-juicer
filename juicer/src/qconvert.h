@@ -24,8 +24,7 @@
 
 #include <QObject>
 #include <QString>
-
-#include "types.h"
+#include <QFile>
 
 /**
 @author Matthias Reif
@@ -51,6 +50,14 @@ public:
     static QString power( float power );
     static QString time( long int seconds );
     static QString getFileErrorString(QFile::FileError error);
+
+    static const int ONE_DAY = 86400;
+    static const int ONE_HOUR = 3600;
+    static const int ONE_MINUTE = 60;
+
+    static const int ONE_GIG = 1073741824;
+    static const int ONE_MEG = 1048576;
+    static const int ONE_KILO = 1024;
 };
 
 #endif

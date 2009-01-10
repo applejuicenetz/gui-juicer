@@ -55,11 +55,11 @@ void QAjShareModule::insertShare( QString path, QString shareMode, QString files
         path += filesystemSeperator;
     }
     QAjShareItem *item = new QAjShareItem(treeWidget, path, (shareMode == "subdirectory"));
-    item->setText(PATH_SHARE_INDEX, path);
+    item->setText(QAjShareItem::PATH_COL, path);
     if(item->isRecursive()) {
-        item->setIcon(PATH_SHARE_INDEX, QIcon(":/small/recursive.png"));
+        item->setIcon(QAjShareItem::PATH_COL, QIcon(":/small/recursive.png"));
     } else {
-        item->setIcon(PATH_SHARE_INDEX, QIcon(":/small/not_recursive.png"));
+        item->setIcon(QAjShareItem::PATH_COL, QIcon(":/small/not_recursive.png"));
     }
 }
 
@@ -112,7 +112,7 @@ void QAjShareModule::commitSlot()
     for(int i=0; i<treeWidget->topLevelItemCount() ; i++) {
         QTreeWidgetItem* item = treeWidget->topLevelItem(i);
         if ( item->flags() & Qt::ItemIsEnabled ) {
-            sharesString += "&sharedirectory" + QString::number(cnt) + "=" + item->text( PATH_SHARE_INDEX );
+            sharesString += "&sharedirectory" + QString::number(cnt) + "=" + item->text( QAjShareItem::PATH_COL );
             sharesString += "&sharesub" + QString::number(cnt) + "=";
             sharesString += ((QAjShareItem*)item)->isRecursive()?"true":"false";
             cnt++;
@@ -143,13 +143,13 @@ void QAjShareModule::insertDirList( QTreeWidgetItem* parent, QStringList* dirLis
         QAjItem* newItem = new QAjItem( parent );
         newItem->setFlags( Qt::ItemIsEnabled );
         parent->addChild( newItem );
-        newItem->setText( PATH_SHARE_INDEX, dirList->front() );
+        newItem->setText( QAjShareItem::PATH_COL, dirList->front() );
     }
     else
     {
         QTreeWidgetItem* currChild = parent->child( 0 );
         int i = 1;
-        while ( ( currChild != NULL ) && ( currChild->text( PATH_SHARE_INDEX ) != dirList->front() ) )
+        while ( ( currChild != NULL ) && ( currChild->text( QAjShareItem::PATH_COL ) != dirList->front() ) )
         {
             currChild = parent->child( i++ );
         }
@@ -159,8 +159,8 @@ void QAjShareModule::insertDirList( QTreeWidgetItem* parent, QStringList* dirLis
             QAjItem* newItem = new QAjItem( parent );
             newItem->setFlags( Qt::ItemIsEnabled );
             parent->addChild( newItem );
-            newItem->setText( PATH_SHARE_INDEX, dirList->front() );
-            newItem->setIcon( PATH_SHARE_INDEX, QIcon(":/small/shares.png") );
+            newItem->setText( QAjShareItem::PATH_COL, dirList->front() );
+            newItem->setIcon( QAjShareItem::PATH_COL, QIcon(":/small/shares.png") );
             dirList->pop_front();
             insertDirList( newItem, dirList );
         }

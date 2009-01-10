@@ -36,10 +36,10 @@ bool QAjIncomingItem::operator<( const QTreeWidgetItem & other ) const
     QAjIncomingItem* incomingItem = (QAjIncomingItem*)&other;
     switch ( sortIndex )
     {
-        case SIZE_INCOMING_INDEX:
+        case SIZE_COL:
             return this->size < incomingItem->size;
             break;
-        case DATE_INCOMING_INDEX:
+        case DATE_COL:
             return this->date < incomingItem->date;
             break;
         default:

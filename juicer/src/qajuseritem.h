@@ -25,8 +25,12 @@
 
 #include "qajitem.h"
 #include "qconvert.h"
-#include "types.h"
 #include "qajoptionsdialog.h"
+#include "qajdownloaditem.h"
+
+static const QString ACTIVE_SOURCE = "7";
+static const QString QUEUED_SOURCE = "5";
+static const QString NEW_SOURCE = "-1";
 
 /**
 @author Matthias Reif

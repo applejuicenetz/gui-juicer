@@ -26,7 +26,6 @@
 #include "qajmodulebase.h"
 #include "qajuploaditem.h"
 #include "qconvert.h"
-#include "types.h"
 
 /**
 @author Matthias Reif

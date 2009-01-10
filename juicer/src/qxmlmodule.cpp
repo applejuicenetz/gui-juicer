@@ -512,7 +512,7 @@ void QXMLModule::handleRemoved( QDomElement& e )
  */
 void QXMLModule::handlePart( QDomElement& e )
 {
-    Part part;
+    QAjPartsWidget::Part part;
     part.type = e.attribute("type").toInt();
     part.fromPosition = e.attribute("fromposition").toULongLong();
     partList.push_back(part);

@@ -47,9 +47,9 @@ QAjPartListDialog::~QAjPartListDialog()
 }
 
 /*!
-    \fn QAjPartListDialog::update( Q_ULLONG size, QLinkedList<Part>& partList )
+    \fn QAjPartListDialog::update( Q_ULLONG size, QLinkedList<QAjPartsWidget::Part>& partList )
  */
-void QAjPartListDialog::update( qulonglong size, QLinkedList<Part>& partList )
+void QAjPartListDialog::update( qulonglong size, QLinkedList<QAjPartsWidget::Part>& partList )
 {
     if ( !isVisible() )
     {
@@ -60,7 +60,7 @@ void QAjPartListDialog::update( qulonglong size, QLinkedList<Part>& partList )
 //     if ( ! timer->isActive() )
 //         timer->start( 5000 );
 
-    Part closePart;
+    QAjPartsWidget::Part closePart;
     closePart.fromPosition = size ;
     closePart.type = -10;
     partList.push_back( closePart );

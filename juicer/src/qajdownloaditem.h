@@ -33,12 +33,9 @@
 #include <QProgressBar>
 
 #include "qajuseritem.h"
-#include "qajdownloaditem.h"
 
 #include "qajlistwidget.h"
 #include "qajitem.h"
-
-#include "types.h"
 
 #include "qconvert.h"
 
@@ -46,6 +43,14 @@
 #include "qajpowerspin.h"
 
 class QAjUserItem;
+
+
+static const QString DOWN_PAUSED = "18";
+static const QString DOWN_FINISHED = "14";
+static const QString DOWN_CANCELD = "17";
+static const QString DOWN_FINISHING = "12";
+static const QString DOWN_SEARCHING = "0";
+static const QString DOWN_LOADING = "-1";
 
 /**
 @author Matthias Reif
@@ -55,8 +60,10 @@ class QAjDownloadItem : public QAjItem
 Q_OBJECT
 public:
     QAjDownloadItem( QString id, QTreeWidget *parent = 0 );
-
     ~QAjDownloadItem();
+
+    enum {FILENAME_COL, SOURCES_COL, SPEED_COL, STATUS_COL, FINISHED_COL, POWER_COL,
+          SIZE_COL, FINISHED_SIZE_COL, REMAIN_SIZE_COL, REMAIN_TIME_COL, MISSING_COL};
 
     void moveItem( QAjUserItem *userItem, QString oldStatus );
     void update( const QString& hash, const QString& fileName, const QString& status, const QString& size, const QString& ready, const QString& power, const QString& tempNumber );
@@ -116,7 +123,7 @@ public:
         return percent;
     }
     QAjPartListDialog* getPartListDialog();
-    void setParts( qulonglong size, QLinkedList<Part>& partList );
+    void setParts( qulonglong size, QLinkedList<QAjPartsWidget::Part>& partList );
 
     QString getTempNumber()
     {

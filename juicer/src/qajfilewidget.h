@@ -27,7 +27,8 @@ public:
 
     ~QAjFileWidget();
 
-    void insertDirectory( QString dir, QString path, int type );
+    typedef enum {WORKSTATION=1, DRIVE=2, DISKDRIVE=3, FOLDER=4, DESKTOP=5} FileSystem;
+    void insertDirectory( QString dir, QString path, FileSystem type );
     void insertSeperator( QString seperator );
     void emptyDirectory();
     QString getPathFromSelectedItem();

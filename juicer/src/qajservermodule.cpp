@@ -56,15 +56,15 @@ void QAjServerModule::insertServer( QString id, QString name, QString host, QStr
         QString time = zeroTime.addMSecs( lastseen.toULongLong() ).toLocalTime().toString( Qt::LocalDate );
         item = new QAjServerItem( id, treeWidget );
         servers[ id ] = item;
-        item->setText( NAME_SERVER_INDEX, name );
-        item->setText( HOST_SERVER_INDEX, host );
-        item->setText( PORT_SERVER_INDEX, port );
-        item->setText( LASTSEEN_SERVER_INDEX, time );
-        item->setText( TESTS_SERVER_INDEX, tests );
+        item->setText( QAjServerItem::NAME_COL, name );
+        item->setText( QAjServerItem::HOST_COL, host );
+        item->setText( QAjServerItem::PORT_COL, port );
+        item->setText( QAjServerItem::LASTSEEN_COL, time );
+        item->setText( QAjServerItem::TESTS_COL, tests );
         if( id == connectedWithId )
-            item->setIcon( NAME_SERVER_INDEX, QIcon(":/small/connected.png") );
+            item->setIcon( QAjServerItem::NAME_COL, QIcon(":/small/connected.png") );
         else if( id == connectingToId )
-            item->setIcon( NAME_SERVER_INDEX, QIcon(":/small/connect.png") );
+            item->setIcon( QAjServerItem::NAME_COL, QIcon(":/small/connect.png") );
     }
 }
 
@@ -102,16 +102,16 @@ void QAjServerModule::connectedWith( QString id )
 {
     if ( ! connectingToId.isEmpty() && servers.contains( connectingToId ) )
     {
-        servers[ connectingToId ]->setIcon( NAME_SERVER_INDEX, QIcon() );
+        servers[ connectingToId ]->setIcon( QAjServerItem::NAME_COL, QIcon() );
     }
     if ( ! connectedWithId.isEmpty() && servers.contains( connectedWithId ) )
     {
-        servers[ connectedWithId ]->setIcon( NAME_SERVER_INDEX, QIcon() );
+        servers[ connectedWithId ]->setIcon( QAjServerItem::NAME_COL, QIcon() );
     }
     if ( servers.contains( id ) )
     {
-        servers[ id ]->setIcon( NAME_SERVER_INDEX, QIcon(":/small/connected.png") );
-        //connected( servers[ id ]->text( NAME_SERVER_INDEX ) );
+        servers[ id ]->setIcon( QAjServerItem::NAME_COL, QIcon(":/small/connected.png") );
+        //connected( servers[ id ]->text( NAME_COL ) );
     }
     connectedWithId = id;
     connectingToId = "";
@@ -121,11 +121,11 @@ void QAjServerModule::connectingTo( QString id )
 {
     if ( ! connectingToId.isEmpty() && servers.contains( connectingToId ) )
     {
-        servers[ connectingToId ]->setIcon( NAME_SERVER_INDEX, QIcon() );
+        servers[ connectingToId ]->setIcon( QAjServerItem::NAME_COL, QIcon() );
     }
     if ( servers.contains( id ) )
     {
-        servers[ id ]->setIcon( NAME_SERVER_INDEX, QIcon(":/small/connect.png") );
+        servers[ id ]->setIcon( QAjServerItem::NAME_COL, QIcon(":/small/connect.png") );
     }
     connectingToId = id;
 }

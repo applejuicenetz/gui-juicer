@@ -59,9 +59,9 @@ QAjPartListWidget::~QAjPartListWidget()
 
 
 /*!
-    \fn QAjPartListWidget::update( Q_ULLONG size, QLinkedList<Part>& partList )
+    \fn QAjPartListWidget::update( Q_ULLONG size, QLinkedList<QAjPartsWidget::Part>& partList )
  */
-void QAjPartListWidget::update( qulonglong size, QLinkedList<Part>& partList )
+void QAjPartListWidget::update( qulonglong size, QLinkedList<QAjPartsWidget::Part>& partList )
 {
     if ( !isVisible() )
     {
@@ -74,7 +74,7 @@ void QAjPartListWidget::update( qulonglong size, QLinkedList<Part>& partList )
 
     this->size = size;
     this->partList = partList;
-    Part closePart;
+    QAjPartsWidget::Part closePart;
     closePart.fromPosition = size;
     closePart.type = -10;
     this->partList.push_back( closePart );

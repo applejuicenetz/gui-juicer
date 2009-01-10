@@ -20,8 +20,6 @@
 #include "qajlistwidget.h"
 #include "qajitem.h"
 
-#include "types.h"
-
 /**
 	@author Holger Gerth <holger.gerth@informatik.tu-chemnitz.de>
 */
@@ -49,6 +47,7 @@ public:
       return path;
     }
 
+    enum {FILENAME_COL, SIZE_COL, PRIORITY_COL, NUM_SHARED_FILES_OVERVIEW_COL};
 protected:
     QString path;
 };

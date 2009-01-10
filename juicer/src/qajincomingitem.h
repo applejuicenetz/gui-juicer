@@ -24,7 +24,6 @@
 #include <QDateTime>
 
 #include "qajitem.h"
-#include "types.h"
 
 /**
 	@author Matthias Reif <matthias.reif@informatik.tu-chemnitz.de>
@@ -37,6 +36,9 @@ public:
     ~QAjIncomingItem();
 
     virtual bool operator<( const QTreeWidgetItem & other ) const;
+
+    enum {FILENAME_COL, SIZE_COL, DATE_COL};
+
 
 private:
     qint64 size;

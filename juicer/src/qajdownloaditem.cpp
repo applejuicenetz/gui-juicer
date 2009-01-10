@@ -22,12 +22,6 @@
 
 QAjDownloadItem::QAjDownloadItem( QString id, QTreeWidget *parent ) : QAjItem( parent, id )
 {
-    for( int i=1; i<NUM_DOWN_COL; i++ )
-    {
-        setTextAlignment( i, Qt::AlignLeft | Qt::AlignVCenter );
-    }
-//     parentWidget = parent;
-
     size = 0.0;
     ready = 0.0;
     speed = 0.0;
@@ -37,33 +31,33 @@ QAjDownloadItem::QAjDownloadItem( QString id, QTreeWidget *parent ) : QAjItem( p
     first = true;
 
     activeSourcesItem = new QAjItem( this );
-    activeSourcesItem->setText(FILENAME_DOWN_INDEX, QObject::tr("1. active"));
+    activeSourcesItem->setText(FILENAME_COL, QObject::tr("1. active"));
     activeSourcesItem->setFlags( Qt::ItemIsEnabled );
 
     queuedSourcesItem = new QAjItem( this );
-    queuedSourcesItem->setText(FILENAME_DOWN_INDEX, QObject::tr("2. queueing"));
+    queuedSourcesItem->setText(FILENAME_COL, QObject::tr("2. queueing"));
     queuedSourcesItem->setFlags( Qt::ItemIsEnabled );
 
     otherSourcesItem = new QAjItem( this );
-    otherSourcesItem->setText(FILENAME_DOWN_INDEX, QObject::tr("3. others"));
+    otherSourcesItem->setText(FILENAME_COL, QObject::tr("3. others"));
     otherSourcesItem->setFlags( Qt::ItemIsEnabled );
 
     partListDialog = new QAjPartListDialog();
     partListDialog->hide();
 
     powerSpin = new QAjPowerSpin(id);
-    setSizeHint(POWER_DOWN_INDEX, powerSpin->sizeHint());
+    setSizeHint(POWER_COL, powerSpin->sizeHint());
 
     progressBar = new QProgressBar();
     progressBar->setMaximumHeight(20);
 
-    setSizeHint(FINISHED_DOWN_INDEX, progressBar->sizeHint());
+    setSizeHint(FINISHED_COL, progressBar->sizeHint());
 
-    setTextAlignment(FINISHED_DOWN_INDEX, Qt::AlignCenter);
+    setTextAlignment(FINISHED_COL, Qt::AlignCenter);
 
-    setText( SOURCES_DOWN_INDEX, getSourcesString() );
-    setText( SPEED_DOWN_INDEX, QString("0 b/s") );
-    setText( REMAIN_TIME_DOWN_INDEX, QString( "n.a." ) );
+    setText( SOURCES_COL, getSourcesString() );
+    setText( SPEED_COL, QString("0 b/s") );
+    setText( REMAIN_TIME_COL, QString( "n.a." ) );
 
     QTimer::singleShot(100, this, SLOT(initPowerSpin()));
 }
@@ -91,8 +85,8 @@ void QAjDownloadItem::initPowerSpin() {
     l->addStretch(2);
     progressBarWidget->setLayout(l);
 
-    treeWidget()->setItemWidget(this, POWER_DOWN_INDEX, powerSpin);
-    treeWidget()->setItemWidget(this, FINISHED_DOWN_INDEX, progressBarWidget);
+    treeWidget()->setItemWidget(this, POWER_COL, powerSpin);
+    treeWidget()->setItemWidget(this, FINISHED_COL, progressBarWidget);
     
 //     connect( powerSpin, SIGNAL( valueChanged( const QString&) ), this, SLOT( applyPowerDownload() ) );
 //     connect( powerSpin, SIGNAL( valueChanged( double ) ), this, SLOT( applyPowerDownload() ) );
@@ -184,13 +178,13 @@ void QAjDownloadItem::update( const QString& hash, const QString& fileName, cons
         this->first = false;
         this->finishedChanged = true;
     }
-    if ( this->text( SIZE_DOWN_INDEX ).isEmpty() ) {
-        this->setText( SIZE_DOWN_INDEX, " " + QConvert::bytes( this->size ) + " " );
+    if ( this->text( SIZE_COL ).isEmpty() ) {
+        this->setText( SIZE_COL, " " + QConvert::bytes( this->size ) + " " );
     }
-    this->setText( FILENAME_DOWN_INDEX, fileName );
+    this->setText( FILENAME_COL, fileName );
     partListDialog->setFilename( fileName );
 
-//     this->setText( POWER_DOWN_INDEX, " " + QConvert::power( power ) + " " );
+//     this->setText( POWER_COL, " " + QConvert::power( power ) + " " );
 
     float p = QConvert::powerValue( power );
     if( p > 1.0 ) {
@@ -202,14 +196,14 @@ void QAjDownloadItem::update( const QString& hash, const QString& fileName, cons
     firstFinished = false;
     if ( status != this->status ) {
         if ( status == DOWN_PAUSED ) {
-            this->setTextColor( FILENAME_DOWN_INDEX, Qt::darkGray );
+            this->setTextColor( FILENAME_COL, Qt::darkGray );
         } else if ( status == DOWN_FINISHED ) {
-            this->setTextColor( FILENAME_DOWN_INDEX, Qt::darkGreen );
+            this->setTextColor( FILENAME_COL, Qt::darkGreen );
             firstFinished = true;
         } else if ( status == DOWN_CANCELD ) {
-            this->setTextColor( FILENAME_DOWN_INDEX, Qt::red );
+            this->setTextColor( FILENAME_COL, Qt::red );
         } else {
-            this->setTextColor( FILENAME_DOWN_INDEX, Qt::black );
+            this->setTextColor( FILENAME_COL, Qt::black );
         }
         this->status = status;
         // -- trigger change of selection to update the active/inactive toolbar buttons on a status change --
@@ -229,37 +223,37 @@ QString QAjDownloadItem::getSourcesString() {
 bool QAjDownloadItem::updateView( QHash<QString, QString>* downloadStatusDescr ) {
     if( ( status == DOWN_SEARCHING ) || ( status == DOWN_LOADING ) )     {
         if ( getActiveSources() > 0 )         {
-            setTextColor( FILENAME_DOWN_INDEX, Qt::darkBlue );
-            setText( STATUS_DOWN_INDEX, downloadStatusDescr->value( "-1", "unknown" ) );
+            setTextColor( FILENAME_COL, Qt::darkBlue );
+            setText( STATUS_COL, downloadStatusDescr->value( "-1", "unknown" ) );
             status = DOWN_LOADING;
         } else if ( getActiveSources() <= 0 ) {
-            setTextColor( FILENAME_DOWN_INDEX, Qt::black );
-            setText( STATUS_DOWN_INDEX, downloadStatusDescr->value( status, "unknown" ) );
+            setTextColor( FILENAME_COL, Qt::black );
+            setText( STATUS_COL, downloadStatusDescr->value( status, "unknown" ) );
             status = DOWN_SEARCHING;
         }
     } else {
-        setText( STATUS_DOWN_INDEX, downloadStatusDescr->value( status, "unknown" ) );
+        setText( STATUS_COL, downloadStatusDescr->value( status, "unknown" ) );
     }
 
-    setText( SOURCES_DOWN_INDEX, getSourcesString() );
+    setText( SOURCES_COL, getSourcesString() );
     finished = ready / size;
     percent = (int)(finished * 100.0);
     progressBar->setValue(percent);
-    setText( FINISHED_SIZE_DOWN_INDEX, " " + QConvert::bytes( ready ) + " " );
-    setText( REMAIN_SIZE_DOWN_INDEX, " " + QConvert::bytes( remainingSize ) + " " );
+    setText( FINISHED_SIZE_COL, " " + QConvert::bytes( ready ) + " " );
+    setText( REMAIN_SIZE_COL, " " + QConvert::bytes( remainingSize ) + " " );
 
     if( status != DOWN_LOADING ) {
         speed = 0.0;
     }
 
-    setText( SPEED_DOWN_INDEX, " " + QConvert::bytes( speed, 1 ) + "/s ");
+    setText( SPEED_COL, " " + QConvert::bytes( speed, 1 ) + "/s ");
 
     if( speed > 0 ) {
         remainingSec = (long int)(remainingSize / speed);
-        setText( REMAIN_TIME_DOWN_INDEX, " " + QConvert::time( remainingSec ) + " " );
+        setText( REMAIN_TIME_COL, " " + QConvert::time( remainingSec ) + " " );
     } else {
         remainingSec = LONG_MAX;
-        setText( REMAIN_TIME_DOWN_INDEX, QString( " n.a. " ) );
+        setText( REMAIN_TIME_COL, QString( " n.a. " ) );
     }
 
     bool returnValue = firstFinished;
@@ -295,13 +289,13 @@ QAjPartListDialog* QAjDownloadItem::getPartListDialog() {
 
 
 /*!
-    \fn QAjDownloadItem::setParts( Q_ULLONG size, QLinkedList<Part>& partList )
+    \fn QAjDownloadItem::setParts( Q_ULLONG size, QLinkedList<QAjPartsWidget::Part>& partList )
  */
-void QAjDownloadItem::setParts( qulonglong size, QLinkedList<Part>& partList ) {
+void QAjDownloadItem::setParts( qulonglong size, QLinkedList<QAjPartsWidget::Part>& partList ) {
     if ( partListDialog->isVisible() ) {
         partListDialog->update( size, partList );
     }
-    Part closePart;
+    QAjPartsWidget::Part closePart;
     closePart.type = -10;
     closePart.fromPosition = size;
     partList.push_back( closePart );
@@ -310,8 +304,8 @@ void QAjDownloadItem::setParts( qulonglong size, QLinkedList<Part>& partList ) {
     qulonglong partSize;
     bytesReady = bytesAvailable = bytesMissing = 0;
 
-    Part fromPart, toPart;
-    QLinkedListIterator<Part> it(partList);
+    QAjPartsWidget::Part fromPart, toPart;
+    QLinkedListIterator<QAjPartsWidget::Part> it(partList);
     toPart = it.next();
 
     while ( it.hasNext() ) {
@@ -334,14 +328,14 @@ void QAjDownloadItem::setParts( qulonglong size, QLinkedList<Part>& partList ) {
     }
     missing = (double)bytesMissing / (double)size * 100.0;
     if ( missing < 1.0 && missing > 0.0 ) {
-        setText( MISSING_DOWN_INDEX, QString::number( missing, 'f', 1 ) + "%" );
+        setText( MISSING_COL, QString::number( missing, 'f', 1 ) + "%" );
     } else {
-        setText( MISSING_DOWN_INDEX, QString::number( missing, 'f', 0 ) + "%" );
+        setText( MISSING_COL, QString::number( missing, 'f', 0 ) + "%" );
     }
     if ( missing > 0.0 ) {
-        setTextColor( MISSING_DOWN_INDEX, Qt::darkRed );
+        setTextColor( MISSING_COL, Qt::darkRed );
     } else {
-        setTextColor( MISSING_DOWN_INDEX, Qt::darkGreen );
+        setTextColor( MISSING_COL, Qt::darkGreen );
     }
 }
 
@@ -349,27 +343,27 @@ bool QAjDownloadItem::operator<( const QTreeWidgetItem & other ) const {
     int sortIndex = treeWidget()->header()->sortIndicatorSection();
     QAjDownloadItem* downItem = (QAjDownloadItem*)&other;
     switch ( sortIndex ) {
-        case FILENAME_DOWN_INDEX:
-            return this->text( FILENAME_DOWN_INDEX ) < other.text( FILENAME_DOWN_INDEX );
-        case SIZE_DOWN_INDEX:
+        case FILENAME_COL:
+            return this->text( FILENAME_COL ) < other.text( FILENAME_COL );
+        case SIZE_COL:
             return size < downItem->getSize();
-        case FINISHED_SIZE_DOWN_INDEX:
+        case FINISHED_SIZE_COL:
             if(ready == downItem->getReady()) {
-                return this->text( FILENAME_DOWN_INDEX ) < other.text( FILENAME_DOWN_INDEX );
+                return this->text( FILENAME_COL ) < other.text( FILENAME_COL );
             } else {
                 return ready < downItem->getReady();
             }
-        case REMAIN_SIZE_DOWN_INDEX:
+        case REMAIN_SIZE_COL:
             return remainingSize < downItem->getRemainingSize();
-        case REMAIN_TIME_DOWN_INDEX:
+        case REMAIN_TIME_COL:
             return remainingSec < downItem->getRemainingSec();
-        case SPEED_DOWN_INDEX:
+        case SPEED_COL:
             return this->speed < downItem->getSpeed();
-        case MISSING_DOWN_INDEX:
+        case MISSING_COL:
             return this->missing < downItem->getMissing();
-        case FINISHED_DOWN_INDEX:
+        case FINISHED_COL:
             if(this->finished == downItem->getFinished()) {
-                return this->text( FILENAME_DOWN_INDEX ) < other.text( FILENAME_DOWN_INDEX );
+                return this->text( FILENAME_COL ) < other.text( FILENAME_COL );
             } else {
                 return this->finished < downItem->getFinished();
             }
@@ -380,7 +374,7 @@ bool QAjDownloadItem::operator<( const QTreeWidgetItem & other ) const {
 
 QString QAjDownloadItem::getLinkAJFSP() {
     return "ajfsp://file|"
-        + this->text(FILENAME_DOWN_INDEX) + "|"
+        + this->text(FILENAME_COL) + "|"
         + this->hash + "|"
         + QString::number( (int)this->size ) + "/";
 }

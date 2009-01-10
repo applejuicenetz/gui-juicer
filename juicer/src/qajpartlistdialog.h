@@ -26,7 +26,7 @@ class QAjPartListDialog : public QDialog, private Ui::partListDialog
 public:
     QAjPartListDialog(QWidget* parent = 0, Qt::WFlags fl = 0 );
     ~QAjPartListDialog();
-    void update( qulonglong size, QLinkedList<Part>& partList );
+    void update( qulonglong size, QLinkedList<QAjPartsWidget::Part>& partList );
     void setFilename( const QString& filename );
 private:
     QAjPartsWidget* paintWidget;

@@ -41,18 +41,18 @@ bool QAjUploadModule::insertUpload(QString id, QString shareId, QString version,
     if(uploadItem == NULL) {
         uploadItem = new QAjUploadItem(id, shareId, treeWidget);
         uploads[ id ] = uploadItem;
-        uploadItem->setText(NICK_UP_INDEX, nick);
-        uploadItem->setText(FILENAME_UP_INDEX, "");
-        uploadItem->setIcon(OS_UP_INDEX, juicer->osIcons[os]);
+        uploadItem->setText(QAjUploadItem::NICK_COL, nick);
+        uploadItem->setText(QAjUploadItem::FILENAME_COL, "");
+        uploadItem->setIcon(QAjUploadItem::OS_COL, juicer->osIcons[os]);
     }
 
     uploadItem->setStatus(status);
-    uploadItem->setText(SPEED_UP_INDEX, QConvert::bytes(speed) + "/s" );
-    uploadItem->setText(STATUS_UP_INDEX, uploadStatusDescr[status]);
-    uploadItem->setText(DIRECTSTATE_UP_INDEX, uploadDirectStateDescr[directState]);
-    uploadItem->setText(PRIORITY_UP_INDEX, priority );
+    uploadItem->setText(QAjUploadItem::SPEED_COL, QConvert::bytes(speed) + "/s" );
+    uploadItem->setText(QAjUploadItem::STATUS_COL, uploadStatusDescr[status]);
+    uploadItem->setText(QAjUploadItem::DIRECTSTATE_COL, uploadDirectStateDescr[directState]);
+    uploadItem->setText(QAjUploadItem::PRIORITY_COL, priority );
 
-    return ( uploadItem->text( FILENAME_UP_INDEX ) != "" );
+    return ( uploadItem->text( QAjUploadItem::FILENAME_COL ) != "" );
 }
 
 bool QAjUploadModule::remove(QString id) {
@@ -81,7 +81,7 @@ void QAjUploadModule::setFilename(QString shareId, QString filename) {
     QHash<QString, QAjUploadItem*>::const_iterator item;
     for(item = uploads.constBegin(); item != uploads.constEnd(); item++) {
         if((*item)->shareId == shareId) {
-            (*item)->setText(FILENAME_UP_INDEX, filename);
+            (*item)->setText(QAjUploadItem::FILENAME_COL, filename);
         }
     }
 }

@@ -25,6 +25,7 @@
 #include "ftp.h"
 #include "qajoptionsdialog.h"
 
+
 class QAjDownloadModule : public QAjModuleBase {
   Q_OBJECT
 public:
@@ -36,7 +37,6 @@ public:
                         const QString& status, const QString& power, const QString& queuePos, const QString& os, QTime& time);
     bool remove(const QString& id);
     bool removeDownload(const QString& id);
-    DownloadUser findParent(const QString& id);
     QAjDownloadItem* findDownload(const QString& id);
     QAjDownloadItem* findDownload(const QString& size, const QString& hash);
     QMenu *popup;
@@ -57,6 +57,15 @@ protected:
     QHash<QString, QString> userStatusDescr;
     QHash<QString, QString> downloadStatusDescr;
     QFileInfo tempDir, incomingDir;
+
+    class DownloadUser {
+        public:
+        DownloadUser() {download = NULL; user = NULL; }
+        QAjDownloadItem* download;
+        QAjUserItem* user;
+    };
+    QAjDownloadModule::DownloadUser findParent(const QString& id);
+
 protected slots:
     void cancelSlot();
     void cleanSlot();

@@ -47,9 +47,9 @@ void QAjUserItem::setSpeed( const QString& newSpeedString, const QTime& time )
     speed = newSpeed;
 
     if ( status == ACTIVE_SOURCE )
-        setText( SPEED_DOWN_INDEX, QConvert::bytes(newSpeedString) + "/s" );
+        setText( QAjDownloadItem::SPEED_COL, QConvert::bytes(newSpeedString) + "/s" );
     else
-        setText( SPEED_DOWN_INDEX, "" );
+        setText( QAjDownloadItem::SPEED_COL, "" );
 }
 
 void QAjUserItem::update( const QString& fileName, const QString& speed, const QString& status, const QString& power, const QString& queuePos, const QString& statusString, QIcon& osIcon, const QTime& time )
@@ -61,19 +61,19 @@ void QAjUserItem::update( const QString& fileName, const QString& speed, const Q
     setSpeed( speed, time );
 
     if ( this->status == QUEUED_SOURCE ) { // queueing? print position
-        setText( STATUS_DOWN_INDEX,  statusString + " (" + queuePos + ")" );
+        setText( QAjDownloadItem::STATUS_COL,  statusString + " (" + queuePos + ")" );
     } else {
-        setText( STATUS_DOWN_INDEX,  statusString );
+        setText( QAjDownloadItem::STATUS_COL,  statusString );
     }
-    setText( POWER_DOWN_INDEX,  QConvert::power( power ) );
+    setText( QAjDownloadItem::POWER_COL,  QConvert::power( power ) );
     if ( !fileNameSet && !fileName.isEmpty() )
     {
-        setText( FILENAME_DOWN_INDEX, fileName );
+        setText( QAjDownloadItem::FILENAME_COL, fileName );
         fileNameSet = true;
     }
-    if ( this->icon(SOURCES_DOWN_INDEX).isNull() )
+    if ( this->icon(QAjDownloadItem::SOURCES_COL).isNull() )
     {
-        setIcon( SOURCES_DOWN_INDEX, osIcon );
+        setIcon( QAjDownloadItem::SOURCES_COL, osIcon );
     }
 }
 

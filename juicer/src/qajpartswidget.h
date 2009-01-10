@@ -24,7 +24,6 @@
 #include <QPainter>
 #include <QLinkedList>
 
-#include "types.h"
 /**
 @author Matthias Reif
 */
@@ -35,6 +34,13 @@ public:
     QAjPartsWidget( QWidget *parent = 0 );
     
     ~QAjPartsWidget();
+
+    class Part {
+        public:
+        qulonglong fromPosition;
+        int type;
+    };
+
     void update( qulonglong size, QLinkedList<Part>& partList );
     
     double ready;

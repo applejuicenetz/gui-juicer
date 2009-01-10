@@ -29,8 +29,6 @@
 #include "ui_qajoptionsdialogbase.h"
 #include "qajiconwidget.h"
 
-#include "types.h"
-
 static const QString CONNECTED_SINCE = "0";
 static const QString CORE_VERSION = "1";
 static const QString DOWNSTREAM = "2";
@@ -53,6 +51,14 @@ static const QString GNOME_LAUNCHER = "gnome-open (Gnome)";
     static const QString DEFAULT_LAUNCHER = KDE_LAUNCHER;
 #endif
 #endif
+
+class AjSettings {
+    public:
+    enum LOCATION{SAME=0,SPECIFIC=1,FTP=2};
+    QString nick, tcpPort, xmlPort, incomingDir, tempDir, autoconnect;
+    QString maxDown, maxUp, maxCon, maxSlot, maxSources, maxNewCon;
+};
+
 
 class QAjOptionsDialog : public QDialog, public Ui::QAjOptionsDialogBase
 {

@@ -43,7 +43,7 @@ public:
     QAjPartListWidget( QWidget *parent = 0 );
 
     ~QAjPartListWidget();
-    void update( qulonglong size, QLinkedList<Part>& partList );
+    void update( qulonglong size, QLinkedList<QAjPartsWidget::Part>& partList );
     void setFilename( const QString& filename );
     void setId( QString id );
 protected:
@@ -55,7 +55,7 @@ protected:
     double available;
     double missing;
 
-    QLinkedList<Part> partList;
+    QLinkedList<QAjPartsWidget::Part> partList;
 
 protected:
     void paintEvent( QPaintEvent* );

@@ -34,6 +34,7 @@ public:
     virtual ~QAjShareItem();
     QString getPath() { return path; }
     bool isRecursive() { return recursive; }
+    enum {PATH_COL, MODE_COL};
 private:
     bool recursive;
     QString path;

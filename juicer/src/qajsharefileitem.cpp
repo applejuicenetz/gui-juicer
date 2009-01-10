@@ -38,9 +38,9 @@ void QAjShareFileItem::update( QString hash, QString fileName, QString size, QSt
     if ( !path.endsWith( filesystemSeperator.data()[0] ) )
         path += filesystemSeperator;
 
-    this->setText( FILENAME_SHARED_FILE_INDEX, f.fileName() );
-    this->setText( SIZE_SHARED_FILE_INDEX, QConvert::bytesExtra(size) );
-    this->setText( PRIORITY_SHARED_FILE_INDEX, priority );
+    this->setText( QAjShareFileItem::FILENAME_COL, f.fileName() );
+    this->setText( QAjShareFileItem::SIZE_COL, QConvert::bytesExtra(size) );
+    this->setText( QAjShareFileItem::PRIORITY_COL, priority );
 }
 
 
@@ -50,9 +50,9 @@ bool QAjShareFileItem::operator<( const QTreeWidgetItem & other ) const
     QAjShareFileItem* shareFileItem = (QAjShareFileItem*)&other;
     switch ( sortIndex )
     {
-    case FILENAME_DOWN_INDEX:
-        return this->text( FILENAME_SHARED_FILE_INDEX ) < other.text( FILENAME_SHARED_FILE_INDEX );
-    case SIZE_DOWN_INDEX:
+    case FILENAME_COL:
+        return this->text( FILENAME_COL ) < other.text( FILENAME_COL );
+    case SIZE_COL:
         return (int)this->size < (int)shareFileItem->getSize();
     default:
         return this->text( sortIndex ) < other.text( sortIndex );
@@ -63,7 +63,7 @@ QString QAjShareFileItem::getLinkAJFSP() {
     QString ajfspLink;
 
     ajfspLink.append("ajfsp://file|");
-    ajfspLink.append(this->text(FILENAME_SHARED_FILE_INDEX));
+    ajfspLink.append(this->text(FILENAME_COL));
     ajfspLink.append("|");
     ajfspLink.append(this->hash);
     ajfspLink.append("|");

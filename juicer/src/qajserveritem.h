@@ -32,6 +32,7 @@ public:
 
     ~QAjServerItem();
 
+    enum {NAME_COL, HOST_COL, PORT_COL, LASTSEEN_COL, TESTS_COL};
 };
 
 #endif

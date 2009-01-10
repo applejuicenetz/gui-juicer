@@ -373,7 +373,8 @@ void Juicer::processLink( const QString& link) {
             if((file = shareModule->findFile( size, hash )) != NULL) {
                 QMessageBox::information( this, tr("information"), tr("The file seems to be already in the share")+":\n\n"+file->getFilename());
             } else if((download = downloadModule->findDownload(size, hash)) != NULL) {
-                QMessageBox::information( this, tr("information"), tr("The file seems to be already in the download list")+":\n\n"+download->text(FILENAME_DOWN_INDEX));
+                QMessageBox::information( this, tr("information"),
+                    tr("The file seems to be already in the download list")+":\n\n"+download->text(QAjDownloadItem::FILENAME_COL));
             }
         }
         encodedLink = s[0] + "|" + QUrl::toPercentEncoding( name )  + "|" + hash + "|" + size + "/";
@@ -617,7 +618,7 @@ void Juicer::downloadsFinished( const QList<QAjDownloadItem*>& list )
         int i;
         for( i=0; i<list.size(); i++ )
         {
-            msg += list[i]->text( FILENAME_DOWN_INDEX ) + "\n";
+            msg += list[i]->text( QAjDownloadItem::FILENAME_COL ) + "\n";
         }
         tray->showMessage( tr("Download finished"), msg, QSystemTrayIcon::Information, 3000 );
     }
@@ -718,7 +719,7 @@ void Juicer::createAjL( const QList<QAjItem *>&  selectedItems )
 
             for ( int i=0; i<selectedItems.size(); i++ ) {
 
-//                 QString filename = selectedItems[i]->text(FILENAME_DOWN_INDEX) + '\n';
+//                 QString filename = selectedItems[i]->text(FILENAME_COL) + '\n';
 //                 QString filehash = selectedItems[i]->getHash() + '\n';
 //                 QString filesize = QString::number( (int)selectedItems[i]->getSize() ) + '\n';
 

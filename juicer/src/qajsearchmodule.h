@@ -30,7 +30,6 @@
 #include "qajmodulebase.h"
 #include "qajsearchitem.h"
 #include "qajsearchentryitem.h"
-#include "types.h"
 #include "qconvert.h"
 
 #define MAX_SEARCH_ENTRIES 100000

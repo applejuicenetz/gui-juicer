@@ -194,7 +194,7 @@ bool QAjDownloadModule::removeDownload(const QString& id)
 /*!
     \fn QAjDownloadModule::findParent(const QString& id)
  */
-DownloadUser QAjDownloadModule::findParent(const QString& id) {
+QAjDownloadModule::DownloadUser QAjDownloadModule::findParent(const QString& id) {
     DownloadUser du;
     QHash<QString,QAjDownloadItem*>::const_iterator i;
     for(i = downloads.constBegin(); i != downloads.constEnd(); i++) {
@@ -263,7 +263,7 @@ void QAjDownloadModule::renameSlot() {
     QList<QTreeWidgetItem *> selectedItems = treeWidget->selectedItems();
     QList<QTreeWidgetItem *>::iterator item;
     for(item = selectedItems.begin(); item != selectedItems.end(); item++) {
-        oldFilename = (*item)->text(FILENAME_DOWN_INDEX);
+        oldFilename = (*item)->text(QAjDownloadItem::FILENAME_COL);
         newFilename = QInputDialog::getText(juicer, tr("rename download"), tr("enter new filename for ") + oldFilename, QLineEdit::Normal, oldFilename, &ok);
         newFilename = QString( QUrl::toPercentEncoding(newFilename));
         if(ok && !newFilename.isEmpty()) {
@@ -280,7 +280,7 @@ void QAjDownloadModule::renamePlusSlot() {
     QList<QTreeWidgetItem *> selectedItems = treeWidget->selectedItems();
     QList<QTreeWidgetItem *>::iterator item;
     for(item = selectedItems.begin(); item != selectedItems.end(); item++) {
-        oldFilename = (*item)->text(FILENAME_DOWN_INDEX);
+        oldFilename = (*item)->text(QAjDownloadItem::FILENAME_COL);
         newFilename = newFilenameBase;
         if(selectedItems.size() > 1) {
             newFilename += "_" + QString::number(i+1);
@@ -324,7 +324,7 @@ void QAjDownloadModule::openSlot() {
     for(item = selectedItems.begin(); item != selectedItems.end(); item++) {
         QAjDownloadItem* ajDownloadItem = (QAjDownloadItem*)(*item);
         if(ajDownloadItem->getStatus() == DOWN_FINISHED) {
-            args.push_back(iDir + ajDownloadItem->text(FILENAME_DOWN_INDEX));
+            args.push_back(iDir + ajDownloadItem->text(QAjDownloadItem::FILENAME_COL));
         } else {
             args.push_back(tDir + ajDownloadItem->getTempNumber() + ".data");
         }
@@ -437,7 +437,7 @@ QString QAjDownloadModule::findDownloadByTempNum(const QFileInfo& tempFile) {
         QHash<QString,QAjDownloadItem*>::const_iterator i;
         for(i = downloads.constBegin(); i != downloads.constEnd(); i++) {
             if((*i)->getTempNumber() == tempNum) {
-                return (*i)->text(FILENAME_DOWN_INDEX);
+                return (*i)->text(QAjDownloadItem::FILENAME_COL);
             }
         }
     }
@@ -461,7 +461,7 @@ void QAjDownloadModule::storeDownloadFtp() {
 
     QList<QTreeWidgetItem *>::iterator item;
     for(item = selectedItems.begin(); item != selectedItems.end(); item++) {
-        filename = (*item)->text(FILENAME_DOWN_INDEX);
+        filename = (*item)->text(QAjDownloadItem::FILENAME_COL);
         localDir = QFileDialog::getExistingDirectory(juicer, "save \"" + filename + "\" + to");
         if ( localDir != "" ) {
             if(!localDir.endsWith(QDir::separator())) {

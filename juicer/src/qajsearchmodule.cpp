@@ -51,14 +51,14 @@ void QAjSearchModule::insertSearch( QString id, QString searchText, QString runn
     {
         item = new QAjSearchItem(id, treeWidget);
         searches[id] = item;
-        item->setText( TEXT_SEARCH_INDEX, searchText );
-        item->setText( COUNT_SEARCH_INDEX, "0" );
+        item->setText( QAjSearchItem::TEXT_COL, searchText );
+        item->setText( QAjSearchItem::COUNT_COL, "0" );
     }
-    item->setText( TEXT_SEARCH_INDEX, searchText + " (" + foundFiles + ")" );
+    item->setText( QAjSearchItem::TEXT_COL, searchText + " (" + foundFiles + ")" );
     if ( running == "true" )
-        item->setIcon( TEXT_SEARCH_INDEX, QIcon(":/small/searching.png") );
+        item->setIcon( QAjSearchItem::TEXT_COL, QIcon(":/small/searching.png") );
     else
-        item->setIcon( TEXT_SEARCH_INDEX, QIcon(":/small/ok.png") );
+        item->setIcon( QAjSearchItem::TEXT_COL, QIcon(":/small/ok.png") );
 
 }
 
@@ -78,19 +78,19 @@ void QAjSearchModule::insertSearchEntry( QString id, QString searchId, QString s
             QAjSearchEntryItem *searchEntryItem = new QAjSearchEntryItem( id, searchItem, checksum, size, searchItem );
             searchItem->entries[ id ] = searchEntryItem;
             searchEntries[ id ] = searchEntryItem;
-            searchEntryItem->setText( SIZE_SEARCH_INDEX, QConvert::bytes(size) );
+            searchEntryItem->setText( QAjSearchItem::SIZE_COL, QConvert::bytes(size) );
             QStringListIterator it(filenames);
             while (it.hasNext())
             {
                 QString filename = it.next();
-                if ( searchEntryItem->text( TEXT_SEARCH_INDEX ) == "" )
+                if ( searchEntryItem->text( QAjSearchItem::TEXT_COL ) == "" )
                 {
-                    searchEntryItem->setText( TEXT_SEARCH_INDEX, filename);
+                    searchEntryItem->setText( QAjSearchItem::TEXT_COL, filename);
                     searchEntryItem->setFilename( filename );
                 }
             }
             searchItem->hits++;
-            searchItem->setText( COUNT_SEARCH_INDEX, QString::number(searchItem->hits) );
+            searchItem->setText( QAjSearchItem::COUNT_COL, QString::number(searchItem->hits) );
             searchItem->entriesCount++;
         }
     }
@@ -166,7 +166,7 @@ void QAjSearchModule::downloadSlot() {
         QAjSearchEntryItem *searchEntryItem = findSearchEntry(((QAjSearchItem*)selectedItems[i])->getId());
         if( searchEntryItem != NULL ) {
             QString link = "ajfsp://file|";
-            link += searchEntryItem->text( TEXT_SEARCH_INDEX );
+            link += searchEntryItem->text( QAjSearchItem::TEXT_COL );
             link += "|" + searchEntryItem->getHash();
             link += "|" + QString::number( (int)searchEntryItem->getSize() ) + "/";
             link = QString( QUrl::toPercentEncoding(link) );
@@ -196,7 +196,7 @@ void QAjSearchModule::linkSlot()
     QAjSearchEntryItem *searchEntryItem = findSearchEntry(((QAjSearchItem*)selectedItems[0])->getId() );
     if( searchEntryItem != NULL ) {
         link += "ajfsp://file|";
-        link += searchEntryItem->text( TEXT_SEARCH_INDEX );
+        link += searchEntryItem->text( QAjSearchItem::TEXT_COL );
         link += "|" + searchEntryItem->getHash();
         link += "|" + QString::number( (int)searchEntryItem->getSize() ) + "/";
     }

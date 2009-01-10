@@ -67,6 +67,13 @@
 
 #include "qajiconwidget.h"
 
+static const QString WINDOWS = "1";
+static const QString LINUX = "2";
+static const QString MAC = "3";
+static const QString SOLARIS = "4";
+static const QString FREEBSD = "6";
+static const QString NETWARE = "7";
+
 class Juicer: public QMainWindow, public Ui::QAjMainWindowBase
 {
     Q_OBJECT

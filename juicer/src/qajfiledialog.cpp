@@ -40,7 +40,7 @@ QAjFileDialog::~QAjFileDialog()
 }
 
 void QAjFileDialog::insertDirectory( QString dir, QString path, int type ) {
-    if ( fileSystem != NULL ) fileSystem->insertDirectory( dir, path, type );
+    if ( fileSystem != NULL ) fileSystem->insertDirectory( dir, path, (QAjFileWidget::FileSystem)type );
 }
 
 void QAjFileDialog::insertSeperator( QString seperator ) {

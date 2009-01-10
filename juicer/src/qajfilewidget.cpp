@@ -29,9 +29,9 @@ QAjFileWidget::~QAjFileWidget()
 {
 }
 
-void QAjFileWidget::insertDirectory( QString dir, QString path, int type ) {
+void QAjFileWidget::insertDirectory( QString dir, QString path, FileSystem type ) {
 
-    if ( type != FILESYSTEM_TYPE_DISKDRIVE ) {
+    if ( type != DISKDRIVE ) {
         if ( rootPath == NULL ) {
             rootPath = new QAjFileItem( this );
             rootPath->setText(0, dir);

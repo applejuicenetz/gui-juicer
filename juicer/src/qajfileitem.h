@@ -16,9 +16,6 @@
 #include <QString>
 
 #include "qajitem.h"
-#include "types.h"
-
-
 
 /**
 	@author Holger Gerth <holger.gerth@informatik.tu-chemnitz.de>

@@ -28,7 +28,6 @@ HEADERS += ftp.h \
            qajuseritem.h \
            qconvert.h \
            qxmlmodule.h \
-           types.h \
            juicer.h \
            qajnetworkdialog.h \
            qajsearchentryitem.h \

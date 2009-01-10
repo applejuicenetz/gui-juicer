@@ -32,7 +32,6 @@
 #include <QTemporaryFile>
 
 #include "qajoptionsdialog.h"
-#include "types.h"
 
 /**
 	@author Matthias Reif <matthias.reif@informatik.tu-chemnitz.de>
@@ -49,6 +48,12 @@ public:
     void add( QString srcFilename );
 
 private:
+    class StoreInfo {
+        public:
+        QString srcFile;
+        QFile* dstFile;
+    };
+
     QFtp* ftp;
     QString host;
     int port;
@@ -58,7 +63,7 @@ private:
     bool binary;
     int getFile;
 
-    QList< StoreInfo > queue;
+    QList< FTP::StoreInfo > queue;
 
     QProgressDialog* progressDialog;
 

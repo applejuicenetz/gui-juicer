@@ -94,15 +94,15 @@ void QAjIncomingModule::copy()
                     + QDir::separator();
             if(!newDir.isEmpty())
             {
-                QString newFilename = selectedItems[i]->text( FILENAME_INCOMING_INDEX );
+                QString newFilename = selectedItems[i]->text( QAjIncomingItem::FILENAME_COL );
                 while(!newFilename.isEmpty() && QFile::exists(newDir + newFilename))
                 {
                     newFilename = QInputDialog::getText(juicer, tr("file already exists"),
-                            "filename", QLineEdit::Normal, selectedItems[i]->text( FILENAME_INCOMING_INDEX ));
+                            "filename", QLineEdit::Normal, selectedItems[i]->text( QAjIncomingItem::FILENAME_COL ));
                 }
                 if(!newFilename.isEmpty())
                 {
-                    (new CopyThread(actDir + selectedItems[i]->text( FILENAME_INCOMING_INDEX ),
+                    (new CopyThread(actDir + selectedItems[i]->text( QAjIncomingItem::FILENAME_COL ),
                                 newDir + newFilename))->start();
                 }
             }
@@ -131,7 +131,7 @@ void QAjIncomingModule::removeFtp()
         ftp->login( user, password );
         ftp->setTransferMode( mode );
         for(int i=0; i<selectedItems.size(); i++ ) {
-            ftp->remove( dir + selectedItems[i]->text( FILENAME_INCOMING_INDEX ) );
+            ftp->remove( dir + selectedItems[i]->text( QAjIncomingItem::FILENAME_COL ) );
         }
     }
 }
@@ -164,9 +164,9 @@ void QAjIncomingModule::remove()
             int i;
             for( i=0; i<selectedItems.size(); i++ )
             {
-                if(!QFile::remove( actDir + selectedItems[i]->text( FILENAME_INCOMING_INDEX ) ))
+                if(!QFile::remove( actDir + selectedItems[i]->text( QAjIncomingItem::FILENAME_COL ) ))
                 {
-                QMessageBox::critical(juicer, "Error", "Could not remove\n" + actDir + selectedItems[i]->text(FILENAME_INCOMING_INDEX));
+                QMessageBox::critical(juicer, "Error", "Could not remove\n" + actDir + selectedItems[i]->text(QAjIncomingItem::FILENAME_COL));
                 }
             }
             reload();
@@ -194,7 +194,7 @@ void QAjIncomingModule::storeFtp()
     FTP* ftp = new FTP( this );
     for (int  i=0; i<selectedItems.size(); i++ )
     {
-        filename = selectedItems.at(i)->text( FILENAME_INCOMING_INDEX );
+        filename = selectedItems.at(i)->text( QAjIncomingItem::FILENAME_COL );
         localDir = QFileDialog::getExistingDirectory( juicer, tr("copy")+"\"" + filename + "\" "+tr("to") );
         if ( localDir != "" )
         {
@@ -248,7 +248,7 @@ void QAjIncomingModule::openFtp()
     int i;
     for ( i=0; i<selectedItems.size(); i++ )
     {
-        filename = selectedItems.at(i)->text( FILENAME_INCOMING_INDEX );
+        filename = selectedItems.at(i)->text( QAjIncomingItem::FILENAME_COL );
         ftp->add( dir + filename );
     }
     ftp->start();
@@ -293,9 +293,9 @@ void QAjIncomingModule::reload()
             for(i=0; i<list.size(); i++)
             {
                 QAjIncomingItem* item = new QAjIncomingItem( list[i].size(), list[i].lastModified().toLocalTime(), treeWidget );
-                item->setText(FILENAME_INCOMING_INDEX, list[i].fileName());
-                item->setText(SIZE_INCOMING_INDEX, QConvert::bytes((double)list[i].size(), 2));
-                item->setText(DATE_INCOMING_INDEX, list[i].lastModified().toLocalTime().toString( Qt::LocalDate ) );
+                item->setText(QAjIncomingItem::FILENAME_COL, list[i].fileName());
+                item->setText(QAjIncomingItem::SIZE_COL, QConvert::bytes((double)list[i].size(), 2));
+                item->setText(QAjIncomingItem::DATE_COL, list[i].lastModified().toLocalTime().toString( Qt::LocalDate ) );
                 treeWidget->addTopLevelItem( item );
             }
         }
@@ -339,7 +339,7 @@ void QAjIncomingModule::open()
 
     QList<QTreeWidgetItem *> selectedItems = treeWidget->selectedItems();
     for(int i=0; i<selectedItems.size(); i++ ) {
-        args <<  actDir + selectedItems[i]->text( FILENAME_INCOMING_INDEX );
+        args <<  actDir + selectedItems[i]->text( QAjIncomingItem::FILENAME_COL );
         QProcess::startDetached( exec, args );
         args.removeLast();
     }
@@ -354,9 +354,9 @@ void QAjIncomingModule::insert( QUrlInfo info )
     if ( info.isFile() || info.isDir() )
     {
         QAjIncomingItem *item = new QAjIncomingItem( info.size(), info.lastModified().toLocalTime(), treeWidget );
-        item->setText( FILENAME_INCOMING_INDEX, info.name() );
-        item->setText( SIZE_INCOMING_INDEX, QConvert::bytes( (double)info.size(), 2 ) );
-        item->setText( DATE_INCOMING_INDEX, info.lastModified().toLocalTime().toString() );
+        item->setText( QAjIncomingItem::FILENAME_COL, info.name() );
+        item->setText( QAjIncomingItem::SIZE_COL, QConvert::bytes( (double)info.size(), 2 ) );
+        item->setText( QAjIncomingItem::DATE_COL, info.lastModified().toLocalTime().toString() );
         adjustSizeOfColumns();
     }
 }
@@ -394,7 +394,7 @@ bool QAjIncomingModule::confirmRemove(QList<QTreeWidgetItem *>& items) {
             + (items.size()>1?tr("files"):tr("file"))+"?</b><br>";
     for( i=0; i<items.size() && i<maxFilesToShow; i++ )
     {
-        list += "<br>" + items[i]->text( FILENAME_INCOMING_INDEX );
+        list += "<br>" + items[i]->text( QAjIncomingItem::FILENAME_COL );
     }
     if(items.size() > maxFilesToShow)
     {

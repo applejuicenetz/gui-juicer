@@ -23,8 +23,6 @@ QAjSearchItem::QAjSearchItem( QString id, QTreeWidget* parent ) : QAjItem( paren
 {
     hits = 0;
     entriesCount = 0;
-    setTextAlignment( SIZE_SEARCH_INDEX, Qt::AlignRight );
-    setTextAlignment( COUNT_SEARCH_INDEX, Qt::AlignRight );
 }
 
 QAjSearchItem::~QAjSearchItem()
@@ -48,11 +46,11 @@ bool QAjSearchItem::operator<( const QTreeWidgetItem & other ) const
         QAjSearchItem* searchItem = (QAjSearchItem*)item;
         switch ( sortIndex )
         {
-        case TEXT_SEARCH_INDEX:
-            return this->text( TEXT_SEARCH_INDEX ) < other.text( TEXT_SEARCH_INDEX );
-//         case SIZE_SEARCH_INDEX:
+        case TEXT_COL:
+            return this->text( TEXT_COL ) < other.text( TEXT_COL );
+//         case SIZE_COL:
 //             return size < ->getHits();
-        case COUNT_SEARCH_INDEX:
+        case COUNT_COL:
             return this->hits < searchItem->getHits();
         default:
             return this->text( sortIndex ) < other.text( sortIndex );

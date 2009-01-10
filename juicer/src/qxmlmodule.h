@@ -29,7 +29,9 @@
 #include <QHash>
 #include <QDomDocument>
 
-#include "types.h"
+#include "qajoptionsdialog.h"
+#include "qajpartswidget.h"
+
 #include "md5class.h"
 #include "qconvert.h"
 #include "qajitem.h"
@@ -73,7 +75,7 @@ protected:
 
     QDomDocument doc;
 
-    QLinkedList<Part> partList;
+    QLinkedList<QAjPartsWidget::Part> partList;
     qulonglong partsSize;
     QHash<int, QString> requests;
     QHash<int, int> errors;

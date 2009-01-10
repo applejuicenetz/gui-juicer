@@ -21,7 +21,10 @@
 #define QAJUPLOADITEM_H
 
 #include "qajitem.h"
-#include "types.h"
+
+static const QString ACTIVE_UPLOAD = "1";
+static const QString QUEUEING_UPLOAD = "2";
+static const QString NEW_UPLOAD = "-1";
 
 /**
 @author Matthias Reif
@@ -33,6 +36,10 @@ public:
     ~QAjUploadItem();
 
     QString shareId;
+
+    enum {FILENAME_COL, NICK_COL, SPEED_COL, STATUS_COL,
+          PRIORITY_COL, OS_COL, DIRECTSTATE_COL};
+
 };
 
 #endif

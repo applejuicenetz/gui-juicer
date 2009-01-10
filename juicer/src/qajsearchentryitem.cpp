@@ -40,7 +40,7 @@ bool QAjSearchEntryItem::operator<( const QTreeWidgetItem & other ) const
     QAjSearchEntryItem* searchItem = (QAjSearchEntryItem*)&other;
     switch ( sortIndex )
     {
-    case SIZE_SEARCH_INDEX:
+    case QAjSearchItem::SIZE_COL:
         return this->size < searchItem->size;
     default:
         return this->text( sortIndex ) < other.text( sortIndex );

@@ -25,7 +25,6 @@
 
 #include "qajitem.h"
 #include "qajsearchentryitem.h"
-#include "types.h"
 
 /**
 @author Matthias Reif
@@ -36,6 +35,8 @@ public:
     QAjSearchItem( QString id, QTreeWidget* parent );
 
     ~QAjSearchItem();
+
+    enum {TEXT_COL, SIZE_COL, COUNT_COL};
 
     QAjSearchEntryItem* findSearchEntry( QString id );
 
