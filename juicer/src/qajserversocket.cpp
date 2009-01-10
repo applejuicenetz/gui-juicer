@@ -19,37 +19,31 @@
  ***************************************************************************/
 #include "qajserversocket.h"
 
-QAjServerSocket::QAjServerSocket( quint16 port, QObject *parent ) : QTcpServer( parent )
-{
-	listen( QHostAddress::Any, port  );
-	clientSocket = NULL;
-	connect( this, SIGNAL( newConnection() ), this, SLOT( newConnectionSlot() ) );
+QAjServerSocket::QAjServerSocket(quint16 port, QObject *parent) : QTcpServer(parent) {
+    listen(QHostAddress::Any, port);
+    clientSocket = NULL;
+    connect(this, SIGNAL(newConnection()), this, SLOT(newConnectionSlot()));
 }
 
-QAjServerSocket::~QAjServerSocket()
-{
-	if( clientSocket != NULL )
-	{
-		clientSocket->close();
-		delete clientSocket;
-	}
+QAjServerSocket::~QAjServerSocket() {
+    if(clientSocket != NULL) {
+        clientSocket->close();
+        delete clientSocket;
+    }
 }
 
-void QAjServerSocket::readLine()
-{
-	QString line;
-	while( (line = clientSocket->readLine())  != "" )
-	{
-		lineReady( line );
-	}
+void QAjServerSocket::readLine() {
+    QString line;
+    while((line = clientSocket->readLine()) != "") {
+        lineReady(line);
+    }
 }
 
 
 /*!
     \fn QAjServerSocket::newConnectionSlot()
  */
-void QAjServerSocket::newConnectionSlot()
-{
-	clientSocket = nextPendingConnection();
-	connect( clientSocket, SIGNAL( readyRead() ), this, SLOT( readLine() ) );
+void QAjServerSocket::newConnectionSlot() {
+    clientSocket = nextPendingConnection();
+    connect(clientSocket, SIGNAL(readyRead()), this, SLOT(readLine()));
 }

@@ -70,25 +70,22 @@ QAjApplication::QAjApplication( int & argc, char ** argv ) : QApplication( argc,
 }
 
 
-QAjApplication::~QAjApplication()
-{
+QAjApplication::~QAjApplication() {
 }
 
-int QAjApplication::exec()
-{
-    if ( socket != NULL )
+int QAjApplication::exec() {
+    if(socket != NULL) {
         socket->start();
-    else
+    } else {
         start();
+    }
     return QApplication::exec();
 }
 
-void QAjApplication::start()
-{
+void QAjApplication::start() {
     QSplashScreen *splash = new QSplashScreen(QPixmap(":/splash.png"));
-    splash->setVisible( QAjOptionsDialog::getSetting( "showSplash", true ).toBool() );
+    splash->setVisible(QAjOptionsDialog::getSetting( "showSplash", true ).toBool());
 
-    Juicer* juicer = new Juicer( argList, splash );
-    juicer->setWindowTitle( "Juicer" );
-    //setQuitOnLastWindowClosed( true );
+    Juicer* juicer = new Juicer(argList, splash);
+    juicer->setWindowTitle("Juicer");
 }

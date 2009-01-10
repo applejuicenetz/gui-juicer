@@ -360,7 +360,7 @@ void Juicer::setStatusBarText( const QString& downSpeed, const QString& upSpeed,
     );
 }
 
-void Juicer::processLink( const QString& link) {
+void Juicer::processLink(const QString& link) {
     QString encodedLink = QUrl::fromPercentEncoding(link.trimmed().toUtf8());
     QStringList s = encodedLink.split("|");
     if(s.size() > 3) {
@@ -379,18 +379,16 @@ void Juicer::processLink( const QString& link) {
         }
         encodedLink = s[0] + "|" + QUrl::toPercentEncoding( name )  + "|" + hash + "|" + size + "/";
     }
-    xml->set("processlink", "&link=" + link);
+    xml->set("processlink", "&link=" + encodedLink);
 }
 
-void Juicer::processLink()
-{
-    processLink( ajAddressEdit->text().trimmed() );
+void Juicer::processLink() {
+    processLink(ajAddressEdit->text().trimmed());
     ajAddressEdit->clear();
 }
 
-void Juicer::processClipboard()
-{
-    processLink( qApp->clipboard()->text( QClipboard::Clipboard ).trimmed() );
+void Juicer::processClipboard() {
+    processLink(qApp->clipboard()->text(QClipboard::Clipboard));
 }
 
 

@@ -31,15 +31,14 @@ class QAjServerSocket : public QTcpServer
 Q_OBJECT
 public:
     QAjServerSocket(quint16 port, QObject *parent = 0);
-
     ~QAjServerSocket();
 
 protected:
-	QTcpSocket* clientSocket;
+    QTcpSocket* clientSocket;
 public slots:
-	void readLine();
+    void readLine();
 signals:
-	void lineReady( QString line );
+    void lineReady(QString line);
 protected slots:
     void newConnectionSlot();
 };

@@ -19,28 +19,24 @@
  ***************************************************************************/
 #include "qajsocket.h"
 
-QAjSocket::QAjSocket( int appPort, QStringList argList,  QObject *parent ) : QTcpSocket( parent )
-{
+QAjSocket::QAjSocket(int appPort, QStringList argList, QObject *parent) : QTcpSocket(parent) {
     this->appPort = appPort;
     this->argList = argList;
-    connect( this, SIGNAL( connected() ), this, SLOT( connected() ) );
+    connect(this, SIGNAL(connected()), this, SLOT(connected()));
 }
 
 QAjSocket::~QAjSocket()
 {}
 
-void QAjSocket::connected()
-{
-    while ( ! argList.isEmpty() )
-    {
-        write( (argList.takeFirst()+"\n").toAscii() );
+void QAjSocket::connected() {
+    while(!argList.isEmpty()) {
+        write((argList.takeFirst()+"\n").toAscii());
     }
     flush();
     close();
     QCoreApplication::quit();
 }
 
-void QAjSocket::start()
-{
+void QAjSocket::start() {
     connectToHost( "localhost", appPort );
 }
