@@ -21,13 +21,14 @@
 
 #include "qajsearchitem.h"
 
-QAjSearchEntryItem::QAjSearchEntryItem( QString id, QAjSearchItem* search, QString checksum, QString size, QTreeWidgetItem* parent ) : QAjItem( parent, id )
+QAjSearchEntryItem::QAjSearchEntryItem( QString id, QAjSearchItem* search, QString checksum, QString size, QTreeWidgetItem* parent ) 
+  : QAjItem( parent, id )
 {
     this->search = search;
-    if ( this->hash.isEmpty() ) {
-        this->hash = checksum;
+    if ( hash_.isEmpty() ) {
+        hash_ = checksum;
     }
-    this->size = size.toDouble();
+    size_ = size.toDouble();
 }
 
 QAjSearchEntryItem::~QAjSearchEntryItem()
@@ -41,13 +42,13 @@ bool QAjSearchEntryItem::operator<( const QTreeWidgetItem & other ) const
     switch ( sortIndex )
     {
     case QAjSearchItem::SIZE_COL:
-        return this->size < searchItem->size;
+        return size_ < searchItem->getSize();
     default:
         return this->text( sortIndex ) < other.text( sortIndex );
     }
 }
 
 void QAjSearchEntryItem::setFilename( QString filename ) {
-    this->filename = filename;
+    filename_ = filename;
 }
 

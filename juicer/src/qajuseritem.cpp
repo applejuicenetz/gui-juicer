@@ -19,12 +19,14 @@
  ***************************************************************************/
 #include "qajuseritem.h"
 
-QAjUserItem::QAjUserItem( const QString& id, QTreeWidget *parent ) : QAjItem( parent, id )
+QAjUserItem::QAjUserItem( const QString& id, QTreeWidget *parent ) 
+  : QAjItem( parent, id )
 {
     init();
 }
 
-QAjUserItem::QAjUserItem( const QString& id, QTreeWidgetItem *parent ) : QAjItem( parent, id )
+QAjUserItem::QAjUserItem( const QString& id, QTreeWidgetItem *parent ) 
+  : QAjItem( parent, id )
 {
     init();
 }
@@ -36,31 +38,38 @@ void QAjUserItem::init()
 {
     speed = 0;
     fileNameSet = false;
-    status = NEW_SOURCE;
+    status_ = NEW_SOURCE;
     setFlags( Qt::ItemIsEnabled );
 }
 
-void QAjUserItem::setSpeed( const QString& newSpeedString, const QTime& time )
+void QAjUserItem::setSpeed( const QString& newSpeedString, const QTime& /*time*/ )
 {
     newSpeed = newSpeedString.toInt();
     speedDif = newSpeed - speed;
     speed = newSpeed;
 
-    if ( status == ACTIVE_SOURCE )
+    if ( status_ == ACTIVE_SOURCE )
         setText( QAjDownloadItem::SPEED_COL, QConvert::bytes(newSpeedString) + "/s" );
     else
         setText( QAjDownloadItem::SPEED_COL, "" );
 }
 
-void QAjUserItem::update( const QString& fileName, const QString& speed, const QString& status, const QString& power, const QString& queuePos, const QString& statusString, QIcon& osIcon, const QTime& time )
+void QAjUserItem::update( const QString& fileName, 
+                          const QString& speed, 
+                          const QString& status, 
+                          const QString& power, 
+                          const QString& queuePos, 
+                          const QString& statusString, 
+                          QIcon& osIcon, 
+                          const QTime& time )
 {
     this->fileName = fileName;
-    this->status = status;
+    status_ = status;
     this->power = power;
     this->queuePos = queuePos.toInt();
     setSpeed( speed, time );
 
-    if ( this->status == QUEUED_SOURCE ) { // queueing? print position
+    if ( status_ == QUEUED_SOURCE ) { // queueing? print position
         setText( QAjDownloadItem::STATUS_COL,  statusString + " (" + queuePos + ")" );
     } else {
         setText( QAjDownloadItem::STATUS_COL,  statusString );

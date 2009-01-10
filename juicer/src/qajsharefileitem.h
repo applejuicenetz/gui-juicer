@@ -26,12 +26,10 @@
 class QAjShareFileItem : public QAjItem
 {
 public:
-    QAjShareFileItem( QString id, QTreeWidgetItem *parent = 0 );
+    QAjShareFileItem( const QString& id, QTreeWidgetItem *parent = 0 );
+    virtual ~QAjShareFileItem();
 
-    ~QAjShareFileItem();
-
-    void update( QString hash, QString fileName, QString size, QString priority, QString filesystemSeperator  );
-
+    void update( const QString& hash, const QString& fileName, const QString& size, const QString& priority, const QString& filesystemSeperator  );
 
     QString getLinkAJFSP();
 
@@ -39,17 +37,20 @@ public:
 
     void setPath ( const QString& theValue )
     {
-      path = theValue;
+      path_ = theValue;
     }
 
     QString getPath() const
     {
-      return path;
+      return path_;
     }
 
+    void updatePrio( int prio );
+
     enum {FILENAME_COL, SIZE_COL, PRIORITY_COL, NUM_SHARED_FILES_OVERVIEW_COL};
+
 protected:
-    QString path;
+    QString path_;
 };
 
 #endif

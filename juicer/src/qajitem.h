@@ -37,40 +37,41 @@ public:
 
     QString getStatus()
     {
-        return status;
+        return status_;
     }
+
     void setStatus( const QString& newStatus )
     {
-        status = newStatus;
+        status_ = newStatus;
     }
 
-    QString getId()
+    QString getId() const
     {
-        return id;
+        return id_;
     }
 
-    QString getHash()
+    QString getHash() const
     {
-        return hash;
+        return hash_;
     }
 
-    QString getFilename()
+    QString getFilename() const
     {
-        return filename;
+        return filename_;
     }
 
     double getSize()
     {
-        return size;
+        return size_;
     }
 
 protected:
-    QString status;
-    QString id;
+    QString id_;
+    QString status_;
 
-    QString hash;
-    QString filename;
-    double size;
+    double  size_;
+    QString hash_;
+    QString filename_;
 };
 
 #endif

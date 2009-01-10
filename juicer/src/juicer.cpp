@@ -402,7 +402,8 @@ void Juicer::tabChanged( int index ) {
     shareToolBar->setVisible(tab == shares);
     incomingToolBar->setVisible(tab == incoming);
 
-    if((prevTab == shares) && (shareModule->changed) && (QMessageBox::question( this, tr("question"), tr("You've changed your shares.\nDo you want to transfer the changes to the core?"), QMessageBox::Yes, QMessageBox::No ) == QMessageBox::Yes)) {
+    if((prevTab == shares) && (shareModule->isChanged()) && 
+       (QMessageBox::question( this, tr("question"), tr("You've changed your shares.\nDo you want to transfer the changes to the core?"), QMessageBox::Yes, QMessageBox::No ) == QMessageBox::Yes)) {
         shareModule->commitSlot();
     }
 

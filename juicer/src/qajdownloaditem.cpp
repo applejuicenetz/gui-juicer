@@ -22,7 +22,7 @@
 
 QAjDownloadItem::QAjDownloadItem( QString id, QTreeWidget *parent ) : QAjItem( parent, id )
 {
-    size = 0.0;
+    size_ = 0.0;
     ready = 0.0;
     speed = 0.0;
 
@@ -156,30 +156,30 @@ void QAjDownloadItem::updateUser( const QString& id, const QString& fileName, co
 void QAjDownloadItem::update( const QString& hash, const QString& fileName, const QString& status, const QString& size, const QString& ready, const QString& power, const QString& tempNumber )
 {
     this->tempNumber = tempNumber;
-    if ( this->size == 0.0 && !size.isEmpty()) {
-        this->size = size.toDouble();
+    if ( size_ == 0.0 && !size.isEmpty()) {
+        size_ = size.toDouble();
     }
     double readyNew = ready.toDouble();
     // -- save hash number for recovering the ajfsp link --
-    if ( this->hash.isEmpty() ) {
-        this->hash = hash;
+    if ( hash_.isEmpty() ) {
+        hash_ = hash;
     }
-    if ( this->filename.isEmpty() ) {
-        this->filename = fileName;
+    if ( filename_.isEmpty() ) {
+        filename_ = fileName;
     }
-    if ( status == DOWN_FINISHED ) {
-        readyNew = this->size;
+    if ( status_ == DOWN_FINISHED ) {
+        readyNew = size_;
         this->remainingSize = 0.0;
     }
     this->finishedChanged = false;
     if ( (readyNew != this->ready) || this->first ) {
         this->ready = readyNew;
-        this->remainingSize = this->size - this->ready;
+        this->remainingSize = size_ - this->ready;
         this->first = false;
         this->finishedChanged = true;
     }
     if ( this->text( SIZE_COL ).isEmpty() ) {
-        this->setText( SIZE_COL, " " + QConvert::bytes( this->size ) + " " );
+        this->setText( SIZE_COL, " " + QConvert::bytes( size_ ) + " " );
     }
     this->setText( FILENAME_COL, fileName );
     partListDialog->setFilename( fileName );
@@ -194,7 +194,7 @@ void QAjDownloadItem::update( const QString& hash, const QString& fileName, cons
     this->powerSpin->spin->setEnabled( p > 1.0 );
 
     firstFinished = false;
-    if ( status != this->status ) {
+    if ( status != status_ ) {
         if ( status == DOWN_PAUSED ) {
             this->setTextColor( FILENAME_COL, Qt::darkGray );
         } else if ( status == DOWN_FINISHED ) {
@@ -205,7 +205,7 @@ void QAjDownloadItem::update( const QString& hash, const QString& fileName, cons
         } else {
             this->setTextColor( FILENAME_COL, Qt::black );
         }
-        this->status = status;
+        status_ = status;
         // -- trigger change of selection to update the active/inactive toolbar buttons on a status change --
 //         parentWidget->selectionChanged();
     }
@@ -221,28 +221,28 @@ QString QAjDownloadItem::getSourcesString() {
 }
 
 bool QAjDownloadItem::updateView( QHash<QString, QString>* downloadStatusDescr ) {
-    if( ( status == DOWN_SEARCHING ) || ( status == DOWN_LOADING ) )     {
+    if( ( status_ == DOWN_SEARCHING ) || ( status_ == DOWN_LOADING ) )     {
         if ( getActiveSources() > 0 )         {
             setTextColor( FILENAME_COL, Qt::darkBlue );
             setText( STATUS_COL, downloadStatusDescr->value( "-1", "unknown" ) );
-            status = DOWN_LOADING;
+            status_ = DOWN_LOADING;
         } else if ( getActiveSources() <= 0 ) {
             setTextColor( FILENAME_COL, Qt::black );
-            setText( STATUS_COL, downloadStatusDescr->value( status, "unknown" ) );
-            status = DOWN_SEARCHING;
+            setText( STATUS_COL, downloadStatusDescr->value( status_, "unknown" ) );
+            status_ = DOWN_SEARCHING;
         }
     } else {
-        setText( STATUS_COL, downloadStatusDescr->value( status, "unknown" ) );
+        setText( STATUS_COL, downloadStatusDescr->value( status_, "unknown" ) );
     }
 
     setText( SOURCES_COL, getSourcesString() );
-    finished = ready / size;
+    finished = ready / size_;
     percent = (int)(finished * 100.0);
     progressBar->setValue(percent);
     setText( FINISHED_SIZE_COL, " " + QConvert::bytes( ready ) + " " );
     setText( REMAIN_SIZE_COL, " " + QConvert::bytes( remainingSize ) + " " );
 
-    if( status != DOWN_LOADING ) {
+    if( status_ != DOWN_LOADING ) {
         speed = 0.0;
     }
 
@@ -346,7 +346,7 @@ bool QAjDownloadItem::operator<( const QTreeWidgetItem & other ) const {
         case FILENAME_COL:
             return this->text( FILENAME_COL ) < other.text( FILENAME_COL );
         case SIZE_COL:
-            return size < downItem->getSize();
+            return size_ < downItem->getSize();
         case FINISHED_SIZE_COL:
             if(ready == downItem->getReady()) {
                 return this->text( FILENAME_COL ) < other.text( FILENAME_COL );
@@ -374,7 +374,7 @@ bool QAjDownloadItem::operator<( const QTreeWidgetItem & other ) const {
 
 QString QAjDownloadItem::getLinkAJFSP() {
     return "ajfsp://file|"
-        + this->text(FILENAME_COL) + "|"
-        + this->hash + "|"
-        + QString::number( (int)this->size ) + "/";
+        + text(FILENAME_COL) + "|"
+        + hash_ + "|"
+        + QString::number( (int)size_ ) + "/";
 }

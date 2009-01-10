@@ -302,13 +302,13 @@ void QXMLModule::handleShares( QDomElement& e )
             if (!shareE.isNull() &&
                 !shareE.attribute("filename").contains(juicer->shareModule->getTmpDir()))
             {
-            juicer->shareModule->insertFile(
-            shareE.attribute("id"),
-            shareE.attribute("checksum"),
-            shareE.attribute("filename"),
-            shareE.attribute("size"),
-            shareE.attribute("priority"),
-            juicer->getFilesystemSeparator() );
+              juicer->shareModule->insertFile(
+                shareE.attribute("id"),
+                shareE.attribute("checksum"),
+                shareE.attribute("filename"),
+                shareE.attribute("size"),
+                shareE.attribute("priority"),
+                juicer->getFilesystemSeparator() );
             }
         }
     }

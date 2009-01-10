@@ -146,7 +146,7 @@
   </kdevdebugger>
   <kdevtrollproject>
     <run>
-      <mainprogram>/home/holg/projects/juicer/bin/juicer</mainprogram>
+      <mainprogram>/home/holg/projects/juicer/src/juicer</mainprogram>
       <programargs></programargs>
       <directoryradio>executable</directoryradio>
       <runarguments>
@@ -187,6 +187,8 @@
       <replacePaths>false</replacePaths>
       <disableDefaultOpts>true</disableDefaultOpts>
       <enableFilenamesOnly>false</enableFilenamesOnly>
+      <showVariablesInTree>true</showVariablesInTree>
+      <showParseErrors>true</showParseErrors>
     </qmake>
     <subclassing/>
   </kdevtrollproject>

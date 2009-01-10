@@ -25,6 +25,7 @@
 #include <QMessageBox>
 #include <QCheckBox>
 #include <QSpinBox>
+#include <QPushButton>
 
 #include "qajmodulebase.h"
 #include "qajshareitem.h"
@@ -37,15 +38,32 @@
 class QAjShareModule : public QAjModuleBase
 {
     Q_OBJECT
+
+    QHash<QString, QAjShareFileItem*> sharedFiles;
+    QString tmpDir;
+
+    int prio_;
+    bool changed_;
+
 public:
+    QAjFileDialog* fileSystem;
+    QLabel*        prioLabel;
+    QSpinBox*      prioSpin;
+    QPushButton*   prioButton;
+
     QAjShareModule(Juicer* juicer);
     ~QAjShareModule();
-    void insertShare( QString path, QString shareMode, QString filesystemSeperator );
 
-    QAjFileDialog* fileSystem;
-    QLabel* prioLabel;
-    QSpinBox* prioSpin;
-    bool changed;
+    QAjShareFileItem* findFile( const QString& id );
+    QAjShareFileItem* findFile( const QString& size, const QString& hash );
+
+    void insertShare( const QString& path, const QString& shareMode, const QString& filesystemSeperator );
+    void insertFile( const QString& id, const QString& hash, const QString& fileName, const QString& size, const QString& priority, const QString& filesystemSeperator );
+    void updateSharedFilesList();
+
+    void setTmpDir ( const QString& theValue ) { tmpDir = theValue; }
+    QString getTmpDir() const { return tmpDir; }
+    bool isChanged() const { return changed_; }
 
 public slots:
     void commitSlot();
@@ -61,22 +79,8 @@ private slots:
     void removeSlot();
     void reloadSlot();
     void linkSlot();
-    void setPriority(int prio);
-
-public:
-    void insertFile( QString id, QString hash, QString fileName, QString size, QString priority, QString filesystemSeperator );
-    
-    void updateSharedFilesList();
-    void setTmpDir ( const QString& theValue ) { tmpDir = theValue; }
-    QString getTmpDir() const { return tmpDir; }
-
-    QAjShareFileItem* findFile( QString id );
-    QAjShareFileItem* findFile( QString size, QString hash );
-
-private:
-    QHash<QString, QAjShareFileItem*> sharedFiles;
-    QString tmpDir;
-
+    void setTmpPriority(int prio);
+    void setPriority();
 };
 
 #endif
