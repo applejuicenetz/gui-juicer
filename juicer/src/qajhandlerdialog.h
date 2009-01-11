@@ -26,18 +26,10 @@ class QAjHandlerDialog : public QDialog, private Ui::HandlerDialog
 public:
   QAjHandlerDialog(QWidget* parent = 0, Qt::WFlags fl = 0 );
   ~QAjHandlerDialog();
-  /*$PUBLIC_FUNCTIONS$*/
-
-public slots:
-  /*$PUBLIC_SLOTS$*/
-
-protected:
-  /*$PROTECTED_FUNCTIONS$*/
 
 protected slots:
-  /*$PROTECTED_SLOTS$*/
-  virtual void          reject();
-  virtual void          accept();
+  virtual void reject();
+  virtual void accept();
 
 };
 

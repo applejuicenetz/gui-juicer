@@ -44,9 +44,9 @@ QAjIconWidget::~QAjIconWidget()
 
 
 /*!
-    \fn QAjIconWidget::setText( QString text )
+    \fn QAjIconWidget::setText( const QString& text )
  */
-void QAjIconWidget::setText( QString text )
+void QAjIconWidget::setText( const QString& text )
 {
     textLabel->setText( text );
 }

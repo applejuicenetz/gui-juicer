@@ -44,7 +44,7 @@ QAjSearchModule::~QAjSearchModule()
 {}
 
 
-void QAjSearchModule::insertSearch( QString id, QString searchText, QString running, QString foundFiles )
+void QAjSearchModule::insertSearch( const QString& id, const QString& searchText, const QString& running, const QString& foundFiles )
 {
     QAjSearchItem *item = findSearch( id );
     if ( item == NULL )
@@ -62,7 +62,7 @@ void QAjSearchModule::insertSearch( QString id, QString searchText, QString runn
 
 }
 
-void QAjSearchModule::insertSearchEntry( QString id, QString searchId, QString size, QString checksum, QStringList filenames )
+void QAjSearchModule::insertSearchEntry( const QString& id, const QString& searchId, const QString& size, const QString& checksum, const QStringList& filenames )
 {
     QAjSearchItem *searchItem = findSearch( searchId );
     if ( searchItem == NULL )
@@ -96,7 +96,7 @@ void QAjSearchModule::insertSearchEntry( QString id, QString searchId, QString s
     }
 }
 
-bool QAjSearchModule::removeSearch( QString id )
+bool QAjSearchModule::removeSearch( const QString& id )
 {
     QAjSearchItem* item = findSearch( id );
     if( item != NULL )
@@ -119,7 +119,7 @@ bool QAjSearchModule::removeSearch( QString id )
 }
 
 
-bool QAjSearchModule::removeSearchEntry( QString id )
+bool QAjSearchModule::removeSearchEntry( const QString& id )
 {
     QAjSearchEntryItem* item = findSearchEntry( id );
     if( item != NULL )
@@ -134,7 +134,7 @@ bool QAjSearchModule::removeSearchEntry( QString id )
 }
 
 
-bool QAjSearchModule::remove( QString id )
+bool QAjSearchModule::remove( const QString& id )
 {
     if(removeSearch( id ))
         return true;
@@ -203,14 +203,14 @@ void QAjSearchModule::linkSlot()
     QApplication::clipboard()->setText(link);
 }
 
-QAjSearchItem* QAjSearchModule::findSearch( QString id ) {
+QAjSearchItem* QAjSearchModule::findSearch( const QString& id ) {
     if (searches.contains( id )) {
         return searches[ id ];
     }
     return NULL;
 }
 
-QAjSearchEntryItem* QAjSearchModule::findSearchEntry( QString id ) {
+QAjSearchEntryItem* QAjSearchModule::findSearchEntry( const QString& id ) {
     if (searchEntries.contains( id )) {
         return searchEntries[ id ];
     }

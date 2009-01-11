@@ -31,7 +31,7 @@ class QAjNetworkDialog : public QDialog, private Ui::QAjNetworkDialog
 public:
   QAjNetworkDialog(QWidget* parent = 0, Qt::WFlags fl = 0 );
   ~QAjNetworkDialog();
-    void setValues( QString users, QString files, QString size, QString ip, QString firewalled );
+    void setValues( const QString& users, const QString& files, const QString& size, const QString& ip, const QString& firewalled );
 
 
 };

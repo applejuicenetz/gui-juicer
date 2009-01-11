@@ -43,15 +43,15 @@ public:
     QAjSearchModule(Juicer* juicer);
     ~QAjSearchModule();
 
-    void insertSearch( QString id, QString searchText, QString running, QString foundFiles );
-    void insertSearchEntry( QString id, QString searchId, QString size, QString checksum, QStringList filenames );
-    bool remove( QString id );
-    QAjSearchItem* findSearch( QString id );
-    QAjSearchEntryItem* findSearchEntry( QString id );
+    void insertSearch(const QString& id, const QString& searchText, const QString& running, const QString& foundFiles );
+    void insertSearchEntry(const QString& id, const QString& searchId, const QString& size, const QString& checksum, const QStringList& filenames );
+    bool remove(const QString& id);
+    QAjSearchItem* findSearch(const QString& id);
+    QAjSearchEntryItem* findSearchEntry(const QString& id);
 
 protected:
-    bool removeSearch( QString id );
-    bool removeSearchEntry( QString id );
+    bool removeSearch(const QString& id);
+    bool removeSearchEntry(const QString& id);
     QHash<QString, QAjSearchItem*> searches;
     QHash<QString, QAjSearchEntryItem*> searchEntries;
 

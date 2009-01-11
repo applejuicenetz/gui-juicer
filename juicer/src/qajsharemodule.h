@@ -42,9 +42,6 @@ class QAjShareModule : public QAjModuleBase
     QHash<QString, QAjShareFileItem*> sharedFiles;
     QString tmpDir;
 
-    int prio_;
-    bool changed_;
-
 public:
     QLabel*        prioLabel;
     QSpinBox*      prioSpin;
@@ -73,6 +70,8 @@ public slots:
 protected:
     QAjShareItem* findShare(const QString& fileName);
     QString filesystemSeparator;
+    int prio_;
+    bool changed_;
 
 private slots:
     void insertSlot();

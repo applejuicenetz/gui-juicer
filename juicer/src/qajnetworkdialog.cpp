@@ -33,9 +33,9 @@ QAjNetworkDialog::~QAjNetworkDialog()
 
 
 /*!
-    \fn QAjNetworkDialog::setValues( QString users, QString files, QString size, QString ip, QString firewalled )
+    \fn QAjNetworkDialog::setValues( const QString& users, const QString& files, const QString& size, const QString& ip, const QString& firewalled )
  */
-void QAjNetworkDialog::setValues( QString users, QString files, QString size, QString ip, QString firewalled )
+void QAjNetworkDialog::setValues( const QString& users, const QString& files, const QString& size, const QString& ip, const QString& firewalled )
 {
     this->usersLabel->setText( users );
     this->filesLabel->setText( files );

@@ -28,11 +28,11 @@ public:
   int getPort() { return portSpinBox->value(); }
   QString getPassword() { return passwordEdit->text(); }
   bool getSavePassword() { return savePasswordCheckBox->isChecked(); }
-  void setHost( QString host ) { hostEdit->setText( host ); }
+  void setHost( const QString& host ) { hostEdit->setText( host ); }
   void setPort( int port ) { portSpinBox->setValue( port ); }
-  void setPassword( QString password ) { passwordEdit->setText( password ); }
+  void setPassword( const QString& password ) { passwordEdit->setText( password ); }
   void setSavePassword( bool save ) { savePasswordCheckBox->setChecked(save); }
-  void setHeader( QString text ) { headerLabel->setText( text ); }
+  void setHeader( const QString& text ) { headerLabel->setText( text ); }
   bool ignore;
 public slots:
 

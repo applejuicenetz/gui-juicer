@@ -10,13 +10,12 @@
 //
 //
 
-
 #include "qajhandlerdialog.h"
 
 QAjHandlerDialog::QAjHandlerDialog(QWidget* parent, Qt::WFlags fl)
 : QDialog( parent, fl ), Ui::HandlerDialog()
 {
-	setupUi(this);
+    setupUi(this);
     QWindowsStyle qStyle;
     iconLabel->setPixmap(qStyle.standardIcon(QStyle::SP_MessageBoxQuestion).pixmap(32,32));
 }
@@ -25,9 +24,7 @@ QAjHandlerDialog::~QAjHandlerDialog()
 {
 }
 
-/*$SPECIALIZATION$*/
-void QAjHandlerDialog::reject()
-{
+void QAjHandlerDialog::reject() {
     if(againCheckBox->isChecked()) {
         QAjOptionsDialog::setSetting("handler", false);
     } else {
@@ -36,8 +33,7 @@ void QAjHandlerDialog::reject()
     QDialog::reject();
 }
 
-void QAjHandlerDialog::accept()
-{
+void QAjHandlerDialog::accept() {
     if(againCheckBox->isChecked()) {
         QAjOptionsDialog::setSetting("handler", true);
     } else {

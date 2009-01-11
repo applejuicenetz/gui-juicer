@@ -31,7 +31,7 @@ QAjShareSelectionDialog::QAjShareSelectionDialog(QXMLModule* xml, QWidget* paren
 QAjShareSelectionDialog::~QAjShareSelectionDialog() {
 }
 
-void QAjShareSelectionDialog::insertDirectory( QString dir, QString path, int type ) {
+void QAjShareSelectionDialog::insertDirectory(const QString& dir, const QString& path, int type) {
     if(type != DISKDRIVE) {
         QTreeWidgetItem* item = NULL;
         if(expandedItem == NULL) {
@@ -53,7 +53,7 @@ void QAjShareSelectionDialog::insertDirectory( QString dir, QString path, int ty
     }
 }
 
-void QAjShareSelectionDialog::insertSeperator( QString seperator ) {
+void QAjShareSelectionDialog::insertSeperator(const QString& seperator) {
     this->filesystemSeperator = seperator;
 }
 

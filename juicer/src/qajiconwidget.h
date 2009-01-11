@@ -34,7 +34,7 @@ public:
     QAjIconWidget(QString icon, QString text, QBoxLayout::Direction dir, QWidget *parent = 0, int spacing = -1, int margin = 9);
 
     ~QAjIconWidget();
-    void setText( QString text );
+    void setText( const QString& text );
 
 private:
     QLabel *iconLabel, *textLabel;
