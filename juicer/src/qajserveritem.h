@@ -20,6 +20,9 @@
 #ifndef QAJSERVERITEM_H
 #define QAJSERVERITEM_H
 
+#include <QHeaderView>
+#include <QDateTime>
+
 #include "qajitem.h"
 
 /**
@@ -33,6 +36,8 @@ public:
     ~QAjServerItem();
 
     enum {NAME_COL, HOST_COL, PORT_COL, LASTSEEN_COL, TESTS_COL};
+    virtual bool operator<( const QTreeWidgetItem & other ) const;
+    void update(const QString& name, const QString& host, const QString& port, const QString& lastseen, const QString& tests, const QString& time);
 };
 
 #endif

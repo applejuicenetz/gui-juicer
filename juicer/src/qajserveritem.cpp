@@ -28,4 +28,31 @@ QAjServerItem::~QAjServerItem()
 {
 }
 
+bool QAjServerItem::operator<( const QTreeWidgetItem & other ) const {
+    int sortIndex = treeWidget()->header()->sortIndicatorSection();
+    QAjServerItem* downItem = (QAjServerItem*)&other;
+    switch ( sortIndex ) {
+        case PORT_COL:
+            return this->text(PORT_COL).toInt() < other.text(PORT_COL).toInt();
+        case TESTS_COL:
+            return this->text(TESTS_COL).toInt() < other.text(TESTS_COL).toInt();
+        case LASTSEEN_COL:
+            return QDateTime::fromString(this->text(LASTSEEN_COL), Qt::LocalDate) < QDateTime::fromString(other.text(LASTSEEN_COL), Qt::LocalDate);
+        default:
+            return this->text(sortIndex) < other.text(sortIndex);
+    }
+}
 
+
+
+/*!
+    \fn QAjServerItem::update(const QString& name, const QString& host, const QString& port, const QString& lastseen, const QString& tests, const QString& time)
+ */
+void QAjServerItem::update(const QString& name, const QString& host, const QString& port, const QString& lastseen, const QString& tests, const QString& time)
+{
+    setText(NAME_COL, name );
+    setText(HOST_COL, host );
+    setText(PORT_COL, port );
+    setText(LASTSEEN_COL, time );
+    setText(TESTS_COL, tests );
+}

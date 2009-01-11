@@ -39,7 +39,7 @@ public:
     QAjServerModule(Juicer* juicer);
 
     ~QAjServerModule();
-    void insertServer( QString id, QString name, QString host, QString port, QString lastseen, QString tests );
+    void insertServer(const QString& id, const QString& name, const QString& host, const QString& port, const QString& lastseen, const QString& tests);
     void connectedWith( QString id );
     void connectingTo( QString id );
     QAjServerItem* findServer( QString id );

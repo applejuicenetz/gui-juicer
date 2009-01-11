@@ -48,23 +48,20 @@ QAjServerModule::~QAjServerModule() {
 }
 
 
-void QAjServerModule::insertServer( QString id, QString name, QString host, QString port, QString lastseen, QString tests )
-{
-    QAjServerItem *item = findServer( id );
-    if ( item == NULL )
-    {
-        QString time = zeroTime.addMSecs( lastseen.toULongLong() ).toLocalTime().toString( Qt::LocalDate );
+void QAjServerModule::insertServer(const QString& id, const QString& name, const QString& host, const QString& port, const QString& lastseen, const QString& tests) {
+    QAjServerItem *item = findServer(id);
+    if(item == NULL) {
         item = new QAjServerItem( id, treeWidget );
         servers[ id ] = item;
-        item->setText( QAjServerItem::NAME_COL, name );
-        item->setText( QAjServerItem::HOST_COL, host );
-        item->setText( QAjServerItem::PORT_COL, port );
-        item->setText( QAjServerItem::LASTSEEN_COL, time );
-        item->setText( QAjServerItem::TESTS_COL, tests );
-        if( id == connectedWithId )
-            item->setIcon( QAjServerItem::NAME_COL, QIcon(":/small/connected.png") );
-        else if( id == connectingToId )
-            item->setIcon( QAjServerItem::NAME_COL, QIcon(":/small/connect.png") );
+    }
+    QString time = zeroTime.addMSecs(lastseen.toULongLong()).toLocalTime().toString(Qt::LocalDate);
+    item->update(name, host, port, lastseen, tests, time);
+    if(id == connectedWithId) {
+        item->setIcon(QAjServerItem::NAME_COL, QIcon(":/small/connected.png"));
+    } else if(id == connectingToId) {
+        item->setIcon(QAjServerItem::NAME_COL, QIcon(":/small/connect.png"));
+    } else {
+        item->setIcon(QAjServerItem::NAME_COL, QIcon());
     }
 }
 
