@@ -8,7 +8,8 @@ qajnetworkdialogbase.ui \
 qajlogindialogbase.ui \
  qajhandlerdialogbase.ui \
  qajpartlistdialogbase.ui \
- qajmainwindowbase.ui
+ qajmainwindowbase.ui \
+ qajshareselectiondialogbase.ui
 HEADERS += ftp.h \
            global.h \
            md5class.h \
@@ -16,7 +17,6 @@ HEADERS += ftp.h \
            qajapplication.h \
            qajdownloaditem.h \
            qajitem.h \
-           qajlistwidget.h \
            qajoptionsdialog.h \
            qajpartlistwidget.h \
            qajpartswidget.h \
@@ -34,10 +34,7 @@ HEADERS += ftp.h \
            qajserveritem.h \
            qajincomingitem.h \
            qajsharefileitem.h \
-           qajfiledialog.h \
-           qajfileitem.h\
            qajiconwidget.h \
-           qajfilewidget.h \
            qajlogindialog.h \
            qajpowerspin.h \
  qajhandlerdialog.h \
@@ -48,7 +45,8 @@ HEADERS += ftp.h \
  qajmodulebase.h \
  qajservermodule.h \
  qajsharemodule.h \
- qajincomingmodule.h
+ qajincomingmodule.h \
+ qajshareselectiondialog.h
 SOURCES += ftp.cpp \
            main.cpp \
            md5c.c \
@@ -56,7 +54,6 @@ SOURCES += ftp.cpp \
            qajapplication.cpp \
            qajdownloaditem.cpp \
            qajitem.cpp \
-           qajlistwidget.cpp \
            qajoptionsdialog.cpp \
            qajpartlistwidget.cpp \
            qajpartswidget.cpp \
@@ -74,11 +71,8 @@ SOURCES += ftp.cpp \
            qajserveritem.cpp \
            qajincomingitem.cpp \
            qajsharefileitem.cpp \
-           qajfiledialog.cpp \
-           qajfileitem.cpp \
            qajiconwidget.cpp \
            qajlogindialog.cpp \
-           qajfilewidget.cpp \
            qajpowerspin.cpp \
  qajhandlerdialog.cpp \
  qajpartlistdialog.cpp \
@@ -88,7 +82,8 @@ SOURCES += ftp.cpp \
  qajmodulebase.cpp \
  qajservermodule.cpp \
  qajsharemodule.cpp \
- qajincomingmodule.cpp
+ qajincomingmodule.cpp \
+ qajshareselectiondialog.cpp
 CONFIG += warn_on \
           qt \
           stl \

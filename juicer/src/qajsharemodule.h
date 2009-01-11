@@ -30,7 +30,7 @@
 #include "qajmodulebase.h"
 #include "qajshareitem.h"
 #include "qajsharefileitem.h"
-#include "qajfiledialog.h"
+#include "qajshareselectiondialog.h"
 
 /**
 @author Matthias Reif
@@ -46,7 +46,6 @@ class QAjShareModule : public QAjModuleBase
     bool changed_;
 
 public:
-    QAjFileDialog* fileSystem;
     QLabel*        prioLabel;
     QSpinBox*      prioSpin;
     QPushButton*   prioButton;
@@ -57,7 +56,7 @@ public:
     QAjShareFileItem* findFile( const QString& id );
     QAjShareFileItem* findFile( const QString& size, const QString& hash );
 
-    void insertShare( const QString& path, const QString& shareMode, const QString& filesystemSeperator );
+    void insertShare( const QString& path, const QString& shareMode);
     void insertFile( const QString& id, const QString& hash, const QString& fileName, const QString& size, const QString& priority, const QString& filesystemSeperator );
     void updateSharedFilesList();
 
@@ -65,13 +64,14 @@ public:
     QString getTmpDir() const { return tmpDir; }
     bool isChanged() const { return changed_; }
 
+    QAjShareSelectionDialog* shareSelectionDialog;
+
 public slots:
     void commitSlot();
     void selectionChanged();
 
 protected:
     QAjShareItem* findShare(const QString& fileName);
-//     void insertDirList( QTreeWidgetItem* parent, QStringList* dirList );
     QString filesystemSeparator;
 
 private slots:

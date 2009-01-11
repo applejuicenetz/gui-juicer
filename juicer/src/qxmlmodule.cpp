@@ -169,17 +169,17 @@ void QXMLModule::requestFinished( int id, bool error )
                     }
                     else if ( e.tagName() == "dir" )
                     {
-                        if ( juicer->shareModule->fileSystem != NULL ) {
-                        juicer->shareModule->fileSystem->insertDirectory(
-                              e.attribute("name"),
-                              e.attribute("path"),
-                              e.attribute("type").toInt() );
+                        if ( juicer->shareModule->shareSelectionDialog != NULL ) {
+                            juicer->shareModule->shareSelectionDialog->insertDirectory(
+                                  e.attribute("name"),
+                                  e.attribute("path"),
+                                  e.attribute("type").toInt() );
                         }
                     }
                     else if ( e.tagName() == "filesystem" )
                     {
-                        if ( juicer->shareModule->fileSystem != NULL ) {
-                        juicer->shareModule->fileSystem->insertSeperator(e.attribute("seperator"));
+                        if ( juicer->shareModule->shareSelectionDialog != NULL ) {
+                            juicer->shareModule->shareSelectionDialog->insertSeperator(e.attribute("seperator"));
                         }
                     }
                     else
@@ -273,8 +273,7 @@ void QXMLModule::handleSettings( QDomElement& e )
         !shareE.isNull(); shareE = shareE.nextSiblingElement("directory"))
     {
         juicer->shareModule->insertShare(
-            shareE.attribute("name"), shareE.attribute("sharemode"),
-            juicer->getFilesystemSeparator());
+            shareE.attribute("name"), shareE.attribute("sharemode"));
     }
 }
 

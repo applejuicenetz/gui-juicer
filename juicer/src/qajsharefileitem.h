@@ -17,7 +17,6 @@
 
 #include "qajuseritem.h"
 
-#include "qajlistwidget.h"
 #include "qajitem.h"
 
 class QAjShareItem;

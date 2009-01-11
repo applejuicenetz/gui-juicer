@@ -26,7 +26,7 @@ QAjShareModule::QAjShareModule(Juicer* juicer)
   : QAjModuleBase(juicer, juicer->sharesTreeWidget, juicer->shareToolBar)
   , prio_(1)
 {
-    this->fileSystem = NULL;
+    this->shareSelectionDialog = new QAjShareSelectionDialog(juicer->xml, juicer);
     this->filesystemSeparator = filesystemSeparator;
     changed_ = false;
 
@@ -58,36 +58,23 @@ QAjShareModule::~QAjShareModule()
 {}
 
 
-void QAjShareModule::insertShare( const QString& path, const QString& shareMode, const QString& filesystemSeperator )
-{
-    QString p = path;
-    if(!p.endsWith(filesystemSeparator.data()[0])) {
-        p += filesystemSeperator;
-    }
+void QAjShareModule::insertShare( const QString& path, const QString& shareMode) {
     new QAjShareItem(treeWidget, path, (shareMode == "subdirectory"));
 }
 
-void QAjShareModule::insertSlot()
-{
-    if ( fileSystem == NULL) {
-        fileSystem = new QAjFileDialog(xml, juicer);
-    }
-    fileSystem->exec();
-    QString dir = fileSystem->getDirectory();
-    if ( !dir.isEmpty() )
-    {
-        int result = QMessageBox::question( juicer, "question", tr("Share subdirectories?"), QMessageBox::Yes, QMessageBox::No );
-        QString mode;
-        if ( result == QMessageBox::Yes ) {
-            mode = "subdirectory";
+void QAjShareModule::insertSlot() {
+    xml->get("directory");
+    if(shareSelectionDialog->exec() == QDialog::Accepted) {
+        QString path =  shareSelectionDialog->selectedPath();
+        if(!path.isEmpty()) {
+            QString mode = "directory";
+            if(QMessageBox::question( juicer, "question", tr("Share subdirectories?"), QMessageBox::Yes|QMessageBox::No) == QMessageBox::Yes) {
+                mode = "subdirectory";
+            }
+            insertShare(path, mode);
+            changed_ = true;
+            juicer->actionCommit_Share->setEnabled(true);
         }
-        else {
-            mode = "directory";
-        }
-        insertShare( dir, mode, fileSystem->getSeperator() );
-
-        changed_ = true;
-        juicer->actionCommit_Share->setEnabled(true);
     }
 }
 
@@ -147,45 +134,6 @@ void QAjShareModule::linkSlot() {
         }
     }
 }
-
-// void QAjShareModule::insertDirList( QTreeWidgetItem* parent, QStringList* dirList )
-// {
-//     if(dirList->empty()) {
-//         return;
-//     }
-//     if ( dirList->size() == 1 )
-//     {
-//         QAjItem* newItem = new QAjItem( parent );
-//         newItem->setFlags( Qt::ItemIsEnabled );
-//         parent->addChild( newItem );
-//         newItem->setText( QAjShareItem::PATH_COL, dirList->front() );
-//     }
-//     else
-//     {
-//         QTreeWidgetItem* currChild = parent->child( 0 );
-//         int i = 1;
-//         while ( ( currChild != NULL ) && ( currChild->text( QAjShareItem::PATH_COL ) != dirList->front() ) )
-//         {
-//             currChild = parent->child( i++ );
-//         }
-//         // nicht gefunden
-//         if ( currChild == NULL )
-//         {
-//             QAjItem* newItem = new QAjItem( parent );
-//             newItem->setFlags( Qt::ItemIsEnabled );
-//             parent->addChild( newItem );
-//             newItem->setText( QAjShareItem::PATH_COL, dirList->front() );
-//             newItem->setIcon( QAjShareItem::PATH_COL, QIcon(":/small/shares.png") );
-//             dirList->pop_front();
-//             insertDirList( newItem, dirList );
-//         }
-//         else
-//         {
-//             dirList->pop_front();
-//             insertDirList( currChild, dirList );
-//         }
-//     }
-// }
 
 QAjShareItem* QAjShareModule::findShare(const QString& fileName) {
     for(int i=0; i<treeWidget->topLevelItemCount() ; i++) {

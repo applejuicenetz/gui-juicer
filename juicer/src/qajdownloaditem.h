@@ -34,7 +34,6 @@
 
 #include "qajuseritem.h"
 
-#include "qajlistwidget.h"
 #include "qajitem.h"
 
 #include "qconvert.h"
