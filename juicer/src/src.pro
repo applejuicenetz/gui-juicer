@@ -180,7 +180,12 @@ resources/wizard.png \
  resources/options/launch.png \
  resources/options/network_local.png \
  resources/options/player_playlist.png \
- resources/options/superkaramba.png
+ resources/options/superkaramba.png \
+ resources/small/desktop.png \
+ resources/small/folder.png \
+ resources/small/floppy.png \
+ resources/small/hdd.png \
+ resources/small/system.png
 
 TRANSLATIONS += juicer_de.ts
 

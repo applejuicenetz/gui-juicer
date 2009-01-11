@@ -80,6 +80,11 @@
     <file alias="undo.png">resources/small/undo.png</file>
     <file alias="recursive.png">resources/small/view_tree.png</file>
     <file alias="not_recursive.png">resources/small/view_detailed.png</file>
+    <file alias="desktop.png">resources/small/desktop.png</file>
+    <file alias="folder.png">resources/small/folder.png</file>
+    <file alias="floppy.png">resources/small/floppy.png</file>
+    <file alias="hdd.png">resources/small/hdd.png</file>
+    <file alias="system.png">resources/small/system.png</file>
 </qresource>
 
 <qresource prefix="/options">
