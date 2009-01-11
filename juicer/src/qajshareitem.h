@@ -21,8 +21,10 @@
 #define QAJSHAREITEM_H
 
 #include <QString>
+#include <QList>
 
 #include "qajitem.h"
+#include "qajsharefileitem.h"
 
 /**
 @author Matthias Reif
@@ -34,10 +36,13 @@ public:
     virtual ~QAjShareItem();
     QString getPath() { return path; }
     bool isRecursive() { return recursive; }
-    enum {PATH_COL, MODE_COL};
+    void insertSharedFile(QAjShareFileItem* sharedFile);
+    void update();
+    enum {PATH_COL, SIZE_COL, PRIORITY_COL};
 private:
     bool recursive;
     QString path;
+    QList<QAjShareFileItem*> sharedFiles;
 };
 
 #endif

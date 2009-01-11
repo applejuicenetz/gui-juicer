@@ -71,7 +71,7 @@ public slots:
 
 protected:
     QAjShareItem* findShare(const QString& fileName);
-    void insertDirList( QTreeWidgetItem* parent, QStringList* dirList );
+//     void insertDirList( QTreeWidgetItem* parent, QStringList* dirList );
     QString filesystemSeparator;
 
 private slots:

@@ -20,13 +20,15 @@
 #include "qajlistwidget.h"
 #include "qajitem.h"
 
+class QAjShareItem;
+
 /**
 	@author Holger Gerth <holger.gerth@informatik.tu-chemnitz.de>
 */
 class QAjShareFileItem : public QAjItem
 {
 public:
-    QAjShareFileItem( const QString& id, QTreeWidgetItem *parent = 0 );
+    QAjShareFileItem( const QString& id, QAjShareItem *parent = 0 );
     virtual ~QAjShareFileItem();
 
     void update( const QString& hash, const QString& fileName, const QString& size, const QString& priority, const QString& filesystemSeperator  );
@@ -35,22 +37,10 @@ public:
 
     bool operator<( const QTreeWidgetItem & other ) const;
 
-    void setPath ( const QString& theValue )
-    {
-      path_ = theValue;
-    }
-
-    QString getPath() const
-    {
-      return path_;
-    }
-
     void updatePrio( int prio );
 
-    enum {FILENAME_COL, SIZE_COL, PRIORITY_COL, NUM_SHARED_FILES_OVERVIEW_COL};
-
 protected:
-    QString path_;
+    QFileInfo info;
 };
 
 #endif

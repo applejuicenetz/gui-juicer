@@ -10,10 +10,12 @@
 //
 //
 #include "qajsharefileitem.h"
+#include "qajshareitem.h"
 
-QAjShareFileItem::QAjShareFileItem(const QString& id, QTreeWidgetItem *parent) 
-  : QAjItem(parent, id)
+QAjShareFileItem::QAjShareFileItem(const QString& id, QAjShareItem *parent) 
+  : QAjItem((QTreeWidgetItem*)parent, id)
 {
+    parent->insertSharedFile(this);
 }
 
 
@@ -35,22 +37,19 @@ void QAjShareFileItem::update( const QString& hash,
         filename_ = fileName;
     }
 
-    QFileInfo f(fileName);
-
-    path_ = f.absolutePath();
+    info.setFile(fileName);
     size_ = size.toDouble();
 
-    if ( !path_.endsWith( filesystemSeperator.data()[0] ) )
-        path_ += filesystemSeperator;
+    this->setText( QAjShareItem::PATH_COL, info.fileName() );
+    this->setText( QAjShareItem::SIZE_COL, QConvert::bytesExtra(size) );
+    this->setText( QAjShareItem::PRIORITY_COL, priority );
 
-    this->setText( QAjShareFileItem::FILENAME_COL, f.fileName() );
-    this->setText( QAjShareFileItem::SIZE_COL, QConvert::bytesExtra(size) );
-    this->setText( QAjShareFileItem::PRIORITY_COL, priority );
+    ((QAjShareItem*)QTreeWidgetItem::parent())->update();
 }
 
 void QAjShareFileItem::updatePrio( int prio )
 {
-    setText( QAjShareFileItem::PRIORITY_COL, QString::number(prio) );
+    setText( QAjShareItem::PRIORITY_COL, QString::number(prio) );
 }
 
 bool QAjShareFileItem::operator<( const QTreeWidgetItem & other ) const
@@ -59,27 +58,24 @@ bool QAjShareFileItem::operator<( const QTreeWidgetItem & other ) const
     QAjShareFileItem* shareFileItem = (QAjShareFileItem*)&other;
     switch ( sortIndex )
     {
-    case FILENAME_COL:
-        return this->text( FILENAME_COL ) < other.text( FILENAME_COL );
-    case SIZE_COL:
+    case QAjShareItem::PATH_COL:
+        return this->text( QAjShareItem::PATH_COL ) < other.text( QAjShareItem::PATH_COL );
+    case QAjShareItem::SIZE_COL:
         return size_ < shareFileItem->getSize();
     default:
         return this->text( sortIndex ) < other.text( sortIndex );
     }
 }
 
-QString QAjShareFileItem::getLinkAJFSP() 
-{
+QString QAjShareFileItem::getLinkAJFSP() {
     QString ajfspLink;
-
     ajfspLink.append("ajfsp://file|");
-    ajfspLink.append(text(FILENAME_COL));
+    ajfspLink.append(info.fileName());
     ajfspLink.append("|");
     ajfspLink.append(hash_);
     ajfspLink.append("|");
-    ajfspLink.append(QString::number( (int)size_ ));
+    ajfspLink.append(QString::number( (unsigned long int)size_ ));
     ajfspLink.append("/");
-
     return ajfspLink;
 }
 

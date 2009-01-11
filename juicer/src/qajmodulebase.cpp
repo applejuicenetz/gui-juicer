@@ -67,6 +67,7 @@ void QAjModuleBase::saveSortOrder(QString settingsGroup)
     \fn QAjModuleBase::linkListSlot()
  */
 void QAjModuleBase::linkListSlot() {
+    printf("here\n");
     QFileDialog fileDialog(juicer, tr("Enter file name"), QString::null, tr("AJ Link Lists (*.ajl)"));
     fileDialog.setFileMode(QFileDialog::AnyFile);
     fileDialog.setAcceptMode(QFileDialog::AcceptSave);

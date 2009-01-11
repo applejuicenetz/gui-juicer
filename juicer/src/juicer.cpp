@@ -441,6 +441,7 @@ void Juicer::firstModified() {
             downloadModule->updateView( true );
             downloadModule->adjustSizeOfColumns();
             uploadModule->adjustSizeOfColumns();
+            searchModule->adjustSizeOfColumns();
             serverModule->adjustSizeOfColumns();
             shareModule->adjustSizeOfColumns();
             downloadModule->sortItemsInitially("DownloadWidget");
@@ -496,6 +497,8 @@ void Juicer::adjustColumns()
         downloadModule->adjustSizeOfColumns();
     if(uploads->isVisible())
         uploadModule->adjustSizeOfColumns();
+    if(search->isVisible())
+        searchModule->adjustSizeOfColumns();
     if(server->isVisible())
         serverModule->adjustSizeOfColumns();
     if(shares->isVisible())

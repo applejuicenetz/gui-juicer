@@ -20,9 +20,38 @@
 #include "qajshareitem.h"
 
 QAjShareItem::QAjShareItem(QTreeWidget* parent, const QString& path, bool recursive) : QAjItem(parent) {
-    this->recursive = recursive;
     this->path = path;
+    this->recursive = recursive;
+    setText(QAjShareItem::PATH_COL, path);
+    if(recursive) {
+        setIcon(PATH_COL, QIcon(":/small/recursive.png"));
+    } else {
+        setIcon(PATH_COL, QIcon(":/small/not_recursive.png"));
+    }
+
 }
 
 QAjShareItem::~QAjShareItem() {
+}
+
+
+/*!
+    \fn QAjShareItem::insertSharedFile(QAjShareFileItem* sharedFile)
+ */
+void QAjShareItem::insertSharedFile(QAjShareFileItem* sharedFile)
+{
+    sharedFiles.append(sharedFile);
+}
+
+
+/*!
+    \fn QAjShareItem::update()
+ */
+void QAjShareItem::update()
+{
+    double sum = 0.0;
+    for(int i=0; i<sharedFiles.size(); i++) {
+        sum += sharedFiles.at(i)->getSize();
+    }
+    setText(QAjShareItem::SIZE_COL, QConvert::bytes(sum) + " (" + QString::number(sharedFiles.size()) + ")");
 }
