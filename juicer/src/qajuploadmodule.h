@@ -37,7 +37,9 @@ public:
 
     ~QAjUploadModule();
 
-    bool insertUpload(QString id, QString shareId, QString version, QString os, QString status, QString directState, QString priority, QString nick, QString speed);
+    bool insertUpload(const QString& id, const QString& shareId, const QString& version,
+                      const QString& os, const QString& status, const QString& directState,
+                      const QString& priority, const QString& nick, const QString& speed);
 
     bool remove(QString id);
     void setFilename(QString shareId, QString filename);

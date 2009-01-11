@@ -36,23 +36,21 @@ QAjUploadModule::QAjUploadModule(Juicer* juicer) : QAjModuleBase(juicer, juicer-
 QAjUploadModule::~QAjUploadModule()
 {}
 
-bool QAjUploadModule::insertUpload(QString id, QString shareId, QString version, QString os, QString status, QString directState, QString priority, QString nick, QString speed) {
+bool QAjUploadModule::insertUpload(
+            const QString& id, const QString& shareId, const QString& version,
+            const QString& os, const QString& status, const QString& directState,
+            const QString& priority, const QString& nick, const QString& speed) {
     QAjUploadItem *uploadItem = findUpload(id);
-    if(uploadItem == NULL) {
+    bool newUpload = uploadItem == NULL;
+    if(newUpload) {
         uploadItem = new QAjUploadItem(id, shareId, treeWidget);
         uploads[ id ] = uploadItem;
-        uploadItem->setText(QAjUploadItem::NICK_COL, nick);
-        uploadItem->setText(QAjUploadItem::FILENAME_COL, "");
-        uploadItem->setIcon(QAjUploadItem::OS_COL, juicer->osIcons[os]);
     }
 
-    uploadItem->setStatus(status);
-    uploadItem->setText(QAjUploadItem::SPEED_COL, QConvert::bytes(speed) + "/s" );
-    uploadItem->setText(QAjUploadItem::STATUS_COL, uploadStatusDescr[status]);
-    uploadItem->setText(QAjUploadItem::DIRECTSTATE_COL, uploadDirectStateDescr[directState]);
-    uploadItem->setText(QAjUploadItem::PRIORITY_COL, priority );
+    uploadItem->update(juicer->osIcons[os], status, uploadStatusDescr[status],
+                       uploadDirectStateDescr[directState], priority, nick, speed, newUpload);
 
-    return ( uploadItem->text( QAjUploadItem::FILENAME_COL ) != "" );
+    return !newUpload;
 }
 
 bool QAjUploadModule::remove(QString id) {

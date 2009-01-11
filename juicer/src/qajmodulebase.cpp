@@ -47,6 +47,18 @@ void QAjModuleBase::sortItemsInitially(QString settingsGroup)
     int column = lokalSettings.value("sortColumn", 0 ).toInt(NULL);
     int order = lokalSettings.value("sortOrder", Qt::AscendingOrder ).toInt(NULL);
     treeWidget->sortItems(column, (Qt::SortOrder)order );
+
+    QList<QVariant> positions = lokalSettings.value("columnPositions").toList();
+    for(int i=0; i<positions.size(); i++) {
+        int oldIndex = treeWidget->header()->visualIndex(positions.at(i).toInt());
+        treeWidget->header()->moveSection(oldIndex, i);
+    }
+
+    QList<QVariant> sizes = lokalSettings.value("columnSizes").toList();
+    for(int i=0; i<sizes.size(); i++) {
+        treeWidget->header()->resizeSection(i, sizes.at(i).toInt());
+    }
+
     lokalSettings.endGroup();
 }
 
@@ -59,6 +71,14 @@ void QAjModuleBase::saveSortOrder(QString settingsGroup)
     lokalSettings.beginGroup(settingsGroup);
     lokalSettings.setValue("sortColumn", treeWidget->sortColumn());
     lokalSettings.setValue("sortOrder", treeWidget->header()->sortIndicatorOrder());
+
+    QList<QVariant> positions, sizes;
+    for(int i=0; i<treeWidget->header()->length(); i++) {
+        positions.append(treeWidget->header()->logicalIndex(i));
+        sizes.append(treeWidget->header()->sectionSize(i));
+    }
+    lokalSettings.setValue("columnPositions", positions);
+    lokalSettings.setValue("columnSizes", sizes);
     lokalSettings.endGroup();
 }
 

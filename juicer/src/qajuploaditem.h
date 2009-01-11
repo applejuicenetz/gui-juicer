@@ -20,6 +20,8 @@
 #ifndef QAJUPLOADITEM_H
 #define QAJUPLOADITEM_H
 
+#include <QHeaderView>
+
 #include "qajitem.h"
 
 static const QString ACTIVE_UPLOAD = "1";
@@ -40,6 +42,12 @@ public:
     enum {FILENAME_COL, NICK_COL, SPEED_COL, STATUS_COL,
           PRIORITY_COL, OS_COL, DIRECTSTATE_COL};
 
+    virtual bool operator<( const QTreeWidgetItem & other ) const;
+    void update(const QIcon& osIcon, const QString& status, const QString& statusDescr,
+                const QString& directState, const QString& priority, const QString& nick,
+                const QString& speed, bool newUpload);
+
+    double speed;
 };
 
 #endif

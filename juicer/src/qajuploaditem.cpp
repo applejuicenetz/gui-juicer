@@ -18,12 +18,14 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 #include "qajuploaditem.h"
+#include "juicer.h"
 
 QAjUploadItem::QAjUploadItem( QString id, QString shareId, QTreeWidget *parent ) 
   : QAjItem(parent, id)
   , shareId(shareId)
 {
-  status_ = NEW_UPLOAD;
+    status_ = NEW_UPLOAD;
+    speed = 0.0;
 }
 
 
@@ -31,3 +33,35 @@ QAjUploadItem::~QAjUploadItem()
 {
 }
 
+
+bool QAjUploadItem::operator<( const QTreeWidgetItem & other ) const {
+    int sortIndex = treeWidget()->header()->sortIndicatorSection();
+    QAjUploadItem* upItem = (QAjUploadItem*)&other;
+    switch ( sortIndex ) {
+        case SPEED_COL:
+            return this->speed < upItem->speed;
+        default:
+            return this->text(sortIndex) < other.text(sortIndex);
+    }
+}
+
+/*!
+    \fn QAjUploadItem::update(const QIcon& osIcon,const QString& status,
+        const QString& statusDescr, const QString& directState,
+        const QString& priority, const QString& nick, const QString& speed, bool newUpload)
+ */
+void QAjUploadItem::update(const QIcon& osIcon,const QString& status,
+        const QString& statusDescr, const QString& directState,
+        const QString& priority, const QString& nick, const QString& speed, bool newUpload) {
+
+    this->speed = speed.toDouble();
+    setStatus(status);
+    if(newUpload) {
+        setText(NICK_COL, nick);
+        setIcon(OS_COL, osIcon);
+    }
+    setText(SPEED_COL, QConvert::bytes(speed) + "/s" );
+    setText(STATUS_COL, statusDescr);
+    setText(DIRECTSTATE_COL, directState);
+    setText(PRIORITY_COL, priority );
+}

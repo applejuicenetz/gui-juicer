@@ -26,7 +26,7 @@
 #include "qajitem.h"
 
 /**
-	@author Matthias Reif <matthias.reif@informatik.tu-chemnitz.de>
+    @author Matthias Reif <matthias.reif@informatik.tu-chemnitz.de>
 */
 class QAjServerItem : public QAjItem
 {
