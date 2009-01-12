@@ -40,7 +40,7 @@ QAjShareItem::~QAjShareItem() {
  */
 void QAjShareItem::insertSharedFile(QAjShareFileItem* sharedFile)
 {
-    sharedFiles.append(sharedFile);
+    if ( sharedFile != NULL ) sharedFiles.append(sharedFile);
 }
 
 

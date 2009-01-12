@@ -34,7 +34,7 @@ public:
 
     QString getLinkAJFSP();
 
-    bool operator<( const QTreeWidgetItem & other ) const;
+//    bool operator<( const QTreeWidgetItem & other ) const;
 
     void updatePrio( int prio );
 

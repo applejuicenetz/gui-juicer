@@ -30,7 +30,7 @@ QAjShareModule::QAjShareModule(Juicer* juicer)
     this->filesystemSeparator = filesystemSeparator;
     changed_ = false;
 
-    prioLabel = new QLabel("Priority:", juicer->shareToolBar);
+    prioLabel = new QLabel(tr("Priority:"), juicer->shareToolBar);
     juicer->shareToolBar->addWidget(prioLabel);
     prioSpin = new QSpinBox(juicer->shareToolBar);
     prioSpin->setRange(1, 250);
@@ -56,7 +56,6 @@ QAjShareModule::QAjShareModule(Juicer* juicer)
 
 QAjShareModule::~QAjShareModule()
 {}
-
 
 void QAjShareModule::insertShare( const QString& path, const QString& shareMode) {
     new QAjShareItem(treeWidget, path, (shareMode == "subdirectory"));
@@ -130,14 +129,18 @@ void QAjShareModule::linkSlot() {
     QList<QTreeWidgetItem *>  selectedItems = treeWidget->selectedItems();
     for(int i=0; i<selectedItems.size(); i++) {
         if(selectedItems[i]->parent() != NULL) {
-            QApplication::clipboard()->setText(((QAjShareFileItem*)selectedItems[0])->getLinkAJFSP());
+            QAjShareFileItem* shareItem = dynamic_cast<QAjShareFileItem*>(selectedItems[0]);
+            if ( shareItem != NULL ) {
+                QApplication::clipboard()->setText( shareItem->getLinkAJFSP() );
+            }
         }
     }
 }
 
 QAjShareItem* QAjShareModule::findShare(const QString& fileName) {
     for(int i=0; i<treeWidget->topLevelItemCount() ; i++) {
-        QAjShareItem* item = (QAjShareItem*)treeWidget->topLevelItem(i);
+        QAjShareItem* item = dynamic_cast<QAjShareItem*>(treeWidget->topLevelItem(i));
+        if ( item == NULL ) continue;
         if(fileName.startsWith(item->getPath())) {
             return item;
         }
@@ -153,10 +156,19 @@ void QAjShareModule::insertFile( const QString& id,
                                  const QString& filesystemSeperator ) 
 {
     QAjShareFileItem *shareFileItem = findFile(id);
-    if(shareFileItem == NULL) {
-        shareFileItem = new QAjShareFileItem(id, findShare(fileName));
-        if ( shareFileItem == NULL ) return;  // new failed?
-        sharedFiles[ id ] = shareFileItem;
+    if( shareFileItem == NULL ) {
+        QAjShareItem* parentItem = findShare(fileName);
+        if ( parentItem != NULL ) {
+            shareFileItem = new QAjShareFileItem( id, parentItem );
+            if ( shareFileItem == NULL ) return;  // new failed?
+            parentItem->insertSharedFile(shareFileItem);
+            sharedFiles[ id ] = shareFileItem;
+        }
+        else {
+//            qDebug() << fileName << endl;
+            // file in share.xml which doesn't belong to any shared directory
+            return;
+        }
     }
     shareFileItem->update(hash, fileName, size, priority, filesystemSeperator);
     adjustSizeOfColumns();
@@ -164,10 +176,12 @@ void QAjShareModule::insertFile( const QString& id,
 
 QAjShareFileItem* QAjShareModule::findFile( const QString& id )
 {
-    if ( sharedFiles.contains( id ) )
+    if ( sharedFiles.contains( id ) ) {
         return sharedFiles[id];
-    else
+    }
+    else {
         return NULL;
+    }
 }
 
 void QAjShareModule::updateSharedFilesList() 

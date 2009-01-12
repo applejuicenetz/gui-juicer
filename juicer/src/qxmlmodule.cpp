@@ -61,10 +61,12 @@ int QXMLModule::get( const QString & request, QString param )
 
     if(request == "downloadpartlist")
     {
-        if(!param.contains("simple"))
+        if(!param.contains("simple")) {
             partListRequests[ httpRequest ] = param.split( "=" )[1];
-        else
+        }
+        else {
             partListSimpleRequests[ httpRequest ] = param.split( "=" )[1];
+        }
     }
 
     return httpRequest;
@@ -251,18 +253,18 @@ void QXMLModule::setPassword( const QString & password )
 void QXMLModule::handleSettings( QDomElement& e )
 {
     AjSettings settings;
-    settings.nick = e.firstChildElement("nick").text();
-    settings.tcpPort = e.firstChildElement("port").text();
-    settings.xmlPort = e.firstChildElement("xmlport").text();
-    settings.autoconnect = e.firstChildElement("autoconnect").text().toLower() == "true";
-    settings.maxUp = e.firstChildElement("maxupload").text();
-    settings.maxDown = e.firstChildElement("maxdownload").text();
-    settings.maxCon = e.firstChildElement("maxconnections").text();
-    settings.maxSources = e.firstChildElement("maxsourcesperfile").text();
-    settings.maxSlot = e.firstChildElement("speedperslot").text();
-    settings.maxNewCon = e.firstChildElement("maxnewconnectionsperturn").text();
-    settings.incomingDir = e.firstChildElement("incomingdirectory").text();
-    settings.tempDir = e.firstChildElement("temporarydirectory").text();
+    settings.nick         = e.firstChildElement("nick").text();
+    settings.tcpPort      = e.firstChildElement("port").text();
+    settings.xmlPort      = e.firstChildElement("xmlport").text();
+    settings.autoconnect  = e.firstChildElement("autoconnect").text().toLower() == "true";
+    settings.maxUp        = e.firstChildElement("maxupload").text();
+    settings.maxDown      = e.firstChildElement("maxdownload").text();
+    settings.maxCon       = e.firstChildElement("maxconnections").text();
+    settings.maxSources   = e.firstChildElement("maxsourcesperfile").text();
+    settings.maxSlot      = e.firstChildElement("speedperslot").text();
+    settings.maxNewCon    = e.firstChildElement("maxnewconnectionsperturn").text();
+    settings.incomingDir  = e.firstChildElement("incomingdirectory").text();
+    settings.tempDir      = e.firstChildElement("temporarydirectory").text();
     settingsReady(settings);
 
     juicer->shareModule->setTmpDir(settings.tempDir);

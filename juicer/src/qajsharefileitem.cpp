@@ -15,7 +15,6 @@
 QAjShareFileItem::QAjShareFileItem(const QString& id, QAjShareItem *parent) 
   : QAjItem((QTreeWidgetItem*)parent, id)
 {
-    parent->insertSharedFile(this);
 }
 
 
@@ -40,11 +39,12 @@ void QAjShareFileItem::update( const QString& hash,
     info.setFile(fileName);
     size_ = size.toDouble();
 
-    this->setText( QAjShareItem::PATH_COL, info.fileName() );
-    this->setText( QAjShareItem::SIZE_COL, QConvert::bytesExtra(size) );
-    this->setText( QAjShareItem::PRIORITY_COL, priority );
+    setText( QAjShareItem::PATH_COL, info.fileName() );
+    setText( QAjShareItem::SIZE_COL, QConvert::bytesExtra(size) );
+    setText( QAjShareItem::PRIORITY_COL, priority );
 
-    ((QAjShareItem*)QTreeWidgetItem::parent())->update();
+    QAjShareItem* parentItem = dynamic_cast<QAjShareItem*>(QTreeWidgetItem::parent());
+    if ( parentItem != NULL ) parentItem->update();
 }
 
 void QAjShareFileItem::updatePrio( int prio )
@@ -52,20 +52,23 @@ void QAjShareFileItem::updatePrio( int prio )
     setText( QAjShareItem::PRIORITY_COL, QString::number(prio) );
 }
 
+/*
 bool QAjShareFileItem::operator<( const QTreeWidgetItem & other ) const
 {
     int sortIndex = treeWidget()->header()->sortIndicatorSection();
-    QAjShareFileItem* shareFileItem = (QAjShareFileItem*)&other;
+    QAjShareFileItem* shareFileItem = dynamic_cast<QAjShareFileItem*>(&other);
+    if ( shareFileItem == NULL ) return false;
     switch ( sortIndex )
     {
     case QAjShareItem::PATH_COL:
-        return this->text( QAjShareItem::PATH_COL ) < other.text( QAjShareItem::PATH_COL );
+        return text( QAjShareItem::PATH_COL ) < other.text( QAjShareItem::PATH_COL );
     case QAjShareItem::SIZE_COL:
         return size_ < shareFileItem->getSize();
     default:
-        return this->text( sortIndex ) < other.text( sortIndex );
+        return text( sortIndex ) < other.text( sortIndex );
     }
 }
+*/
 
 QString QAjShareFileItem::getLinkAJFSP() {
     QString ajfspLink;
