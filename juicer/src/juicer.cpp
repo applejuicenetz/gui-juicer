@@ -437,9 +437,9 @@ void Juicer::setCoreVersion(const QString& version) {
 }
 
 void Juicer::connectedSince(const QString& since) {
-    if(since != "0") {
-        QString time = zeroTime.addMSecs( since.toULongLong()).toLocalTime().toString(Qt::LocalDate);
-        connectedLabel->setText(tr("connected since") + " " + time);
+    QDateTime& time = serverModule->setConnectedSince(since);
+    if(time.isValid()) {
+        connectedLabel->setText(tr("connected since") + " " + time.toLocalTime().toString(Qt::LocalDate));
     } else {
         connectedLabel->setText(tr("NOT connected"));
     }

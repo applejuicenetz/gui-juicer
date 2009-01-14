@@ -23,6 +23,7 @@
 QAjServerModule::QAjServerModule(Juicer* juicer) : QAjModuleBase(juicer, juicer->serverTreeWidget, juicer->serverToolBar)
 {
     zeroTime = QDateTime( QDate(1970,1,1), QTime(0,0), Qt::UTC );
+    connectedSince = QDateTime();
     connectedWithId = "";
     connectingToId = "";
 
@@ -73,11 +74,23 @@ void QAjServerModule::removeSlot()
     }
 }
 
-void QAjServerModule::connectSlot()
-{
+void QAjServerModule::connectSlot() {
     QList<QTreeWidgetItem*> items = treeWidget->selectedItems();
     if(!items.empty()) {
-        xml->set("serverlogin", "&id=" + ((QAjItem*)items.first())->getId());
+        bool doSo = true;
+        QDateTime now = zeroTime.addMSecs(xml->getRecentTime().toULongLong());
+        if(connectedSince.isValid() && now.isValid()) {
+            int minutes = connectedSince.secsTo(now) / 60 + 1;
+            if(minutes < 30) {
+                doSo = QMessageBox::question(juicer, tr("Connect"),
+                    tr("You are connected to a server for %1 minutes. If you try to change the server befor being connected for 30 minutes, you have to wait for 30 minutes without any server connection.").arg(QString::number(minutes))
+                    + "\n\n" + tr("Are you sure you want to reconnect?"),
+                    QMessageBox::Yes | QMessageBox::No) == QMessageBox::Yes;
+            }
+        }
+        if(doSo) {
+            xml->set("serverlogin", "&id=" + ((QAjItem*)items.first())->getId());
+        }
     }
 }
 
@@ -176,7 +189,6 @@ void QAjServerModule::gotServer( int , bool error )
     \fn QAjServerModule::selectionChanged()
  */
 void QAjServerModule::selectionChanged() {
-
     bool oneSelected = !treeWidget->selectedItems().empty();
     juicer->actionConnect_Server->setEnabled(oneSelected);
     juicer->actionRemove_Server->setEnabled(oneSelected);
@@ -188,4 +200,18 @@ void QAjServerModule::selectionChanged() {
  */
 void QAjServerModule::welcomeDockVisible(bool visible) {
     QAjOptionsDialog::setSetting("WelcomeDock", "visible", visible);
+}
+
+
+/*!
+    \fn QAjServerModule::setConnectedSince(const QString& time)
+ */
+QDateTime& QAjServerModule::setConnectedSince(const QString& time)
+{
+    if(time != "0") {
+        connectedSince = zeroTime.addMSecs(time.toULongLong());
+    } else {
+        connectedSince = QDateTime();
+    }
+    return connectedSince;
 }

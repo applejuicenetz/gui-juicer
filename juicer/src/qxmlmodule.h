@@ -67,6 +67,7 @@ public:
         this->passwordMD5 = passwordMD5;
     }
     void sendToTray( QString & message1, QString & message2 );
+    QString getRecentTime() { return timeStamp; }
 
 protected:
     Juicer *juicer;

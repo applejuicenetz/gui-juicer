@@ -44,12 +44,13 @@ public:
     void connectingTo( QString id );
     QAjServerItem* findServer( QString id );
     bool remove( QString id );
+    QDateTime& setConnectedSince(const QString& time);
 
 private:
     QString connectedWithId, connectingToId;
     QHash<QString, QAjServerItem*> servers;
     QHttp *serverHttp;
-    QDateTime zeroTime;
+    QDateTime zeroTime, connectedSince;
 
 public slots:
     void connectSlot();
