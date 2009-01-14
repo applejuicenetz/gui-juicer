@@ -20,19 +20,23 @@
 #include "qajapplication.h"
 
 #include <QMessageBox>
+#include <QFileInfo>
 #include "qajhandlerdialog.h"
 
-QAjApplication::QAjApplication( int & argc, char ** argv ) : QApplication( argc, argv )
+QAjApplication::QAjApplication( int & argc, char ** argv ) 
+    : QApplication( argc, argv )
 {
     QCoreApplication::setOrganizationName("progeln.de");
     QCoreApplication::setOrganizationDomain("progeln.de");
     QCoreApplication::setApplicationName("Juicer");
     setQuitOnLastWindowClosed( false );
     socket = NULL;
-    appPath = QString(argv[0]);
+    
+    QFileInfo appFileInfo( argv[0] );
+    appPath = appFileInfo.absoluteFilePath();    // contains path and filename
     // -- check if juicer is default application for ajfsp links --
     #ifdef Q_WS_WIN
-        QStrign appCmd = appPath.replace("\\","\\\\");
+        QString appCmd = appPath.replace("/","\\");
         appCmd = "\"" + appCmd + "\" \"%1\"";
         QSettings settings("HKEY_CLASSES_ROOT\\ajfsp", QSettings::NativeFormat);
         settings.setValue("Default","URL:ajfsp Protocol");
@@ -70,10 +74,12 @@ QAjApplication::QAjApplication( int & argc, char ** argv ) : QApplication( argc,
 }
 
 
-QAjApplication::~QAjApplication() {
+QAjApplication::~QAjApplication() 
+{
 }
 
-int QAjApplication::exec() {
+int QAjApplication::exec() 
+{
     if(socket != NULL) {
         socket->start();
     } else {
@@ -82,10 +88,12 @@ int QAjApplication::exec() {
     return QApplication::exec();
 }
 
-void QAjApplication::start() {
+void QAjApplication::start() 
+{
     QSplashScreen *splash = new QSplashScreen(QPixmap(":/splash.png"));
     splash->setVisible(QAjOptionsDialog::getSetting( "showSplash", true ).toBool());
 
     Juicer* juicer = new Juicer(argList, splash);
     juicer->setWindowTitle("Juicer");
 }
+
