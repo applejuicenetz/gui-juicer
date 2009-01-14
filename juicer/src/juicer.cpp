@@ -20,7 +20,16 @@
 
 #include "juicer.h"
 
-Juicer::Juicer( QStringList argList, QSplashScreen *splash ) : QMainWindow()
+Juicer::Juicer( QStringList argList, QSplashScreen *splash ) 
+    : QMainWindow()
+    , xml(0)
+    , downloadModule(0)
+    , uploadModule(0)
+    , networkDialog(0)
+    , searchModule(0)
+    , serverModule(0)
+    , shareModule(0)
+    , incomingModule(0)
 {
     setupUi( this );
 
@@ -237,6 +246,7 @@ void Juicer::xmlError(const QString& reason) {
     connected = false;
     timer->stop();
     partListTimer->stop();
+    if ( shareModule != NULL ) shareModule->reset();
     login(reason, true);
 }
 

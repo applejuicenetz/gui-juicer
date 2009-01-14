@@ -12,8 +12,10 @@
 #include "qajsharefileitem.h"
 #include "qajshareitem.h"
 
+#include <QtDebug>
+
 QAjShareFileItem::QAjShareFileItem(const QString& id, QAjShareItem *parent) 
-  : QAjItem((QTreeWidgetItem*)parent, id)
+  : QAjItem( /*dynamic_cast<QTreeWidgetItem*>*/parent, id)
 {
 }
 
@@ -31,7 +33,7 @@ void QAjShareFileItem::update( const QString& hash,
 {
     if ( hash_.isEmpty() ) {
         hash_ = hash;
-    }
+    }    
     if ( filename_.isEmpty() ) {
         filename_ = fileName;
     }

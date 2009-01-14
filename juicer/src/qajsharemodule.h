@@ -62,6 +62,11 @@ public:
     bool isChanged() const { return changed_; }
 
     QAjShareSelectionDialog* shareSelectionDialog;
+    
+    void reset()
+    {
+        sharedFiles.clear();
+    }
 
 public slots:
     void commitSlot();
