@@ -39,9 +39,9 @@ protected:
     QXMLModule* xml;
 public slots:
     void adjustSizeOfColumns();
-    virtual void selectionChanged() = 0;
 protected slots:
     void linkListSlot();
+    virtual void selectionChanged() = 0;
 };
 
 #endif

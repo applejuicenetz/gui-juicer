@@ -14,6 +14,13 @@
   </property>
   <layout class="QVBoxLayout" name="verticalLayout" >
    <item>
+    <widget class="QLabel" name="label" >
+     <property name="text" >
+      <string>Select a directory you want to share:</string>
+     </property>
+    </widget>
+   </item>
+   <item>
     <widget class="QTreeWidget" name="treeWidget" >
      <property name="sortingEnabled" >
       <bool>true</bool>

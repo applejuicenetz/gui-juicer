@@ -119,7 +119,6 @@ protected:
     void processQueuedLinks();
     QString showLoginDialog(const QString& message = "");
 
-//    QTabWidget* ajTab;
     QSystemTrayIcon* tray;
     QString password;
     QString filesystemSeparator;

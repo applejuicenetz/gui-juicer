@@ -16,6 +16,7 @@
 #include <QObject>
 #include <QInputDialog>
 #include <QClipboard>
+#include <QMainWindow>
 
 #include "qxmlmodule.h"
 #include "qajmodulebase.h"
@@ -84,6 +85,18 @@ protected slots:
     void hidePausedSlot(bool checked);
 signals:
     void downloadsFinished( const QList<QAjDownloadItem*>& downloads );
+};
+
+class DownloadMain : public QMainWindow
+{
+Q_OBJECT
+public:
+    DownloadMain(QWidget *parent = 0) : QMainWindow(parent) {
+    }
+
+    ~DownloadMain() {
+    }
+
 };
 
 #endif

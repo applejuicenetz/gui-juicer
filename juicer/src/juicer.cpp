@@ -20,7 +20,7 @@
 
 #include "juicer.h"
 
-Juicer::Juicer( QStringList argList, QSplashScreen *splash ) 
+Juicer::Juicer( QStringList argList, QSplashScreen *splash )
     : QMainWindow()
     , xml(0)
     , downloadModule(0)
@@ -32,6 +32,9 @@ Juicer::Juicer( QStringList argList, QSplashScreen *splash )
     , incomingModule(0)
 {
     setupUi( this );
+
+    downloads->setCentralWidget(downloadsTreeWidget);
+    downloads->addDockWidget(Qt::RightDockWidgetArea, partListDock);
 
     started = false;
     this->splash = splash;
