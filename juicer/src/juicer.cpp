@@ -35,6 +35,8 @@ Juicer::Juicer( QStringList argList, QSplashScreen *splash )
 
     downloads->setCentralWidget(downloadsTreeWidget);
     downloads->addDockWidget(Qt::RightDockWidgetArea, partListDock);
+    server->setCentralWidget(serverTreeWidget);
+    server->addDockWidget(Qt::RightDockWidgetArea, welcomeDock);
 
     started = false;
     this->splash = splash;

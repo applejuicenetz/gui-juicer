@@ -17,6 +17,8 @@
 #include <QMessageBox>
 #include <QFileDialog>
 #include <QToolBar>
+#include <QMainWindow>
+
 
 class Juicer;
 class QXMLModule;
@@ -42,6 +44,14 @@ public slots:
 protected slots:
     void linkListSlot();
     virtual void selectionChanged() = 0;
+};
+
+
+class DockMain : public QMainWindow {
+Q_OBJECT
+public:
+    DockMain(QWidget *parent = 0) : QMainWindow(parent) {}
+    ~DockMain() {}
 };
 
 #endif

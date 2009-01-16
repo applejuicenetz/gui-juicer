@@ -19,7 +19,7 @@
       <property name="currentIndex" >
        <number>0</number>
       </property>
-      <widget class="DownloadMain" name="downloads" >
+      <widget class="DockMain" name="downloads" >
        <attribute name="title" >
         <string>Downloads</string>
        </attribute>
@@ -213,7 +213,7 @@
         </item>
        </layout>
       </widget>
-      <widget class="QWidget" name="server" >
+      <widget class="DockMain" name="server" >
        <attribute name="title" >
         <string>Server</string>
        </attribute>
@@ -221,75 +221,82 @@
         <iconset resource="images.qrc" >
          <normaloff>:/small/server.png</normaloff>:/small/server.png</iconset>
        </attribute>
-       <layout class="QHBoxLayout" name="horizontalLayout" >
-        <item>
-         <widget class="QSplitter" name="splitter" >
-          <property name="orientation" >
-           <enum>Qt::Horizontal</enum>
-          </property>
-          <widget class="QTreeWidget" name="serverTreeWidget" >
-           <property name="sizePolicy" >
-            <sizepolicy vsizetype="Expanding" hsizetype="Expanding" >
-             <horstretch>2</horstretch>
-             <verstretch>2</verstretch>
-            </sizepolicy>
-           </property>
-           <property name="selectionMode" >
-            <enum>QAbstractItemView::ExtendedSelection</enum>
-           </property>
-           <property name="sortingEnabled" >
-            <bool>true</bool>
-           </property>
-           <column>
-            <property name="text" >
-             <string>Name</string>
-            </property>
-           </column>
-           <column>
-            <property name="text" >
-             <string>Host</string>
-            </property>
-           </column>
-           <column>
-            <property name="text" >
-             <string>Port</string>
-            </property>
-           </column>
-           <column>
-            <property name="text" >
-             <string>Last Seen</string>
-            </property>
-           </column>
-           <column>
-            <property name="text" >
-             <string>Tests</string>
-            </property>
-           </column>
-          </widget>
-          <widget class="QDockWidget" name="welcomeDock" >
-           <property name="sizePolicy" >
-            <sizepolicy vsizetype="Preferred" hsizetype="Preferred" >
-             <horstretch>1</horstretch>
-             <verstretch>1</verstretch>
-            </sizepolicy>
-           </property>
-           <property name="features" >
-            <set>QDockWidget::DockWidgetClosable|QDockWidget::DockWidgetMovable</set>
-           </property>
-           <property name="windowTitle" >
-            <string>Server Welcome Message</string>
-           </property>
-           <widget class="QWidget" name="dockWidgetContents_3" >
-            <layout class="QVBoxLayout" name="verticalLayout_5" >
-             <item>
-              <widget class="QTextEdit" name="welcomeEdit" />
-             </item>
-            </layout>
-           </widget>
-          </widget>
-         </widget>
-        </item>
-       </layout>
+       <widget class="QTreeWidget" name="serverTreeWidget" >
+        <property name="geometry" >
+         <rect>
+          <x>4</x>
+          <y>4</y>
+          <width>961</width>
+          <height>515</height>
+         </rect>
+        </property>
+        <property name="sizePolicy" >
+         <sizepolicy vsizetype="Expanding" hsizetype="Expanding" >
+          <horstretch>2</horstretch>
+          <verstretch>2</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="selectionMode" >
+         <enum>QAbstractItemView::ExtendedSelection</enum>
+        </property>
+        <property name="sortingEnabled" >
+         <bool>true</bool>
+        </property>
+        <column>
+         <property name="text" >
+          <string>Name</string>
+         </property>
+        </column>
+        <column>
+         <property name="text" >
+          <string>Host</string>
+         </property>
+        </column>
+        <column>
+         <property name="text" >
+          <string>Port</string>
+         </property>
+        </column>
+        <column>
+         <property name="text" >
+          <string>Last Seen</string>
+         </property>
+        </column>
+        <column>
+         <property name="text" >
+          <string>Tests</string>
+         </property>
+        </column>
+       </widget>
+       <widget class="QDockWidget" name="welcomeDock" >
+        <property name="geometry" >
+         <rect>
+          <x>974</x>
+          <y>4</y>
+          <width>294</width>
+          <height>515</height>
+         </rect>
+        </property>
+        <property name="sizePolicy" >
+         <sizepolicy vsizetype="Preferred" hsizetype="Preferred" >
+          <horstretch>1</horstretch>
+          <verstretch>1</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="features" >
+         <set>QDockWidget::DockWidgetClosable|QDockWidget::DockWidgetMovable</set>
+        </property>
+        <property name="windowTitle" >
+         <string>Server Welcome Message</string>
+        </property>
+        <widget class="QWidget" name="dockWidgetContents_3" >
+         <layout class="QVBoxLayout" name="verticalLayout_5" >
+          <item>
+           <widget class="QTextEdit" name="welcomeEdit" />
+          </item>
+         </layout>
+        </widget>
+       </widget>
        <zorder>serverTreeWidget</zorder>
        <zorder>welcomeDock</zorder>
        <zorder>welcomeEdit</zorder>
@@ -1047,9 +1054,9 @@
  </widget>
  <customwidgets>
   <customwidget>
-   <class>DownloadMain</class>
+   <class>DockMain</class>
    <extends>QWidget</extends>
-   <header>qajdownloadmodule.h</header>
+   <header>qajmodulebase.h</header>
    <container>1</container>
   </customwidget>
  </customwidgets>

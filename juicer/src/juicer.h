@@ -175,5 +175,4 @@ private slots:
     void downloadsFinished(const QList<QAjDownloadItem*>& list);
 };
 
-
 #endif
