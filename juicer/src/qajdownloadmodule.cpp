@@ -72,6 +72,12 @@ QAjDownloadModule::QAjDownloadModule(Juicer* juicer) : QAjModuleBase(juicer, jui
 
     connect(treeWidget, SIGNAL(itemSelectionChanged()), this, SLOT(partListSlot()));
 
+    connect(juicer->actionShow_Part_List_Dock, SIGNAL(triggered(bool)), juicer->partListDock, SLOT(setVisible(bool)));
+    connect(juicer->partListDock, SIGNAL(visibilityChanged(bool)), juicer->actionShow_Part_List_Dock, SLOT(setChecked(bool)));
+    connect(juicer->actionShow_Part_List_Dock, SIGNAL(triggered(bool)), this, SLOT(partListDockVisible(bool)));
+    connect(juicer->partListDock->toggleViewAction(), SIGNAL(triggered(bool)), this, SLOT(partListDockVisible(bool)));
+
+
     #ifdef AJQTGUI_MODE_SPECIAL
         juicer->actionMaximal_Power->setVisible(true);
     #else
@@ -511,3 +517,11 @@ void QAjDownloadModule::partListWidgetSlot()
     }
 
 }
+
+/*!
+    \fn QAjDownloadModule::partListDockVisible(bool visible)
+ */
+void QAjDownloadModule::partListDockVisible(bool visible) {
+    QAjOptionsDialog::setSetting("PartListDock", "visible", visible);
+}
+

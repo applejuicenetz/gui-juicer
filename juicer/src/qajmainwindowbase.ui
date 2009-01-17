@@ -555,7 +555,7 @@
    <addaction name="actionMaximal_Power" />
    <addaction name="actionRemove_Finished" />
    <addaction name="actionHide_Paused" />
-   <addaction name="actionAction_Show_Part_List_Dock" />
+   <addaction name="actionShow_Part_List_Dock" />
    <addaction name="separator" />
   </widget>
   <widget class="QToolBar" name="uploadToolBar" >
@@ -1061,7 +1061,7 @@
     <string>Reload</string>
    </property>
   </action>
-  <action name="actionAction_Show_Part_List_Dock" >
+  <action name="actionShow_Part_List_Dock" >
    <property name="checkable" >
     <bool>true</bool>
    </property>
