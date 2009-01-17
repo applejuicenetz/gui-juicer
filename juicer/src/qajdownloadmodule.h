@@ -43,8 +43,10 @@ public:
     QString getNextIdRoundRobin();
     void setDirs(const QFileInfo& tmpDir, const QFileInfo& inDir);
     QString findDownloadByTempNum(const QFileInfo& tempFile);
+    void setPartList(const QString& id, qulonglong size, QLinkedList<QAjPartsWidget::Part>& partList);
 public slots:
     void updateView(bool force = false);
+    void partListSlot();
 protected:
     void processSelected(QXMLModule::Type type, const QString& request, const QString& para = "");
     void getSelected(const QString& request, const QString& para = "");
@@ -71,7 +73,6 @@ protected slots:
     void cleanSlot();
     void resumeSlot();
     void pauseSlot();
-    void partListSlot();
     void renameSlot();
     void renamePlusSlot();
     void openSlot();
@@ -82,6 +83,7 @@ protected slots:
     void selectionChanged();
     void storeDownloadFtp();
     void hidePausedSlot(bool checked);
+    void partListWidgetSlot();
 signals:
     void downloadsFinished( const QList<QAjDownloadItem*>& downloads );
 };

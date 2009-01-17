@@ -58,6 +58,21 @@ public:
     static const int ONE_GIG = 1073741824;
     static const int ONE_MEG = 1048576;
     static const int ONE_KILO = 1024;
+
+    template<class T>
+    static const T& min(const T& a, const T& b) {
+        if(a < b) {
+            return a;
+        }
+        return b;
+    }
+    template<class T>
+    static const T& max(const T& a, const T& b) {
+        if(a > b) {
+            return a;
+        }
+        return b;
+    }
 };
 
 #endif

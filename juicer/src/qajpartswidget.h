@@ -24,6 +24,8 @@
 #include <QPainter>
 #include <QLinkedList>
 
+#include "qconvert.h"
+
 /**
 @author Matthias Reif
 */
@@ -42,6 +44,7 @@ public:
     };
 
     void update( qulonglong size, QLinkedList<Part>& partList );
+    void clear();
     
     double ready;
     double available;
@@ -57,7 +60,6 @@ public:
 protected:
     void paintEvent( QPaintEvent* );
     QLinkedList<Part> partList;
-    static const int BLOCK_ROWS = 6;
     int blockHeight;
     int numPixels;
     float pixelPerByte;

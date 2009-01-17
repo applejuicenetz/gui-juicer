@@ -37,6 +37,7 @@ void QAjPartsWidget::paintEvent( QPaintEvent* )
     if ( partList.empty() ) {
         return;
     }
+    int BLOCK_ROWS = QConvert::max(1,height() / 30);
 
     blockHeight = this->height() / BLOCK_ROWS;
     numPixels = this->width() * BLOCK_ROWS;
@@ -129,5 +130,18 @@ void QAjPartsWidget::update( qulonglong size, QLinkedList<Part>& partList )
 {
     this->size = size;
     this->partList = partList;
+    QAjPartsWidget::Part closePart;
+    closePart.fromPosition = size ;
+    closePart.type = -10;
+    this->partList.push_back( closePart );
+    QWidget::update();
+}
+
+
+/*!
+    \fn QAjPartsWidget::clear()
+ */
+void QAjPartsWidget::clear() {
+    partList.clear();
     QWidget::update();
 }

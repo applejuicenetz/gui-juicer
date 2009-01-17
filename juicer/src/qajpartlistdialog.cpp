@@ -59,12 +59,6 @@ void QAjPartListDialog::update( qulonglong size, QLinkedList<QAjPartsWidget::Par
 
 //     if ( ! timer->isActive() )
 //         timer->start( 5000 );
-
-    QAjPartsWidget::Part closePart;
-    closePart.fromPosition = size ;
-    closePart.type = -10;
-    partList.push_back( closePart );
-
     paintWidget->update( size, partList );
 }
 

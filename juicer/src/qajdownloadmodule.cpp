@@ -59,6 +59,7 @@ QAjDownloadModule::QAjDownloadModule(Juicer* juicer) : QAjModuleBase(juicer, jui
     connect(juicer->actionPause, SIGNAL(triggered()), this, SLOT(pauseSlot()));
     connect(juicer->actionResume, SIGNAL(triggered()), this, SLOT(resumeSlot()));
     connect(juicer->actionCancel, SIGNAL(triggered()), this, SLOT(cancelSlot()));
+    connect(juicer->actionShow_Part_List, SIGNAL(triggered()), this, SLOT(partListWidgetSlot()));
     connect(juicer->actionShow_Part_List, SIGNAL(triggered()), this, SLOT(partListSlot()));
     connect(juicer->actionRename, SIGNAL(triggered()), this, SLOT(renameSlot()));
     connect(juicer->actionRename_By_Clipboard, SIGNAL(triggered()), this, SLOT(renamePlusSlot()));
@@ -68,6 +69,8 @@ QAjDownloadModule::QAjDownloadModule(Juicer* juicer) : QAjModuleBase(juicer, jui
     connect(juicer->actionCreate_Link_List, SIGNAL(triggered()), this, SLOT(linkListSlot()));
     connect(juicer->actionHide_Paused, SIGNAL(triggered(bool)), this, SLOT(hidePausedSlot(bool)));
     connect(juicer->actionMaximal_Power, SIGNAL(triggered()), this, SLOT(maxPowerDownload()));
+
+    connect(treeWidget, SIGNAL(itemSelectionChanged()), this, SLOT(partListSlot()));
 
     #ifdef AJQTGUI_MODE_SPECIAL
         juicer->actionMaximal_Power->setVisible(true);
@@ -403,6 +406,9 @@ void QAjDownloadModule::selectionChanged() {
     juicer->actionOpen->setEnabled(oneSelected);
     juicer->actionCopy_Link->setEnabled(oneSelected);
     juicer->actionCreate_Link_List->setEnabled(oneSelected);
+    if(!oneSelected) {
+        juicer->partsWidget->clear();
+    }
 }
 
 
@@ -475,4 +481,33 @@ void QAjDownloadModule::storeDownloadFtp() {
         }
     }
     ftp->start();
+}
+
+
+/*!
+    \fn QAjDownloadModule::setPartList(const QString& id, qulonglong size, QLinkedList<QAjPartsWidget::Part>& partList)
+ */
+void QAjDownloadModule::setPartList(const QString& id, qulonglong size, QLinkedList<QAjPartsWidget::Part>& partList) {
+    QAjDownloadItem* item = findDownload(id);
+    if( item != NULL ) {
+        if(item->getPartListDialog()->isVisible()) {
+            item->getPartListDialog()->update(size, partList);
+        }
+        if(juicer->partsWidget->isVisible() && item->isSelected()) {
+            juicer->partsWidget->update(size, partList);
+        }
+    }
+}
+
+
+/*!
+    \fn QAjDownloadModule::partListWidgetSlot()
+ */
+void QAjDownloadModule::partListWidgetSlot()
+{
+    QList<QTreeWidgetItem*> items = treeWidget->selectedItems();
+    for(QList<QTreeWidgetItem*>::iterator i = items.begin(); i!=items.end(); i++) {
+         ((QAjDownloadItem*)(*i))->getPartListDialog()->show();
+    }
+
 }

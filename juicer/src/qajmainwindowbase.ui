@@ -111,14 +111,20 @@
          <rect>
           <x>840</x>
           <y>20</y>
-          <width>421</width>
-          <height>491</height>
+          <width>401</width>
+          <height>471</height>
          </rect>
         </property>
         <property name="windowTitle" >
          <string>Part List</string>
         </property>
-        <widget class="QWidget" name="dockWidgetContents_8" />
+        <widget class="QWidget" name="dockWidgetContents_8" >
+         <layout class="QVBoxLayout" name="verticalLayout_2" >
+          <item>
+           <widget class="QAjPartsWidget" native="1" name="partsWidget" />
+          </item>
+         </layout>
+        </widget>
        </widget>
       </widget>
       <widget class="QWidget" name="uploads" >
@@ -1060,6 +1066,12 @@
    <class>DockMain</class>
    <extends>QWidget</extends>
    <header>qajmodulebase.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>QAjPartsWidget</class>
+   <extends>QWidget</extends>
+   <header>qajpartswidget.h</header>
    <container>1</container>
   </customwidget>
  </customwidgets>

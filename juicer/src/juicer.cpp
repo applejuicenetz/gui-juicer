@@ -92,6 +92,7 @@ Juicer::Juicer( QStringList argList, QSplashScreen *splash )
     partListTimer = new QTimer( this );
     connect( timer, SIGNAL( timeout() ), this, SLOT( timerSlot() ) );
     connect( partListTimer, SIGNAL( timeout() ), this, SLOT( partListTimerSlot() ) );
+    connect( partListTimer, SIGNAL( timeout() ), downloadModule, SLOT( partListSlot() ) );
 
     connect( ajTab, SIGNAL( currentChanged( int ) ), this, SLOT( tabChanged( int ) ) );
 
@@ -165,6 +166,8 @@ void Juicer::initTrayIcon()
     @param ce the close event
  */
 void Juicer::closeEvent( QCloseEvent* ce ) {
+    downloads->close();
+    server->close();
     QSettings lokalSettings;
     lokalSettings.beginGroup("MainWindow");
     lokalSettings.setValue( "size", size() );

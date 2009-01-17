@@ -525,15 +525,11 @@ void QXMLModule::handlePart( QDomElement& e )
  */
 void QXMLModule::handlePartList( int id )
 {
-    if ( partList.size() > 0 )
+    if ( !partList.empty() )
     {
         if( partListRequests.contains( id ) )
         {
-            QAjDownloadItem* item = juicer->downloadModule->findDownload( partListRequests[id] );
-            if( item != NULL )
-            {
-                item->getPartListDialog()->update( partsSize, partList );
-            }
+            juicer->downloadModule->setPartList(partListRequests[id], partsSize, partList);
             partListRequests.remove( id );
         }
         else if( partListSimpleRequests.contains( id ) )
