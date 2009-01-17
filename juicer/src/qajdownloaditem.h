@@ -130,8 +130,9 @@ public:
     }
 
     virtual bool operator<( const QTreeWidgetItem & other ) const;
-    QAjPowerSpin* powerSpin;
     QProgressBar* progressBar;
+    QAjPowerSpin* powerSpin;
+
 public slots:
     void initPowerSpin();
 

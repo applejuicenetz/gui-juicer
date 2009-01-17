@@ -346,7 +346,7 @@ void Juicer::showOptions()
 
 void Juicer::settingsReady( const AjSettings& settings )
 {
-    downloadModule->setDirs( QFileInfo( settings.tempDir ), QFileInfo( settings.incomingDir ) );
+    downloadModule->setDirs( settings.tempDir, settings.incomingDir );
     incomingModule->setDir( settings.incomingDir );
     if ( optionsDialog != NULL )
     {
@@ -522,7 +522,7 @@ void Juicer::queueLinks( const QStringList& links )
  */
 void Juicer::setUploadFilename( const QString& shareId, const QString& filename )
 {
-    uploadModule->setFilename( shareId, downloadModule->findDownloadByTempNum( QFileInfo(filename) ) );
+      uploadModule->setFilename( shareId, downloadModule->findDownloadByTempNum( filename ) );
 }
 
 

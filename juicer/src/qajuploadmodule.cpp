@@ -36,10 +36,12 @@ QAjUploadModule::QAjUploadModule(Juicer* juicer) : QAjModuleBase(juicer, juicer-
 QAjUploadModule::~QAjUploadModule()
 {}
 
+// <2DO> Anzeige der Core-Version im Upload-Widget
 bool QAjUploadModule::insertUpload(
-            const QString& id, const QString& shareId, const QString& version,
+            const QString& id, const QString& shareId, const QString& /*version*/,
             const QString& os, const QString& status, const QString& directState,
-            const QString& priority, const QString& nick, const QString& speed) {
+            const QString& priority, const QString& nick, const QString& speed)
+{
     QAjUploadItem *uploadItem = findUpload(id);
     bool newUpload = uploadItem == NULL;
     if(newUpload) {

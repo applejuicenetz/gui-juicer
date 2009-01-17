@@ -110,6 +110,12 @@ public:
 
     static QStringList getExec();
 
+    // returns filesystemseperator of the remote filesystem where the Core runs
+    QString getFileSystemSeperator() const
+    {
+        return filesystemSeparator;
+    }
+
 protected:
     void initToolBars();
     void connectActions();

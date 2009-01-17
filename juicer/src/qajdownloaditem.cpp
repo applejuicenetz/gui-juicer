@@ -20,7 +20,14 @@
 #include "qajdownloaditem.h"
 
 
-QAjDownloadItem::QAjDownloadItem( QString id, QTreeWidget *parent ) : QAjItem( parent, id )
+QAjDownloadItem::QAjDownloadItem( QString id, QTreeWidget *parent )
+  : QAjItem( parent, id )
+  , activeSourcesItem( 0 )
+  , queuedSourcesItem( 0 )
+  , otherSourcesItem( 0 )
+  , progressBar( 0 )
+  , powerSpin( 0 )
+  , partListDialog( 0 )
 {
     size_ = 0.0;
     ready = 0.0;
@@ -68,16 +75,16 @@ QAjDownloadItem::~QAjDownloadItem()
     takeChild( indexOfChild( queuedSourcesItem ) );
     takeChild( indexOfChild( otherSourcesItem ) );
     deleteUsers();
-    delete activeSourcesItem;
-    delete queuedSourcesItem;
-    delete otherSourcesItem;
-    delete progressBar;
-    delete powerSpin;
-    if ( partListDialog != NULL )
-        delete partListDialog;
+    if ( activeSourcesItem )  delete activeSourcesItem;
+    if ( queuedSourcesItem )  delete queuedSourcesItem;
+    if ( otherSourcesItem )   delete otherSourcesItem;
+//    delete progressBar;
+//    delete powerSpin;
+    if ( partListDialog )     delete partListDialog;
 }
 
-void QAjDownloadItem::initPowerSpin() {
+void QAjDownloadItem::initPowerSpin()
+{
     QWidget* progressBarWidget = new QWidget(treeWidget());
     QVBoxLayout* l = new QVBoxLayout();
     l->addStretch(2);

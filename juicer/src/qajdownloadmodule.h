@@ -41,8 +41,8 @@ public:
     QAjDownloadItem* findDownload(const QString& size, const QString& hash);
     QMenu *popup;
     QString getNextIdRoundRobin();
-    void setDirs(const QFileInfo& tmpDir, const QFileInfo& inDir);
-    QString findDownloadByTempNum(const QFileInfo& tempFile);
+    void setDirs(const QString& tmpDir, const QString& inDir);
+    QString findDownloadByTempNum(const QString& tempFile);
     void setPartList(const QString& id, qulonglong size, QLinkedList<QAjPartsWidget::Part>& partList);
 public slots:
     void updateView(bool force = false);
@@ -59,7 +59,7 @@ protected:
     QCheckBox *powerCheck;
     QHash<QString, QString> userStatusDescr;
     QHash<QString, QString> downloadStatusDescr;
-    QFileInfo tempDir, incomingDir;
+    QString tempDir, incomingDir;
 
     class DownloadUser {
         public:

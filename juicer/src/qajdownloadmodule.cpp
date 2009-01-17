@@ -319,8 +319,9 @@ void QAjDownloadModule::openSlot() {
         tDir = QAjOptionsDialog::getSetting("tempDirSpecific", "/").toString() + QDir::separator();
     }
     else if(location == AjSettings::SAME) {
-        iDir = incomingDir.absolutePath() + QDir::separator();
-        tDir = tempDir.absolutePath() + QDir::separator();
+        QString sep = juicer->getFileSystemSeperator();
+        iDir = incomingDir + sep;// + QDir::separator();
+        tDir = tempDir + sep;//+ QDir::separator();
     }
     // -- ftp --
     else {
@@ -432,20 +433,22 @@ QString QAjDownloadModule::getNextIdRoundRobin() {
 
 
 /*!
-    \fn QAjDownloadModule::setDirs( const QFileInfo& tmpDir, const QFileInfo& inDir )
+    \fn QAjDownloadModule::setDirs( const QString& tmpDir, const QString& inDir )
  */
-void QAjDownloadModule::setDirs( const QFileInfo& tmpDir, const QFileInfo& inDir ) {
-    this->tempDir = tmpDir;
+void QAjDownloadModule::setDirs( const QString& tmpDir, const QString& inDir ) {
+    this->tempDir     = tmpDir;
     this->incomingDir = inDir;
 }
 
 
 /*!
-    \fn QAjDownloadModule::findDownloadByTempNum(const QFileInfo& tempFile)
+    \fn QAjDownloadModule::findDownloadByTempNum(const QString& tempFile)
  */
-QString QAjDownloadModule::findDownloadByTempNum(const QFileInfo& tempFile) {
-    if(tempDir.absolutePath() == tempFile.absolutePath()) {
-        QString tempNum = tempFile.baseName();
+QString QAjDownloadModule::findDownloadByTempNum(const QString& tempFile) {
+    if ( tempFile.contains( tempDir ) ) {
+        QStringList splitPath     = tempFile.split( juicer->getFileSystemSeperator() );
+        QStringList splitFilename = splitPath.last().split( "." );
+        QString tempNum = splitFilename.last();
         QHash<QString,QAjDownloadItem*>::const_iterator i;
         for(i = downloads.constBegin(); i != downloads.constEnd(); i++) {
             if((*i)->getTempNumber() == tempNum) {
@@ -453,7 +456,7 @@ QString QAjDownloadModule::findDownloadByTempNum(const QFileInfo& tempFile) {
             }
         }
     }
-    return tempFile.fileName();
+    return tempFile;//.fileName();
 }
 
 /*!

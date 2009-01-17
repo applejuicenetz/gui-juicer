@@ -29,11 +29,11 @@ void QAjShareFileItem::update( const QString& hash,
                                const QString& fileName,
                                const QString& size,
                                const QString& priority,
-                               const QString& filesystemSeperator ) 
+                               const QString& /*filesystemSeperator*/ ) 
 {
     if ( hash_.isEmpty() ) {
         hash_ = hash;
-    }    
+    }
     if ( filename_.isEmpty() ) {
         filename_ = fileName;
     }
