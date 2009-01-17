@@ -111,6 +111,7 @@ resources/juicer.png \
 resources/launch.png \
 resources/network.png \
 resources/partlist.png \
+resources/partlist2.png \
 resources/pause_fade.png \
 resources/player_pause.png \
 resources/player_play.png \
@@ -151,7 +152,6 @@ resources/wizard.png \
  resources/small/network_local.png \
  resources/small/network.png \
  resources/small/ok.png \
- resources/small/partlist.png \
  resources/small/player_pause.png \
  resources/small/player_play.png \
  resources/small/server.png \

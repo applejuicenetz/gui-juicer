@@ -30,15 +30,27 @@ Juicer::Juicer( QStringList argList, QSplashScreen *splash )
     , serverModule(0)
     , shareModule(0)
     , incomingModule(0)
+    , started(false)
+    , connected(false)
 {
     setupUi( this );
+    QSettings lokalSettings;
 
+    lokalSettings.beginGroup("PartListDock");
     downloads->setCentralWidget(downloadsTreeWidget);
-    downloads->addDockWidget(Qt::RightDockWidgetArea, partListDock);
-    server->setCentralWidget(serverTreeWidget);
-    server->addDockWidget(Qt::RightDockWidgetArea, welcomeDock);
+    downloads->addDockWidget((Qt::DockWidgetArea)lokalSettings.value("pos", Qt::RightDockWidgetArea).toInt(), partListDock);
+    partListDock->setVisible(lokalSettings.value("visible", true).toBool());
+    partListDock->setFloating(lokalSettings.value("float", false).toBool());
+    lokalSettings.endGroup();
 
-    started = false;
+    lokalSettings.beginGroup("WelcomeDock");
+    server->setCentralWidget(serverTreeWidget);
+    server->addDockWidget((Qt::DockWidgetArea)lokalSettings.value("pos", Qt::RightDockWidgetArea).toInt(), welcomeDock);
+    welcomeDock->setVisible(lokalSettings.value("visible", true).toBool());
+    welcomeDock->setFloating(lokalSettings.value("float", false).toBool());
+    lokalSettings.endGroup();
+
+
     this->splash = splash;
     connect( qApp, SIGNAL( lastWindowClosed () ), this, SLOT ( lastWindowClosed () ) );
 
@@ -74,7 +86,6 @@ Juicer::Juicer( QStringList argList, QSplashScreen *splash )
     connectActions();
     initStatusBar();
 
-    QSettings lokalSettings;
     lokalSettings.beginGroup( "MainWindow" );
     resize( lokalSettings.value( "size", QSize(1000, 600) ).toSize() );
     move( lokalSettings.value( "pos", QPoint(100, 100) ).toPoint() );
@@ -85,8 +96,6 @@ Juicer::Juicer( QStringList argList, QSplashScreen *splash )
     connect( xml, SIGNAL( gotSession() ), this, SLOT( gotSession() ) );
     connect( xml, SIGNAL( modifiedDone( ) ), downloadModule, SLOT( updateView( ) ) );
     connect( xml, SIGNAL( modifiedDone( ) ), this, SLOT( firstModified() ) );
-
-    connected = false;
 
     timer = new QTimer( this );
     partListTimer = new QTimer( this );
@@ -179,6 +188,17 @@ void Juicer::closeEvent( QCloseEvent* ce ) {
     serverModule->saveSortOrder("ServerWidget");
     shareModule->saveSortOrder("ShareWidget");
     incomingModule->saveSortOrder("IncomingWidget");
+
+    lokalSettings.beginGroup("PartListDock");
+    lokalSettings.setValue("pos", downloads->dockWidgetArea(partListDock));
+    lokalSettings.setValue("float", partListDock->isFloating());
+    lokalSettings.endGroup();
+
+    lokalSettings.beginGroup("WelcomeDock");
+    lokalSettings.setValue("pos", server->dockWidgetArea(welcomeDock));
+    lokalSettings.setValue("float", welcomeDock->isFloating());
+    lokalSettings.endGroup();
+
     ce->accept();
 }
 
@@ -204,7 +224,7 @@ bool Juicer::login(const QString& message, bool error) {
     if(!password.isEmpty()) {
         firstModifiedCnt = 0;
         xml->setPassword(password);
-         xml->setHost(host, port);
+        xml->setHost(host, port);
         xml->get("getsession");
     // -- ignore at login --
     } else if(started) {

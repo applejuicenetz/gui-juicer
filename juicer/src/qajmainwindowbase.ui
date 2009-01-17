@@ -555,6 +555,7 @@
    <addaction name="actionMaximal_Power" />
    <addaction name="actionRemove_Finished" />
    <addaction name="actionHide_Paused" />
+   <addaction name="actionAction_Show_Part_List_Dock" />
    <addaction name="separator" />
   </widget>
   <widget class="QToolBar" name="uploadToolBar" >
@@ -790,7 +791,7 @@
      <normaloff>:/partlist.png</normaloff>:/partlist.png</iconset>
    </property>
    <property name="text" >
-    <string>Show Part List</string>
+    <string>Show Part List Dialog</string>
    </property>
   </action>
   <action name="actionRename" >
@@ -1058,6 +1059,24 @@
    </property>
    <property name="text" >
     <string>Reload</string>
+   </property>
+  </action>
+  <action name="actionAction_Show_Part_List_Dock" >
+   <property name="checkable" >
+    <bool>true</bool>
+   </property>
+   <property name="icon" >
+    <iconset resource="images.qrc" >
+     <normaloff>:/partlist2.png</normaloff>:/partlist2.png</iconset>
+   </property>
+   <property name="text" >
+    <string>Show Part List Dock Widget</string>
+   </property>
+   <property name="iconText" >
+    <string>Show Part List Dock Widget</string>
+   </property>
+   <property name="toolTip" >
+    <string>Show Part List Dock Widget</string>
    </property>
   </action>
  </widget>

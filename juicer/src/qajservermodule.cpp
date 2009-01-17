@@ -37,10 +37,10 @@ QAjServerModule::QAjServerModule(Juicer* juicer) : QAjModuleBase(juicer, juicer-
 
     QObject::connect(juicer->actionShow_Welcome_Message, SIGNAL(triggered(bool)), juicer->welcomeDock, SLOT(setVisible(bool)));
     QObject::connect(juicer->welcomeDock, SIGNAL(visibilityChanged(bool)), juicer->actionShow_Welcome_Message, SLOT(setChecked(bool)));
-//     QObject::connect(juicer->actionShow_Welcome_Message, SIGNAL(triggered(bool)), this, SLOT(welcomeDockVisible(bool)));
+    QObject::connect(juicer->actionShow_Welcome_Message, SIGNAL(triggered(bool)), this, SLOT(welcomeDockVisible(bool)));
     QObject::connect(juicer->welcomeDock->toggleViewAction(), SIGNAL(triggered(bool)), this, SLOT(welcomeDockVisible(bool)));
 
-    juicer->welcomeDock->setVisible(QAjOptionsDialog::getSetting("WelcomeDock", "visible", true).toBool());
+//    juicer->welcomeDock->setVisible(QAjOptionsDialog::getSetting("WelcomeDock", "visible", true).toBool());
     selectionChanged();
 }
 

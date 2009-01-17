@@ -24,6 +24,7 @@
     <file alias="update.png">resources/vcs_update.png</file>
     <file alias="wizard.png">resources/wizard.png</file>
     <file alias="partlist.png">resources/partlist.png</file>
+    <file alias="partlist2.png">resources/partlist2.png</file>
     <file alias="dummy.png">resources/dummy.png</file>
     <file alias="juicer.png">resources/juicer.png</file>
     <file alias="text_block.png">resources/text_block.png</file>
@@ -57,7 +58,6 @@
     <file alias="rename_plus.png">resources/small/editpaste.png</file>
     <file alias="rename.png">resources/small/edit.png</file>
     <file alias="cancel.png">resources/small/stop.png</file>
-    <file alias="partlist.png">resources/small/partlist.png</file>
     <file alias="ok.png">resources/small/ok.png</file>
     <file alias="find.png">resources/small/find.png</file>
     <file alias="add.png">resources/small/vcs_add.png</file>
