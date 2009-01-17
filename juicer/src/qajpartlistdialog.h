@@ -28,8 +28,6 @@ public:
     ~QAjPartListDialog();
     void update( qulonglong size, QLinkedList<QAjPartsWidget::Part>& partList );
     void setFilename( const QString& filename );
-private:
-    QAjPartsWidget* paintWidget;
 public slots:
     void paintedSlot();
 };

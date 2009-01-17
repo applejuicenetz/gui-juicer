@@ -40,6 +40,11 @@
      <property name="frameShadow" >
       <enum>QFrame::Raised</enum>
      </property>
+     <layout class="QHBoxLayout" name="horizontalLayout_7" >
+      <item>
+       <widget class="QAjPartsWidget" native="1" name="paintWidget" />
+      </item>
+     </layout>
     </widget>
    </item>
    <item>
@@ -314,6 +319,14 @@
    </item>
   </layout>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>QAjPartsWidget</class>
+   <extends>QWidget</extends>
+   <header>qajpartswidget.h</header>
+   <container>1</container>
+  </customwidget>
+ </customwidgets>
  <resources>
   <include location="images.qrc" />
  </resources>

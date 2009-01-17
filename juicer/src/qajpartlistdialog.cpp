@@ -16,11 +16,11 @@
 QAjPartListDialog::QAjPartListDialog(QWidget* parent, Qt::WFlags fl) : QDialog( parent, fl ), Ui::partListDialog()
 {
     setupUi(this);
-    QVBoxLayout* l = new QVBoxLayout(frame);
+/*    QVBoxLayout* l = new QVBoxLayout(frame);
     paintWidget = new QAjPartsWidget(frame);
     paintWidget->setSizePolicy(QSizePolicy (QSizePolicy::Expanding, QSizePolicy::Expanding));
     l->addWidget(paintWidget);
-    frame->setLayout(l);
+    frame->setLayout(l);*/
     sizeIcon->setText("");
 
     QPixmap readyPixmap(15, 15);

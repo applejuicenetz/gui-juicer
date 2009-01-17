@@ -18,7 +18,6 @@ HEADERS += ftp.h \
            qajdownloaditem.h \
            qajitem.h \
            qajoptionsdialog.h \
-           qajpartlistwidget.h \
            qajpartswidget.h \
            qajsearchitem.h \
            qajserversocket.h \
@@ -55,7 +54,6 @@ SOURCES += ftp.cpp \
            qajdownloaditem.cpp \
            qajitem.cpp \
            qajoptionsdialog.cpp \
-           qajpartlistwidget.cpp \
            qajpartswidget.cpp \
            qajsearchitem.cpp \
            qajserversocket.cpp \
