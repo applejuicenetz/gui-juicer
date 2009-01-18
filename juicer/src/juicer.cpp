@@ -20,7 +20,7 @@
 
 #include "juicer.h"
 
-Juicer::Juicer( QStringList argList, QSplashScreen *splash )
+Juicer::Juicer( const QStringList& argList, QSplashScreen *splash )
     : QMainWindow()
     , xml(0)
     , downloadModule(0)
@@ -810,7 +810,9 @@ void Juicer::sendToTray( const QString& message1, const QString& message2 ) {
 
 void Juicer::about() {
     QMessageBox::about( this, tr("Juicer Info"),
-                        tr("Juicer \n\nhttp://ajqtgui.sf.net"));
+                        tr("Juicer\n\n") +
+                        tr("GUI for appleJuice Filesharing\n\n") +
+                        tr("URL: http://ajqtgui.sf.net"));
 }
 
 void Juicer::aboutQt() {

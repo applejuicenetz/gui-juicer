@@ -78,7 +78,7 @@ class Juicer: public QMainWindow, public Ui::QAjMainWindowBase
 {
     Q_OBJECT
 public:
-    Juicer( QStringList argList, QSplashScreen *splash );
+    Juicer( const QStringList& argList, QSplashScreen *splash );
     ~Juicer();
 
     void setStatusBarText( const QString& downSpeed, const QString& upSpeed, const QString& credits, const QString& downSize, const QString& upSize );

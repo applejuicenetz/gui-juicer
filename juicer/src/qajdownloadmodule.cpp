@@ -444,19 +444,22 @@ void QAjDownloadModule::setDirs( const QString& tmpDir, const QString& inDir ) {
 /*!
     \fn QAjDownloadModule::findDownloadByTempNum(const QString& tempFile)
  */
-QString QAjDownloadModule::findDownloadByTempNum(const QString& tempFile) {
+QString QAjDownloadModule::findDownloadByTempNum(const QString& tempFile) 
+{
+    QStringList splitPath = tempFile.split( juicer->getFileSystemSeperator() );
+    QString filename      = splitPath.last();
     if ( tempFile.contains( tempDir ) ) {
-        QStringList splitPath     = tempFile.split( juicer->getFileSystemSeperator() );
-        QStringList splitFilename = splitPath.last().split( "." );
-        QString tempNum = splitFilename.last();
+        QStringList splitFilename = filename.split( "." );
+        QString tempNum = splitFilename.first();
         QHash<QString,QAjDownloadItem*>::const_iterator i;
         for(i = downloads.constBegin(); i != downloads.constEnd(); i++) {
+//            qDebug() << (*i)->getTempNumber() << " - " << tempNum;
             if((*i)->getTempNumber() == tempNum) {
                 return (*i)->text(QAjDownloadItem::FILENAME_COL);
             }
         }
     }
-    return tempFile;//.fileName();
+    return filename;
 }
 
 /*!

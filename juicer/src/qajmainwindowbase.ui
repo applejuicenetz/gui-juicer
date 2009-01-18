@@ -420,7 +420,7 @@
      <x>0</x>
      <y>0</y>
      <width>1288</width>
-     <height>27</height>
+     <height>25</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuAppleJuice" >
@@ -519,7 +519,7 @@
   <widget class="QStatusBar" name="statusbar" />
   <widget class="QToolBar" name="ajTools" >
    <property name="windowTitle" >
-    <string>toolBar</string>
+    <string>AJ Toolbar</string>
    </property>
    <property name="iconSize" >
     <size>
@@ -547,7 +547,7 @@
     </size>
    </property>
    <property name="windowTitle" >
-    <string>toolBar</string>
+    <string>Process Links Toolbar</string>
    </property>
    <property name="iconSize" >
     <size>
@@ -565,7 +565,7 @@
   </widget>
   <widget class="QToolBar" name="downloadToolBar" >
    <property name="windowTitle" >
-    <string>toolBar</string>
+    <string>Download Toolbar</string>
    </property>
    <property name="iconSize" >
     <size>
@@ -597,7 +597,7 @@
   </widget>
   <widget class="QToolBar" name="uploadToolBar" >
    <property name="windowTitle" >
-    <string>toolBar</string>
+    <string>Upload Toolbar</string>
    </property>
    <property name="iconSize" >
     <size>
@@ -615,7 +615,7 @@
   </widget>
   <widget class="QToolBar" name="searchToolBar" >
    <property name="windowTitle" >
-    <string>toolBar</string>
+    <string>Search Toolbar</string>
    </property>
    <property name="iconSize" >
     <size>
@@ -636,7 +636,7 @@
   </widget>
   <widget class="QToolBar" name="serverToolBar" >
    <property name="windowTitle" >
-    <string>toolBar</string>
+    <string>Server Toolbar</string>
    </property>
    <property name="iconSize" >
     <size>
@@ -658,7 +658,7 @@
   </widget>
   <widget class="QToolBar" name="shareToolBar" >
    <property name="windowTitle" >
-    <string>toolBar</string>
+    <string>Share Toolbar</string>
    </property>
    <property name="iconSize" >
     <size>
@@ -683,7 +683,7 @@
   </widget>
   <widget class="QToolBar" name="incomingToolBar" >
    <property name="windowTitle" >
-    <string>toolBar</string>
+    <string>Incoming Toolbar</string>
    </property>
    <property name="iconSize" >
     <size>
