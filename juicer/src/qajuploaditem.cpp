@@ -52,13 +52,14 @@ bool QAjUploadItem::operator<( const QTreeWidgetItem & other ) const {
  */
 void QAjUploadItem::update(const QIcon& osIcon,const QString& status,
         const QString& statusDescr, const QString& directState,
-        const QString& priority, const QString& nick, const QString& speed, bool newUpload) {
+        const QString& priority, const QString& nick, const QString& speed, const QString& version, bool newUpload) {
 
     this->speed = speed.toDouble();
     setStatus(status);
     if(newUpload) {
         setText(NICK_COL, nick);
         setIcon(OS_COL, osIcon);
+        setText(VERSION_COL, version);
     }
     setText(SPEED_COL, QConvert::bytes(speed) + "/s" );
     setText(STATUS_COL, statusDescr);

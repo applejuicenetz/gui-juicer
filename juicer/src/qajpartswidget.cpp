@@ -21,6 +21,7 @@
 
 QAjPartsWidget::QAjPartsWidget( QWidget *parent ) : QWidget( parent )
 {
+
 }
 
 

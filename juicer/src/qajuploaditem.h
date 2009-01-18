@@ -40,12 +40,12 @@ public:
     QString shareId;
 
     enum {FILENAME_COL, NICK_COL, SPEED_COL, STATUS_COL,
-          PRIORITY_COL, OS_COL, DIRECTSTATE_COL};
+          PRIORITY_COL, OS_COL, DIRECTSTATE_COL, VERSION_COL};
 
     virtual bool operator<( const QTreeWidgetItem & other ) const;
     void update(const QIcon& osIcon, const QString& status, const QString& statusDescr,
                 const QString& directState, const QString& priority, const QString& nick,
-                const QString& speed, bool newUpload);
+                const QString& speed, const QString& version, bool newUpload);
 
     double speed;
 };

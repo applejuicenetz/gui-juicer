@@ -115,13 +115,38 @@
           <height>471</height>
          </rect>
         </property>
+        <property name="minimumSize" >
+         <size>
+          <width>0</width>
+          <height>0</height>
+         </size>
+        </property>
         <property name="windowTitle" >
          <string>Part List</string>
         </property>
         <widget class="QWidget" name="dockWidgetContents_8" >
          <layout class="QVBoxLayout" name="verticalLayout_2" >
           <item>
-           <widget class="QAjPartsWidget" native="1" name="partsWidget" />
+           <widget class="QAjPartsWidget" native="1" name="partsWidget" >
+            <property name="sizePolicy" >
+             <sizepolicy vsizetype="Preferred" hsizetype="Preferred" >
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="minimumSize" >
+             <size>
+              <width>0</width>
+              <height>0</height>
+             </size>
+            </property>
+            <property name="sizeIncrement" >
+             <size>
+              <width>0</width>
+              <height>0</height>
+             </size>
+            </property>
+           </widget>
           </item>
          </layout>
         </widget>
@@ -177,6 +202,11 @@
           <column>
            <property name="text" >
             <string>Direct State</string>
+           </property>
+          </column>
+          <column>
+           <property name="text" >
+            <string>Core</string>
            </property>
           </column>
          </widget>
@@ -429,6 +459,7 @@
     <addaction name="actionMaximal_Power" />
     <addaction name="actionRemove_Finished" />
     <addaction name="actionHide_Paused" />
+    <addaction name="actionShow_Part_List_Dock" />
    </widget>
    <widget class="QMenu" name="menuUpload" >
     <property name="title" >
@@ -509,6 +540,12 @@
    <addaction name="actionAdjust_Columns" />
   </widget>
   <widget class="QToolBar" name="ajLinks" >
+   <property name="minimumSize" >
+    <size>
+     <width>0</width>
+     <height>0</height>
+    </size>
+   </property>
    <property name="windowTitle" >
     <string>toolBar</string>
    </property>
@@ -1070,10 +1107,10 @@
      <normaloff>:/partlist2.png</normaloff>:/partlist2.png</iconset>
    </property>
    <property name="text" >
-    <string>Show Part List Dock Widget</string>
+    <string>Show Part List Dock</string>
    </property>
    <property name="iconText" >
-    <string>Show Part List Dock Widget</string>
+    <string>Show Part List Dock</string>
    </property>
    <property name="toolTip" >
     <string>Show Part List Dock Widget</string>

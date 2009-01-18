@@ -145,8 +145,7 @@ protected:
     double missing;
     long int remainingSec;
 
-    bool finishedChanged;
-    bool first;
+    /// used for notifications about finished downloads
     bool firstFinished;
 
     QAjPartListDialog* partListDialog;

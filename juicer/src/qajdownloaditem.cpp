@@ -33,9 +33,7 @@ QAjDownloadItem::QAjDownloadItem( QString id, QTreeWidget *parent )
     ready = 0.0;
     speed = 0.0;
 
-    finishedChanged = true;
     firstFinished = false;
-    first = true;
 
     activeSourcesItem = new QAjItem( this );
     activeSourcesItem->setText(FILENAME_COL, QObject::tr("1. active"));
@@ -162,45 +160,6 @@ void QAjDownloadItem::updateUser( const QString& id, const QString& fileName, co
 
 void QAjDownloadItem::update( const QString& hash, const QString& fileName, const QString& status, const QString& size, const QString& ready, const QString& power, const QString& tempNumber )
 {
-    this->tempNumber = tempNumber;
-    if ( size_ == 0.0 && !size.isEmpty()) {
-        size_ = size.toDouble();
-    }
-    double readyNew = ready.toDouble();
-    // -- save hash number for recovering the ajfsp link --
-    if ( hash_.isEmpty() ) {
-        hash_ = hash;
-    }
-    if ( filename_.isEmpty() ) {
-        filename_ = fileName;
-    }
-    if ( status_ == DOWN_FINISHED ) {
-        readyNew = size_;
-        this->remainingSize = 0.0;
-    }
-    this->finishedChanged = false;
-    if ( (readyNew != this->ready) || this->first ) {
-        this->ready = readyNew;
-        this->remainingSize = size_ - this->ready;
-        this->first = false;
-        this->finishedChanged = true;
-    }
-    if ( this->text( SIZE_COL ).isEmpty() ) {
-        this->setText( SIZE_COL, " " + QConvert::bytes( size_ ) + " " );
-    }
-    this->setText( FILENAME_COL, fileName );
-    partListDialog->setFilename( fileName );
-
-//     this->setText( POWER_COL, " " + QConvert::power( power ) + " " );
-
-    float p = QConvert::powerValue( power );
-    if( p > 1.0 ) {
-        this->powerSpin->spin->setValue( p );
-    }
-    this->powerSpin->check->setChecked( p > 1.0 );
-    this->powerSpin->spin->setEnabled( p > 1.0 );
-
-    firstFinished = false;
     if ( status != status_ ) {
         if ( status == DOWN_PAUSED ) {
             this->setTextColor( FILENAME_COL, Qt::darkGray );
@@ -213,9 +172,42 @@ void QAjDownloadItem::update( const QString& hash, const QString& fileName, cons
             this->setTextColor( FILENAME_COL, Qt::black );
         }
         status_ = status;
-        // -- trigger change of selection to update the active/inactive toolbar buttons on a status change --
-//         parentWidget->selectionChanged();
     }
+
+    this->tempNumber = tempNumber;
+    if ( size_ == 0.0 && !size.isEmpty()) {
+        size_ = size.toDouble();
+    }
+
+    // -- save hash number for recovering the ajfsp link --
+    if ( hash_.isEmpty() ) {
+        hash_ = hash;
+    }
+    if ( filename_.isEmpty() ) {
+        filename_ = fileName;
+    }
+    if ( status_ == DOWN_FINISHED ) {
+        this->ready = size_;
+        this->remainingSize = 0.0;
+    } else {
+        this->ready = ready.toDouble();
+        this->remainingSize = size_ - this->ready;
+    }
+
+    if ( this->text( SIZE_COL ).isEmpty() ) {
+        this->setText( SIZE_COL, " " + QConvert::bytes( size_ ) + " " );
+    }
+    this->setText( FILENAME_COL, fileName );
+    partListDialog->setFilename( fileName );
+
+    float p = QConvert::powerValue( power );
+    if( p > 1.0 ) {
+        this->powerSpin->spin->setValue( p );
+    }
+    this->powerSpin->check->setChecked( p > 1.0 );
+    this->powerSpin->spin->setEnabled( p > 1.0 );
+
+    firstFinished = false;
 }
 
 
@@ -246,6 +238,7 @@ bool QAjDownloadItem::updateView( QHash<QString, QString>* downloadStatusDescr )
     finished = ready / size_;
     percent = (int)(finished * 100.0);
     progressBar->setValue(percent);
+
     setText( FINISHED_SIZE_COL, " " + QConvert::bytes( ready ) + " " );
     setText( REMAIN_SIZE_COL, " " + QConvert::bytes( remainingSize ) + " " );
 
@@ -279,8 +272,7 @@ void QAjDownloadItem::showWidget( const QPoint & p ) {
 
 void QAjDownloadItem::deleteUsers() {
     QList<QString> userIds = users.keys();
-    int i;
-    for ( i=0; i<userIds.size(); i++ ) {
+    for (int i=0; i<userIds.size(); i++ ) {
         delete users[userIds[i]];
     }
     users.clear();
