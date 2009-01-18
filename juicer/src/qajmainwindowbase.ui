@@ -36,6 +36,12 @@
           <height>515</height>
          </rect>
         </property>
+        <property name="sizePolicy" >
+         <sizepolicy vsizetype="Expanding" hsizetype="Expanding" >
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
         <property name="selectionMode" >
          <enum>QAbstractItemView::ExtendedSelection</enum>
         </property>
@@ -420,7 +426,7 @@
      <x>0</x>
      <y>0</y>
      <width>1288</width>
-     <height>25</height>
+     <height>27</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuAppleJuice" >
@@ -519,7 +525,7 @@
   <widget class="QStatusBar" name="statusbar" />
   <widget class="QToolBar" name="ajTools" >
    <property name="windowTitle" >
-    <string>AJ Toolbar</string>
+    <string>toolBar</string>
    </property>
    <property name="iconSize" >
     <size>
@@ -547,7 +553,7 @@
     </size>
    </property>
    <property name="windowTitle" >
-    <string>Process Links Toolbar</string>
+    <string>toolBar</string>
    </property>
    <property name="iconSize" >
     <size>
@@ -565,7 +571,7 @@
   </widget>
   <widget class="QToolBar" name="downloadToolBar" >
    <property name="windowTitle" >
-    <string>Download Toolbar</string>
+    <string>toolBar</string>
    </property>
    <property name="iconSize" >
     <size>
@@ -597,7 +603,7 @@
   </widget>
   <widget class="QToolBar" name="uploadToolBar" >
    <property name="windowTitle" >
-    <string>Upload Toolbar</string>
+    <string>toolBar</string>
    </property>
    <property name="iconSize" >
     <size>
@@ -615,7 +621,7 @@
   </widget>
   <widget class="QToolBar" name="searchToolBar" >
    <property name="windowTitle" >
-    <string>Search Toolbar</string>
+    <string>toolBar</string>
    </property>
    <property name="iconSize" >
     <size>
@@ -636,7 +642,7 @@
   </widget>
   <widget class="QToolBar" name="serverToolBar" >
    <property name="windowTitle" >
-    <string>Server Toolbar</string>
+    <string>toolBar</string>
    </property>
    <property name="iconSize" >
     <size>
@@ -658,7 +664,7 @@
   </widget>
   <widget class="QToolBar" name="shareToolBar" >
    <property name="windowTitle" >
-    <string>Share Toolbar</string>
+    <string>toolBar</string>
    </property>
    <property name="iconSize" >
     <size>
@@ -683,7 +689,7 @@
   </widget>
   <widget class="QToolBar" name="incomingToolBar" >
    <property name="windowTitle" >
-    <string>Incoming Toolbar</string>
+    <string>toolBar</string>
    </property>
    <property name="iconSize" >
     <size>

@@ -58,7 +58,6 @@ public slots:
     void searchSlot();
     void gotServer( int id, bool error );
     void selectionChanged();
-    void welcomeDockVisible(bool visible);
 signals:
     void remove();
     void connect();

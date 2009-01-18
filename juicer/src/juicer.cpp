@@ -34,22 +34,12 @@ Juicer::Juicer( const QStringList& argList, QSplashScreen *splash )
     , connected(false)
 {
     setupUi( this );
-    QSettings lokalSettings;
 
-    lokalSettings.beginGroup("PartListDock");
     downloads->setCentralWidget(downloadsTreeWidget);
-    downloads->addDockWidget((Qt::DockWidgetArea)lokalSettings.value("pos", Qt::RightDockWidgetArea).toInt(), partListDock);
-    partListDock->setVisible(lokalSettings.value("visible", true).toBool());
-    partListDock->setFloating(lokalSettings.value("float", false).toBool());
-    lokalSettings.endGroup();
+    downloads->addDockWidget(Qt::RightDockWidgetArea, partListDock);
 
-    lokalSettings.beginGroup("WelcomeDock");
     server->setCentralWidget(serverTreeWidget);
-    server->addDockWidget((Qt::DockWidgetArea)lokalSettings.value("pos", Qt::RightDockWidgetArea).toInt(), welcomeDock);
-    welcomeDock->setVisible(lokalSettings.value("visible", true).toBool());
-    welcomeDock->setFloating(lokalSettings.value("float", false).toBool());
-    lokalSettings.endGroup();
-
+    server->addDockWidget(Qt::RightDockWidgetArea, welcomeDock);
 
     this->splash = splash;
     connect( qApp, SIGNAL( lastWindowClosed () ), this, SLOT ( lastWindowClosed () ) );
@@ -86,10 +76,11 @@ Juicer::Juicer( const QStringList& argList, QSplashScreen *splash )
     connectActions();
     initStatusBar();
 
-    lokalSettings.beginGroup( "MainWindow" );
-    resize( lokalSettings.value( "size", QSize(1000, 600) ).toSize() );
-    move( lokalSettings.value( "pos", QPoint(100, 100) ).toPoint() );
-    lokalSettings.endGroup();
+    resize(QAjOptionsDialog::getSetting("MainWindow", "size", QSize(1000, 600)).toSize());
+    move(QAjOptionsDialog::getSetting("MainWindow", "pos", QPoint(100, 100)).toPoint());
+    restoreState(QAjOptionsDialog::getSetting("JuicerMain").toByteArray());
+    downloads->restoreState(QAjOptionsDialog::getSetting("DownloadsMain").toByteArray());
+    server->restoreState(QAjOptionsDialog::getSetting("ServerMain").toByteArray());
 
     connect( xml, SIGNAL( settingsReady( const AjSettings& ) ), this, SLOT( settingsReady( const AjSettings& ) ) );
     connect( xml, SIGNAL( error( QString ) ), this, SLOT( xmlError( QString ) ) );
@@ -177,11 +168,8 @@ void Juicer::initTrayIcon()
 void Juicer::closeEvent( QCloseEvent* ce ) {
     downloads->close();
     server->close();
-    QSettings lokalSettings;
-    lokalSettings.beginGroup("MainWindow");
-    lokalSettings.setValue( "size", size() );
-    lokalSettings.setValue( "pos", pos() );
-    lokalSettings.endGroup();
+    QAjOptionsDialog::setSetting("MainWindow", "size", size());
+    QAjOptionsDialog::setSetting("MainWindow", "pos", pos());
     downloadModule->saveSortOrder("DownloadWidget");
     uploadModule->saveSortOrder("UploadWidget");
     searchModule->saveSortOrder("SearchWidget");
@@ -189,15 +177,9 @@ void Juicer::closeEvent( QCloseEvent* ce ) {
     shareModule->saveSortOrder("ShareWidget");
     incomingModule->saveSortOrder("IncomingWidget");
 
-    lokalSettings.beginGroup("PartListDock");
-    lokalSettings.setValue("pos", downloads->dockWidgetArea(partListDock));
-    lokalSettings.setValue("float", partListDock->isFloating());
-    lokalSettings.endGroup();
-
-    lokalSettings.beginGroup("WelcomeDock");
-    lokalSettings.setValue("pos", server->dockWidgetArea(welcomeDock));
-    lokalSettings.setValue("float", welcomeDock->isFloating());
-    lokalSettings.endGroup();
+    QAjOptionsDialog::setSetting("JuicerMain", this->saveState());
+    QAjOptionsDialog::setSetting("DownloadsMain", downloads->saveState());
+    QAjOptionsDialog::setSetting("ServerMain", server->saveState());
 
     ce->accept();
 }
@@ -724,7 +706,7 @@ void Juicer::openAjL()
 /*!
  * @deprecated
  */
-void Juicer::createAjL( const QList<QAjItem *>&  selectedItems )
+/*void Juicer::createAjL( const QList<QAjItem *>&  selectedItems )
 {
     QString ajListFileName = QFileDialog::getSaveFileName(
                               this,
@@ -802,7 +784,7 @@ void Juicer::createAjL( const QList<QAjItem *>&  selectedItems )
     }
 
 }
-
+*/
 void Juicer::sendToTray( const QString& message1, const QString& message2 ) {
     tray->showMessage( message1, message2, QSystemTrayIcon::Information, 3000 );
 }

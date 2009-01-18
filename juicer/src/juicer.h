@@ -105,7 +105,7 @@ public:
     void queueLinks( const QStringList& links );
     void setUploadFilename( const QString& shareId, const QString& filename );
 
-    void createAjL( const QList<QAjItem *>& selectedItems );
+//     void createAjL( const QList<QAjItem *>& selectedItems );
     void sendToTray(  const QString& message1, const QString& message2  );
 
     static QStringList getExec();

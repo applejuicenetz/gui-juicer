@@ -77,7 +77,7 @@ public:
     QStringList getDefaultStatusbarComponents();
     QString defaultLauncher;
 
-    static QVariant getSetting( const QString& key, QVariant defaultValue );
+    static QVariant getSetting( const QString& key, QVariant defaultValue = QVariant() );
     static void setSetting( const QString& key, QVariant value );
     static QVariant getSetting( const QString& group, const QString& key, QVariant defaultValue );
     static void setSetting( const QString& group, const QString& key, QVariant value );
