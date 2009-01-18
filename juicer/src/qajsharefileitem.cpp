@@ -12,7 +12,7 @@
 #include "qajsharefileitem.h"
 #include "qajshareitem.h"
 
-#include <QtDebug>
+QString QAjShareFileItem::filesystemSeperator = "";
 
 QAjShareFileItem::QAjShareFileItem(const QString& id, QAjShareItem *parent) 
   : QAjItem( /*dynamic_cast<QTreeWidgetItem*>*/parent, id)
@@ -29,7 +29,7 @@ void QAjShareFileItem::update( const QString& hash,
                                const QString& fileName,
                                const QString& size,
                                const QString& priority,
-                               const QString& /*filesystemSeperator*/ ) 
+                               const QString& filesystemSeperator )
 {
     if ( hash_.isEmpty() ) {
         hash_ = hash;
@@ -37,11 +37,13 @@ void QAjShareFileItem::update( const QString& hash,
     if ( filename_.isEmpty() ) {
         filename_ = fileName;
     }
+    if ( this->filesystemSeperator.isEmpty() ) {
+        this->filesystemSeperator = filesystemSeperator;
+    }
 
-    info.setFile(fileName);
     size_ = size.toDouble();
 
-    setText( QAjShareItem::PATH_COL, info.fileName() );
+    setText( QAjShareItem::PATH_COL, filename_.split(filesystemSeperator).last() );
     setText( QAjShareItem::SIZE_COL, QConvert::bytesExtra(size) );
     setText( QAjShareItem::PRIORITY_COL, priority );
 
@@ -75,7 +77,7 @@ bool QAjShareFileItem::operator<( const QTreeWidgetItem & other ) const
 QString QAjShareFileItem::getLinkAJFSP() {
     QString ajfspLink;
     ajfspLink.append("ajfsp://file|");
-    ajfspLink.append(info.fileName());
+    ajfspLink.append(filename_.split(filesystemSeperator).last());
     ajfspLink.append("|");
     ajfspLink.append(hash_);
     ajfspLink.append("|");
@@ -83,5 +85,4 @@ QString QAjShareFileItem::getLinkAJFSP() {
     ajfspLink.append("/");
     return ajfspLink;
 }
-
 

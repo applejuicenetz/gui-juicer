@@ -30,7 +30,7 @@ public:
     QAjShareFileItem( const QString& id, QAjShareItem *parent = 0 );
     virtual ~QAjShareFileItem();
 
-    void update( const QString& hash, const QString& fileName, const QString& size, const QString& priority, const QString& filesystemSeperator  );
+    void update( const QString& hash, const QString& fileName, const QString& size, const QString& priority, const QString& filesystemSeperator );
 
     QString getLinkAJFSP();
 
@@ -39,7 +39,7 @@ public:
     void updatePrio( int prio );
 
 protected:
-    QFileInfo info;
+    static QString filesystemSeperator;
 };
 
 #endif
