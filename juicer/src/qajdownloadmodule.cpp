@@ -14,7 +14,9 @@
 #include "qajdownloadmodule.h"
 #include "juicer.h"
 
-QAjDownloadModule::QAjDownloadModule(Juicer* juicer) : QAjModuleBase(juicer, juicer->downloadsTreeWidget, juicer->downloadToolBar) {
+QAjDownloadModule::QAjDownloadModule(Juicer* juicer) 
+  : QAjModuleBase(juicer, juicer->downloadsTreeWidget, juicer->downloadToolBar)
+{
     userStatusDescr["1"] = QObject::tr("unasked");
     userStatusDescr["2"] = QObject::tr("try to connect");
     userStatusDescr["3"] = QObject::tr("partner have to old vers.");
@@ -53,9 +55,14 @@ QAjDownloadModule::QAjDownloadModule(Juicer* juicer) : QAjModuleBase(juicer, jui
     powerSpin->setDecimals( 1 );
     juicer->downloadToolBar->addWidget(powerSpin);
 
+    QPushButton *powerButton = new QPushButton( tr("SET") , juicer->downloadToolBar );
+    powerButtonAction = juicer->downloadToolBar->addWidget( powerButton );
+
     connect(treeWidget, SIGNAL(itemSelectionChanged()), this, SLOT(selectionChanged()));
-    connect(powerSpin, SIGNAL(valueChanged(const QString&)), this, SLOT(applyPowerDownload()));
-    connect(powerSpin, SIGNAL(valueChanged(double)), this, SLOT(applyPowerDownload()));
+    connect(powerCheck, SIGNAL(stateChanged(int)), this, SLOT(applyPowerDownload()));
+    connect(powerSpin,  SIGNAL(valueChanged(const QString&)), this, SLOT(applyPowerDownload()));
+    connect(powerSpin,  SIGNAL(valueChanged(double)), this, SLOT(applyPowerDownload()));
+    connect(powerButton, SIGNAL(clicked()), this, SLOT(setMultiPowerDownload()));
     connect(juicer->actionPause, SIGNAL(triggered()), this, SLOT(pauseSlot()));
     connect(juicer->actionResume, SIGNAL(triggered()), this, SLOT(resumeSlot()));
     connect(juicer->actionCancel, SIGNAL(triggered()), this, SLOT(cancelSlot()));
@@ -92,8 +99,15 @@ QAjDownloadModule::~QAjDownloadModule() {
 /*!
     \fn QAjDownloadModule::insertDownload(const QString& id, const QString& hash, const QString& fileName, const QString& status, const QString& size, const QString& ready, const QString& power, const QString& tempNumber)
  */
-void QAjDownloadModule::insertDownload(const QString& id, const QString& hash, const QString& fileName, const QString& status,
-                        const QString& size, const QString& ready, const QString& power, const QString& tempNumber) {
+void QAjDownloadModule::insertDownload( const QString& id,
+                                        const QString& hash,
+                                        const QString& fileName,
+                                        const QString& status,
+                                        const QString& size,
+                                        const QString& ready,
+                                        const QString& power,
+                                        const QString& tempNumber) 
+{
     QAjDownloadItem *downloadItem = findDownload( id );
     if(downloadItem == NULL) {
         downloadItem = new QAjDownloadItem( id, treeWidget );
@@ -113,8 +127,16 @@ void QAjDownloadModule::insertDownload(const QString& id, const QString& hash, c
 /*!
     \fn QAjDownloadModule::insertUser(const QString& downloadId, const QString& id, const QString& fileName, const QString& speed, const QString& status, const QString& power, const QString& queuePos, const QString& os, QTime& time)
  */
-void QAjDownloadModule::insertUser(const QString& downloadId, const QString& id, const QString& fileName, const QString& speed,
-                        const QString& status, const QString& power, const QString& queuePos, const QString& os, QTime& time) {
+void QAjDownloadModule::insertUser( const QString& downloadId,
+                                    const QString& id,
+                                    const QString& fileName,
+                                    const QString& speed,
+                                    const QString& status,
+                                    const QString& power,
+                                    const QString& queuePos,
+                                    const QString& os,
+                                    QTime& time) 
+{
     QAjDownloadItem *downloadItem = findDownload(downloadId);
     if(downloadItem == NULL) {  // -- this shouldn't happen, just in case... --
         insertDownload(downloadId, "", "", "", "", "", "", "");
@@ -126,7 +148,8 @@ void QAjDownloadModule::insertUser(const QString& downloadId, const QString& id,
 /*!
     \fn QAjDownloadModule::updateView( bool force )
  */
-void QAjDownloadModule::updateView( bool force ) {
+void QAjDownloadModule::updateView( bool force ) 
+{
     QList<QAjDownloadItem*> finished;
     if( force || treeWidget->isVisible() )
     {
@@ -138,14 +161,25 @@ void QAjDownloadModule::updateView( bool force ) {
                 finished << item;
         }
     }
-    if( ! finished.isEmpty() )
+    if( ! finished.isEmpty() ) {
         downloadsFinished( finished );
+    }
+
+    if ( powerCheck->checkState() == Qt::Checked ) {
+        powerSpin->setEnabled( true );
+    } else {
+        powerSpin->setDisabled( true );
+    }
+
+    if ( treeWidget->selectedItems().count() > 1 ) powerButtonAction->setVisible( true );
+    else powerButtonAction->setVisible( false );
 }
 
 /*!
     \fn QAjDownloadModule::findDownload(const QString& id)
  */
-QAjDownloadItem* QAjDownloadModule::findDownload(const QString& id) {
+QAjDownloadItem* QAjDownloadModule::findDownload(const QString& id) 
+{
     if (downloads.contains( id )) {
         return downloads[id];
     }
@@ -155,7 +189,8 @@ QAjDownloadItem* QAjDownloadModule::findDownload(const QString& id) {
 /*!
     \fn QAjDownloadModule::findDownload(const QString& size, const QString& hash)
  */
-QAjDownloadItem* QAjDownloadModule::findDownload(const QString& size, const QString& hash) {
+QAjDownloadItem* QAjDownloadModule::findDownload(const QString& size, const QString& hash)
+{
     QHash<QString,QAjDownloadItem*>::const_iterator i;
     for(i = downloads.constBegin(); i != downloads.constEnd(); i++) {
         if(QString::number((int)(*i)->getSize()) == size && (*i)->getHash() == hash)
@@ -201,7 +236,8 @@ bool QAjDownloadModule::removeDownload(const QString& id)
 /*!
     \fn QAjDownloadModule::findParent(const QString& id)
  */
-QAjDownloadModule::DownloadUser QAjDownloadModule::findParent(const QString& id) {
+QAjDownloadModule::DownloadUser QAjDownloadModule::findParent(const QString& id)
+{
     DownloadUser du;
     QHash<QString,QAjDownloadItem*>::const_iterator i;
     for(i = downloads.constBegin(); i != downloads.constEnd(); i++) {
@@ -217,7 +253,8 @@ QAjDownloadModule::DownloadUser QAjDownloadModule::findParent(const QString& id)
 /*!
     \fn QAjDownloadModule::processSelected(QXMLModule::Type type, const QString& request, const QString& para)
  */
-void QAjDownloadModule::processSelected(QXMLModule::Type type, const QString& request, const QString& para) {
+void QAjDownloadModule::processSelected(QXMLModule::Type type, const QString& request, const QString& para)
+{
     QList<QTreeWidgetItem*> items = treeWidget->selectedItems();
     for(QList<QTreeWidgetItem*>::iterator i = items.begin(); i!=items.end(); i++) {
         xml->make(type, request, para + "&id=" + ((QAjItem*)(*i))->getId());
@@ -227,18 +264,21 @@ void QAjDownloadModule::processSelected(QXMLModule::Type type, const QString& re
 /*!
     \fn QAjDownloadModule::getSelected(const QString& request, const QString& para)
  */
-void QAjDownloadModule::getSelected(const QString& request, const QString& para) {
+void QAjDownloadModule::getSelected(const QString& request, const QString& para)
+{
     processSelected(QXMLModule::GET, request, para);
 }
 
 /*!
     \fn QAjDownloadModule::setSelected(const QString& request, const QString& para)
  */
-void QAjDownloadModule::setSelected(const QString& request, const QString& para) {
+void QAjDownloadModule::setSelected(const QString& request, const QString& para)
+{
     processSelected(QXMLModule::SET, request, para);
 }
 
-void QAjDownloadModule::cancelSlot() {
+void QAjDownloadModule::cancelSlot()
+{
     QString text = tr("Do you realy want to cancel") + " "
                     + QString::number(treeWidget->selectedItems().size()) + " "
                     + (treeWidget->selectedItems().size()>1?tr("downloads?"):tr("download?"));
@@ -247,23 +287,31 @@ void QAjDownloadModule::cancelSlot() {
     }
 }
 
-void QAjDownloadModule::cleanSlot() {
+void QAjDownloadModule::cleanSlot()
+{
     xml->set("cleandownloadlist");
 }
 
-void QAjDownloadModule::resumeSlot() {
+void QAjDownloadModule::resumeSlot()
+{
     setSelected("resumedownload");
 }
 
-void QAjDownloadModule::pauseSlot() {
+void QAjDownloadModule::pauseSlot()
+{
     setSelected("pausedownload");
 }
 
-void QAjDownloadModule::partListSlot() {
+void QAjDownloadModule::partListSlot()
+{
+    if ( treeWidget->selectedItems().count() != 1 ) { // part list widget flickers if more than one item is selected
+        return;
+    }
     getSelected("downloadpartlist");
 }
 
-void QAjDownloadModule::renameSlot() {
+void QAjDownloadModule::renameSlot()
+{
     QString oldFilename, newFilename;
     bool ok;
 
@@ -271,7 +319,12 @@ void QAjDownloadModule::renameSlot() {
     QList<QTreeWidgetItem *>::iterator item;
     for(item = selectedItems.begin(); item != selectedItems.end(); item++) {
         oldFilename = (*item)->text(QAjDownloadItem::FILENAME_COL);
-        newFilename = QInputDialog::getText(juicer, tr("rename download"), tr("enter new filename for ") + oldFilename, QLineEdit::Normal, oldFilename, &ok);
+        newFilename = QInputDialog::getText(  juicer,
+                                              tr("rename download"),
+                                              tr("enter new filename for ") + oldFilename,
+                                              QLineEdit::Normal,
+                                              oldFilename,
+                                              &ok);
         newFilename = QString( QUrl::toPercentEncoding(newFilename));
         if(ok && !newFilename.isEmpty()) {
             xml->set("renamedownload", "&id=" + ((QAjItem*)(*item))->getId() + "&name=" + newFilename);
@@ -279,7 +332,8 @@ void QAjDownloadModule::renameSlot() {
     }
 }
 
-void QAjDownloadModule::renamePlusSlot() {
+void QAjDownloadModule::renamePlusSlot()
+{
     QString oldFilename, newFilename;
     QString newFilenameBase = qApp->clipboard()->text( QClipboard::Clipboard );
 
@@ -304,7 +358,8 @@ void QAjDownloadModule::renamePlusSlot() {
     }
 }
 
-void QAjDownloadModule::openSlot() {
+void QAjDownloadModule::openSlot()
+{
     QStringList args = Juicer::getExec();
     QString exec = args.takeFirst();
 
@@ -312,14 +367,14 @@ void QAjDownloadModule::openSlot() {
     // -- determine the path --
     AjSettings::LOCATION location = (AjSettings::LOCATION)QAjOptionsDialog::getSetting( "location", AjSettings::SAME ).toInt();
 
+    QString seperator = juicer->getFilesystemSeparator();
     if(location == AjSettings::SPECIFIC) {
-        iDir = QAjOptionsDialog::getSetting("incomingDirSpecific", "/").toString() + QDir::separator();
-        tDir = QAjOptionsDialog::getSetting("tempDirSpecific", "/").toString() + QDir::separator();
+        iDir = QAjOptionsDialog::getSetting("incomingDirSpecific", "/").toString() + seperator;
+        tDir = QAjOptionsDialog::getSetting("tempDirSpecific", "/").toString() + seperator;
     }
     else if(location == AjSettings::SAME) {
-        QString sep = juicer->getFileSystemSeperator();
-        iDir = incomingDir + sep;// + QDir::separator();
-        tDir = tempDir + sep;//+ QDir::separator();
+        iDir = incomingDir + seperator;
+        tDir = tempDir + seperator;
     }
     // -- ftp --
     else {
@@ -341,30 +396,45 @@ void QAjDownloadModule::openSlot() {
     }
 }
 
-void QAjDownloadModule::linkSlot() {
+void QAjDownloadModule::linkSlot()
+{
     QString link = ((QAjDownloadItem*)(treeWidget->selectedItems()[0]))->getLinkAJFSP();
     QApplication::clipboard()->setText(link);
 }
 
 /*!
+    \fn QAjDownloadModule::setMultiPowerDownload()
+ */
+void QAjDownloadModule::setMultiPowerDownload()
+{
+    float value = powerCheck->isChecked() ? powerSpin->value() : 1.0;
+    setSelected("setpowerdownload", "&Powerdownload=" + QConvert::power(value));
+}
+
+/*!
     \fn QAjDownloadModule::applyPowerDownload()
  */
-void QAjDownloadModule::applyPowerDownload() {
-    float value = powerCheck->isChecked()?powerSpin->value():1.0;
+void QAjDownloadModule::applyPowerDownload()
+{
+    if ( treeWidget->selectedItems().size() != 1 ) return;
+    float value = powerCheck->isChecked() ? powerSpin->value() : 1.0;
     setSelected("setpowerdownload", "&Powerdownload=" + QConvert::power(value));
 }
 
 /*!
     \fn QAjDownloadModule::applyPowerDownload(const QString& id, double value)
  */
-void QAjDownloadModule::applyPowerDownload(const QString& id, double value) {
+void QAjDownloadModule::applyPowerDownload(const QString& id, double value)
+{
+    if ( treeWidget->selectedItems().size() != 1 ) return;
     xml->set("setpowerdownload", "&Powerdownload="+QConvert::power( value )+"&id="+id);
 }
 
 /*!
     \fn QAjDownloadModule::maxPowerDownload()
  */
-void QAjDownloadModule::maxPowerDownload() {
+void QAjDownloadModule::maxPowerDownload()
+{
     QList<QString> ids = downloads.keys();
     for(QList<QString>::iterator i = ids.begin(); i != ids.end(); i++) {
         xml->set("setpowerdownload", "&Powerdownload="+QConvert::power( 50 )+"&id="+(*i));
@@ -374,7 +444,8 @@ void QAjDownloadModule::maxPowerDownload() {
 /*!
     \fn QAjDownloadModule::hidePausedSlot(bool checked)
  */
-void QAjDownloadModule::hidePausedSlot(bool checked) {
+void QAjDownloadModule::hidePausedSlot(bool checked)
+{
     QHash<QString,QAjDownloadItem*>::const_iterator i;
     for(i = downloads.constBegin(); i != downloads.constEnd(); i++) {
         (*i)->setHidden(checked && ((*i)->getStatus() == DOWN_PAUSED));
@@ -384,14 +455,26 @@ void QAjDownloadModule::hidePausedSlot(bool checked) {
 /*!
     \fn QAjDownloadModule::selectionChanged()
  */
-void QAjDownloadModule::selectionChanged() {
+void QAjDownloadModule::selectionChanged()
+{
     bool onePaused = false;
     bool oneActive = false;
     QList<QTreeWidgetItem *> selectedItems = treeWidget->selectedItems();
     bool oneSelected = !selectedItems.empty();
+
+    if ( oneSelected == false ) {
+        powerButtonAction->setVisible( false );
+        powerCheck->setCheckState( Qt::Unchecked );
+        powerSpin->setValue( 1.0 );
+    }
+
     QList<QTreeWidgetItem *>::iterator i;
     for(i = selectedItems.begin(); i != selectedItems.end(); i++) {
-        QAjItem* downloadItem = (QAjItem*)(*i);
+        QAjDownloadItem* downloadItem = dynamic_cast<QAjDownloadItem*>(*i);
+        if ( !downloadItem ) {
+            Q_ASSERT( false );
+            return;
+        }
         if(downloadItem->getStatus() == DOWN_PAUSED) {
             onePaused = true;
         }
@@ -400,6 +483,21 @@ void QAjDownloadModule::selectionChanged() {
         }
         if(onePaused && oneActive) {
             break;
+        }
+
+        if ( selectedItems.count() == 1 ) {  // just one selected
+            powerButtonAction->setVisible( false );
+            bool pwdl = downloadItem->powerDownloadActive();
+            powerCheck->setCheckState( pwdl ? Qt::Checked : Qt::Unchecked );
+            if ( pwdl ) {
+                powerSpin->setValue( downloadItem->powerDownloadValue() );
+            } else {
+                powerSpin->setValue( 1.0 );
+            }
+        } else {
+            powerButtonAction->setVisible( true );
+            powerCheck->setCheckState( Qt::Unchecked );
+            powerSpin->setValue( 1.0 );
         }
     }
     juicer->actionPause->setEnabled(oneActive);
@@ -411,7 +509,9 @@ void QAjDownloadModule::selectionChanged() {
     juicer->actionOpen->setEnabled(oneSelected);
     juicer->actionCopy_Link->setEnabled(oneSelected);
     juicer->actionCreate_Link_List->setEnabled(oneSelected);
-    if(!oneSelected) {
+
+    // clear part list widget if none or more than one item is selected
+    if( selectedItems.count() != 1 ) {
         juicer->partsWidget->clear();
     }
 }
@@ -420,7 +520,8 @@ void QAjDownloadModule::selectionChanged() {
 /*!
     \fn QAjDownloadModule::getNextIdRoundRobin()
  */
-QString QAjDownloadModule::getNextIdRoundRobin() {
+QString QAjDownloadModule::getNextIdRoundRobin()
+{
     if(treeWidget->topLevelItemCount() < 1) {
         return "";
     }
@@ -433,7 +534,8 @@ QString QAjDownloadModule::getNextIdRoundRobin() {
 /*!
     \fn QAjDownloadModule::setDirs( const QString& tmpDir, const QString& inDir )
  */
-void QAjDownloadModule::setDirs( const QString& tmpDir, const QString& inDir ) {
+void QAjDownloadModule::setDirs( const QString& tmpDir, const QString& inDir ) 
+{
     this->tempDir     = tmpDir;
     this->incomingDir = inDir;
 }
@@ -442,9 +544,9 @@ void QAjDownloadModule::setDirs( const QString& tmpDir, const QString& inDir ) {
 /*!
     \fn QAjDownloadModule::findDownloadByTempNum(const QString& tempFile)
  */
-QString QAjDownloadModule::findDownloadByTempNum(const QString& tempFile) 
+QString QAjDownloadModule::findDownloadByTempNum(const QString& tempFile)
 {
-    QStringList splitPath = tempFile.split( juicer->getFileSystemSeperator() );
+    QStringList splitPath = tempFile.split( juicer->getFilesystemSeparator() );
     QString filename      = splitPath.last();
     if ( tempFile.contains( tempDir ) ) {
         QStringList splitFilename = filename.split( "." );
@@ -463,7 +565,8 @@ QString QAjDownloadModule::findDownloadByTempNum(const QString& tempFile)
 /*!
     \fn QAjDownloadModule::storeDownloadFtp()
  */
-void QAjDownloadModule::storeDownloadFtp() {
+void QAjDownloadModule::storeDownloadFtp()
+{
     FTP* ftp = NULL;
     QString filename, localDir;
     QList<QTreeWidgetItem *>  selectedItems = treeWidget->selectedItems();
@@ -497,7 +600,8 @@ void QAjDownloadModule::storeDownloadFtp() {
 /*!
     \fn QAjDownloadModule::setPartList(const QString& id, qulonglong size, QLinkedList<QAjPartsWidget::Part>& partList)
  */
-void QAjDownloadModule::setPartList(const QString& id, qulonglong size, QLinkedList<QAjPartsWidget::Part>& partList) {
+void QAjDownloadModule::setPartList(const QString& id, qulonglong size, QLinkedList<QAjPartsWidget::Part>& partList)
+{
     QAjDownloadItem* item = findDownload(id);
     if( item != NULL ) {
         if(item->getPartListDialog()->isVisible()) {
@@ -517,7 +621,10 @@ void QAjDownloadModule::partListWidgetSlot()
 {
     QList<QTreeWidgetItem*> items = treeWidget->selectedItems();
     for(QList<QTreeWidgetItem*>::iterator i = items.begin(); i!=items.end(); i++) {
-         ((QAjDownloadItem*)(*i))->getPartListDialog()->show();
+        QAjDownloadItem* tmp = dynamic_cast<QAjDownloadItem*>(*i);
+        if ( tmp ) tmp->getPartListDialog()->show();
     }
 
 }
+
+

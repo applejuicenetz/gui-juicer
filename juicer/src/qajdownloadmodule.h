@@ -28,6 +28,7 @@
 
 class QAjDownloadModule : public QAjModuleBase {
   Q_OBJECT
+
 public:
     QAjDownloadModule(Juicer* juicer);
     ~QAjDownloadModule();
@@ -56,6 +57,7 @@ protected:
     int currIdRoundRobin;
     QDoubleSpinBox* powerSpin;
     QCheckBox *powerCheck;
+    QAction *powerButtonAction;
     QHash<QString, QString> userStatusDescr;
     QHash<QString, QString> downloadStatusDescr;
     QString tempDir, incomingDir;
@@ -77,6 +79,7 @@ protected slots:
     void renamePlusSlot();
     void openSlot();
     void linkSlot();
+    void setMultiPowerDownload();
     void applyPowerDownload();
     void applyPowerDownload(const QString& id, double value);
     void maxPowerDownload();

@@ -129,6 +129,16 @@ public:
         return tempNumber;
     }
 
+    // Powerdownload for this Item
+    bool powerDownloadActive() const
+    {
+        return (powerSpin->check->checkState() == Qt::Checked) ? true : false;
+    }
+    float powerDownloadValue() const
+    {
+        return powerSpin->spin->value();
+    }
+
     virtual bool operator<( const QTreeWidgetItem & other ) const;
     QProgressBar* progressBar;
     QAjPowerSpin* powerSpin;

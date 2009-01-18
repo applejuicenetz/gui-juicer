@@ -96,7 +96,8 @@ public:
     {
         filesystemSeparator = separator;
     }
-    QString getFilesystemSeparator( )
+    // returns filesystemseperator of the remote filesystem where the Core runs
+    QString getFilesystemSeparator( ) const
     {
         return filesystemSeparator;
     }
@@ -109,13 +110,7 @@ public:
     void sendToTray(  const QString& message1, const QString& message2  );
 
     static QStringList getExec();
-
-    // returns filesystemseperator of the remote filesystem where the Core runs
-    QString getFileSystemSeperator() const
-    {
-        return filesystemSeparator;
-    }
-
+    
 protected:
     void initToolBars();
     void connectActions();

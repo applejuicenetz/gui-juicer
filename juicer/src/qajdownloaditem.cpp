@@ -92,7 +92,7 @@ void QAjDownloadItem::initPowerSpin()
 
     treeWidget()->setItemWidget(this, POWER_COL, powerSpin);
     treeWidget()->setItemWidget(this, FINISHED_COL, progressBarWidget);
-    
+
 //     connect( powerSpin, SIGNAL( valueChanged( const QString&) ), this, SLOT( applyPowerDownload() ) );
 //     connect( powerSpin, SIGNAL( valueChanged( double ) ), this, SLOT( applyPowerDownload() ) );
 }
@@ -127,20 +127,31 @@ void QAjDownloadItem::moveItem( QAjUserItem *userItem, QString oldStatus )
     }
 }
 
-QAjUserItem* QAjDownloadItem::findUser( const QString& id ) {
+QAjUserItem* QAjDownloadItem::findUser( const QString& id ) 
+{
     if ( users.contains( id ) ) {
         return users[ id ];
     }
     return NULL;
 }
 
-void QAjDownloadItem::removeUser( const QString& id ) {
+void QAjDownloadItem::removeUser( const QString& id ) 
+{
     QAjUserItem* item = users[ id ];
     users.remove( id );
     delete item;
 }
 
-void QAjDownloadItem::updateUser( const QString& id, const QString& fileName, const QString& speed, const QString& status, const QString& power, const QString& queuePos, const QString& statusString, QIcon& osIcon, const QTime& time ) {
+void QAjDownloadItem::updateUser( const QString& id,
+                                  const QString& fileName,
+                                  const QString& speed,
+                                  const QString& status,
+                                  const QString& power,
+                                  const QString& queuePos,
+                                  const QString& statusString,
+                                  QIcon& osIcon,
+                                  const QTime& time ) 
+{
     QAjUserItem* userItem = findUser( id );
     if ( userItem == NULL ) {
         if ( status == ACTIVE_SOURCE ) {
@@ -158,7 +169,13 @@ void QAjDownloadItem::updateUser( const QString& id, const QString& fileName, co
     moveItem( userItem, oldStatus );
 }
 
-void QAjDownloadItem::update( const QString& hash, const QString& fileName, const QString& status, const QString& size, const QString& ready, const QString& power, const QString& tempNumber )
+void QAjDownloadItem::update( const QString& hash,
+                              const QString& fileName,
+                              const QString& status,
+                              const QString& size,
+                              const QString& ready,
+                              const QString& power,
+                              const QString& tempNumber )
 {
     if ( status != status_ ) {
         if ( status == DOWN_PAUSED ) {
@@ -219,7 +236,8 @@ QString QAjDownloadItem::getSourcesString() {
     return sources;
 }
 
-bool QAjDownloadItem::updateView( QHash<QString, QString>* downloadStatusDescr ) {
+bool QAjDownloadItem::updateView( QHash<QString, QString>* downloadStatusDescr ) 
+{
     if( ( status_ == DOWN_SEARCHING ) || ( status_ == DOWN_LOADING ) )     {
         if ( getActiveSources() > 0 )         {
             setTextColor( FILENAME_COL, Qt::darkBlue );
@@ -262,7 +280,8 @@ bool QAjDownloadItem::updateView( QHash<QString, QString>* downloadStatusDescr )
 }
 
 
-void QAjDownloadItem::showWidget( const QPoint & p ) {
+void QAjDownloadItem::showWidget( const QPoint & p ) 
+{
     if ( partListDialog == NULL ) {
         partListDialog = new QAjPartListDialog();
     }
@@ -270,7 +289,8 @@ void QAjDownloadItem::showWidget( const QPoint & p ) {
     partListDialog->show();
 }
 
-void QAjDownloadItem::deleteUsers() {
+void QAjDownloadItem::deleteUsers() 
+{
     QList<QString> userIds = users.keys();
     for (int i=0; i<userIds.size(); i++ ) {
         delete users[userIds[i]];
@@ -282,7 +302,8 @@ void QAjDownloadItem::deleteUsers() {
 /*!
     \fn QAjDownloadItem::getPartListDialog()
  */
-QAjPartListDialog* QAjDownloadItem::getPartListDialog() {
+QAjPartListDialog* QAjDownloadItem::getPartListDialog() 
+{
     return partListDialog;
 }
 
@@ -290,7 +311,8 @@ QAjPartListDialog* QAjDownloadItem::getPartListDialog() {
 /*!
     \fn QAjDownloadItem::setParts( Q_ULLONG size, QLinkedList<QAjPartsWidget::Part>& partList )
  */
-void QAjDownloadItem::setParts( qulonglong size, QLinkedList<QAjPartsWidget::Part>& partList ) {
+void QAjDownloadItem::setParts( qulonglong size, QLinkedList<QAjPartsWidget::Part>& partList ) 
+{
     if ( partListDialog->isVisible() ) {
         partListDialog->update( size, partList );
     }
@@ -338,7 +360,8 @@ void QAjDownloadItem::setParts( qulonglong size, QLinkedList<QAjPartsWidget::Par
     }
 }
 
-bool QAjDownloadItem::operator<( const QTreeWidgetItem & other ) const {
+bool QAjDownloadItem::operator<( const QTreeWidgetItem & other ) const 
+{
     int sortIndex = treeWidget()->header()->sortIndicatorSection();
     QAjDownloadItem* downItem = (QAjDownloadItem*)&other;
     switch ( sortIndex ) {
@@ -371,7 +394,8 @@ bool QAjDownloadItem::operator<( const QTreeWidgetItem & other ) const {
     }
 }
 
-QString QAjDownloadItem::getLinkAJFSP() {
+QString QAjDownloadItem::getLinkAJFSP() 
+{
     return "ajfsp://file|"
         + text(FILENAME_COL) + "|"
         + hash_ + "|"
