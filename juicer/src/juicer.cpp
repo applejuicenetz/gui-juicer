@@ -617,12 +617,9 @@ void Juicer::trayActivated( QSystemTrayIcon::ActivationReason reason )
  */
 void Juicer::lastWindowClosed()
 {
-   if( !tray->isVisible() ) {
-        if(started) {
-            qApp->quit();
-        }
-    } else {
-        delete this;
+    tray->setVisible( false );
+    if(started) {
+        qApp->quit();
     }
 }
 
