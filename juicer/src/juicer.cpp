@@ -166,22 +166,30 @@ void Juicer::initTrayIcon()
     @param ce the close event
  */
 void Juicer::closeEvent( QCloseEvent* ce ) {
-    downloads->close();
-    server->close();
-    QAjOptionsDialog::setSetting("MainWindow", "size", size());
-    QAjOptionsDialog::setSetting("MainWindow", "pos", pos());
-    downloadModule->saveSortOrder("DownloadWidget");
-    uploadModule->saveSortOrder("UploadWidget");
-    searchModule->saveSortOrder("SearchWidget");
-    serverModule->saveSortOrder("ServerWidget");
-    shareModule->saveSortOrder("ShareWidget");
-    incomingModule->saveSortOrder("IncomingWidget");
 
-    QAjOptionsDialog::setSetting("JuicerMain", this->saveState());
-    QAjOptionsDialog::setSetting("DownloadsMain", downloads->saveState());
-    QAjOptionsDialog::setSetting("ServerMain", server->saveState());
-
-    ce->accept();
+     if ( tray->isVisible() && !isMinimized() ) {
+         QMessageBox::information ( this, tr("Minimizing to tray"),
+         tr("Tray Icon is enabled so Juicer runs minimized in the background. Use Quit GUI to close the GUI.") );
+         setHidden( true );
+         ce->ignore();
+     } else {
+        downloads->close();
+        server->close();
+        QAjOptionsDialog::setSetting("MainWindow", "size", size());
+        QAjOptionsDialog::setSetting("MainWindow", "pos", pos());
+        downloadModule->saveSortOrder("DownloadWidget");
+        uploadModule->saveSortOrder("UploadWidget");
+        searchModule->saveSortOrder("SearchWidget");
+        serverModule->saveSortOrder("ServerWidget");
+        shareModule->saveSortOrder("ShareWidget");
+        incomingModule->saveSortOrder("IncomingWidget");
+    
+        QAjOptionsDialog::setSetting("JuicerMain", this->saveState());
+        QAjOptionsDialog::setSetting("DownloadsMain", downloads->saveState());
+        QAjOptionsDialog::setSetting("ServerMain", server->saveState());
+    
+        ce->accept();
+    }
 }
 
 
@@ -618,11 +626,7 @@ void Juicer::trayActivated( QSystemTrayIcon::ActivationReason reason )
 void Juicer::lastWindowClosed()
 {
     tray->setVisible( false );
-    if(started) {
-        qApp->quit();
-    }
 }
-
 
 /*!
     \fn Juicer::downloadsFinished( const QList<QAjDownloadItem*>& list )
