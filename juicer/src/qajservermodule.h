@@ -58,10 +58,6 @@ public slots:
     void searchSlot();
     void gotServer( int id, bool error );
     void selectionChanged();
-signals:
-    void remove();
-    void connect();
-    void find();
 };
 
 #endif

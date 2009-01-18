@@ -121,7 +121,7 @@ void QAjOptionsDialog::setAjSettings( const AjSettings& settings )
     incomingEdit->setText( settings.incomingDir );
     tempEdit->setText( settings.tempDir );
 
-    autoConnect->setChecked( ( settings.autoconnect == "true" ) );
+    autoConnect->setChecked( ( settings.autoconnect.toLower() == "true" ) );
 
     downSpin->setValue( settings.maxDown.toInt() / 1024 );
     upSpin->setValue( settings.maxUp.toInt() / 1024 );

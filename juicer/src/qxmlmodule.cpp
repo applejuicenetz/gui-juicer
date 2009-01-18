@@ -256,7 +256,7 @@ void QXMLModule::handleSettings( QDomElement& e )
     settings.nick         = e.firstChildElement("nick").text();
     settings.tcpPort      = e.firstChildElement("port").text();
     settings.xmlPort      = e.firstChildElement("xmlport").text();
-    settings.autoconnect  = e.firstChildElement("autoconnect").text().toLower() == "true";
+    settings.autoconnect  = e.firstChildElement("autoconnect").text();
     settings.maxUp        = e.firstChildElement("maxupload").text();
     settings.maxDown      = e.firstChildElement("maxdownload").text();
     settings.maxCon       = e.firstChildElement("maxconnections").text();
