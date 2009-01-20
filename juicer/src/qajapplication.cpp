@@ -31,7 +31,7 @@ QAjApplication::QAjApplication( int & argc, char ** argv )
     QCoreApplication::setApplicationName("Juicer");
     setQuitOnLastWindowClosed( false );
     socket = NULL;
-    
+
     QFileInfo appFileInfo( argv[0] );
     appPath = appFileInfo.absoluteFilePath();    // contains path and filename
     // -- check if juicer is default application for ajfsp links --
@@ -47,9 +47,20 @@ QAjApplication::QAjApplication( int & argc, char ** argv )
                     settings.setValue("shell/open/command/Default",appCmd);
                 }
             } else {
-                QAjHandlerDialog* handlerDialog = new QAjHandlerDialog(NULL);
-                if(handlerDialog->exec() == QDialog::Accepted) {
+                bool accepted = false;
+                QAjHandlerDialog handlerDialog( tr( "ajfsp Protecol Handler" ),
+                                                this,
+                                                tr( "Yes" ),
+                                                tr( "No" ) );
+                handlerDialog.setText( tr("Juicer seems not to be the default application for ajfsp:// links.\nWould you like to change this?") );
+                accepted = ( handlerDialog.exec() == QDialog::Accepted );
+                if( accepted ) {
                     settings.setValue("shell/open/command/Default",appCmd);
+                }
+                if ( handlerDialog.dontAskAgain() ) {
+                    QAjOptionsDialog::setSetting("handler", accepted);
+                } else {
+                    QAjOptionsDialog::removeSetting("handler");
                 }
             }
         }

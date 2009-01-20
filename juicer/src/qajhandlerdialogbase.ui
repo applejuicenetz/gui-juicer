@@ -5,19 +5,19 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>308</width>
-    <height>117</height>
+    <width>424</width>
+    <height>183</height>
    </rect>
   </property>
   <property name="windowTitle" >
-   <string>Protocol Handler</string>
+   <string>Caption</string>
   </property>
   <property name="windowIcon" >
    <iconset resource="images.qrc" >
     <normaloff>:/juicer.png</normaloff>:/juicer.png</iconset>
   </property>
-  <layout class="QVBoxLayout" name="verticalLayout" >
-   <item>
+  <layout class="QGridLayout" name="gridLayout" >
+   <item row="0" column="0" >
     <layout class="QHBoxLayout" name="horizontalLayout" >
      <item>
       <widget class="QLabel" name="iconLabel" >
@@ -40,15 +40,17 @@
         </size>
        </property>
        <property name="text" >
-        <string>TextLabel</string>
+        <string/>
+       </property>
+       <property name="pixmap" >
+        <pixmap resource="images.qrc" >:/juicer.png</pixmap>
        </property>
       </widget>
      </item>
      <item>
-      <widget class="QLabel" name="label" >
+      <widget class="QLabel" name="textLabel" >
        <property name="text" >
-        <string>Juicer seems to be not the default application for ajfsp:// links.
-Would you like to change this?</string>
+        <string>Text</string>
        </property>
        <property name="wordWrap" >
         <bool>true</bool>
@@ -57,7 +59,7 @@ Would you like to change this?</string>
      </item>
     </layout>
    </item>
-   <item>
+   <item row="1" column="0" >
     <spacer name="verticalSpacer" >
      <property name="orientation" >
       <enum>Qt::Vertical</enum>
@@ -65,24 +67,51 @@ Would you like to change this?</string>
      <property name="sizeHint" stdset="0" >
       <size>
        <width>20</width>
-       <height>40</height>
+       <height>10</height>
       </size>
      </property>
     </spacer>
    </item>
-   <item>
+   <item row="2" column="0" >
     <layout class="QHBoxLayout" name="horizontalLayout_2" >
      <item>
-      <widget class="QCheckBox" name="againCheckBox" >
+      <widget class="QCheckBox" name="chkAskAgain" >
        <property name="text" >
         <string>don't ask me again</string>
        </property>
       </widget>
      </item>
      <item>
-      <widget class="QDialogButtonBox" name="buttonBox" >
-       <property name="standardButtons" >
-        <set>QDialogButtonBox::No|QDialogButtonBox::Yes</set>
+      <spacer name="horizontalSpacer" >
+       <property name="orientation" >
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeHint" stdset="0" >
+        <size>
+         <width>40</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+     <item>
+      <widget class="QPushButton" name="pb1" >
+       <property name="text" >
+        <string>PB1</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="pb2" >
+       <property name="text" >
+        <string>PB2</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="pb3" >
+       <property name="text" >
+        <string>PB3</string>
        </property>
       </widget>
      </item>
@@ -91,44 +120,10 @@ Would you like to change this?</string>
   </layout>
  </widget>
  <tabstops>
-  <tabstop>buttonBox</tabstop>
-  <tabstop>againCheckBox</tabstop>
+  <tabstop>chkAskAgain</tabstop>
  </tabstops>
  <resources>
   <include location="images.qrc" />
  </resources>
- <connections>
-  <connection>
-   <sender>buttonBox</sender>
-   <signal>accepted()</signal>
-   <receiver>HandlerDialog</receiver>
-   <slot>accept()</slot>
-   <hints>
-    <hint type="sourcelabel" >
-     <x>232</x>
-     <y>149</y>
-    </hint>
-    <hint type="destinationlabel" >
-     <x>167</x>
-     <y>84</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>buttonBox</sender>
-   <signal>rejected()</signal>
-   <receiver>HandlerDialog</receiver>
-   <slot>reject()</slot>
-   <hints>
-    <hint type="sourcelabel" >
-     <x>232</x>
-     <y>149</y>
-    </hint>
-    <hint type="destinationlabel" >
-     <x>167</x>
-     <y>84</y>
-    </hint>
-   </hints>
-  </connection>
- </connections>
+ <connections/>
 </ui>

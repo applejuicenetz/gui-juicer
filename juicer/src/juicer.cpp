@@ -19,6 +19,7 @@
  ***************************************************************************/
 
 #include "juicer.h"
+#include "qajhandlerdialog.h"
 
 Juicer::Juicer( const QStringList& argList, QSplashScreen *splash )
     : QMainWindow()
@@ -154,7 +155,8 @@ void Juicer::initTrayIcon()
     {
         tray->setVisible(true);
         tray->setContextMenu(menuAppleJuice);
-        connect(tray, SIGNAL(activated(QSystemTrayIcon::ActivationReason)), this, SLOT( trayActivated( QSystemTrayIcon::ActivationReason ) ) );
+        connect( tray, SIGNAL( activated( QSystemTrayIcon::ActivationReason ) ),
+                 this, SLOT( trayActivated( QSystemTrayIcon::ActivationReason ) ) );
     } else {
         tray->setVisible(false);
     }
@@ -168,10 +170,27 @@ void Juicer::initTrayIcon()
 void Juicer::closeEvent( QCloseEvent* ce ) {
 
      if ( tray->isVisible() && !isMinimized() ) {
+        if( false == QAjOptionsDialog::hasSetting("noMinimizeQuestion") ) {
+            QAjHandlerDialog trayDialog(  tr("Minimizing to tray"),
+                                          this,
+                                          tr("OK") );
+            trayDialog.setText( tr("Tray Icon is enabled so Juicer runs minimized in the background.\nUse Quit GUI to close the GUI.") );
+            trayDialog.exec();
+
+            if ( trayDialog.dontAskAgain() ) {
+                QAjOptionsDialog::setSetting( "noMinimizeQuestion", true );
+            } else {
+                QAjOptionsDialog::removeSetting( "noMinimizeQuestion" );
+            }
+        }
+
+/*
          QMessageBox::information ( this, tr("Minimizing to tray"),
          tr("Tray Icon is enabled so Juicer runs minimized in the background. Use Quit GUI to close the GUI.") );
-         setHidden( true );
-         ce->ignore();
+*/
+        showMinimized();
+        setHidden( true );
+        ce->ignore();
      } else {
         downloads->close();
         server->close();
@@ -183,11 +202,11 @@ void Juicer::closeEvent( QCloseEvent* ce ) {
         serverModule->saveSortOrder("ServerWidget");
         shareModule->saveSortOrder("ShareWidget");
         incomingModule->saveSortOrder("IncomingWidget");
-    
+
         QAjOptionsDialog::setSetting("JuicerMain", this->saveState());
         QAjOptionsDialog::setSetting("DownloadsMain", downloads->saveState());
         QAjOptionsDialog::setSetting("ServerMain", server->saveState());
-    
+
         ce->accept();
     }
 }
@@ -613,9 +632,10 @@ void Juicer::initStatusBar()
  */
 void Juicer::trayActivated( QSystemTrayIcon::ActivationReason reason )
 {
-    if(reason == QSystemTrayIcon::Trigger)
+    if( reason == QSystemTrayIcon::Trigger )
     {
-        this->setVisible(!this->isVisible());
+        setVisible( !isVisible() );
+        if ( isMinimized() ) showNormal();
     }
 }
 
