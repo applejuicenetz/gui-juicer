@@ -25,7 +25,7 @@ QConvert::QConvert(QObject *parent) : QObject( parent )
 QConvert::~QConvert()
 {}
 
-QString QConvert::bytes( QString x )
+QString QConvert::bytes( const QString& x )
 {
     return bytes( x.toDouble() );
 }
@@ -68,13 +68,13 @@ QString QConvert::bytes( qulonglong x )
         return QString::number(x) + " b";
 }
 
-QString QConvert::bytes( QString x, QString y )
+QString QConvert::bytes( const QString& x, const QString& y )
 {
     double x1 = x.toDouble() - y.toDouble();
     return QConvert::bytes( x1, 2 );
 }
 
-QString QConvert::bytesLong( QString x )
+QString QConvert::bytesLong( const QString& x )
 {
     // x in Mbyte
     double x1 = x.section(',',0,0).toDouble();
@@ -86,15 +86,10 @@ QString QConvert::bytesLong( QString x )
         return x + " Mbyte";
 }
 
-QString QConvert::bytesExtra( QString x )
+QString QConvert::bytesExtra( const QString& x )
 {
-    bool negative = false;
-    if ( x[0] == '-' )
-    {
-        negative = true;
-        x = x.mid( 1, x.length() -1 );
-    }
-    qlonglong x1 = x.toLongLong();
+    bool negative = (x[0] == '-');
+    qlonglong x1 = qAbs(x.toLongLong());
     int base = 1;
     QString unit;
     if ( x1 >= ONE_GIG )
@@ -134,13 +129,13 @@ QString QConvert::num( long int num )
         return QString::number( num );
 }
 
-float QConvert::powerValue( QString x )
+float QConvert::powerValue( const QString& x )
 {
     float x1 = x.toFloat();
     return (x1 + 10) / 10.0;
 }
 
-QString QConvert::power( QString x )
+QString QConvert::power( const QString& x )
 {
     float x1 = x.toFloat();
     x1 = (x1 + 10) / 10.0;

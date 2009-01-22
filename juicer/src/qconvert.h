@@ -38,15 +38,15 @@ public:
     ~QConvert();
 
     static QString num( long int num );
-    static QString bytes( QString x );
+    static QString bytes( const QString& x );
     static QString bytes( long int x );
     static QString bytes( double x, int precision = 2 );
     static QString bytes( qulonglong x );
-    static QString bytes( QString x, QString y );
-    static QString bytesLong( QString x );
-    static QString bytesExtra( QString x );
-    static QString power( QString x );
-    static float powerValue( QString x );
+    static QString bytes( const QString& x, const QString& y );
+    static QString bytesLong( const QString& x );
+    static QString bytesExtra( const QString& x );
+    static QString power( const QString& x );
+    static float powerValue( const QString& x );
     static QString power( float power );
     static QString time( long int seconds );
     static QString getFileErrorString(QFile::FileError error);

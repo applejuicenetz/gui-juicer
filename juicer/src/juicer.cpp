@@ -207,6 +207,7 @@ void Juicer::closeEvent( QCloseEvent* ce ) {
         QAjOptionsDialog::setSetting("DownloadsMain", downloads->saveState());
         QAjOptionsDialog::setSetting("ServerMain", server->saveState());
 
+        qApp->quit();
         ce->accept();
     }
 }
