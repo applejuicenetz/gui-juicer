@@ -106,7 +106,6 @@ public:
     void queueLinks( const QStringList& links );
     void setUploadFilename( const QString& shareId, const QString& filename );
 
-//     void createAjL( const QList<QAjItem *>& selectedItems );
     void sendToTray(  const QString& message1, const QString& message2  );
 
     static QStringList getExec();
@@ -118,6 +117,7 @@ protected:
     void initTrayIcon();
     void closeEvent( QCloseEvent* );
     void processQueuedLinks();
+    void saveGUIState();
     QString showLoginDialog(const QString& message = "");
 
     QSystemTrayIcon* tray;
@@ -166,13 +166,13 @@ private slots:
 
     void tabChanged(int index);
 
+    void quit();
     void exitCore();
 
     void firstModified();
 
     void adjustColumns();
     void trayActivated(QSystemTrayIcon::ActivationReason reason);
-    void lastWindowClosed();
     void downloadsFinished(const QList<QAjDownloadItem*>& list);
 };
 

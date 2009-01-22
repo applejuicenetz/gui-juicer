@@ -43,7 +43,6 @@ Juicer::Juicer( const QStringList& argList, QSplashScreen *splash )
     server->addDockWidget(Qt::RightDockWidgetArea, welcomeDock);
 
     this->splash = splash;
-    connect( qApp, SIGNAL( lastWindowClosed () ), this, SLOT ( lastWindowClosed () ) );
 
     zeroTime = QDateTime( QDate(1970,1,1), QTime(0,0), Qt::UTC );
     firstModifiedMax = 2;// + argList.size();
@@ -139,7 +138,7 @@ void Juicer::connectActions() {
     connect(actionAdjust_Columns, SIGNAL(triggered()), this, SLOT( adjustColumns()));
     connect(actionProcess_Link_From_Clipboard, SIGNAL(triggered()), this, SLOT(processClipboard()));
     connect(actionExit_Core, SIGNAL(triggered()), this, SLOT(exitCore()));
-    connect(actionQuit_GUI, SIGNAL(triggered()), qApp, SLOT(quit()));
+    connect(actionQuit_GUI, SIGNAL(triggered()), this, SLOT(quit()));
     connect(actionAbout, SIGNAL(triggered()), this, SLOT(about()));
     connect(actionAbout_Qt, SIGNAL(triggered()), this, SLOT(aboutQt()));
 }
@@ -168,7 +167,6 @@ void Juicer::initTrayIcon()
     @param ce the close event
  */
 void Juicer::closeEvent( QCloseEvent* ce ) {
-
      if ( tray->isVisible() && !isMinimized() ) {
         if( false == QAjOptionsDialog::hasSetting("noMinimizeQuestion") ) {
             QAjHandlerDialog trayDialog(  tr("Minimizing to tray"),
@@ -183,35 +181,36 @@ void Juicer::closeEvent( QCloseEvent* ce ) {
                 QAjOptionsDialog::removeSetting( "noMinimizeQuestion" );
             }
         }
-
-/*
-         QMessageBox::information ( this, tr("Minimizing to tray"),
-         tr("Tray Icon is enabled so Juicer runs minimized in the background. Use Quit GUI to close the GUI.") );
-*/
         showMinimized();
         setHidden( true );
         ce->ignore();
      } else {
-        downloads->close();
-        server->close();
-        QAjOptionsDialog::setSetting("MainWindow", "size", size());
-        QAjOptionsDialog::setSetting("MainWindow", "pos", pos());
-        downloadModule->saveSortOrder("DownloadWidget");
-        uploadModule->saveSortOrder("UploadWidget");
-        searchModule->saveSortOrder("SearchWidget");
-        serverModule->saveSortOrder("ServerWidget");
-        shareModule->saveSortOrder("ShareWidget");
-        incomingModule->saveSortOrder("IncomingWidget");
-
-        QAjOptionsDialog::setSetting("JuicerMain", this->saveState());
-        QAjOptionsDialog::setSetting("DownloadsMain", downloads->saveState());
-        QAjOptionsDialog::setSetting("ServerMain", server->saveState());
-
-        qApp->quit();
+        quit();
         ce->accept();
     }
 }
 
+void Juicer::quit() {
+    saveGUIState();
+    downloads->close();
+    server->close();
+    qApp->quit();
+}
+
+void Juicer::saveGUIState() {
+    QAjOptionsDialog::setSetting("MainWindow", "size", size());
+    QAjOptionsDialog::setSetting("MainWindow", "pos", pos());
+    downloadModule->saveSortOrder("DownloadWidget");
+    uploadModule->saveSortOrder("UploadWidget");
+    searchModule->saveSortOrder("SearchWidget");
+    serverModule->saveSortOrder("ServerWidget");
+    shareModule->saveSortOrder("ShareWidget");
+    incomingModule->saveSortOrder("IncomingWidget");
+
+    QAjOptionsDialog::setSetting("JuicerMain", this->saveState());
+    QAjOptionsDialog::setSetting("DownloadsMain", downloads->saveState());
+    QAjOptionsDialog::setSetting("ServerMain", server->saveState());
+}
 
 /*!
     \fn Juicer::login()
@@ -642,14 +641,6 @@ void Juicer::trayActivated( QSystemTrayIcon::ActivationReason reason )
 
 
 /*!
-    \fn Juicer::lastWindowClosed()
- */
-void Juicer::lastWindowClosed()
-{
-    tray->setVisible( false );
-}
-
-/*!
     \fn Juicer::downloadsFinished( const QList<QAjDownloadItem*>& list )
     show a message with all finished downloads in tray icon
     @param list list with all finished downloads to show
@@ -681,14 +672,14 @@ void Juicer::openAjL()
 
     if ( !ajListFileName.isNull() ) {
 
-        QFile *ajListFile = new QFile( ajListFileName );
+        QFile ajListFile( ajListFileName );
 
-        if ( ajListFile->exists() ) {
-            if (!ajListFile->open(QIODevice::ReadOnly | QIODevice::Text)) {
+        if ( ajListFile.exists() ) {
+            if (!ajListFile.open(QIODevice::ReadOnly | QIODevice::Text)) {
                 tray->showMessage( tr("Error while opening file"), ajListFileName, QSystemTrayIcon::Information, 3000 );
             }
             else {
-                QTextStream in(ajListFile);
+                QTextStream in(&ajListFile);
                 QString line = in.readLine();
                 while ( line.compare("100") != 0) {
                     if ( in.atEnd() ) {
@@ -713,100 +704,16 @@ void Juicer::openAjL()
                                       ajListFileName, QSystemTrayIcon::Information, 3000 );
                 }
 
-                ajListFile->close();
+                ajListFile.close();
             }
         }
         else {
             tray->showMessage( tr("No such file"), ajListFileName, QSystemTrayIcon::Information, 3000 );
         }
-
-        delete ajListFile;
     }
 
 }
 
-/*!
- * @deprecated
- */
-/*void Juicer::createAjL( const QList<QAjItem *>&  selectedItems )
-{
-    QString ajListFileName = QFileDialog::getSaveFileName(
-                              this,
-                              tr("Enter file name"),
-                              QString::null,
-                              tr("AJ Link Lists (*.ajl)"));
-
-    if ( !ajListFileName.endsWith(".ajl") ) {
-        ajListFileName += ".ajl";
-        tray->showMessage( tr("Filename of link list changed"), tr("changed to: ") + ajListFileName, QSystemTrayIcon::Information, 3000 );
-    }
-
-    if ( !ajListFileName.isNull() ) {
-
-        QFile *ajListFile = new QFile( ajListFileName );
-
-        if ( ajListFile->exists() ) {
-            ajListFile->remove();
-        }
-
-
-        if (ajListFile->open(QIODevice::WriteOnly | QIODevice::Text)) {
-
-            QString message = "appleJuice link list\nCreated by Juicer, the appleJuice GUI based on Qt4.\n\n";
-            message += "The developers of Juicer take no responsibility for the files listed below!\n";
-            ajListFile->write( message.toAscii());
-            ajListFile->write( "100\n" );
-
-            ajListFile->setPermissions( QFile::ReadOwner | QFile::WriteOwner |
-                                        QFile::ReadUser | QFile::WriteUser |
-                                        QFile::ReadGroup | QFile::ReadOther );
-
-            for ( int i=0; i<selectedItems.size(); i++ ) {
-
-//                 QString filename = selectedItems[i]->text(FILENAME_COL) + '\n';
-//                 QString filehash = selectedItems[i]->getHash() + '\n';
-//                 QString filesize = QString::number( (int)selectedItems[i]->getSize() ) + '\n';
-
-                ajListFile->write( QString( selectedItems[i]->getFilename() + '\n' ).toAscii());
-                ajListFile->write( QString( selectedItems[i]->getHash() + '\n' ).toAscii());
-                ajListFile->write( QString( QString::number( (int)selectedItems[i]->getSize() ) + '\n' ).toAscii());
-            }
-
-            ajListFile->flush();
-            ajListFile->close();
-
-            tray->showMessage( tr("AJ link list successfully created"), ajListFileName, QSystemTrayIcon::Warning, 3000 );
-        }
-        else {
-            QFile::FileError errorCode = ajListFile->error();
-            QString error;
-            switch ( errorCode ) {
-                case QFile::ReadError: error = tr("An error occurred when reading from the file.");
-                                       break;
-                case QFile::WriteError: error = tr("An error occurred when writing to the file.");
-                                       break;
-                case QFile::FatalError: error = tr("A fatal error occurred.");
-                                       break;
-                case QFile::ResourceError: error = tr("Not enough disk space.");
-                                       break;
-                case QFile::OpenError: error = tr("The file could not be opened.");
-                                       break;
-                case QFile::AbortError: error = tr("The operation was aborted.");
-                                       break;
-                case QFile::TimeOutError: error = tr("A timeout occurred.");
-                                       break;
-                case QFile::PermissionsError: error = tr("The file could not be accessed.");
-                                       break;
-                default: error = tr("An unspecified error occurred.");
-            }
-            tray->showMessage( tr("Error while saving link list."), tr("The error message was:\n\n") + error, QSystemTrayIcon::Information, 3000 );
-        }
-
-        delete ajListFile;
-    }
-
-}
-*/
 void Juicer::sendToTray( const QString& message1, const QString& message2 ) {
     tray->showMessage( message1, message2, QSystemTrayIcon::Information, 3000 );
 }
