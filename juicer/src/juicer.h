@@ -141,7 +141,6 @@ protected:
     bool started, connected;
 
     QStringList queuedLinks;
-    QDateTime zeroTime;
 
     int firstModifiedCnt, firstModifiedMax;
     QSplashScreen *splash;

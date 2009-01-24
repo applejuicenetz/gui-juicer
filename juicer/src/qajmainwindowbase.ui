@@ -12,6 +12,10 @@
   <property name="windowTitle" >
    <string>MainWindow</string>
   </property>
+  <property name="windowIcon" >
+   <iconset resource="images.qrc" >
+    <normaloff>:/juicer.png</normaloff>:/juicer.png</iconset>
+  </property>
   <widget class="QWidget" name="centralwidget" >
    <layout class="QVBoxLayout" name="verticalLayout" >
     <item>
@@ -394,6 +398,9 @@
        <layout class="QVBoxLayout" name="verticalLayout_7" >
         <item>
          <widget class="QTreeWidget" name="incomingTreeWidget" >
+          <property name="selectionMode" >
+           <enum>QAbstractItemView::ExtendedSelection</enum>
+          </property>
           <property name="sortingEnabled" >
            <bool>true</bool>
           </property>

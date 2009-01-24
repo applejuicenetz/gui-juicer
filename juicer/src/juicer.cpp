@@ -44,13 +44,12 @@ Juicer::Juicer( const QStringList& argList, QSplashScreen *splash )
 
     this->splash = splash;
 
-    zeroTime = QDateTime( QDate(1970,1,1), QTime(0,0), Qt::UTC );
     firstModifiedMax = 2;// + argList.size();
 
     linkServer = new QAjServerSocket( QAjApplication::APP_PORT );
     connect( linkServer, SIGNAL( lineReady( QString ) ), this, SLOT( processLink( QString ) ) );
 
-    setWindowIcon(QIcon(":/juicer.png"));
+//     setWindowIcon(QIcon(":/juicer.png"));
     osIcons[LINUX] = QIcon(":/small/linux.png");
     osIcons[WINDOWS] = QIcon(":/small/windows.png");
     osIcons[MAC] = QIcon(":/small/mac.png");
@@ -168,11 +167,13 @@ void Juicer::initTrayIcon()
  */
 void Juicer::closeEvent( QCloseEvent* ce ) {
      if ( tray->isVisible() && !isMinimized() ) {
-        if( false == QAjOptionsDialog::hasSetting("noMinimizeQuestion") ) {
-            QAjHandlerDialog trayDialog(  tr("Minimizing to tray"),
-                                          this,
-                                          tr("OK") );
-            trayDialog.setText( tr("Tray Icon is enabled so Juicer runs minimized in the background.\nUse Quit GUI to close the GUI.") );
+        if( ! QAjOptionsDialog::hasSetting("noMinimizeQuestion") ) {
+            QAjHandlerDialog trayDialog(
+                    tr("Minimizing to tray"),
+                    tr("Tray Icon is enabled so Juicer runs minimized in the background.\nUse Quit GUI to close the GUI."),
+                    QDialogButtonBox::Ok,
+                    QStyle::SP_MessageBoxInformation,
+                    this);
             trayDialog.exec();
 
             if ( trayDialog.dontAskAgain() ) {

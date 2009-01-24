@@ -26,29 +26,17 @@ class QAjHandlerDialog : public QDialog, private Ui::HandlerDialog
     bool dontAskAgain_;
 
 public:
-    QAjHandlerDialog( const QString& caption, QWidget* parent = 0, Qt::WFlags fl = 0 );
-    QAjHandlerDialog( const QString& caption, QWidget* parent = 0,
-                      const QString& button1 = "", const QString& button2 = "", const QString& button3 = "",
-                      Qt::WFlags fl = 0 );
-//  ~QAjHandlerDialog();
+    QAjHandlerDialog( const QString& caption, const QString & text,
+        QDialogButtonBox::StandardButtons buttons = QDialogButtonBox::Yes | QDialogButtonBox::No,
+        QStyle::StandardPixmap icon = QStyle::SP_MessageBoxQuestion,
+        QWidget* parent = 0, Qt::WFlags fl = 0 );
 
     void setText( const QString& text );
     void setIcon( const QPixmap& pixmap );
 
     bool dontAskAgain() const;
 
-    void setTextButton1( const QString& text );
-    void setTextButton2( const QString& text );
-    void setTextButton3( const QString& text );
-
-    QPushButton* getPointerButton1();
-    QPushButton* getPointerButton2();
-    QPushButton* getPointerButton3();
-
 protected slots:
-//  virtual void reject();
-//  virtual void accept();
-
     void reaskSlot( int );
 
 };
