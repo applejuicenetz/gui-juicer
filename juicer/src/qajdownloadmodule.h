@@ -34,8 +34,9 @@ public:
     ~QAjDownloadModule();
     void insertDownload(const QString& id, const QString& hash, const QString& fileName, const QString& status,
                         const QString& size, const QString& ready, const QString& power, const QString& tempNumber);
-    void insertUser(const QString& downloadId, const QString& id, const QString& fileName, const QString& speed,
-                        const QString& status, const QString& power, const QString& queuePos, const QString& os, QTime& time);
+    void insertUser(const QString& downloadId, const QString& id, const QString& fileName, const QString& nickname, const QString& speed,
+                        const QString& status, const QString& power, const QString& queuePos, const QString& os,
+                        const QString& downloadfrom, const QString& downloadto, const QString& actualdownloadposition, QTime& time);
     bool remove(const QString& id);
     bool removeDownload(const QString& id);
     QAjDownloadItem* findDownload(const QString& id);

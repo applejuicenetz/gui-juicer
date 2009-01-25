@@ -68,6 +68,19 @@ QString QConvert::bytes( qulonglong x )
         return QString::number(x) + " b";
 }
 
+QString QConvert::bytes( qulonglong x, int precision )
+{
+    if ( x >= ONE_GIG )
+        return QString::number( (x / (float)( ONE_GIG )), 'f', precision ) + " Gb";
+    else if ( x >= ONE_MEG )
+        return QString::number( (x / (float)( ONE_MEG )), 'f', precision ) + " Mb";
+    else if ( x >= ONE_KILO )
+        return QString::number( (x / (float)( ONE_KILO )), 'f', precision ) + " kb";
+    else
+        return QString::number(x) + " b";
+}
+
+
 QString QConvert::bytes( const QString& x, const QString& y )
 {
     double x1 = x.toDouble() - y.toDouble();

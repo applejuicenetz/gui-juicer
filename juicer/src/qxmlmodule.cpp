@@ -407,13 +407,18 @@ void QXMLModule::processUsers() {
             e.attribute("downloadid"),
             e.attribute("id"),
             e.attribute("filename"),
+            e.attribute("nickname"),
             e.attribute("speed"),
             e.attribute("status"),
             e.attribute("powerdownload"),
             e.attribute("queueposition"),
             e.attribute("operatingsystem"),
+            e.attribute("downloadfrom"),
+            e.attribute("downloadto"),
+            e.attribute("actualdownloadposition"),
             time);
     }
+// version
 }
 
 /*!
@@ -546,4 +551,18 @@ void QXMLModule::handlePartList( int id )
 
 void QXMLModule::sendToTray( QString & message1, QString & message2 ) {
     juicer->sendToTray( message1, message2 );
+}
+
+
+/*!
+    \fn QXMLModule::printAllAttributes(QDomElement& e)
+ */
+void QXMLModule::printAllAttributes(QDomElement& e)
+{
+    QDomNamedNodeMap a = e.attributes();
+    printf("%d\n", a.length());
+    for(int i=0; i<a.length(); i++) {
+        QDomNode item = a.item(i);
+        printf("%s\t\t%s\n", item.nodeName().toLatin1().data(), item.nodeValue().toLatin1().data());
+    }
 }

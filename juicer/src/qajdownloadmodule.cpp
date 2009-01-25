@@ -130,19 +130,24 @@ void QAjDownloadModule::insertDownload( const QString& id,
 void QAjDownloadModule::insertUser( const QString& downloadId,
                                     const QString& id,
                                     const QString& fileName,
+                                    const QString& nickname,
                                     const QString& speed,
                                     const QString& status,
                                     const QString& power,
                                     const QString& queuePos,
                                     const QString& os,
-                                    QTime& time) 
+                                    const QString& downloadfrom,
+                                    const QString& downloadto,
+                                    const QString& actualdownloadposition,
+                                    QTime& time)
 {
     QAjDownloadItem *downloadItem = findDownload(downloadId);
     if(downloadItem == NULL) {  // -- this shouldn't happen, just in case... --
         insertDownload(downloadId, "", "", "", "", "", "", "");
         downloadItem = findDownload(downloadId);
     }
-    downloadItem->updateUser(id, fileName, speed, status, power, queuePos, userStatusDescr[status], juicer->osIcons[os], time);
+    downloadItem->updateUser(id, fileName, nickname, speed, status, power, queuePos,
+         userStatusDescr[status], juicer->osIcons[os], downloadfrom, downloadto, actualdownloadposition, time);
 }
 
 /*!

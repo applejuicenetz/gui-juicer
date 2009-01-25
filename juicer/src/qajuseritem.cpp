@@ -54,13 +54,17 @@ void QAjUserItem::setSpeed( const QString& newSpeedString, const QTime& /*time*/
         setText( QAjDownloadItem::SPEED_COL, "" );
 }
 
-void QAjUserItem::update( const QString& fileName, 
-                          const QString& speed, 
-                          const QString& status, 
-                          const QString& power, 
-                          const QString& queuePos, 
-                          const QString& statusString, 
-                          QIcon& osIcon, 
+void QAjUserItem::update( const QString& fileName,
+                          const QString& nickname,
+                          const QString& speed,
+                          const QString& status,
+                          const QString& power,
+                          const QString& queuePos,
+                          const QString& statusString,
+                          QIcon& osIcon,
+                          const QString& downloadfrom,
+                          const QString& downloadto,
+                          const QString& actualdownloadposition,
                           const QTime& time )
 {
     this->fileName = fileName;
@@ -75,6 +79,7 @@ void QAjUserItem::update( const QString& fileName,
         setText( QAjDownloadItem::STATUS_COL,  statusString );
     }
     setText( QAjDownloadItem::POWER_COL,  QConvert::power( power ) );
+    setText( QAjDownloadItem::SOURCES_COL,  nickname );
     if ( !fileNameSet && !fileName.isEmpty() )
     {
         setText( QAjDownloadItem::FILENAME_COL, fileName );
@@ -83,6 +88,18 @@ void QAjUserItem::update( const QString& fileName,
     if ( this->icon(QAjDownloadItem::SOURCES_COL).isNull() )
     {
         setIcon( QAjDownloadItem::SOURCES_COL, osIcon );
+    }
+    if(actualdownloadposition != "-1") {
+        double dFrom = downloadfrom.toULongLong();
+        double dTo = downloadto.toULongLong();
+        double dPosition = actualdownloadposition.toULongLong();
+        setText(QAjDownloadItem::SIZE_COL, QConvert::bytes(dTo - dFrom + 1.0, 2));
+        setText(QAjDownloadItem::REMAIN_SIZE_COL, QConvert::bytes(dTo - dPosition + 1.0, 2));
+        setText(QAjDownloadItem::FINISHED_SIZE_COL, QConvert::bytes(dPosition - dFrom, 2));
+    } else {
+        setText(QAjDownloadItem::SIZE_COL, "");
+        setText(QAjDownloadItem::REMAIN_SIZE_COL, "");
+        setText(QAjDownloadItem::FINISHED_SIZE_COL, "");
     }
 }
 

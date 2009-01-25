@@ -43,6 +43,7 @@ public:
     static QString bytes( double x, int precision = 2 );
     static QString bytes( qulonglong x );
     static QString bytes( const QString& x, const QString& y );
+    static QString bytes( qulonglong x, int precision );
     static QString bytesLong( const QString& x );
     static QString bytesExtra( const QString& x );
     static QString power( const QString& x );

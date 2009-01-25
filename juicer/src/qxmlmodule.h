@@ -68,6 +68,7 @@ public:
     }
     void sendToTray( QString & message1, QString & message2 );
     QString getRecentTime() { return timeStamp; }
+    static void printAllAttributes(QDomElement& e);
 
 protected:
     Juicer *juicer;

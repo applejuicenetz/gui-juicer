@@ -66,7 +66,7 @@ public:
 
     void moveItem( QAjUserItem *userItem, QString oldStatus );
     void update( const QString& hash, const QString& fileName, const QString& status, const QString& size, const QString& ready, const QString& power, const QString& tempNumber );
-    void updateUser( const QString& id, const QString& fileName, const QString& speed, const QString& status, const QString& power, const QString& queuePos, const QString& statusString, QIcon& osIcon, const QTime& time );
+    void updateUser( const QString& id, const QString& fileName, const QString& nickname, const QString& speed, const QString& status, const QString& power, const QString& queuePos, const QString& statusString, QIcon& osIcon, const QString& downloadfrom, const QString& downloadto, const QString& actualdownloadposition, const QTime& time );
 
     QAjUserItem* findUser( const QString& id );
     void removeUser( const QString& id );

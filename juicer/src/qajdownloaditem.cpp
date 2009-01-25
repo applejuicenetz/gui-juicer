@@ -144,13 +144,17 @@ void QAjDownloadItem::removeUser( const QString& id )
 
 void QAjDownloadItem::updateUser( const QString& id,
                                   const QString& fileName,
+                                  const QString& nickname,
                                   const QString& speed,
                                   const QString& status,
                                   const QString& power,
                                   const QString& queuePos,
                                   const QString& statusString,
                                   QIcon& osIcon,
-                                  const QTime& time ) 
+                                  const QString& downloadfrom,
+                                  const QString& downloadto,
+                                  const QString& actualdownloadposition,
+                                  const QTime& time )
 {
     QAjUserItem* userItem = findUser( id );
     if ( userItem == NULL ) {
@@ -164,7 +168,7 @@ void QAjDownloadItem::updateUser( const QString& id,
         users[ id ] = userItem;
     }
     QString oldStatus = userItem->getStatus();
-    userItem->update( fileName, speed, status, power, queuePos, statusString, osIcon, time );
+    userItem->update( fileName, nickname, speed, status, power, queuePos, statusString, osIcon, downloadfrom, downloadto, actualdownloadposition, time );
     this->speed += userItem->getSpeedDif();
     moveItem( userItem, oldStatus );
 }
