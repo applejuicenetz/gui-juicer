@@ -45,6 +45,8 @@
 #include <QFile>
 #include <QFileDialog>
 #include <QTextStream>
+#include <QNetworkInterface>
+#include <QHostInfo>
 
 #include <QSystemTrayIcon>
 
@@ -101,6 +103,7 @@ public:
     {
         return filesystemSeparator;
     }
+    bool isCoreLocal() { return localCore; }
     void setCoreVersion( const QString& version );
     void connectedSince( const QString& since );
     void queueLinks( const QStringList& links );
@@ -138,7 +141,7 @@ protected:
 
     QAjIconWidget *downSpeedLabel, *upSpeedLabel, *creditsLabel, *downSizeLabel, *upSizeLabel, *coreVersionLabel, *connectedLabel;
 
-    bool started, connected;
+    bool started, connected, localCore;
 
     QStringList queuedLinks;
 
@@ -173,6 +176,7 @@ private slots:
     void adjustColumns();
     void trayActivated(QSystemTrayIcon::ActivationReason reason);
     void downloadsFinished(const QList<QAjDownloadItem*>& list);
+    void hostLookedUp(const QHostInfo& host);
 };
 
 #endif

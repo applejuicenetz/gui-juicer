@@ -53,4 +53,22 @@ void QAjHandlerDialog::reaskSlot( int state )
 }
 
 
-
+/*!
+    \fn QAjHandlerDialog::exec(const QString& saveString)
+    if the dialog was already answered permanently, return the saved answer,
+    otherwise the dialog is shown and the answer will be saved
+ */
+int QAjHandlerDialog::exec(const QString& saveString)
+{
+    if(QAjOptionsDialog::hasSetting("accepted", saveString)) {
+        return QAjOptionsDialog::getGroupSetting("accepted", saveString).toInt();
+    } else {
+        int result = QDialog::exec();
+        if(chkAskAgain->isChecked()) {
+            QAjOptionsDialog::setSetting("accepted", saveString, result);
+        } else {
+            QAjOptionsDialog::removeSetting("accepted", saveString);
+        }
+        return result;
+    }
+}

@@ -42,6 +42,16 @@ QAjApplication::QAjApplication( int & argc, char ** argv )
         settings.setValue("Default","URL:ajfsp Protocol");
         settings.setValue("URL Protocol","");
         if(settings.value("shell/open/command/Default") != appCmd) {
+
+            QAjHandlerDialog handlerDialog(
+                    tr( "ajfsp Protecol Handler" ),
+                    tr("Juicer seems not to be the default application for ajfsp:// links.\nWould you like to change this?"),
+                    QDialogButtonBox::Yes | QDialogButtonBox::No,
+                    QStyle::SP_MessageBoxQuestion);
+            if(handlerDialog.exec("handler") == QDialog::Accepted) {
+                settings.setValue("shell/open/command/Default",appCmd);
+            }
+/*
             if(QAjOptionsDialog::hasSetting("handler")) {
                 if(QAjOptionsDialog::getSetting("handler", false).toBool()) {
                     settings.setValue("shell/open/command/Default",appCmd);
@@ -62,7 +72,7 @@ QAjApplication::QAjApplication( int & argc, char ** argv )
                 } else {
                     QAjOptionsDialog::removeSetting("handler");
                 }
-            }
+            }*/
         }
     #endif
 

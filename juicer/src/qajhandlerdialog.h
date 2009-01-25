@@ -36,9 +36,13 @@ public:
 
     bool dontAskAgain() const;
 
+    static const int DONT_ASK = -1;
+
 protected slots:
     void reaskSlot( int );
 
+public slots:
+    int exec(const QString& saveString);
 };
 
 #endif

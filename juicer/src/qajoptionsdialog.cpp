@@ -365,6 +365,13 @@ QVariant QAjOptionsDialog::getSetting( const QString& group, const QString& key,
     return value;
 }
 
+/*!
+    \fn QAjOptionsDialog::getGroupSetting( const QString& group, const QString& key )
+ */
+QVariant QAjOptionsDialog::getGroupSetting( const QString& group, const QString& key )
+{
+    return getSetting(group, key, QVariant());
+}
 
 /*!
     \fn QAjOptionsDialog::setSetting( const QString& group, const QString& key, QVariant value )

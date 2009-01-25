@@ -79,6 +79,7 @@ public:
 
     static QVariant getSetting( const QString& key, QVariant defaultValue = QVariant() );
     static void setSetting( const QString& key, QVariant value );
+    static QVariant getGroupSetting( const QString& group, const QString& key );
     static QVariant getSetting( const QString& group, const QString& key, QVariant defaultValue );
     static void setSetting( const QString& group, const QString& key, QVariant value );
     void setConnected(bool connected);

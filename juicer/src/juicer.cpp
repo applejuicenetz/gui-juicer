@@ -33,6 +33,7 @@ Juicer::Juicer( const QStringList& argList, QSplashScreen *splash )
     , incomingModule(0)
     , started(false)
     , connected(false)
+    , localCore(false)
 {
     setupUi( this );
 
@@ -167,21 +168,14 @@ void Juicer::initTrayIcon()
  */
 void Juicer::closeEvent( QCloseEvent* ce ) {
      if ( tray->isVisible() && !isMinimized() ) {
-        if( ! QAjOptionsDialog::hasSetting("noMinimizeQuestion") ) {
-            QAjHandlerDialog trayDialog(
-                    tr("Minimizing to tray"),
-                    tr("Tray Icon is enabled so Juicer runs minimized in the background.\nUse Quit GUI to close the GUI."),
-                    QDialogButtonBox::Ok,
-                    QStyle::SP_MessageBoxInformation,
-                    this);
-            trayDialog.exec();
 
-            if ( trayDialog.dontAskAgain() ) {
-                QAjOptionsDialog::setSetting( "noMinimizeQuestion", true );
-            } else {
-                QAjOptionsDialog::removeSetting( "noMinimizeQuestion" );
-            }
-        }
+        QAjHandlerDialog trayDialog(
+                tr("Minimizing to tray"),
+                tr("Tray Icon is enabled so Juicer runs minimized in the background.\nUse Quit GUI to close the GUI."),
+                QDialogButtonBox::Ok,
+                QStyle::SP_MessageBoxInformation,
+                this);
+        trayDialog.exec("minimize");
         showMinimized();
         setHidden( true );
         ce->ignore();
@@ -236,6 +230,8 @@ bool Juicer::login(const QString& message, bool error) {
         xml->setPassword(password);
         xml->setHost(host, port);
         xml->get("getsession");
+        // -- resolve hostname of core to determine incoming location --
+        QHostInfo::lookupHost(host, this, SLOT(hostLookedUp(QHostInfo)));
     // -- ignore at login --
     } else if(started) {
         optionsDialog->setSettings();
@@ -510,6 +506,14 @@ void Juicer::firstModified() {
             if(lokalSettings.value("fetchServersOnStartup", false).toBool()) {
                 serverModule->searchSlot();
             }
+            // -- if the core is not on localhost, warn the user --
+            if(!localCore && optionsDialog->sameComputerRadio->isChecked()) {
+                QAjHandlerDialog localCoreDialog(
+                    "Information",
+                    tr("The Core is not running on the local machine, In order to use the full functionality like directly opening downloads or the incoming view you have to specify the incoming and temporary directory in the options menu."),
+                    QDialogButtonBox::Ok, QStyle::SP_MessageBoxInformation);
+                localCoreDialog.exec("localCore");
+            }
         }
         firstModifiedCnt++;
     }
@@ -729,4 +733,13 @@ void Juicer::about() {
 
 void Juicer::aboutQt() {
     QMessageBox::aboutQt( this, tr("Juicer: About Qt") );
+}
+
+
+void Juicer::hostLookedUp(const QHostInfo &host) {
+    QList<QHostAddress> coreAddresses = host.addresses();
+    QList<QHostAddress> localAddresses = QNetworkInterface::allAddresses();
+    for(int i=0; i<localAddresses.size() && !localCore; i++) {
+        localCore = (coreAddresses.contains(localAddresses[i]));
+    }
 }
