@@ -1,6 +1,6 @@
 /***************************************************************************
- *   Copyright (C) 2004 by Matthias Reif                                   *
- *   matthias.reif@informatik.tu-chemnitz.de                               *
+ *   Copyright (C) 2007 by Matthias Reif   *
+ *   matthias.reif@informatik.tu-chemnitz.de   *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -17,19 +17,38 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
+#include "searchentryitem.h"
 
-#include "application.h"
+#include "searchitem.h"
 
-int main( int argc, char ** argv )
+SearchEntryItem::SearchEntryItem( QString id, SearchItem* search, QString checksum, QString size, QTreeWidgetItem* parent ) 
+  : Item( parent, id )
 {
-    Application a( argc, argv );
-
-    QSettings settings;
-    QString locale = settings.value("language", QLocale::system().name()).toString();
-    QTranslator translator;
-    if( ! translator.load(":/translations/" + locale))
-        translator.load("juicer_" + locale);
-    a.installTranslator(&translator);
-
-    return a.exec();
+    this->search = search;
+    if ( hash_.isEmpty() ) {
+        hash_ = checksum;
+    }
+    size_ = size.toDouble();
 }
+
+SearchEntryItem::~SearchEntryItem()
+{
+}
+
+bool SearchEntryItem::operator<( const QTreeWidgetItem & other ) const
+{
+    int sortIndex = treeWidget()->header()->sortIndicatorSection();
+    SearchEntryItem* searchItem = (SearchEntryItem*)&other;
+    switch ( sortIndex )
+    {
+    case SearchItem::SIZE_COL:
+        return size_ < searchItem->getSize();
+    default:
+        return this->text( sortIndex ) < other.text( sortIndex );
+    }
+}
+
+void SearchEntryItem::setFilename( QString filename ) {
+    filename_ = filename;
+}
+

@@ -17,19 +17,47 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
+#ifndef QAJSERVERWIDGET_H
+#define QAJSERVERWIDGET_H
 
-#include "application.h"
+#include <QHash>
+#include <QHttp>
+#include <QSettings>
+#include <QMessageBox>
 
-int main( int argc, char ** argv )
+#include "modulebase.h"
+#include "serveritem.h"
+#include "optionsdialog.h"
+
+/**
+@author Matthias Reif
+*/
+class ServerModule : public ModuleBase
 {
-    Application a( argc, argv );
+    Q_OBJECT
+public:
+    ServerModule(Juicer* juicer);
 
-    QSettings settings;
-    QString locale = settings.value("language", QLocale::system().name()).toString();
-    QTranslator translator;
-    if( ! translator.load(":/translations/" + locale))
-        translator.load("juicer_" + locale);
-    a.installTranslator(&translator);
+    ~ServerModule();
+    void insertServer(const QString& id, const QString& name, const QString& host, const QString& port, const QString& lastseen, const QString& tests);
+    void connectedWith( QString id );
+    void connectingTo( QString id );
+    ServerItem* findServer( QString id );
+    bool remove( QString id );
+    QDateTime& setConnectedSince(const QString& time);
 
-    return a.exec();
-}
+private:
+    QString connectedWithId, connectingToId;
+    QHash<QString, ServerItem*> servers;
+    QHttp *serverHttp;
+    QDateTime zeroTime, connectedSince;
+
+public slots:
+    void connectSlot();
+    void removeSlot();
+    void searchSlot();
+    void gotServer( int id, bool error );
+    void selectionChanged();
+};
+
+#endif

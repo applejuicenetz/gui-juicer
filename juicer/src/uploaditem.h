@@ -17,19 +17,37 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
+#ifndef QAJUPLOADITEM_H
+#define QAJUPLOADITEM_H
 
-#include "application.h"
+#include <QHeaderView>
 
-int main( int argc, char ** argv )
+#include "item.h"
+
+static const QString ACTIVE_UPLOAD = "1";
+static const QString QUEUEING_UPLOAD = "2";
+static const QString NEW_UPLOAD = "-1";
+
+/**
+@author Matthias Reif
+*/
+class UploadItem : public Item
 {
-    Application a( argc, argv );
+public:
+    UploadItem( QString id, QString shareId, QTreeWidget *parent );
+    ~UploadItem();
 
-    QSettings settings;
-    QString locale = settings.value("language", QLocale::system().name()).toString();
-    QTranslator translator;
-    if( ! translator.load(":/translations/" + locale))
-        translator.load("juicer_" + locale);
-    a.installTranslator(&translator);
+    QString shareId;
 
-    return a.exec();
-}
+    enum {FILENAME_COL, NICK_COL, SPEED_COL, STATUS_COL,
+          PRIORITY_COL, OS_COL, DIRECTSTATE_COL, VERSION_COL};
+
+    virtual bool operator<( const QTreeWidgetItem & other ) const;
+    void update(const QIcon& osIcon, const QString& status, const QString& statusDescr,
+                const QString& directState, const QString& priority, const QString& nick,
+                const QString& speed, const QString& version, bool newUpload);
+
+    double speed;
+};
+
+#endif

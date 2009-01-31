@@ -17,19 +17,44 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
+#include "searchitem.h"
 
-#include "application.h"
-
-int main( int argc, char ** argv )
+SearchItem::SearchItem( QString id, QTreeWidget* parent ) : Item( parent, id )
 {
-    Application a( argc, argv );
+    hits = 0;
+    entriesCount = 0;
+}
 
-    QSettings settings;
-    QString locale = settings.value("language", QLocale::system().name()).toString();
-    QTranslator translator;
-    if( ! translator.load(":/translations/" + locale))
-        translator.load("juicer_" + locale);
-    a.installTranslator(&translator);
+SearchItem::~SearchItem()
+{}
 
-    return a.exec();
+SearchEntryItem* SearchItem::findSearchEntry( QString id )
+{
+    if ( entries.contains( id ) )
+        return entries[ id ];
+    else
+        return NULL;
+}
+
+bool SearchItem::operator<( const QTreeWidgetItem & other ) const
+{
+    int sortIndex = treeWidget()->header()->sortIndicatorSection();
+
+
+    Item* item = (Item*)&other;
+    {
+        SearchItem* searchItem = (SearchItem*)item;
+        switch ( sortIndex )
+        {
+        case TEXT_COL:
+            return this->text( TEXT_COL ) < other.text( TEXT_COL );
+//         case SIZE_COL:
+//             return size < ->getHits();
+        case COUNT_COL:
+            return this->hits < searchItem->getHits();
+        default:
+            return this->text( sortIndex ) < other.text( sortIndex );
+        }
+    }
+
 }

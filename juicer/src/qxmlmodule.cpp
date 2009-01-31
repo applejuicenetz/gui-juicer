@@ -518,7 +518,7 @@ void QXMLModule::handleRemoved( QDomElement& e )
  */
 void QXMLModule::handlePart( QDomElement& e )
 {
-    QAjPartsWidget::Part part;
+    PartsWidget::Part part;
     part.type = e.attribute("type").toInt();
     part.fromPosition = e.attribute("fromposition").toULongLong();
     partList.push_back(part);
@@ -539,7 +539,7 @@ void QXMLModule::handlePartList( int id )
         }
         else if( partListSimpleRequests.contains( id ) )
         {
-            QAjDownloadItem* item = juicer->downloadModule->findDownload( partListSimpleRequests[id] );
+            DownloadItem* item = juicer->downloadModule->findDownload( partListSimpleRequests[id] );
             if ( item != NULL )
             {
                 item->setParts( partsSize, partList );

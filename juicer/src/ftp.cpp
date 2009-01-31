@@ -33,10 +33,10 @@ FTP::FTP( QString host, int port, QString user, QString password, bool binary, Q
 
 FTP::FTP( QObject *parent ) : QThread( parent )
 {
-    host = QAjOptionsDialog::getSetting( "ftp", "server", "localhost" ).toString();
-    port = QAjOptionsDialog::getSetting( "ftp", "port", "21" ).toInt();
-    user = QAjOptionsDialog::getSetting( "ftp", "user", "anonymous" ).toString();
-    password = QAjOptionsDialog::getSetting( "ftp", "password", "" ).toString();
+    host = OptionsDialog::getSetting( "ftp", "server", "localhost" ).toString();
+    port = OptionsDialog::getSetting( "ftp", "port", "21" ).toInt();
+    user = OptionsDialog::getSetting( "ftp", "user", "anonymous" ).toString();
+    password = OptionsDialog::getSetting( "ftp", "password", "" ).toString();
     binary = true;
     init();
 }
@@ -104,7 +104,7 @@ void FTP::run()
 {
     ftp->connectToHost( host, port );
     ftp->login( user, password );
-    ftp->setTransferMode( (QFtp::TransferMode)QAjOptionsDialog::getSetting( "ftp", "mode", QFtp::Active ).toInt() );
+    ftp->setTransferMode( (QFtp::TransferMode)OptionsDialog::getSetting( "ftp", "mode", QFtp::Active ).toInt() );
     exec();
 }
 
@@ -117,10 +117,10 @@ void FTP::dataTransferProgressSlot( qint64 done, qint64 total )
     qint64 min = -1;
     if( tmpMode && ! ready )
     {
-        bool full = QAjOptionsDialog::getSetting( "ftp", "full", false ).toBool();
+        bool full = OptionsDialog::getSetting( "ftp", "full", false ).toBool();
         if( !full )
         {
-            min = QAjOptionsDialog::getSetting( "ftp", "mb", 10 ).toInt() * 1024 * 1024;
+            min = OptionsDialog::getSetting( "ftp", "mb", 10 ).toInt() * 1024 * 1024;
             total = min;
         }
     }

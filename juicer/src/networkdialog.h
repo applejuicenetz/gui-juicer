@@ -1,6 +1,6 @@
 /***************************************************************************
- *   Copyright (C) 2004 by Matthias Reif                                   *
- *   matthias.reif@informatik.tu-chemnitz.de                               *
+ *   Copyright (C) 2007 by Matthias Reif   *
+ *   matthias.reif@iupr.dfki.de   *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -18,18 +18,23 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include "application.h"
+#ifndef QAJNETWORKDIALOG_H
+#define QAJNETWORKDIALOG_H
 
-int main( int argc, char ** argv )
+#include <QDialog>
+#include "ui_networkdialogbase.h"
+
+class NetworkDialog : public QDialog, private Ui::NetworkDialog
 {
-    Application a( argc, argv );
+  Q_OBJECT
 
-    QSettings settings;
-    QString locale = settings.value("language", QLocale::system().name()).toString();
-    QTranslator translator;
-    if( ! translator.load(":/translations/" + locale))
-        translator.load("juicer_" + locale);
-    a.installTranslator(&translator);
+public:
+  NetworkDialog(QWidget* parent = 0, Qt::WFlags fl = 0 );
+  ~NetworkDialog();
+    void setValues( const QString& users, const QString& files, const QString& size, const QString& ip, const QString& firewalled );
 
-    return a.exec();
-}
+
+};
+
+#endif
+

@@ -1,6 +1,6 @@
 /***************************************************************************
- *   Copyright (C) 2004 by Matthias Reif                                   *
- *   matthias.reif@informatik.tu-chemnitz.de                               *
+ *   Copyright (C) 2007 by Matthias Reif   *
+ *   matthias.reif@informatik.tu-chemnitz.de   *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -17,19 +17,27 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
+#ifndef QAJSERVERITEM_H
+#define QAJSERVERITEM_H
 
-#include "application.h"
+#include <QHeaderView>
+#include <QDateTime>
 
-int main( int argc, char ** argv )
+#include "item.h"
+
+/**
+    @author Matthias Reif <matthias.reif@informatik.tu-chemnitz.de>
+*/
+class ServerItem : public Item
 {
-    Application a( argc, argv );
+public:
+    ServerItem( QString id, QTreeWidget *parent );
 
-    QSettings settings;
-    QString locale = settings.value("language", QLocale::system().name()).toString();
-    QTranslator translator;
-    if( ! translator.load(":/translations/" + locale))
-        translator.load("juicer_" + locale);
-    a.installTranslator(&translator);
+    ~ServerItem();
 
-    return a.exec();
-}
+    enum {NAME_COL, HOST_COL, PORT_COL, LASTSEEN_COL, TESTS_COL};
+    virtual bool operator<( const QTreeWidgetItem & other ) const;
+    void update(const QString& name, const QString& host, const QString& port, const QString& lastseen, const QString& tests, const QString& time);
+};
+
+#endif

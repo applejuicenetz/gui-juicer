@@ -1,6 +1,6 @@
 /***************************************************************************
- *   Copyright (C) 2004 by Matthias Reif                                   *
- *   matthias.reif@informatik.tu-chemnitz.de                               *
+ *   Copyright (C) 2007 by Matthias Reif   *
+ *   matthias.reif@informatik.tu-chemnitz.de   *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -17,19 +17,33 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
+#include "incomingitem.h"
 
-#include "application.h"
-
-int main( int argc, char ** argv )
+IncomingItem::IncomingItem( qint64 size, QDateTime date, QTreeWidget* parent ) : Item( parent )
 {
-    Application a( argc, argv );
-
-    QSettings settings;
-    QString locale = settings.value("language", QLocale::system().name()).toString();
-    QTranslator translator;
-    if( ! translator.load(":/translations/" + locale))
-        translator.load("juicer_" + locale);
-    a.installTranslator(&translator);
-
-    return a.exec();
+    this->size = size;
+    this->date = date;
 }
+
+
+IncomingItem::~IncomingItem()
+{
+}
+
+bool IncomingItem::operator<( const QTreeWidgetItem & other ) const
+{
+    int sortIndex = treeWidget()->header()->sortIndicatorSection();
+    IncomingItem* incomingItem = (IncomingItem*)&other;
+    switch ( sortIndex )
+    {
+        case SIZE_COL:
+            return this->size < incomingItem->size;
+            break;
+        case DATE_COL:
+            return this->date < incomingItem->date;
+            break;
+        default:
+            return this->text( sortIndex ) < other.text( sortIndex );
+    }
+}
+

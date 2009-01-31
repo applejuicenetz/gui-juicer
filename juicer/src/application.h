@@ -17,19 +17,35 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
+#ifndef QAJAPPLICATION_H
+#define QAJAPPLICATION_H
 
-#include "application.h"
+#include <qglobal.h>
+#include <QApplication>
+#include <QSplashScreen>
 
-int main( int argc, char ** argv )
+#include "serversocket.h"
+#include "socket.h"
+#include "juicer.h"
+
+/**
+@author Matthias Reif
+*/
+class Application : public QApplication
 {
-    Application a( argc, argv );
+    Q_OBJECT
+public:
+    Application( int & argc, char ** argv );
 
-    QSettings settings;
-    QString locale = settings.value("language", QLocale::system().name()).toString();
-    QTranslator translator;
-    if( ! translator.load(":/translations/" + locale))
-        translator.load("juicer_" + locale);
-    a.installTranslator(&translator);
+    ~Application();
+    int exec();
+    static const int APP_PORT = 21456;
+    QString appPath;
+public slots:
+    void start();
+private:
+    Socket *socket;
+    QStringList argList;
+};
 
-    return a.exec();
-}
+#endif

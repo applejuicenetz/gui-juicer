@@ -1,6 +1,6 @@
 /***************************************************************************
- *   Copyright (C) 2004 by Matthias Reif                                   *
- *   matthias.reif@informatik.tu-chemnitz.de                               *
+ *   Copyright (C) 2007 by Matthias Reif   *
+ *   matthias.reif@informatik.tu-chemnitz.de   *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -17,19 +17,32 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
+#ifndef QAJINCOMINGITEM_H
+#define QAJINCOMINGITEM_H
 
-#include "application.h"
+#include <QHeaderView>
+#include <QDateTime>
 
-int main( int argc, char ** argv )
+#include "item.h"
+
+/**
+	@author Matthias Reif <matthias.reif@informatik.tu-chemnitz.de>
+*/
+class IncomingItem : public Item
 {
-    Application a( argc, argv );
+public:
+    IncomingItem( qint64 size, QDateTime date, QTreeWidget* parent );
 
-    QSettings settings;
-    QString locale = settings.value("language", QLocale::system().name()).toString();
-    QTranslator translator;
-    if( ! translator.load(":/translations/" + locale))
-        translator.load("juicer_" + locale);
-    a.installTranslator(&translator);
+    ~IncomingItem();
 
-    return a.exec();
-}
+    virtual bool operator<( const QTreeWidgetItem & other ) const;
+
+    enum {FILENAME_COL, SIZE_COL, DATE_COL};
+
+
+private:
+    qint64 size;
+    QDateTime date;
+};
+
+#endif

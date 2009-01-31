@@ -1,0 +1,1151 @@
+<ui version="4.0" >
+ <class>MainWindowBase</class>
+ <widget class="QMainWindow" name="MainWindowBase" >
+  <property name="geometry" >
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>1288</width>
+    <height>688</height>
+   </rect>
+  </property>
+  <property name="windowTitle" >
+   <string>MainWindow</string>
+  </property>
+  <property name="windowIcon" >
+   <iconset resource="images.qrc" >
+    <normaloff>:/juicer.png</normaloff>:/juicer.png</iconset>
+  </property>
+  <widget class="QWidget" name="centralwidget" >
+   <layout class="QVBoxLayout" name="verticalLayout" >
+    <item>
+     <widget class="QTabWidget" name="ajTab" >
+      <property name="currentIndex" >
+       <number>0</number>
+      </property>
+      <widget class="DockMain" name="downloads" >
+       <attribute name="title" >
+        <string>Downloads</string>
+       </attribute>
+       <attribute name="icon" >
+        <iconset resource="images.qrc" >
+         <normaloff>:/small/down.png</normaloff>:/small/down.png</iconset>
+       </attribute>
+       <widget class="QTreeWidget" name="downloadsTreeWidget" >
+        <property name="geometry" >
+         <rect>
+          <x>4</x>
+          <y>4</y>
+          <width>831</width>
+          <height>515</height>
+         </rect>
+        </property>
+        <property name="sizePolicy" >
+         <sizepolicy vsizetype="Expanding" hsizetype="Expanding" >
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="selectionMode" >
+         <enum>QAbstractItemView::ExtendedSelection</enum>
+        </property>
+        <property name="sortingEnabled" >
+         <bool>true</bool>
+        </property>
+        <column>
+         <property name="text" >
+          <string>Filename</string>
+         </property>
+        </column>
+        <column>
+         <property name="text" >
+          <string>Sources</string>
+         </property>
+        </column>
+        <column>
+         <property name="text" >
+          <string>Speed</string>
+         </property>
+        </column>
+        <column>
+         <property name="text" >
+          <string>Status</string>
+         </property>
+        </column>
+        <column>
+         <property name="text" >
+          <string>Finished</string>
+         </property>
+        </column>
+        <column>
+         <property name="text" >
+          <string>Power</string>
+         </property>
+         <property name="icon" >
+          <iconset resource="images.qrc" >
+           <normaloff>:/small/launch.png</normaloff>:/small/launch.png</iconset>
+         </property>
+        </column>
+        <column>
+         <property name="text" >
+          <string>Size</string>
+         </property>
+        </column>
+        <column>
+         <property name="text" >
+          <string>Finished</string>
+         </property>
+        </column>
+        <column>
+         <property name="text" >
+          <string>Remaining</string>
+         </property>
+        </column>
+        <column>
+         <property name="text" >
+          <string>Eta</string>
+         </property>
+         <property name="icon" >
+          <iconset resource="images.qrc" >
+           <normaloff>:/small/clock.png</normaloff>:/small/clock.png</iconset>
+         </property>
+        </column>
+        <column>
+         <property name="text" >
+          <string>Not Seen</string>
+         </property>
+        </column>
+       </widget>
+       <widget class="QDockWidget" name="partListDock" >
+        <property name="geometry" >
+         <rect>
+          <x>840</x>
+          <y>20</y>
+          <width>401</width>
+          <height>471</height>
+         </rect>
+        </property>
+        <property name="minimumSize" >
+         <size>
+          <width>0</width>
+          <height>0</height>
+         </size>
+        </property>
+        <property name="windowTitle" >
+         <string>Part List</string>
+        </property>
+        <widget class="QWidget" name="dockWidgetContents_8" >
+         <layout class="QVBoxLayout" name="verticalLayout_2" >
+          <item>
+           <widget class="PartsWidget" native="1" name="partsWidget" >
+            <property name="sizePolicy" >
+             <sizepolicy vsizetype="Preferred" hsizetype="Preferred" >
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="minimumSize" >
+             <size>
+              <width>0</width>
+              <height>0</height>
+             </size>
+            </property>
+            <property name="sizeIncrement" >
+             <size>
+              <width>0</width>
+              <height>0</height>
+             </size>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </widget>
+      </widget>
+      <widget class="QWidget" name="uploads" >
+       <attribute name="title" >
+        <string>Uploads</string>
+       </attribute>
+       <attribute name="icon" >
+        <iconset resource="images.qrc" >
+         <normaloff>:/small/up.png</normaloff>:/small/up.png</iconset>
+       </attribute>
+       <layout class="QVBoxLayout" name="verticalLayout_3" >
+        <item>
+         <widget class="QTreeWidget" name="uploadsTreeWidget" >
+          <property name="selectionMode" >
+           <enum>QAbstractItemView::ExtendedSelection</enum>
+          </property>
+          <property name="sortingEnabled" >
+           <bool>true</bool>
+          </property>
+          <column>
+           <property name="text" >
+            <string>Filename</string>
+           </property>
+          </column>
+          <column>
+           <property name="text" >
+            <string>Nick</string>
+           </property>
+          </column>
+          <column>
+           <property name="text" >
+            <string>Speed</string>
+           </property>
+          </column>
+          <column>
+           <property name="text" >
+            <string>Status</string>
+           </property>
+          </column>
+          <column>
+           <property name="text" >
+            <string>Priority</string>
+           </property>
+          </column>
+          <column>
+           <property name="text" >
+            <string>OS</string>
+           </property>
+          </column>
+          <column>
+           <property name="text" >
+            <string>Direct State</string>
+           </property>
+          </column>
+          <column>
+           <property name="text" >
+            <string>Core</string>
+           </property>
+          </column>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+      <widget class="QWidget" name="search" >
+       <attribute name="title" >
+        <string>Search</string>
+       </attribute>
+       <attribute name="icon" >
+        <iconset resource="images.qrc" >
+         <normaloff>:/small/searching.png</normaloff>:/small/searching.png</iconset>
+       </attribute>
+       <layout class="QVBoxLayout" name="verticalLayout_4" >
+        <item>
+         <widget class="QTreeWidget" name="searchsTreeWidget" >
+          <property name="selectionMode" >
+           <enum>QAbstractItemView::ExtendedSelection</enum>
+          </property>
+          <property name="sortingEnabled" >
+           <bool>true</bool>
+          </property>
+          <column>
+           <property name="text" >
+            <string>Search</string>
+           </property>
+          </column>
+          <column>
+           <property name="text" >
+            <string>Size</string>
+           </property>
+          </column>
+          <column>
+           <property name="text" >
+            <string>Hits</string>
+           </property>
+          </column>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+      <widget class="DockMain" name="server" >
+       <attribute name="title" >
+        <string>Server</string>
+       </attribute>
+       <attribute name="icon" >
+        <iconset resource="images.qrc" >
+         <normaloff>:/small/server.png</normaloff>:/small/server.png</iconset>
+       </attribute>
+       <widget class="QTreeWidget" name="serverTreeWidget" >
+        <property name="geometry" >
+         <rect>
+          <x>4</x>
+          <y>4</y>
+          <width>961</width>
+          <height>515</height>
+         </rect>
+        </property>
+        <property name="sizePolicy" >
+         <sizepolicy vsizetype="Expanding" hsizetype="Expanding" >
+          <horstretch>2</horstretch>
+          <verstretch>2</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="selectionMode" >
+         <enum>QAbstractItemView::ExtendedSelection</enum>
+        </property>
+        <property name="sortingEnabled" >
+         <bool>true</bool>
+        </property>
+        <column>
+         <property name="text" >
+          <string>Name</string>
+         </property>
+        </column>
+        <column>
+         <property name="text" >
+          <string>Host</string>
+         </property>
+        </column>
+        <column>
+         <property name="text" >
+          <string>Port</string>
+         </property>
+        </column>
+        <column>
+         <property name="text" >
+          <string>Last Seen</string>
+         </property>
+        </column>
+        <column>
+         <property name="text" >
+          <string>Tests</string>
+         </property>
+        </column>
+       </widget>
+       <widget class="QDockWidget" name="welcomeDock" >
+        <property name="geometry" >
+         <rect>
+          <x>974</x>
+          <y>4</y>
+          <width>294</width>
+          <height>515</height>
+         </rect>
+        </property>
+        <property name="sizePolicy" >
+         <sizepolicy vsizetype="Preferred" hsizetype="Preferred" >
+          <horstretch>1</horstretch>
+          <verstretch>1</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="features" >
+         <set>QDockWidget::DockWidgetClosable|QDockWidget::DockWidgetMovable</set>
+        </property>
+        <property name="windowTitle" >
+         <string>Server Welcome Message</string>
+        </property>
+        <widget class="QWidget" name="dockWidgetContents_3" >
+         <layout class="QVBoxLayout" name="verticalLayout_5" >
+          <item>
+           <widget class="QTextEdit" name="welcomeEdit" >
+            <property name="sizePolicy" >
+             <sizepolicy vsizetype="Preferred" hsizetype="Preferred" >
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </widget>
+      </widget>
+      <widget class="QWidget" name="shares" >
+       <attribute name="title" >
+        <string>Shares</string>
+       </attribute>
+       <attribute name="icon" >
+        <iconset resource="images.qrc" >
+         <normaloff>:/small/folder_open.png</normaloff>:/small/folder_open.png</iconset>
+       </attribute>
+       <layout class="QVBoxLayout" name="verticalLayout_6" >
+        <item>
+         <widget class="QTreeWidget" name="sharesTreeWidget" >
+          <property name="selectionMode" >
+           <enum>QAbstractItemView::ExtendedSelection</enum>
+          </property>
+          <property name="sortingEnabled" >
+           <bool>true</bool>
+          </property>
+          <column>
+           <property name="text" >
+            <string>Path</string>
+           </property>
+          </column>
+          <column>
+           <property name="text" >
+            <string>Size</string>
+           </property>
+          </column>
+          <column>
+           <property name="text" >
+            <string>Priority</string>
+           </property>
+          </column>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+      <widget class="QWidget" name="incoming" >
+       <attribute name="title" >
+        <string>Incoming</string>
+       </attribute>
+       <attribute name="icon" >
+        <iconset resource="images.qrc" >
+         <normaloff>:/small/ftp.png</normaloff>:/small/ftp.png</iconset>
+       </attribute>
+       <layout class="QVBoxLayout" name="verticalLayout_7" >
+        <item>
+         <widget class="QTreeWidget" name="incomingTreeWidget" >
+          <property name="selectionMode" >
+           <enum>QAbstractItemView::ExtendedSelection</enum>
+          </property>
+          <property name="sortingEnabled" >
+           <bool>true</bool>
+          </property>
+          <column>
+           <property name="text" >
+            <string>Filename</string>
+           </property>
+          </column>
+          <column>
+           <property name="text" >
+            <string>Size</string>
+           </property>
+          </column>
+          <column>
+           <property name="text" >
+            <string>Last Modified</string>
+           </property>
+          </column>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QMenuBar" name="menubar" >
+   <property name="geometry" >
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>1288</width>
+     <height>27</height>
+    </rect>
+   </property>
+   <widget class="QMenu" name="menuAppleJuice" >
+    <property name="title" >
+     <string>&amp;AppleJuice</string>
+    </property>
+    <addaction name="actionConfigure" />
+    <addaction name="actionNet_Info" />
+    <addaction name="actionOpen_Aj_Link_List" />
+    <addaction name="actionAdjust_Columns" />
+    <addaction name="separator" />
+    <addaction name="actionExit_Core" />
+    <addaction name="actionQuit_GUI" />
+   </widget>
+   <widget class="QMenu" name="menuHelp" >
+    <property name="title" >
+     <string>&amp;Help</string>
+    </property>
+    <addaction name="actionAbout" />
+    <addaction name="actionAbout_Qt" />
+   </widget>
+   <widget class="QMenu" name="menuDownload" >
+    <property name="title" >
+     <string>Download</string>
+    </property>
+    <addaction name="actionPause" />
+    <addaction name="actionResume" />
+    <addaction name="actionCancel" />
+    <addaction name="actionShow_Part_List" />
+    <addaction name="actionRename" />
+    <addaction name="actionRename_By_Clipboard" />
+    <addaction name="actionOpen" />
+    <addaction name="actionCopy_Link" />
+    <addaction name="actionCreate_Link_List" />
+    <addaction name="separator" />
+    <addaction name="actionMaximal_Power" />
+    <addaction name="actionRemove_Finished" />
+    <addaction name="actionHide_Paused" />
+    <addaction name="actionShow_Part_List_Dock" />
+   </widget>
+   <widget class="QMenu" name="menuUpload" >
+    <property name="title" >
+     <string>Upload</string>
+    </property>
+    <addaction name="actionHide_Queued" />
+   </widget>
+   <widget class="QMenu" name="menuSearch" >
+    <property name="title" >
+     <string>Search</string>
+    </property>
+    <addaction name="actionDownload" />
+    <addaction name="actionCancel_Search" />
+    <addaction name="actionCopy_Link_Search" />
+   </widget>
+   <widget class="QMenu" name="menuServer" >
+    <property name="title" >
+     <string>Server</string>
+    </property>
+    <addaction name="actionConnect_Server" />
+    <addaction name="actionRemove_Server" />
+    <addaction name="separator" />
+    <addaction name="actionSearch_Server" />
+    <addaction name="actionShow_Welcome_Message" />
+   </widget>
+   <widget class="QMenu" name="menuShare" >
+    <property name="title" >
+     <string>Share</string>
+    </property>
+    <addaction name="actionRemove_Share" />
+    <addaction name="separator" />
+    <addaction name="actionAdd_Share" />
+    <addaction name="actionReload_Share" />
+    <addaction name="actionCommit_Share" />
+    <addaction name="actionCopy_Link_Share" />
+    <addaction name="actionCreate_Link_List_Share" />
+   </widget>
+   <widget class="QMenu" name="menuIncoming" >
+    <property name="title" >
+     <string>Incoming</string>
+    </property>
+    <addaction name="actionOpen_Incoming" />
+    <addaction name="actionCopy_Incoming" />
+    <addaction name="actionDelete_Incoming" />
+    <addaction name="separator" />
+    <addaction name="actionReload_Incoming" />
+   </widget>
+   <addaction name="menuAppleJuice" />
+   <addaction name="menuDownload" />
+   <addaction name="menuUpload" />
+   <addaction name="menuSearch" />
+   <addaction name="menuServer" />
+   <addaction name="menuShare" />
+   <addaction name="menuIncoming" />
+   <addaction name="menuHelp" />
+  </widget>
+  <widget class="QStatusBar" name="statusbar" />
+  <widget class="QToolBar" name="ajTools" >
+   <property name="windowTitle" >
+    <string>toolBar</string>
+   </property>
+   <property name="iconSize" >
+    <size>
+     <width>22</width>
+     <height>22</height>
+    </size>
+   </property>
+   <attribute name="toolBarArea" >
+    <enum>TopToolBarArea</enum>
+   </attribute>
+   <attribute name="toolBarBreak" >
+    <bool>false</bool>
+   </attribute>
+   <addaction name="actionConfigure" />
+   <addaction name="actionNet_Info" />
+   <addaction name="separator" />
+   <addaction name="actionOpen_Aj_Link_List" />
+   <addaction name="actionAdjust_Columns" />
+  </widget>
+  <widget class="QToolBar" name="ajLinks" >
+   <property name="minimumSize" >
+    <size>
+     <width>0</width>
+     <height>0</height>
+    </size>
+   </property>
+   <property name="windowTitle" >
+    <string>toolBar</string>
+   </property>
+   <property name="iconSize" >
+    <size>
+     <width>22</width>
+     <height>22</height>
+    </size>
+   </property>
+   <attribute name="toolBarArea" >
+    <enum>TopToolBarArea</enum>
+   </attribute>
+   <attribute name="toolBarBreak" >
+    <bool>false</bool>
+   </attribute>
+   <addaction name="actionProcess_Link_From_Clipboard" />
+  </widget>
+  <widget class="QToolBar" name="downloadToolBar" >
+   <property name="windowTitle" >
+    <string>toolBar</string>
+   </property>
+   <property name="iconSize" >
+    <size>
+     <width>22</width>
+     <height>22</height>
+    </size>
+   </property>
+   <attribute name="toolBarArea" >
+    <enum>TopToolBarArea</enum>
+   </attribute>
+   <attribute name="toolBarBreak" >
+    <bool>true</bool>
+   </attribute>
+   <addaction name="actionPause" />
+   <addaction name="actionResume" />
+   <addaction name="actionCancel" />
+   <addaction name="actionShow_Part_List" />
+   <addaction name="actionRename" />
+   <addaction name="actionRename_By_Clipboard" />
+   <addaction name="actionOpen" />
+   <addaction name="actionCopy_Link" />
+   <addaction name="actionCreate_Link_List" />
+   <addaction name="separator" />
+   <addaction name="actionMaximal_Power" />
+   <addaction name="actionRemove_Finished" />
+   <addaction name="actionHide_Paused" />
+   <addaction name="actionShow_Part_List_Dock" />
+   <addaction name="separator" />
+  </widget>
+  <widget class="QToolBar" name="uploadToolBar" >
+   <property name="windowTitle" >
+    <string>toolBar</string>
+   </property>
+   <property name="iconSize" >
+    <size>
+     <width>22</width>
+     <height>22</height>
+    </size>
+   </property>
+   <attribute name="toolBarArea" >
+    <enum>TopToolBarArea</enum>
+   </attribute>
+   <attribute name="toolBarBreak" >
+    <bool>false</bool>
+   </attribute>
+   <addaction name="actionHide_Queued" />
+  </widget>
+  <widget class="QToolBar" name="searchToolBar" >
+   <property name="windowTitle" >
+    <string>toolBar</string>
+   </property>
+   <property name="iconSize" >
+    <size>
+     <width>22</width>
+     <height>22</height>
+    </size>
+   </property>
+   <attribute name="toolBarArea" >
+    <enum>TopToolBarArea</enum>
+   </attribute>
+   <attribute name="toolBarBreak" >
+    <bool>false</bool>
+   </attribute>
+   <addaction name="actionDownload" />
+   <addaction name="actionCancel_Search" />
+   <addaction name="actionCopy_Link_Search" />
+   <addaction name="actionCreate_Link_List_Search" />
+  </widget>
+  <widget class="QToolBar" name="serverToolBar" >
+   <property name="windowTitle" >
+    <string>toolBar</string>
+   </property>
+   <property name="iconSize" >
+    <size>
+     <width>22</width>
+     <height>22</height>
+    </size>
+   </property>
+   <attribute name="toolBarArea" >
+    <enum>TopToolBarArea</enum>
+   </attribute>
+   <attribute name="toolBarBreak" >
+    <bool>false</bool>
+   </attribute>
+   <addaction name="actionConnect_Server" />
+   <addaction name="actionRemove_Server" />
+   <addaction name="separator" />
+   <addaction name="actionSearch_Server" />
+   <addaction name="actionShow_Welcome_Message" />
+  </widget>
+  <widget class="QToolBar" name="shareToolBar" >
+   <property name="windowTitle" >
+    <string>toolBar</string>
+   </property>
+   <property name="iconSize" >
+    <size>
+     <width>22</width>
+     <height>22</height>
+    </size>
+   </property>
+   <attribute name="toolBarArea" >
+    <enum>TopToolBarArea</enum>
+   </attribute>
+   <attribute name="toolBarBreak" >
+    <bool>false</bool>
+   </attribute>
+   <addaction name="actionRemove_Share" />
+   <addaction name="actionCopy_Link_Share" />
+   <addaction name="actionCreate_Link_List_Share" />
+   <addaction name="separator" />
+   <addaction name="actionAdd_Share" />
+   <addaction name="actionReload_Share" />
+   <addaction name="actionCommit_Share" />
+   <addaction name="separator" />
+  </widget>
+  <widget class="QToolBar" name="incomingToolBar" >
+   <property name="windowTitle" >
+    <string>toolBar</string>
+   </property>
+   <property name="iconSize" >
+    <size>
+     <width>22</width>
+     <height>22</height>
+    </size>
+   </property>
+   <attribute name="toolBarArea" >
+    <enum>TopToolBarArea</enum>
+   </attribute>
+   <attribute name="toolBarBreak" >
+    <bool>false</bool>
+   </attribute>
+   <addaction name="actionOpen_Incoming" />
+   <addaction name="actionCopy_Incoming" />
+   <addaction name="actionDelete_Incoming" />
+   <addaction name="separator" />
+   <addaction name="actionReload_Incoming" />
+  </widget>
+  <action name="actionConfigure" >
+   <property name="icon" >
+    <iconset resource="images.qrc" >
+     <normaloff>:/configure.png</normaloff>:/configure.png</iconset>
+   </property>
+   <property name="text" >
+    <string>Configure</string>
+   </property>
+   <property name="shortcut" >
+    <string>Ctrl+O</string>
+   </property>
+  </action>
+  <action name="actionNet_Info" >
+   <property name="icon" >
+    <iconset resource="images.qrc" >
+     <normaloff>:/network.png</normaloff>:/network.png</iconset>
+   </property>
+   <property name="text" >
+    <string>Net Info</string>
+   </property>
+   <property name="shortcut" >
+    <string>Ctrl+N</string>
+   </property>
+  </action>
+  <action name="actionOpen_Aj_Link_List" >
+   <property name="icon" >
+    <iconset resource="images.qrc" >
+     <normaloff>:/folder_open.png</normaloff>:/folder_open.png</iconset>
+   </property>
+   <property name="text" >
+    <string>Open Aj Link List</string>
+   </property>
+  </action>
+  <action name="actionExit_Core" >
+   <property name="icon" >
+    <iconset resource="images.qrc" >
+     <normaloff>:/small/exit.png</normaloff>:/small/exit.png</iconset>
+   </property>
+   <property name="text" >
+    <string>Exit Core</string>
+   </property>
+   <property name="shortcut" >
+    <string>Ctrl+E</string>
+   </property>
+  </action>
+  <action name="actionQuit_GUI" >
+   <property name="icon" >
+    <iconset resource="images.qrc" >
+     <normaloff>:/small/close.png</normaloff>:/small/close.png</iconset>
+   </property>
+   <property name="text" >
+    <string>Quit GUI</string>
+   </property>
+   <property name="shortcut" >
+    <string>Ctrl+Q</string>
+   </property>
+  </action>
+  <action name="actionAbout" >
+   <property name="icon" >
+    <iconset resource="images.qrc" >
+     <normaloff>:/small/version.png</normaloff>:/small/version.png</iconset>
+   </property>
+   <property name="text" >
+    <string>About</string>
+   </property>
+   <property name="shortcut" >
+    <string>F1</string>
+   </property>
+  </action>
+  <action name="actionAbout_Qt" >
+   <property name="text" >
+    <string>About Qt</string>
+   </property>
+  </action>
+  <action name="actionAdjust_Columns" >
+   <property name="icon" >
+    <iconset resource="images.qrc" >
+     <normaloff>:/adjust.png</normaloff>:/adjust.png</iconset>
+   </property>
+   <property name="text" >
+    <string>Adjust Column</string>
+   </property>
+  </action>
+  <action name="actionProcess_Link_From_Clipboard" >
+   <property name="icon" >
+    <iconset resource="images.qrc" >
+     <normaloff>:/wizard.png</normaloff>:/wizard.png</iconset>
+   </property>
+   <property name="text" >
+    <string>Process Link From Clipboard</string>
+   </property>
+  </action>
+  <action name="actionPause" >
+   <property name="icon" >
+    <iconset resource="images.qrc" >
+     <normaloff>:/pause.png</normaloff>:/pause.png</iconset>
+   </property>
+   <property name="text" >
+    <string>Pause</string>
+   </property>
+  </action>
+  <action name="actionResume" >
+   <property name="icon" >
+    <iconset resource="images.qrc" >
+     <normaloff>:/resume.png</normaloff>:/resume.png</iconset>
+   </property>
+   <property name="text" >
+    <string>Resume</string>
+   </property>
+  </action>
+  <action name="actionCancel" >
+   <property name="icon" >
+    <iconset resource="images.qrc" >
+     <normaloff>:/cancel.png</normaloff>:/cancel.png</iconset>
+   </property>
+   <property name="text" >
+    <string>Cancel</string>
+   </property>
+  </action>
+  <action name="actionShow_Part_List" >
+   <property name="icon" >
+    <iconset resource="images.qrc" >
+     <normaloff>:/partlist.png</normaloff>:/partlist.png</iconset>
+   </property>
+   <property name="text" >
+    <string>Show Part List Dialog</string>
+   </property>
+  </action>
+  <action name="actionRename" >
+   <property name="icon" >
+    <iconset resource="images.qrc" >
+     <normaloff>:/rename.png</normaloff>:/rename.png</iconset>
+   </property>
+   <property name="text" >
+    <string>Rename</string>
+   </property>
+  </action>
+  <action name="actionRename_By_Clipboard" >
+   <property name="icon" >
+    <iconset resource="images.qrc" >
+     <normaloff>:/rename_plus.png</normaloff>:/rename_plus.png</iconset>
+   </property>
+   <property name="text" >
+    <string>Rename By Clipboard</string>
+   </property>
+  </action>
+  <action name="actionOpen" >
+   <property name="icon" >
+    <iconset resource="images.qrc" >
+     <normaloff>:/exec.png</normaloff>:/exec.png</iconset>
+   </property>
+   <property name="text" >
+    <string>Open</string>
+   </property>
+  </action>
+  <action name="actionCopy_Link" >
+   <property name="icon" >
+    <iconset resource="images.qrc" >
+     <normaloff>:/text_block.png</normaloff>:/text_block.png</iconset>
+   </property>
+   <property name="text" >
+    <string>Copy Link</string>
+   </property>
+  </action>
+  <action name="actionRemove_Finished" >
+   <property name="icon" >
+    <iconset resource="images.qrc" >
+     <normaloff>:/filter.png</normaloff>:/filter.png</iconset>
+   </property>
+   <property name="text" >
+    <string>Remove Finished</string>
+   </property>
+  </action>
+  <action name="actionCreate_Link_List" >
+   <property name="icon" >
+    <iconset resource="images.qrc" >
+     <normaloff>:/toggle_log.png</normaloff>:/toggle_log.png</iconset>
+   </property>
+   <property name="text" >
+    <string>Create Link List</string>
+   </property>
+  </action>
+  <action name="actionHide_Paused" >
+   <property name="checkable" >
+    <bool>true</bool>
+   </property>
+   <property name="icon" >
+    <iconset resource="images.qrc" >
+     <normaloff>:/pause_fade.png</normaloff>:/pause_fade.png</iconset>
+   </property>
+   <property name="text" >
+    <string>Hide Paused</string>
+   </property>
+  </action>
+  <action name="actionMaximal_Power" >
+   <property name="icon" >
+    <iconset resource="images.qrc" >
+     <normaloff>:/launch.png</normaloff>:/launch.png</iconset>
+   </property>
+   <property name="text" >
+    <string>Maximal Power</string>
+   </property>
+  </action>
+  <action name="actionHide_Queued" >
+   <property name="checkable" >
+    <bool>true</bool>
+   </property>
+   <property name="icon" >
+    <iconset resource="images.qrc" >
+     <normaloff>:/pause_fade.png</normaloff>:/pause_fade.png</iconset>
+   </property>
+   <property name="text" >
+    <string>Hide Queued</string>
+   </property>
+  </action>
+  <action name="actionDownload" >
+   <property name="icon" >
+    <iconset resource="images.qrc" >
+     <normaloff>:/save.png</normaloff>:/save.png</iconset>
+   </property>
+   <property name="text" >
+    <string>download</string>
+   </property>
+  </action>
+  <action name="actionCancel_Search" >
+   <property name="icon" >
+    <iconset resource="images.qrc" >
+     <normaloff>:/cancel.png</normaloff>:/cancel.png</iconset>
+   </property>
+   <property name="text" >
+    <string>Cancel</string>
+   </property>
+  </action>
+  <action name="actionCopy_Link_Search" >
+   <property name="icon" >
+    <iconset resource="images.qrc" >
+     <normaloff>:/text_block.png</normaloff>:/text_block.png</iconset>
+   </property>
+   <property name="text" >
+    <string>Copy Link</string>
+   </property>
+  </action>
+  <action name="actionCreate_Link_List_Search" >
+   <property name="icon" >
+    <iconset resource="images.qrc" >
+     <normaloff>:/toggle_log.png</normaloff>:/toggle_log.png</iconset>
+   </property>
+   <property name="text" >
+    <string>Create Link List</string>
+   </property>
+  </action>
+  <action name="actionConnect_Server" >
+   <property name="icon" >
+    <iconset resource="images.qrc" >
+     <normaloff>:/connect.png</normaloff>:/connect.png</iconset>
+   </property>
+   <property name="text" >
+    <string>Connect</string>
+   </property>
+  </action>
+  <action name="actionRemove_Server" >
+   <property name="icon" >
+    <iconset resource="images.qrc" >
+     <normaloff>:/cancel.png</normaloff>:/cancel.png</iconset>
+   </property>
+   <property name="text" >
+    <string>Remove</string>
+   </property>
+  </action>
+  <action name="actionSearch_Server" >
+   <property name="icon" >
+    <iconset resource="images.qrc" >
+     <normaloff>:/find.png</normaloff>:/find.png</iconset>
+   </property>
+   <property name="text" >
+    <string>Search</string>
+   </property>
+  </action>
+  <action name="actionShow_Welcome_Message" >
+   <property name="checkable" >
+    <bool>true</bool>
+   </property>
+   <property name="icon" >
+    <iconset resource="images.qrc" >
+     <normaloff>:/text_block.png</normaloff>:/text_block.png</iconset>
+   </property>
+   <property name="text" >
+    <string>Show Welcome Message</string>
+   </property>
+  </action>
+  <action name="actionAdd_Share" >
+   <property name="icon" >
+    <iconset resource="images.qrc" >
+     <normaloff>:/add.png</normaloff>:/add.png</iconset>
+   </property>
+   <property name="text" >
+    <string>Add</string>
+   </property>
+   <property name="toolTip" >
+    <string>Add New Share Folder</string>
+   </property>
+  </action>
+  <action name="actionRemove_Share" >
+   <property name="icon" >
+    <iconset resource="images.qrc" >
+     <normaloff>:/remove.png</normaloff>:/remove.png</iconset>
+   </property>
+   <property name="text" >
+    <string>Remove</string>
+   </property>
+   <property name="toolTip" >
+    <string>Remove Share Folder</string>
+   </property>
+  </action>
+  <action name="actionReload_Share" >
+   <property name="icon" >
+    <iconset resource="images.qrc" >
+     <normaloff>:/update.png</normaloff>:/update.png</iconset>
+   </property>
+   <property name="text" >
+    <string>Reload</string>
+   </property>
+   <property name="toolTip" >
+    <string>Reload Shares From The Core</string>
+   </property>
+  </action>
+  <action name="actionCommit_Share" >
+   <property name="enabled" >
+    <bool>false</bool>
+   </property>
+   <property name="icon" >
+    <iconset resource="images.qrc" >
+     <normaloff>:/commit.png</normaloff>:/commit.png</iconset>
+   </property>
+   <property name="text" >
+    <string>Commit</string>
+   </property>
+   <property name="toolTip" >
+    <string>Commit Changes And Start Share Checking</string>
+   </property>
+  </action>
+  <action name="actionCopy_Link_Share" >
+   <property name="icon" >
+    <iconset resource="images.qrc" >
+     <normaloff>:/text_block.png</normaloff>:/text_block.png</iconset>
+   </property>
+   <property name="text" >
+    <string>Copy Link</string>
+   </property>
+  </action>
+  <action name="actionCreate_Link_List_Share" >
+   <property name="icon" >
+    <iconset resource="images.qrc" >
+     <normaloff>:/toggle_log.png</normaloff>:/toggle_log.png</iconset>
+   </property>
+   <property name="text" >
+    <string>Create Link List</string>
+   </property>
+  </action>
+  <action name="actionOpen_Incoming" >
+   <property name="icon" >
+    <iconset resource="images.qrc" >
+     <normaloff>:/exec.png</normaloff>:/exec.png</iconset>
+   </property>
+   <property name="text" >
+    <string>Open</string>
+   </property>
+  </action>
+  <action name="actionCopy_Incoming" >
+   <property name="icon" >
+    <iconset resource="images.qrc" >
+     <normaloff>:/save.png</normaloff>:/save.png</iconset>
+   </property>
+   <property name="text" >
+    <string>Copy</string>
+   </property>
+  </action>
+  <action name="actionDelete_Incoming" >
+   <property name="icon" >
+    <iconset resource="images.qrc" >
+     <normaloff>:/cancel.png</normaloff>:/cancel.png</iconset>
+   </property>
+   <property name="text" >
+    <string>Delete</string>
+   </property>
+  </action>
+  <action name="actionReload_Incoming" >
+   <property name="icon" >
+    <iconset resource="images.qrc" >
+     <normaloff>:/reload.png</normaloff>:/reload.png</iconset>
+   </property>
+   <property name="text" >
+    <string>Reload</string>
+   </property>
+  </action>
+  <action name="actionShow_Part_List_Dock" >
+   <property name="checkable" >
+    <bool>true</bool>
+   </property>
+   <property name="icon" >
+    <iconset resource="images.qrc" >
+     <normaloff>:/partlist2.png</normaloff>:/partlist2.png</iconset>
+   </property>
+   <property name="text" >
+    <string>Show Part List Dock</string>
+   </property>
+   <property name="iconText" >
+    <string>Show Part List Dock</string>
+   </property>
+   <property name="toolTip" >
+    <string>Show Part List Dock Widget</string>
+   </property>
+  </action>
+ </widget>
+ <customwidgets>
+  <customwidget>
+   <class>DockMain</class>
+   <extends>QWidget</extends>
+   <header>modulebase.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>PartsWidget</class>
+   <extends>QWidget</extends>
+   <header>partswidget.h</header>
+   <container>1</container>
+  </customwidget>
+ </customwidgets>
+ <resources>
+  <include location="images.qrc" />
+ </resources>
+ <connections/>
+</ui>

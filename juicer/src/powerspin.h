@@ -1,6 +1,6 @@
 /***************************************************************************
- *   Copyright (C) 2004 by Matthias Reif                                   *
- *   matthias.reif@informatik.tu-chemnitz.de                               *
+ *   Copyright (C) 2007 by Matthias Reif   *
+ *   matthias.reif@informatik.tu-chemnitz.de   *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -17,19 +17,33 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
+#ifndef QAJPOWERSPIN_H
+#define QAJPOWERSPIN_H
 
-#include "application.h"
+#include <QAbstractSpinBox>
+#include <QDoubleSpinBox>
+#include <QLineEdit>
+#include <QWidget>
+#include <QHBoxLayout>
+#include <QCheckBox>
 
-int main( int argc, char ** argv )
+/**
+	@author Matthias Reif <matthias.reif@informatik.tu-chemnitz.de>
+*/
+class PowerSpin : public QWidget
 {
-    Application a( argc, argv );
+Q_OBJECT
+public:
+    PowerSpin(const QString& id, QWidget *parent = 0);
 
-    QSettings settings;
-    QString locale = settings.value("language", QLocale::system().name()).toString();
-    QTranslator translator;
-    if( ! translator.load(":/translations/" + locale))
-        translator.load("juicer_" + locale);
-    a.installTranslator(&translator);
+    ~PowerSpin();
+    QDoubleSpinBox* spin;
+    QCheckBox* check;
+    QString id;
+protected slots:
+    void powerChanged();
+signals:
+    void powerChanged( const QString& id, double value );
+};
 
-    return a.exec();
-}
+#endif

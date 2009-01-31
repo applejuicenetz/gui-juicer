@@ -1,6 +1,6 @@
 /***************************************************************************
- *   Copyright (C) 2004 by Matthias Reif                                   *
- *   matthias.reif@informatik.tu-chemnitz.de                               *
+ *   Copyright (C) 2007 by Matthias Reif   *
+ *   matthias.reif@iupr.dfki.de   *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -18,18 +18,28 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include "application.h"
 
-int main( int argc, char ** argv )
+#include "networkdialog.h"
+
+NetworkDialog::NetworkDialog(QWidget* parent, Qt::WFlags fl) : QDialog( parent, fl ), Ui::NetworkDialog()
 {
-    Application a( argc, argv );
+    setupUi(this);
+    this->setWindowIcon( QIcon(":/juicer.png") );
+}
 
-    QSettings settings;
-    QString locale = settings.value("language", QLocale::system().name()).toString();
-    QTranslator translator;
-    if( ! translator.load(":/translations/" + locale))
-        translator.load("juicer_" + locale);
-    a.installTranslator(&translator);
+NetworkDialog::~NetworkDialog()
+{
+}
 
-    return a.exec();
+
+/*!
+    \fn NetworkDialog::setValues( const QString& users, const QString& files, const QString& size, const QString& ip, const QString& firewalled )
+ */
+void NetworkDialog::setValues( const QString& users, const QString& files, const QString& size, const QString& ip, const QString& firewalled )
+{
+    this->usersLabel->setText( users );
+    this->filesLabel->setText( files );
+    this->sizeLabel->setText( size );
+    this->ipLabel->setText( ip );
+    this->firewalledLabel->setText( firewalled );
 }

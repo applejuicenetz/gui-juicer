@@ -17,19 +17,41 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
+#ifndef QAJSEARCHITEM_H
+#define QAJSEARCHITEM_H
 
-#include "application.h"
+#include <QHash>
+#include <QHeaderView>
 
-int main( int argc, char ** argv )
+#include "item.h"
+#include "searchentryitem.h"
+
+/**
+@author Matthias Reif
+*/
+class SearchItem : public Item
 {
-    Application a( argc, argv );
+public:
+    SearchItem( QString id, QTreeWidget* parent );
 
-    QSettings settings;
-    QString locale = settings.value("language", QLocale::system().name()).toString();
-    QTranslator translator;
-    if( ! translator.load(":/translations/" + locale))
-        translator.load("juicer_" + locale);
-    a.installTranslator(&translator);
+    ~SearchItem();
 
-    return a.exec();
-}
+    enum {TEXT_COL, SIZE_COL, COUNT_COL};
+
+    SearchEntryItem* findSearchEntry( QString id );
+
+    int hits;
+    int entriesCount;
+
+    QHash<QString, SearchEntryItem*> entries;
+
+    virtual bool operator<( const QTreeWidgetItem & other ) const;
+
+    int getHits() const
+    {
+      return hits;
+    }
+
+};
+
+#endif

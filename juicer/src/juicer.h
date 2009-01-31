@@ -50,24 +50,24 @@
 
 #include <QSystemTrayIcon>
 
-#include "ui_qajmainwindowbase.h"
+#include "ui_mainwindowbase.h"
 
-#include "qajdownloadmodule.h"
-#include "qajuploadmodule.h"
-#include "qajsearchmodule.h"
-#include "qajservermodule.h"
-#include "qajsharemodule.h"
-#include "qajincomingmodule.h"
+#include "downloadmodule.h"
+#include "uploadmodule.h"
+#include "searchmodule.h"
+#include "servermodule.h"
+#include "sharemodule.h"
+#include "incomingmodule.h"
 
 #include "qxmlmodule.h"
-#include "qajoptionsdialog.h"
-#include "qajlogindialog.h"
-#include "qajnetworkdialog.h"
+#include "optionsdialog.h"
+#include "logindialog.h"
+#include "networkdialog.h"
 #include "qconvert.h"
 
-#include "qajapplication.h"
+#include "application.h"
 
-#include "qajiconwidget.h"
+#include "iconwidget.h"
 
 static const QString WINDOWS = "1";
 static const QString LINUX = "2";
@@ -76,7 +76,7 @@ static const QString SOLARIS = "4";
 static const QString FREEBSD = "6";
 static const QString NETWARE = "7";
 
-class Juicer: public QMainWindow, public Ui::QAjMainWindowBase
+class Juicer: public QMainWindow, public Ui::MainWindowBase
 {
     Q_OBJECT
 public:
@@ -85,13 +85,13 @@ public:
 
     void setStatusBarText( const QString& downSpeed, const QString& upSpeed, const QString& credits, const QString& downSize, const QString& upSize );
     QXMLModule *xml;
-    QAjDownloadModule* downloadModule;
-    QAjUploadModule *uploadModule;
-    QAjNetworkDialog *networkDialog;
-    QAjSearchModule *searchModule;
-    QAjServerModule *serverModule;
-    QAjShareModule *shareModule;
-    QAjIncomingModule *incomingModule;
+    DownloadModule* downloadModule;
+    UploadModule *uploadModule;
+    NetworkDialog *networkDialog;
+    SearchModule *searchModule;
+    ServerModule *serverModule;
+    ShareModule *shareModule;
+    IncomingModule *incomingModule;
     QHash<QString, QIcon> osIcons;
 
     void setFilesystemSeparator( const QString& separator )
@@ -131,15 +131,15 @@ protected:
     QTimer *partListTimer;
 
     QWidget *prevTab;
-    QAjOptionsDialog *optionsDialog;
+    OptionsDialog *optionsDialog;
 
-    QAjServerSocket *linkServer;
+    ServerSocket *linkServer;
 
     QLabel *ajAddressLabel;
     QLineEdit *ajAddressEdit;
     QToolButton *ajAddressButton;
 
-    QAjIconWidget *downSpeedLabel, *upSpeedLabel, *creditsLabel, *downSizeLabel, *upSizeLabel, *coreVersionLabel, *connectedLabel;
+    IconWidget *downSpeedLabel, *upSpeedLabel, *creditsLabel, *downSizeLabel, *upSizeLabel, *coreVersionLabel, *connectedLabel;
 
     bool started, connected, localCore;
 
@@ -175,7 +175,7 @@ private slots:
 
     void adjustColumns();
     void trayActivated(QSystemTrayIcon::ActivationReason reason);
-    void downloadsFinished(const QList<QAjDownloadItem*>& list);
+    void downloadsFinished(const QList<DownloadItem*>& list);
     void hostLookedUp(const QHostInfo& host);
 };
 

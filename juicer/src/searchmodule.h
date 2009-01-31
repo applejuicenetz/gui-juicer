@@ -17,19 +17,52 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
+#ifndef QAJSEARCHWIDGET_H
+#define QAJSEARCHWIDGET_H
 
-#include "application.h"
+#include <QHash>
+#include <QLabel>
+#include <QLineEdit>
+// #include <QMessageBox>
+#include <QApplication>
+#include <QClipboard>
 
-int main( int argc, char ** argv )
-{
-    Application a( argc, argv );
+#include "modulebase.h"
+#include "searchitem.h"
+#include "searchentryitem.h"
+#include "qconvert.h"
 
-    QSettings settings;
-    QString locale = settings.value("language", QLocale::system().name()).toString();
-    QTranslator translator;
-    if( ! translator.load(":/translations/" + locale))
-        translator.load("juicer_" + locale);
-    a.installTranslator(&translator);
+#define MAX_SEARCH_ENTRIES 100000
 
-    return a.exec();
-}
+/**
+@author Matthias Reif
+*/
+class SearchModule : public ModuleBase {
+    Q_OBJECT
+public:
+    SearchModule(Juicer* juicer);
+    ~SearchModule();
+
+    void insertSearch(const QString& id, const QString& searchText, const QString& running, const QString& foundFiles );
+    void insertSearchEntry(const QString& id, const QString& searchId, const QString& size, const QString& checksum, const QStringList& filenames );
+    bool remove(const QString& id);
+    SearchItem* findSearch(const QString& id);
+    SearchEntryItem* findSearchEntry(const QString& id);
+
+protected:
+    bool removeSearch(const QString& id);
+    bool removeSearchEntry(const QString& id);
+    QHash<QString, SearchItem*> searches;
+    QHash<QString, SearchEntryItem*> searchEntries;
+
+    QLineEdit *searchEdit;
+
+private slots:
+    void removeSlot();
+    void downloadSlot();
+    void searchSlot();
+    void linkSlot();
+    void selectionChanged();
+};
+
+#endif

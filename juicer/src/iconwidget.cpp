@@ -1,6 +1,6 @@
 /***************************************************************************
- *   Copyright (C) 2004 by Matthias Reif                                   *
- *   matthias.reif@informatik.tu-chemnitz.de                               *
+ *   Copyright (C) 2007 by Matthias Reif   *
+ *   matthias.reif@informatik.tu-chemnitz.de   *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -17,19 +17,36 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
+#include "iconwidget.h"
 
-#include "application.h"
-
-int main( int argc, char ** argv )
+IconWidget::IconWidget(QString icon, QString text, QBoxLayout::Direction dir, QWidget *parent, int spacing, int margin) : QWidget( parent )
 {
-    Application a( argc, argv );
+    iconLabel = new QLabel(this);
+    iconLabel->setPixmap(QPixmap(icon));
+    textLabel = new QLabel(text, this);
+    textLabel->adjustSize();
 
-    QSettings settings;
-    QString locale = settings.value("language", QLocale::system().name()).toString();
-    QTranslator translator;
-    if( ! translator.load(":/translations/" + locale))
-        translator.load("juicer_" + locale);
-    a.installTranslator(&translator);
+    QBoxLayout* layout = new QBoxLayout(dir);
+    layout->setMargin(margin);
+    layout->setSpacing(spacing);
+    layout->addWidget(iconLabel, 0, Qt::AlignHCenter);
+    layout->addWidget(textLabel, 0, Qt::AlignHCenter);
 
-    return a.exec();
+    this->setLayout(layout);
+
+    this->adjustSize();
+}
+
+
+IconWidget::~IconWidget()
+{
+}
+
+
+/*!
+    \fn IconWidget::setText( const QString& text )
+ */
+void IconWidget::setText( const QString& text )
+{
+    textLabel->setText( text );
 }

@@ -17,19 +17,61 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
+#ifndef QAJITEM_H
+#define QAJITEM_H
 
-#include "application.h"
+#include <QObject>
+#include <QTreeWidget>
 
-int main( int argc, char ** argv )
+/**
+@author Matthias Reif
+*/
+class Item : public QTreeWidgetItem, public QObject
 {
-    Application a( argc, argv );
+// Q_OBJECT
+public:
+    Item( QTreeWidget *parent, const QString& id="generic" );
+    Item( QTreeWidgetItem *parent, const QString& id="generic" );
 
-    QSettings settings;
-    QString locale = settings.value("language", QLocale::system().name()).toString();
-    QTranslator translator;
-    if( ! translator.load(":/translations/" + locale))
-        translator.load("juicer_" + locale);
-    a.installTranslator(&translator);
+    virtual ~Item();
 
-    return a.exec();
-}
+    QString getStatus()
+    {
+        return status_;
+    }
+
+    void setStatus( const QString& newStatus )
+    {
+        status_ = newStatus;
+    }
+
+    QString getId() const
+    {
+        return id_;
+    }
+
+    QString getHash() const
+    {
+        return hash_;
+    }
+
+    QString getFilename() const
+    {
+        return filename_;
+    }
+
+    double getSize()
+    {
+        return size_;
+    }
+
+protected:
+    QString id_;
+    QString status_;
+
+    double  size_;
+    QString hash_;
+    QString filename_;
+};
+
+#endif

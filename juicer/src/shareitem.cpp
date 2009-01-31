@@ -17,19 +17,41 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
+#include "shareitem.h"
 
-#include "application.h"
+ShareItem::ShareItem(QTreeWidget* parent, const QString& path, bool recursive) : Item(parent) {
+    this->path = path;
+    this->recursive = recursive;
+    setText(ShareItem::PATH_COL, path);
+    if(recursive) {
+        setIcon(PATH_COL, QIcon(":/small/recursive.png"));
+    } else {
+        setIcon(PATH_COL, QIcon(":/small/not_recursive.png"));
+    }
 
-int main( int argc, char ** argv )
+}
+
+ShareItem::~ShareItem() {
+}
+
+
+/*!
+    \fn ShareItem::insertSharedFile(ShareFileItem* sharedFile)
+ */
+void ShareItem::insertSharedFile(ShareFileItem* sharedFile)
 {
-    Application a( argc, argv );
+    if ( sharedFile != NULL ) sharedFiles.append(sharedFile);
+}
 
-    QSettings settings;
-    QString locale = settings.value("language", QLocale::system().name()).toString();
-    QTranslator translator;
-    if( ! translator.load(":/translations/" + locale))
-        translator.load("juicer_" + locale);
-    a.installTranslator(&translator);
 
-    return a.exec();
+/*!
+    \fn ShareItem::update()
+ */
+void ShareItem::update()
+{
+    double sum = 0.0;
+    for(int i=0; i<sharedFiles.size(); i++) {
+        sum += sharedFiles.at(i)->getSize();
+    }
+    setText(ShareItem::SIZE_COL, QConvert::bytes(sum) + " (" + QString::number(sharedFiles.size()) + ")");
 }

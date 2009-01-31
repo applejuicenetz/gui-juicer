@@ -1,6 +1,6 @@
 /***************************************************************************
- *   Copyright (C) 2004 by Matthias Reif                                   *
- *   matthias.reif@informatik.tu-chemnitz.de                               *
+ *   Copyright (C) 2007 by Matthias Reif   *
+ *   matthias.reif@informatik.tu-chemnitz.de   *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -17,19 +17,29 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
+#ifndef QAJSEARCHENTRYITEM_H
+#define QAJSEARCHENTRYITEM_H
 
-#include "application.h"
+#include "item.h"
 
-int main( int argc, char ** argv )
+class SearchItem;
+
+/**
+	@author Matthias Reif <matthias.reif@informatik.tu-chemnitz.de>
+*/
+class SearchEntryItem : public Item
 {
-    Application a( argc, argv );
+public:
+    SearchEntryItem( QString id, SearchItem* search, QString checksum, QString size, QTreeWidgetItem* parent );
 
-    QSettings settings;
-    QString locale = settings.value("language", QLocale::system().name()).toString();
-    QTranslator translator;
-    if( ! translator.load(":/translations/" + locale))
-        translator.load("juicer_" + locale);
-    a.installTranslator(&translator);
+    ~SearchEntryItem();
 
-    return a.exec();
-}
+//     QString checksum;
+    SearchItem* search;
+
+    virtual bool operator<( const QTreeWidgetItem & other ) const;
+
+    void setFilename( QString filename );
+};
+
+#endif

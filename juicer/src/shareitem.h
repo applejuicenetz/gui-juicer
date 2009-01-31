@@ -17,19 +17,32 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
+#ifndef QAJSHAREITEM_H
+#define QAJSHAREITEM_H
 
-#include "application.h"
+#include <QString>
+#include <QList>
 
-int main( int argc, char ** argv )
+#include "item.h"
+#include "sharefileitem.h"
+
+/**
+@author Matthias Reif
+*/
+class ShareItem : public Item
 {
-    Application a( argc, argv );
+public:
+    ShareItem(QTreeWidget* parent, const QString& path, bool recursive);
+    virtual ~ShareItem();
+    QString getPath() { return path; }
+    bool isRecursive() { return recursive; }
+    void insertSharedFile(ShareFileItem* sharedFile);
+    void update();
+    enum {PATH_COL, SIZE_COL, PRIORITY_COL};
+private:
+    bool recursive;
+    QString path;
+    QList<ShareFileItem*> sharedFiles;
+};
 
-    QSettings settings;
-    QString locale = settings.value("language", QLocale::system().name()).toString();
-    QTranslator translator;
-    if( ! translator.load(":/translations/" + locale))
-        translator.load("juicer_" + locale);
-    a.installTranslator(&translator);
-
-    return a.exec();
-}
+#endif

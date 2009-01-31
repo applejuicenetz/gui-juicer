@@ -1,6 +1,6 @@
 /***************************************************************************
- *   Copyright (C) 2004 by Matthias Reif                                   *
- *   matthias.reif@informatik.tu-chemnitz.de                               *
+ *   Copyright (C) 2007 by Matthias Reif   *
+ *   matthias.reif@informatik.tu-chemnitz.de   *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -17,19 +17,42 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
+#include "powerspin.h"
 
-#include "application.h"
-
-int main( int argc, char ** argv )
+PowerSpin::PowerSpin(const QString& id, QWidget *parent) : QWidget(parent)
 {
-    Application a( argc, argv );
+    this->id = id;
+    QHBoxLayout *layout = new QHBoxLayout;
+    layout->setSpacing(0);
+    layout->setMargin(0);
 
-    QSettings settings;
-    QString locale = settings.value("language", QLocale::system().name()).toString();
-    QTranslator translator;
-    if( ! translator.load(":/translations/" + locale))
-        translator.load("juicer_" + locale);
-    a.installTranslator(&translator);
+    layout->insertSpacing(0, 10);
+    check = new QCheckBox();
+    layout->addWidget(check);
 
-    return a.exec();
+    spin = new QDoubleSpinBox();
+    spin->setFrame(false);
+    spin->setRange(2.2, 50.0);
+    spin->setSingleStep(0.1);
+    spin->setDecimals(1);
+    layout->addWidget(spin);
+
+    setLayout(layout);
+
+    connect(check, SIGNAL(toggled(bool)), spin, SLOT(setEnabled(bool)));
+    connect(check, SIGNAL(toggled(bool)), this, SLOT(powerChanged()));
+    connect(spin, SIGNAL(valueChanged(double)), this, SLOT(powerChanged()));
+}
+
+
+PowerSpin::~PowerSpin()
+{
+}
+
+void PowerSpin::powerChanged()
+{
+    if(check->isChecked())
+        powerChanged(id, spin->value());
+    else
+        powerChanged(id, 1.0);
 }

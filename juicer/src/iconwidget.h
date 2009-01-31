@@ -1,6 +1,6 @@
 /***************************************************************************
- *   Copyright (C) 2004 by Matthias Reif                                   *
- *   matthias.reif@informatik.tu-chemnitz.de                               *
+ *   Copyright (C) 2007 by Matthias Reif   *
+ *   matthias.reif@informatik.tu-chemnitz.de   *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -17,19 +17,27 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
+#ifndef QAJICONWIDGET_H
+#define QAJICONWIDGET_H
 
-#include "application.h"
+#include <QWidget>
+#include <QLabel>
+#include <QBoxLayout>
 
-int main( int argc, char ** argv )
+/**
+	@author Matthias Reif <matthias.reif@informatik.tu-chemnitz.de>
+*/
+class IconWidget : public QWidget
 {
-    Application a( argc, argv );
+Q_OBJECT
+public:
+    IconWidget(QString icon, QString text, QBoxLayout::Direction dir, QWidget *parent = 0, int spacing = -1, int margin = 9);
 
-    QSettings settings;
-    QString locale = settings.value("language", QLocale::system().name()).toString();
-    QTranslator translator;
-    if( ! translator.load(":/translations/" + locale))
-        translator.load("juicer_" + locale);
-    a.installTranslator(&translator);
+    ~IconWidget();
+    void setText( const QString& text );
 
-    return a.exec();
-}
+private:
+    QLabel *iconLabel, *textLabel;
+};
+
+#endif

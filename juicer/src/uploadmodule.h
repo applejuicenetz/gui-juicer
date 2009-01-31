@@ -17,19 +17,41 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
+#ifndef QAJUPLOADWIDGET_H
+#define QAJUPLOADWIDGET_H
 
-#include "application.h"
+#include <QHash>
+#include <QIcon>
+#include <QFileInfo>
+#include "modulebase.h"
+#include "uploaditem.h"
+#include "qconvert.h"
 
-int main( int argc, char ** argv )
-{
-    Application a( argc, argv );
+/**
+@author Matthias Reif
+*/
+class UploadModule : public ModuleBase {
+    Q_OBJECT
+public:
+    UploadModule(Juicer* juicer);
 
-    QSettings settings;
-    QString locale = settings.value("language", QLocale::system().name()).toString();
-    QTranslator translator;
-    if( ! translator.load(":/translations/" + locale))
-        translator.load("juicer_" + locale);
-    a.installTranslator(&translator);
+    ~UploadModule();
 
-    return a.exec();
-}
+    bool insertUpload(const QString& id, const QString& shareId, const QString& version,
+                      const QString& os, const QString& status, const QString& directState,
+                      const QString& priority, const QString& nick, const QString& speed);
+
+    bool remove(QString id);
+    void setFilename(QString shareId, QString filename);
+public slots:
+    void adjustSizeOfColumns();
+    void selectionChanged();
+    void hideQueuedSlot(bool checked);
+private:
+    UploadItem* findUpload( QString id );
+    QHash<QString, QString> uploadStatusDescr;
+    QHash<QString, QString> uploadDirectStateDescr;
+    QHash<QString, UploadItem*> uploads;
+};
+
+#endif

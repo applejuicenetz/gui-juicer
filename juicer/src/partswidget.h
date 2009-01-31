@@ -1,6 +1,6 @@
 /***************************************************************************
- *   Copyright (C) 2004 by Matthias Reif                                   *
- *   matthias.reif@informatik.tu-chemnitz.de                               *
+ *   Copyright (C) 2005 by Matthias Reif                                   *
+ *   matthas.reif@informatik.tu-emnitz.de                                  *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -17,19 +17,54 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
+#ifndef QAJPARTSWIDGET_H
+#define QAJPARTSWIDGET_H
 
-#include "application.h"
+#include <QWidget>
+#include <QPainter>
+#include <QLinkedList>
 
-int main( int argc, char ** argv )
+#include "qconvert.h"
+
+/**
+@author Matthias Reif
+*/
+class PartsWidget : public QWidget
 {
-    Application a( argc, argv );
+Q_OBJECT
+public:
+    PartsWidget( QWidget *parent = 0 );
+    
+    ~PartsWidget();
 
-    QSettings settings;
-    QString locale = settings.value("language", QLocale::system().name()).toString();
-    QTranslator translator;
-    if( ! translator.load(":/translations/" + locale))
-        translator.load("juicer_" + locale);
-    a.installTranslator(&translator);
+    class Part {
+        public:
+        qulonglong fromPosition;
+        int type;
+    };
 
-    return a.exec();
-}
+    void update( qulonglong size, QLinkedList<Part>& partList );
+    void clear();
+    
+    double ready;
+    double available;
+    double lessSources;
+    double missing;
+    qulonglong size;
+
+    static const int READY_COLOR = 0x00DC00;
+    static const int MISSING_COLOR = 0xF00000;
+    static const int AVAILABLE_COLOR = 0x0000DC;
+    static const int RARE_COLOR =  0xDCDC00;
+
+protected:
+    void paintEvent( QPaintEvent* );
+    QLinkedList<Part> partList;
+    int blockHeight;
+    int numPixels;
+    float pixelPerByte;
+signals:
+    void painted();
+};
+
+#endif

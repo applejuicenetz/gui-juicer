@@ -3,85 +3,85 @@
 # Unterordner relativ zum Projektordner: ./src
 # Das Target ist eine Anwendung:  ../bin/ajqt4gui
 
-FORMS += qajoptionsdialogbase.ui  \
-qajnetworkdialogbase.ui \
-qajlogindialogbase.ui \
- qajhandlerdialogbase.ui \
- qajpartlistdialogbase.ui \
- qajmainwindowbase.ui \
- qajshareselectiondialogbase.ui
+FORMS += optionsdialogbase.ui  \
+networkdialogbase.ui \
+logindialogbase.ui \
+ handlerdialogbase.ui \
+ partlistdialogbase.ui \
+ mainwindowbase.ui \
+ shareselectiondialogbase.ui
 HEADERS += ftp.h \
            global.h \
            md5class.h \
            md5.h \
-           qajapplication.h \
-           qajdownloaditem.h \
-           qajitem.h \
-           qajoptionsdialog.h \
-           qajpartswidget.h \
-           qajsearchitem.h \
-           qajserversocket.h \
-           qajshareitem.h \
-           qajsocket.h \
-           qajuploaditem.h \
-           qajuseritem.h \
+           application.h \
+           downloaditem.h \
+           item.h \
+           optionsdialog.h \
+           partswidget.h \
+           searchitem.h \
+           serversocket.h \
+           shareitem.h \
+           socket.h \
+           uploaditem.h \
+           useritem.h \
            qconvert.h \
            qxmlmodule.h \
            juicer.h \
-           qajnetworkdialog.h \
-           qajsearchentryitem.h \
-           qajserveritem.h \
-           qajincomingitem.h \
-           qajsharefileitem.h \
-           qajiconwidget.h \
-           qajlogindialog.h \
-           qajpowerspin.h \
- qajhandlerdialog.h \
- qajpartlistdialog.h \
- qajdownloadmodule.h \
- qajuploadmodule.h \
- qajsearchmodule.h \
- qajmodulebase.h \
- qajservermodule.h \
- qajsharemodule.h \
- qajincomingmodule.h \
- qajshareselectiondialog.h
+           networkdialog.h \
+           searchentryitem.h \
+           serveritem.h \
+           incomingitem.h \
+           sharefileitem.h \
+           iconwidget.h \
+           logindialog.h \
+           powerspin.h \
+ handlerdialog.h \
+ partlistdialog.h \
+ downloadmodule.h \
+ uploadmodule.h \
+ searchmodule.h \
+ modulebase.h \
+ servermodule.h \
+ sharemodule.h \
+ incomingmodule.h \
+ shareselectiondialog.h
 SOURCES += ftp.cpp \
            main.cpp \
            md5c.c \
            md5class.cpp \
-           qajapplication.cpp \
-           qajdownloaditem.cpp \
-           qajitem.cpp \
-           qajoptionsdialog.cpp \
-           qajpartswidget.cpp \
-           qajsearchitem.cpp \
-           qajserversocket.cpp \
-           qajshareitem.cpp \
-           qajsocket.cpp \
-           qajuploaditem.cpp \
-           qajuseritem.cpp \
+           application.cpp \
+           downloaditem.cpp \
+           item.cpp \
+           optionsdialog.cpp \
+           partswidget.cpp \
+           searchitem.cpp \
+           serversocket.cpp \
+           shareitem.cpp \
+           socket.cpp \
+           uploaditem.cpp \
+           useritem.cpp \
            qconvert.cpp \
            qxmlmodule.cpp \
            juicer.cpp \
-           qajnetworkdialog.cpp \
-           qajsearchentryitem.cpp \
-           qajserveritem.cpp \
-           qajincomingitem.cpp \
-           qajsharefileitem.cpp \
-           qajiconwidget.cpp \
-           qajlogindialog.cpp \
-           qajpowerspin.cpp \
- qajhandlerdialog.cpp \
- qajpartlistdialog.cpp \
- qajdownloadmodule.cpp \
- qajuploadmodule.cpp \
- qajsearchmodule.cpp \
- qajmodulebase.cpp \
- qajservermodule.cpp \
- qajsharemodule.cpp \
- qajincomingmodule.cpp \
- qajshareselectiondialog.cpp
+           networkdialog.cpp \
+           searchentryitem.cpp \
+           serveritem.cpp \
+           incomingitem.cpp \
+           sharefileitem.cpp \
+           iconwidget.cpp \
+           logindialog.cpp \
+           powerspin.cpp \
+ handlerdialog.cpp \
+ partlistdialog.cpp \
+ downloadmodule.cpp \
+ uploadmodule.cpp \
+ searchmodule.cpp \
+ modulebase.cpp \
+ servermodule.cpp \
+ sharemodule.cpp \
+ incomingmodule.cpp \
+ shareselectiondialog.cpp
 CONFIG += warn_on \
           qt \
           stl \

@@ -17,19 +17,68 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
+#ifndef QAJUSERITEM_H
+#define QAJUSERITEM_H
 
-#include "application.h"
+#include <QTreeWidget>
+#include <QList>
 
-int main( int argc, char ** argv )
+#include "item.h"
+#include "qconvert.h"
+#include "optionsdialog.h"
+#include "downloaditem.h"
+
+static const QString ACTIVE_SOURCE = "7";
+static const QString QUEUED_SOURCE = "5";
+static const QString NEW_SOURCE = "-1";
+
+/**
+@author Matthias Reif
+*/
+class UserItem : public Item
 {
-    Application a( argc, argv );
+public:
+    UserItem( const QString& id, QTreeWidget *parent );
+    UserItem( const QString& id, QTreeWidgetItem *parent );
 
-    QSettings settings;
-    QString locale = settings.value("language", QLocale::system().name()).toString();
-    QTranslator translator;
-    if( ! translator.load(":/translations/" + locale))
-        translator.load("juicer_" + locale);
-    a.installTranslator(&translator);
+    ~UserItem();
 
-    return a.exec();
-}
+    void update( const QString& fileName, const QString& nickname, const QString& speed, const QString& status, const QString& power, const QString& queuePos, const QString& statusString, QIcon& osIcon, const QString& downloadfrom, const QString& downloadto, const QString& actualdownloadposition, const QTime& time );
+
+    void setSpeed( const QString& newSpeedString, const QTime& time );
+
+    int getSpeedDif()
+    {
+        return speedDif;
+    }
+    int getSpeed()
+    {
+        return speed;
+    }
+    int getQueuePos()
+    {
+        return queuePos;
+    }
+    QString getId()
+    {
+        return id;
+    }
+    QString getPower()
+    {
+        return power;
+    }
+    void setAvgSpeed();
+private:
+    void init();
+protected:
+    int speed, newSpeed, speedDif;
+    QList<int> speeds;
+    QList<QTime> times;
+    QString id;
+    int queuePos;
+    QString power;
+    QString fileName;
+    bool fileNameSet;
+};
+
+#endif

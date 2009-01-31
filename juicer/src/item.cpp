@@ -17,19 +17,25 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
+#include "item.h"
 
-#include "application.h"
-
-int main( int argc, char ** argv )
+Item::Item( QTreeWidget *parent, const QString& id ) 
+  : QTreeWidgetItem( parent ), QObject()
+  , id_(id)
+  , status_("-1")
+  , size_(0.0)
 {
-    Application a( argc, argv );
-
-    QSettings settings;
-    QString locale = settings.value("language", QLocale::system().name()).toString();
-    QTranslator translator;
-    if( ! translator.load(":/translations/" + locale))
-        translator.load("juicer_" + locale);
-    a.installTranslator(&translator);
-
-    return a.exec();
 }
+
+Item::Item( QTreeWidgetItem *parent, const QString& id ) 
+  : QTreeWidgetItem( parent ), QObject()
+  , id_(id)
+  , status_("-1")
+  , size_(0.0)
+{
+}
+
+
+Item::~Item()
+{}
+

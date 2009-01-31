@@ -19,7 +19,7 @@
  ***************************************************************************/
 
 #include "juicer.h"
-#include "qajhandlerdialog.h"
+#include "handlerdialog.h"
 
 Juicer::Juicer( const QStringList& argList, QSplashScreen *splash )
     : QMainWindow()
@@ -47,7 +47,7 @@ Juicer::Juicer( const QStringList& argList, QSplashScreen *splash )
 
     firstModifiedMax = 2;// + argList.size();
 
-    linkServer = new QAjServerSocket( QAjApplication::APP_PORT );
+    linkServer = new ServerSocket( Application::APP_PORT );
     connect( linkServer, SIGNAL( lineReady( QString ) ), this, SLOT( processLink( QString ) ) );
 
 //     setWindowIcon(QIcon(":/juicer.png"));
@@ -60,27 +60,27 @@ Juicer::Juicer( const QStringList& argList, QSplashScreen *splash )
 
 
     xml = new QXMLModule(this);
-    downloadModule = new QAjDownloadModule(this);
-    uploadModule = new QAjUploadModule(this);
-    searchModule = new QAjSearchModule(this);
-    serverModule = new QAjServerModule(this);
-    shareModule = new QAjShareModule(this);
-    incomingModule = new QAjIncomingModule(this);
+    downloadModule = new DownloadModule(this);
+    uploadModule = new UploadModule(this);
+    searchModule = new SearchModule(this);
+    serverModule = new ServerModule(this);
+    shareModule = new ShareModule(this);
+    incomingModule = new IncomingModule(this);
 
     prevTab = downloads;
 
-    networkDialog = new QAjNetworkDialog( this );
-    optionsDialog = new QAjOptionsDialog( this );
+    networkDialog = new NetworkDialog( this );
+    optionsDialog = new OptionsDialog( this );
 
     initToolBars();
     connectActions();
     initStatusBar();
 
-    resize(QAjOptionsDialog::getSetting("MainWindow", "size", QSize(1000, 600)).toSize());
-    move(QAjOptionsDialog::getSetting("MainWindow", "pos", QPoint(100, 100)).toPoint());
-    restoreState(QAjOptionsDialog::getSetting("JuicerMain").toByteArray());
-    downloads->restoreState(QAjOptionsDialog::getSetting("DownloadsMain").toByteArray());
-    server->restoreState(QAjOptionsDialog::getSetting("ServerMain").toByteArray());
+    resize(OptionsDialog::getSetting("MainWindow", "size", QSize(1000, 600)).toSize());
+    move(OptionsDialog::getSetting("MainWindow", "pos", QPoint(100, 100)).toPoint());
+    restoreState(OptionsDialog::getSetting("JuicerMain").toByteArray());
+    downloads->restoreState(OptionsDialog::getSetting("DownloadsMain").toByteArray());
+    server->restoreState(OptionsDialog::getSetting("ServerMain").toByteArray());
 
     connect( xml, SIGNAL( settingsReady( const AjSettings& ) ), this, SLOT( settingsReady( const AjSettings& ) ) );
     connect( xml, SIGNAL( error( QString ) ), this, SLOT( xmlError( QString ) ) );
@@ -103,7 +103,7 @@ Juicer::Juicer( const QStringList& argList, QSplashScreen *splash )
 
     queueLinks( argList );
     initTrayIcon();
-    connect(downloadModule, SIGNAL( downloadsFinished( const QList<QAjDownloadItem*>&  ) ),this, SLOT( downloadsFinished( const QList<QAjDownloadItem*>& ) ) );
+    connect(downloadModule, SIGNAL( downloadsFinished( const QList<DownloadItem*>&  ) ),this, SLOT( downloadsFinished( const QList<DownloadItem*>& ) ) );
 }
 
 Juicer::~Juicer() {
@@ -150,7 +150,7 @@ void Juicer::connectActions() {
 void Juicer::initTrayIcon()
 {
     tray = new QSystemTrayIcon( QIcon(":/juicer.png"), this );
-    if( QAjOptionsDialog::getSetting( "useTray", false ).toBool() )
+    if( OptionsDialog::getSetting( "useTray", false ).toBool() )
     {
         tray->setVisible(true);
         tray->setContextMenu(menuAppleJuice);
@@ -169,7 +169,7 @@ void Juicer::initTrayIcon()
 void Juicer::closeEvent( QCloseEvent* ce ) {
      if ( tray->isVisible() && !isMinimized() ) {
 
-        QAjHandlerDialog trayDialog(
+        HandlerDialog trayDialog(
                 tr("Minimizing to tray"),
                 tr("Tray Icon is enabled so Juicer runs minimized in the background.\nUse Quit GUI to close the GUI."),
                 QDialogButtonBox::Ok,
@@ -193,8 +193,8 @@ void Juicer::quit() {
 }
 
 void Juicer::saveGUIState() {
-    QAjOptionsDialog::setSetting("MainWindow", "size", size());
-    QAjOptionsDialog::setSetting("MainWindow", "pos", pos());
+    OptionsDialog::setSetting("MainWindow", "size", size());
+    OptionsDialog::setSetting("MainWindow", "pos", pos());
     downloadModule->saveSortOrder("DownloadWidget");
     uploadModule->saveSortOrder("UploadWidget");
     searchModule->saveSortOrder("SearchWidget");
@@ -202,9 +202,9 @@ void Juicer::saveGUIState() {
     shareModule->saveSortOrder("ShareWidget");
     incomingModule->saveSortOrder("IncomingWidget");
 
-    QAjOptionsDialog::setSetting("JuicerMain", this->saveState());
-    QAjOptionsDialog::setSetting("DownloadsMain", downloads->saveState());
-    QAjOptionsDialog::setSetting("ServerMain", server->saveState());
+    OptionsDialog::setSetting("JuicerMain", this->saveState());
+    OptionsDialog::setSetting("DownloadsMain", downloads->saveState());
+    OptionsDialog::setSetting("ServerMain", server->saveState());
 }
 
 /*!
@@ -217,13 +217,13 @@ void Juicer::saveGUIState() {
 bool Juicer::login(const QString& message, bool error) {
     connected = false;
     QString password;
-    if(error || !QAjOptionsDialog::hasSetting("coreAddress") || !QAjOptionsDialog::hasSetting("password")) {
+    if(error || !OptionsDialog::hasSetting("coreAddress") || !OptionsDialog::hasSetting("password")) {
         password = showLoginDialog(message);
     } else {
-        password = QAjOptionsDialog::getSetting("password", "").toString();
+        password = OptionsDialog::getSetting("password", "").toString();
     }
-    QString host = QAjOptionsDialog::getSetting("coreAddress", "localhost").toString();
-    int port = QAjOptionsDialog::getSetting("xmlPort", 9851 ).toInt();
+    QString host = OptionsDialog::getSetting("coreAddress", "localhost").toString();
+    int port = OptionsDialog::getSetting("xmlPort", 9851 ).toInt();
     // -- ok -> login --
     if(!password.isEmpty()) {
         firstModifiedCnt = 0;
@@ -246,11 +246,11 @@ QString Juicer::showLoginDialog(const QString& message) {
     if(splash->isVisible()) {
         splash->close();
     }
-    QAjLoginDialog loginDialog(this);
-    loginDialog.setHost( QAjOptionsDialog::getSetting( "coreAddress", "localhost" ).toString() );
-    loginDialog.setPort( QAjOptionsDialog::getSetting("xmlPort", 9851 ).toInt() );
-    loginDialog.setPassword( QAjOptionsDialog::getSetting( "password", "" ).toString() );
-    loginDialog.setSavePassword( QAjOptionsDialog::getSetting( "savePassword", false ).toBool() );
+    LoginDialog loginDialog(this);
+    loginDialog.setHost( OptionsDialog::getSetting( "coreAddress", "localhost" ).toString() );
+    loginDialog.setPort( OptionsDialog::getSetting("xmlPort", 9851 ).toInt() );
+    loginDialog.setPassword( OptionsDialog::getSetting( "password", "" ).toString() );
+    loginDialog.setSavePassword( OptionsDialog::getSetting( "savePassword", false ).toBool() );
     loginDialog.setHeader( message );
     int result = loginDialog.exec();
     QString ret = "";
@@ -329,7 +329,7 @@ void Juicer::showOptions()
 
         timer->stop();
         timer->setSingleShot( false );
-        timer->start( QAjOptionsDialog::getSetting("refresh", 3).toInt() * 1000 );
+        timer->start( OptionsDialog::getSetting("refresh", 3).toInt() * 1000 );
 
         if(connected) {
             QString settingsString = "";
@@ -412,13 +412,13 @@ void Juicer::processLink(const QString& link) {
         QString hash = s[2];
         QString size = s[3].split("/")[0];
         if(s[0].toLower() == "ajfsp://file") {
-            QAjShareFileItem* file;
-            QAjDownloadItem* download;
+            ShareFileItem* file;
+            DownloadItem* download;
             if((file = shareModule->findFile( size, hash )) != NULL) {
                 QMessageBox::information( this, tr("information"), tr("The file seems to be already in the share")+":\n\n"+file->getFilename());
             } else if((download = downloadModule->findDownload(size, hash)) != NULL) {
                 QMessageBox::information( this, tr("information"),
-                    tr("The file seems to be already in the download list")+":\n\n"+download->text(QAjDownloadItem::FILENAME_COL));
+                    tr("The file seems to be already in the download list")+":\n\n"+download->text(DownloadItem::FILENAME_COL));
             }
         }
         encodedLink = s[0] + "|" + QUrl::toPercentEncoding( name )  + "|" + hash + "|" + size + "/";
@@ -508,7 +508,7 @@ void Juicer::firstModified() {
             }
             // -- if the core is not on localhost, warn the user --
             if(!localCore && optionsDialog->sameComputerRadio->isChecked()) {
-                QAjHandlerDialog localCoreDialog(
+                HandlerDialog localCoreDialog(
                     "Information",
                     tr("The Core is not running on the local machine, In order to use the full functionality like directly opening downloads or the incoming view you have to specify the incoming and temporary directory in the options menu."),
                     QDialogButtonBox::Ok, QStyle::SP_MessageBoxInformation);
@@ -604,13 +604,13 @@ void Juicer::initStatusBar()
 {
     static bool first = true;
     if(first) {
-        downSpeedLabel = new QAjIconWidget(":/small/downstream.png", "0", QBoxLayout::LeftToRight, this, 2, 2);
-        upSpeedLabel = new QAjIconWidget(":/small/upstream.png", "0", QBoxLayout::LeftToRight, this, 2, 2);
-        creditsLabel = new QAjIconWidget(":/small/credits.png", "0", QBoxLayout::LeftToRight, this, 2, 2);
-        downSizeLabel = new QAjIconWidget(":/small/downloaded.png", "0", QBoxLayout::LeftToRight, this, 2, 2);
-        upSizeLabel = new QAjIconWidget(":/small/uploaded.png", "0", QBoxLayout::LeftToRight, this, 2, 2);
-        coreVersionLabel = new QAjIconWidget(":/small/version.png", "0", QBoxLayout::LeftToRight, this, 2, 2);
-        connectedLabel = new QAjIconWidget(":/small/connected.png", "0", QBoxLayout::LeftToRight, this, 2, 2);
+        downSpeedLabel = new IconWidget(":/small/downstream.png", "0", QBoxLayout::LeftToRight, this, 2, 2);
+        upSpeedLabel = new IconWidget(":/small/upstream.png", "0", QBoxLayout::LeftToRight, this, 2, 2);
+        creditsLabel = new IconWidget(":/small/credits.png", "0", QBoxLayout::LeftToRight, this, 2, 2);
+        downSizeLabel = new IconWidget(":/small/downloaded.png", "0", QBoxLayout::LeftToRight, this, 2, 2);
+        upSizeLabel = new IconWidget(":/small/uploaded.png", "0", QBoxLayout::LeftToRight, this, 2, 2);
+        coreVersionLabel = new IconWidget(":/small/version.png", "0", QBoxLayout::LeftToRight, this, 2, 2);
+        connectedLabel = new IconWidget(":/small/connected.png", "0", QBoxLayout::LeftToRight, this, 2, 2);
         statusBar()->addPermanentWidget( connectedLabel );
         statusBar()->addPermanentWidget( coreVersionLabel );
         statusBar()->addPermanentWidget( downSpeedLabel );
@@ -620,7 +620,7 @@ void Juicer::initStatusBar()
         statusBar()->addPermanentWidget( creditsLabel );
         first = false;
     }
-    QStringList show = QAjOptionsDialog::getSetting( "statusbarComponents", optionsDialog->getDefaultStatusbarComponents() ).toStringList();
+    QStringList show = OptionsDialog::getSetting( "statusbarComponents", optionsDialog->getDefaultStatusbarComponents() ).toStringList();
     connectedLabel->setVisible(show.contains(CONNECTED_SINCE));
     coreVersionLabel->setVisible(show.contains(CORE_VERSION));
     downSpeedLabel->setVisible(show.contains(DOWNSTREAM));
@@ -646,11 +646,11 @@ void Juicer::trayActivated( QSystemTrayIcon::ActivationReason reason )
 
 
 /*!
-    \fn Juicer::downloadsFinished( const QList<QAjDownloadItem*>& list )
+    \fn Juicer::downloadsFinished( const QList<DownloadItem*>& list )
     show a message with all finished downloads in tray icon
     @param list list with all finished downloads to show
  */
-void Juicer::downloadsFinished( const QList<QAjDownloadItem*>& list )
+void Juicer::downloadsFinished( const QList<DownloadItem*>& list )
 {
     if( QSystemTrayIcon::supportsMessages() )
     {
@@ -658,7 +658,7 @@ void Juicer::downloadsFinished( const QList<QAjDownloadItem*>& list )
         int i;
         for( i=0; i<list.size(); i++ )
         {
-            msg += list[i]->text( QAjDownloadItem::FILENAME_COL ) + "\n";
+            msg += list[i]->text( DownloadItem::FILENAME_COL ) + "\n";
         }
         tray->showMessage( tr("Download finished"), msg, QSystemTrayIcon::Information, 3000 );
     }

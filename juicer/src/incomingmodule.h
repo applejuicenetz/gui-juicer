@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2006 by Matthias Reif   *
+ *   Copyright (C) 2007 by Matthias Reif   *
  *   matthias.reif@informatik.tu-chemnitz.de   *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -17,74 +17,67 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
-#ifndef FTP_H
-#define FTP_H
+#ifndef QAJINCOMINGWIDGET_H
+#define QAJINCOMINGWIDGET_H
 
-#include <QObject>
-#include <QFtp>
-#include <QThread>
-#include <QStringList>
-#include <QDir>
-#include <QHash>
+#include <QFileDialog>
 #include <QMessageBox>
-#include <QProgressDialog>
-#include <QProcess>
-#include <QTemporaryFile>
 
 #include "optionsdialog.h"
+#include "incomingitem.h"
+#include "modulebase.h"
+#include "ftp.h"
+
+class Juicer;
 
 /**
 	@author Matthias Reif <matthias.reif@informatik.tu-chemnitz.de>
 */
-class FTP : public QThread
+class IncomingModule : public ModuleBase
 {
-    Q_OBJECT
+Q_OBJECT
 public:
-    FTP( QString host, int port, QString user, QString password, bool binary, QObject *parent = 0 );
-    FTP( QObject *parent = 0 );
-    ~FTP();
-    void getNext();
-    void add( QString srcFilename, QFile* dstFile );
-    void add( QString srcFilename );
+    IncomingModule(Juicer* juicer);
+    ~IncomingModule();
+    void setDir(QString dir);
 
 private:
-    class StoreInfo {
+    void initToolBar();
+    QString dir;
+    void storeFtp();
+    void reloadFtp();
+    void openFtp();
+    void removeFtp();
+    void initPopup();
+    AjSettings::LOCATION getLocation();
+    bool confirmRemove(QList<QTreeWidgetItem *>& items);
+    QFtp* ftp;
+    QLabel* waitLabel;
+
+public slots:
+    void reload();
+    void open();
+    void copy();
+    void remove();
+    void insert(QUrlInfo info);
+    void selectionChanged();
+private:
+    class CopyThread : public QThread {
         public:
-        QString srcFile;
-        QFile* dstFile;
+        CopyThread(QString oldFilename, QString newFilename) {
+            this->oldFilename = oldFilename;
+            this->newFilename = newFilename;
+        }
+        QString oldFilename, newFilename;
+        void run() {
+            if(!QFile::copy(oldFilename, newFilename)) {
+                QMessageBox::critical(NULL, "error", "copy process failed");
+            }
+        }
     };
 
-    QFtp* ftp;
-    QString host;
-    int port;
-    QString user, password;
-    QString srcFile;
-    QFile* dstFile;
-    bool binary;
-    int getFile;
-
-    QList< FTP::StoreInfo > queue;
-
-    QProgressDialog* progressDialog;
-
-    bool ready;
-    bool tmpMode;
-
 private slots:
-    void stateChangedSlot( int state ) ;
-    void commandFinishedSlot( int id, bool error );
-signals:
-    void done();
-    void errorOccured( QString message );
-    void downloadFinished( QFile* file, FTP* ftp );
-    void readyRead( QFile* dstFile, FTP* ftp);
-protected:
-    void run();
-public slots:
-    void dataTransferProgressSlot( qint64 done, qint64 total );
-    void abort();
-private:
-    void init();
+    void ftpReadyRead( QFile* dstFile, FTP* ftp );
 };
 
 #endif

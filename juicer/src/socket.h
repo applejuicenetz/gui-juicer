@@ -17,19 +17,30 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
+#ifndef QAJSOCKET_H
+#define QAJSOCKET_H
 
-#include "application.h"
+#include <QTcpSocket>
+#include <QStringList>
+#include <QCoreApplication>
 
-int main( int argc, char ** argv )
+/**
+@author Matthias Reif
+*/
+class Socket : public QTcpSocket
 {
-    Application a( argc, argv );
+    Q_OBJECT
+public:
+    Socket( int appPort, QStringList argList, QObject *parent = 0 );
+    ~Socket();
+    void start();
 
-    QSettings settings;
-    QString locale = settings.value("language", QLocale::system().name()).toString();
-    QTranslator translator;
-    if( ! translator.load(":/translations/" + locale))
-        translator.load("juicer_" + locale);
-    a.installTranslator(&translator);
+private:
+    int appPort;
+    QStringList argList;
 
-    return a.exec();
-}
+private slots:
+    void connected();
+};
+
+#endif
