@@ -27,7 +27,9 @@ QAjHandlerDialog::QAjHandlerDialog( const QString& caption,
     QWindowsStyle qStyle;
     iconLabel->setPixmap(qStyle.standardIcon(icon).pixmap(32,32));
     setText(text);
-
+    if(buttons == QDialogButtonBox::Ok) {
+        chkAskAgain->setText("Don't show this message again");
+    }
     connect ( chkAskAgain, SIGNAL( stateChanged(int) ), this, SLOT( reaskSlot(int) ) );
 }
 
@@ -66,8 +68,6 @@ int QAjHandlerDialog::exec(const QString& saveString)
         int result = QDialog::exec();
         if(chkAskAgain->isChecked()) {
             QAjOptionsDialog::setSetting("accepted", saveString, result);
-        } else {
-            QAjOptionsDialog::removeSetting("accepted", saveString);
         }
         return result;
     }
