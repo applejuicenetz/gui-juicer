@@ -44,7 +44,7 @@ Application::Application( int & argc, char ** argv )
         if(settings.value("shell/open/command/Default") != appCmd) {
 
             HandlerDialog handlerDialog(
-                    tr( "ajfsp Protecol Handler" ),
+                    tr( "ajfsp Protocol Handler" ),
                     tr("Juicer seems not to be the default application for ajfsp:// links.\nWould you like to change this?"),
                     QDialogButtonBox::Yes | QDialogButtonBox::No,
                     QStyle::SP_MessageBoxQuestion);

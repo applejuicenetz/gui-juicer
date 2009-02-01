@@ -80,7 +80,7 @@ void ServerModule::connectSlot() {
             int minutes = connectedSince.secsTo(now) / 60 + 1;
             if(minutes < 30) {
                 doSo = QMessageBox::question(juicer, tr("Connect"),
-                    tr("You are connected to a server for %1 minutes. If you try to change the server befor being connected for 30 minutes, you have to wait for 30 minutes without any server connection.").arg(QString::number(minutes))
+                    tr("You are connected to a server for %n minute(s). If you try to change the server befor being connected for 30 minutes, you have to wait for 30 minutes without any server connection.", "", minutes)
                     + "\n\n" + tr("Are you sure you want to reconnect?"),
                     QMessageBox::Yes | QMessageBox::No) == QMessageBox::Yes;
             }

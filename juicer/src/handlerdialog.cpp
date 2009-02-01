@@ -28,7 +28,7 @@ HandlerDialog::HandlerDialog( const QString& caption,
     iconLabel->setPixmap(qStyle.standardIcon(icon).pixmap(32,32));
     setText(text);
     if(buttons == QDialogButtonBox::Ok) {
-        chkAskAgain->setText("Don't show this message again");
+        chkAskAgain->setText(tr("Don't show this message again."));
     }
     connect ( chkAskAgain, SIGNAL( stateChanged(int) ), this, SLOT( reaskSlot(int) ) );
 }

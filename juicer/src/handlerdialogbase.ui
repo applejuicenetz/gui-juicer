@@ -99,7 +99,7 @@
      <item>
       <widget class="QCheckBox" name="chkAskAgain" >
        <property name="text" >
-        <string>don't ask me again</string>
+        <string>Don't ask me again.</string>
        </property>
       </widget>
      </item>

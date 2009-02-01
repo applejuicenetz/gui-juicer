@@ -47,10 +47,6 @@ public:
 
     void setSpeed( const QString& newSpeedString, const QTime& time );
 
-    int getSpeedDif()
-    {
-        return speedDif;
-    }
     int getSpeed()
     {
         return speed;
@@ -71,7 +67,7 @@ public:
 private:
     void init();
 protected:
-    int speed, newSpeed, speedDif;
+    int speed;
     QList<int> speeds;
     QList<QTime> times;
     QString id;

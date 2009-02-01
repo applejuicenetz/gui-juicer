@@ -71,7 +71,7 @@ private:
         QString oldFilename, newFilename;
         void run() {
             if(!QFile::copy(oldFilename, newFilename)) {
-                QMessageBox::critical(NULL, "error", "copy process failed");
+                QMessageBox::critical(NULL, tr("error"), tr("copy process failed"));
             }
         }
     };

@@ -382,11 +382,11 @@ void Juicer::showNetworkInfo()
 
 void Juicer::setStatusBarText( const QString& downSpeed, const QString& upSpeed, const QString& credits, const QString& downSize, const QString& upSize )
 {
-    QString downStreamString = tr("Downstream: ") + QConvert::bytes( downSpeed ) + tr("/s");
-    QString upStreamString = tr("Upstream: ") + QConvert::bytes( upSpeed ) + tr("/s");
-    QString creditsString = tr("Credits: ") + QConvert::bytesExtra( credits );
-    QString downSizeString = tr("Downloaded: ") + QConvert::bytesExtra( downSize );
-    QString upSizeString = tr("Uploaded: ") + QConvert::bytesExtra( upSize );
+    QString downStreamString = tr("Downstream: %1/s").arg(QConvert::bytes( downSpeed ));
+    QString upStreamString = tr("Upstream: %1/s").arg(QConvert::bytes( upSpeed ));
+    QString creditsString = tr("Credits: %1").arg(QConvert::bytesExtra( credits ));
+    QString downSizeString = tr("Downloaded: %1").arg(QConvert::bytesExtra( downSize ));
+    QString upSizeString = tr("Uploaded: %1").arg(QConvert::bytesExtra( upSize ));
 
     downSpeedLabel->setText( downStreamString );
     upSpeedLabel->setText( upStreamString );
@@ -415,10 +415,10 @@ void Juicer::processLink(const QString& link) {
             ShareFileItem* file;
             DownloadItem* download;
             if((file = shareModule->findFile( size, hash )) != NULL) {
-                QMessageBox::information( this, tr("information"), tr("The file seems to be already in the share")+":\n\n"+file->getFilename());
+                QMessageBox::information( this, tr("Information"), tr("The file seems to be already in the share\n\n%1").arg(file->getFilename()));
             } else if((download = downloadModule->findDownload(size, hash)) != NULL) {
-                QMessageBox::information( this, tr("information"),
-                    tr("The file seems to be already in the download list")+":\n\n"+download->text(DownloadItem::FILENAME_COL));
+                QMessageBox::information( this, tr("Information"),
+                    tr("The file seems to be already in the download list\n\n%1").arg(download->text(DownloadItem::FILENAME_COL)));
             }
         }
         encodedLink = s[0] + "|" + QUrl::toPercentEncoding( name )  + "|" + hash + "|" + size + "/";
@@ -447,7 +447,7 @@ void Juicer::tabChanged( int index ) {
     incomingToolBar->setVisible(tab == incoming);
 
     if((prevTab == shares) && (shareModule->isChanged()) && 
-       (QMessageBox::question( this, tr("question"), tr("You've changed your shares.\nDo you want to transfer the changes to the core?"), QMessageBox::Yes, QMessageBox::No ) == QMessageBox::Yes)) {
+       (QMessageBox::question( this, tr("Question"), tr("You've changed your shares.\nDo you want to transfer the changes to the core?"), QMessageBox::Yes, QMessageBox::No ) == QMessageBox::Yes)) {
         shareModule->commitSlot();
     }
 
@@ -467,13 +467,13 @@ void Juicer::exitCore()
 }
 
 void Juicer::setCoreVersion(const QString& version) {
-    coreVersionLabel->setText(tr("Core: ") + version);
+    coreVersionLabel->setText(tr("Core: %1").arg(version));
 }
 
 void Juicer::connectedSince(const QString& since) {
     QDateTime& time = serverModule->setConnectedSince(since);
     if(time.isValid()) {
-        connectedLabel->setText(tr("connected since") + " " + time.toLocalTime().toString(Qt::LocalDate));
+        connectedLabel->setText(tr("connected since %1").arg(time.toLocalTime().toString(Qt::LocalDate)));
     } else {
         connectedLabel->setText(tr("NOT connected"));
     }
@@ -510,7 +510,7 @@ void Juicer::firstModified() {
             if(!localCore && optionsDialog->sameComputerRadio->isChecked()) {
                 HandlerDialog localCoreDialog(
                     "Information",
-                    tr("The Core is not running on the local machine, In order to use the full functionality like directly opening downloads or the incoming view you have to specify the incoming and temporary directory in the options menu."),
+                    tr("The Core is not running on the local machine. In order to use the full functionality like directly opening downloads or the incoming view you have to specify the incoming and temporary directory in the options menu."),
                     QDialogButtonBox::Ok, QStyle::SP_MessageBoxInformation);
                 localCoreDialog.exec("localCore");
             }
@@ -726,9 +726,7 @@ void Juicer::sendToTray( const QString& message1, const QString& message2 ) {
 
 void Juicer::about() {
     QMessageBox::about( this, tr("Juicer Info"),
-                        tr("Juicer\n\n") +
-                        tr("GUI for appleJuice Filesharing\n\n") +
-                        tr("URL: http://ajqtgui.sf.net"));
+                        tr("Juicer\n\nGUI for appleJuice Filesharing\n\nURL: http://ajqtgui.sf.net"));
 }
 
 void Juicer::aboutQt() {

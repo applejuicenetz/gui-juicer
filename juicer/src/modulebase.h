@@ -52,12 +52,6 @@ Q_OBJECT
 public:
     DockMain(QWidget *parent = 0) : QMainWindow(parent) {}
     ~DockMain() {}
-//     QSize sizeHint() const {
-//         QSize s = QMainWindow::sizeHint();
-//         printf("here:   %d   %d\n", s.width(), s.height());
-//         s.setHeight(100);
-//         return s;
-//     }
 };
 
 #endif

@@ -44,10 +44,7 @@ void UserItem::init()
 
 void UserItem::setSpeed( const QString& newSpeedString, const QTime& /*time*/ )
 {
-    newSpeed = newSpeedString.toInt();
-    speedDif = newSpeed - speed;
-    speed = newSpeed;
-
+    speed = newSpeedString.toInt();
     if ( status_ == ACTIVE_SOURCE )
         setText( DownloadItem::SPEED_COL, QConvert::bytes(newSpeedString) + "/s" );
     else

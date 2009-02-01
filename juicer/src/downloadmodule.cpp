@@ -284,9 +284,7 @@ void DownloadModule::setSelected(const QString& request, const QString& para)
 
 void DownloadModule::cancelSlot()
 {
-    QString text = tr("Do you realy want to cancel") + " "
-                    + QString::number(treeWidget->selectedItems().size()) + " "
-                    + (treeWidget->selectedItems().size()>1?tr("downloads?"):tr("download?"));
+    QString text = tr("Do you realy want to cancel %n download(s)?", "", treeWidget->selectedItems().size());
     if(QMessageBox::question(juicer, tr("Confirm"), text, QMessageBox::No, QMessageBox::Yes) == QMessageBox::Yes) {
         setSelected("canceldownload");
     }

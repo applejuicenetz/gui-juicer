@@ -169,7 +169,6 @@ void DownloadItem::updateUser( const QString& id,
     }
     QString oldStatus = userItem->getStatus();
     userItem->update( fileName, nickname, speed, status, power, queuePos, statusString, osIcon, downloadfrom, downloadto, actualdownloadposition, time );
-    this->speed += userItem->getSpeedDif();
     moveItem( userItem, oldStatus );
 }
 
@@ -264,8 +263,13 @@ bool DownloadItem::updateView( QHash<QString, QString>* downloadStatusDescr )
     setText( FINISHED_SIZE_COL, " " + QConvert::bytes( ready ) + " " );
     setText( REMAIN_SIZE_COL, " " + QConvert::bytes( remainingSize ) + " " );
 
-    if( status_ != DOWN_LOADING ) {
-        speed = 0.0;
+
+    speed = 0.0;
+    if( status_ == DOWN_LOADING ) {
+        QList<UserItem*> userItems = users.values();
+        for(int i=0; i<userItems.size(); i++) {
+            speed += userItems[i]->getSpeed();
+        }
     }
 
     setText( SPEED_COL, " " + QConvert::bytes( speed, 1 ) + "/s ");

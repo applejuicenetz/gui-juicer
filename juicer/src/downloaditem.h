@@ -149,7 +149,6 @@ public slots:
 protected:
     double ready, remainingSize;
     double speed;
-    QLinkedList<double> speeds;
     double finished;
     int percent;
     double missing;

@@ -166,7 +166,7 @@ void IncomingModule::remove()
             {
                 if(!QFile::remove( actDir + selectedItems[i]->text( IncomingItem::FILENAME_COL ) ))
                 {
-                QMessageBox::critical(juicer, "Error", "Could not remove\n" + actDir + selectedItems[i]->text(IncomingItem::FILENAME_COL));
+                    QMessageBox::critical(juicer, "Error", tr("Could not remove %1.").arg(actDir + selectedItems[i]->text(IncomingItem::FILENAME_COL)));
                 }
             }
             reload();
@@ -210,7 +210,7 @@ void IncomingModule::storeFtp()
             }
             else
             {
-                QMessageBox::critical( juicer, tr("error"), "\"" + dstFile->fileName() + "\" "+tr("already exists"), QMessageBox::Ok, QMessageBox::NoButton );
+                QMessageBox::critical( juicer, tr("error"), tr("\"%1\" already exists").arg(dstFile->fileName()), QMessageBox::Ok, QMessageBox::NoButton );
             }
         }
     }
@@ -390,15 +390,14 @@ void IncomingModule::ftpReadyRead( QFile* dstFile, FTP* ftp )
 bool IncomingModule::confirmRemove(QList<QTreeWidgetItem *>& items) {
     int i;
     int maxFilesToShow = 10;
-    QString list = "<b>"+tr("Delete") + " " + QString::number(items.size()) + " "
-            + (items.size()>1?tr("files"):tr("file"))+"?</b><br>";
+    QString list = "<b>"+tr("Delete %n file(s)?", "", items.size()) + "</b><br>";
     for( i=0; i<items.size() && i<maxFilesToShow; i++ )
     {
         list += "<br>" + items[i]->text( IncomingItem::FILENAME_COL );
     }
     if(items.size() > maxFilesToShow)
     {
-        list += "<br>(" + QString::number(items.size() - maxFilesToShow) + " more)";
+        list += "<br>(" +tr("%1 more").arg(QString::number(items.size() - maxFilesToShow))+")";
     }
     return QMessageBox::question( juicer, "Confirmation", list, QMessageBox::Yes | QMessageBox::No, QMessageBox::No ) == QMessageBox::Yes;
 }
