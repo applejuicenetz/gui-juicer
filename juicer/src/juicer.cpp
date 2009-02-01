@@ -180,6 +180,8 @@ void Juicer::closeEvent( QCloseEvent* ce ) {
         setHidden( true );
         ce->ignore();
      } else {
+        // make sure tray icon disappears when quit (Windows problem)
+        if ( true == tray->isVisible() ) tray->setVisible(false);
         quit();
         ce->accept();
     }

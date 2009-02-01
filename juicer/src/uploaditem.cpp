@@ -56,14 +56,15 @@ bool UploadItem::operator<( const QTreeWidgetItem & other ) const
 /*!
     \fn UploadItem::update(const QIcon& osIcon,const QString& status,
         const QString& statusDescr, const QString& directState,
-        const QString& priority, const QString& nick, const QString& speed, const QString& chunkStart,
-        const QString& chunkEnd, const QString chunkPos, bool newUpload)
+        const QString& priority, const QString& nick, const QString& speed,
+        const QString& loaded, const QString& chunkStart,
+        const QString& chunkEnd, const QString& chunkPos, bool newUpload)
  */
 void UploadItem::update(const QIcon& osIcon,const QString& status,
         const QString& statusDescr, const QString& directState,
         const QString& priority, const QString& nick, const QString& speed,
         const QString& version, const QString& loaded, const QString& chunkStart,
-        const QString& chunkEnd, const QString chunkPos, const QString& lastConnected, bool newUpload)
+        const QString& chunkEnd, const QString& chunkPos, const QString& lastConnected, bool newUpload)
 {
     this->speed = speed.toDouble();
     setStatus( status );
