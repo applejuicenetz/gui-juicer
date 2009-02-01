@@ -21,33 +21,56 @@
 #define QAJUPLOADITEM_H
 
 #include <QHeaderView>
+#include <QProgressBar>
 
 #include "item.h"
 
-static const QString ACTIVE_UPLOAD = "1";
-static const QString QUEUEING_UPLOAD = "2";
-static const QString NEW_UPLOAD = "-1";
+static const QString ACTIVE_UPLOAD    = "1";
+static const QString QUEUEING_UPLOAD  = "2";
+static const QString NEW_UPLOAD       = "-1";
 
 /**
 @author Matthias Reif
 */
 class UploadItem : public Item
 {
+    QProgressBar progressChunk_, progressLoaded_;
+    QString shareId;
+    double speed;
+
 public:
-    UploadItem( QString id, QString shareId, QTreeWidget *parent );
+    UploadItem( const QString& id, const QString& shareId, QTreeWidget *parent );
     ~UploadItem();
 
-    QString shareId;
-
-    enum {FILENAME_COL, NICK_COL, SPEED_COL, STATUS_COL,
-          PRIORITY_COL, OS_COL, DIRECTSTATE_COL, VERSION_COL};
+    enum column { FILENAME_COL    = 0,
+                  CHUNK_COL       = 1,
+                  NICK_COL        = 2,
+                  SPEED_COL       = 3,
+                  STATUS_COL      = 4,
+                  PRIORITY_COL    = 5,
+                  OS_COL          = 6,
+                  DIRECTSTATE_COL = 7,
+                  VERSION_COL     = 8,
+                  LOADED_COL      = 9,
+                  LASTSEEN_COL    = 10 };
 
     virtual bool operator<( const QTreeWidgetItem & other ) const;
     void update(const QIcon& osIcon, const QString& status, const QString& statusDescr,
                 const QString& directState, const QString& priority, const QString& nick,
-                const QString& speed, const QString& version, bool newUpload);
+                const QString& speed, const QString& version, const QString& loaded,
+                const QString& chunkStart, const QString& chunkEnd, const QString chunkPos,
+                const QString& lastConnected, bool newUpload);
 
-    double speed;
+    QString getShareID() const
+    {
+        return shareId;
+    }
+
+private:
+    void initProgressBar( QProgressBar& progressBar, column col );
+    void updateChunkProgress( int uploadFrom, int uploadTo, int uploadCurrent );
+    void updateLoadedProgress( const QString& loaded );
+    void updateLastSeen( const QString& lastSeen );
 };
 
 #endif

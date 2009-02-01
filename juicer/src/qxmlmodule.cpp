@@ -381,7 +381,13 @@ void QXMLModule::handleUpload( QDomElement& e )
             e.attribute("directstate"),
             e.attribute("priority"),
             e.attribute("nick"),
-            e.attribute("speed")) )
+            e.attribute("speed"),
+            e.attribute("loaded"),
+            e.attribute("uploadfrom"),
+            e.attribute("uploadto"),
+            e.attribute("actualuploadposition"),
+            e.attribute("lastconnection")
+      ) )
     {
         this->get("getobject", "&Id="+e.attribute("shareid"));
     }
@@ -561,7 +567,7 @@ void QXMLModule::printAllAttributes(QDomElement& e)
 {
     QDomNamedNodeMap a = e.attributes();
     printf("%d\n", a.length());
-    for(int i=0; i<a.length(); i++) {
+    for( unsigned int i=0; i<a.length(); i++ ) {
         QDomNode item = a.item(i);
         printf("%s\t\t%s\n", item.nodeName().toLatin1().data(), item.nodeValue().toLatin1().data());
     }

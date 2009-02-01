@@ -44,12 +44,12 @@
 class UserItem;
 
 
-static const QString DOWN_PAUSED = "18";
-static const QString DOWN_FINISHED = "14";
-static const QString DOWN_CANCELD = "17";
+static const QString DOWN_PAUSED    = "18";
+static const QString DOWN_FINISHED  = "14";
+static const QString DOWN_CANCELD   = "17";
 static const QString DOWN_FINISHING = "12";
 static const QString DOWN_SEARCHING = "0";
-static const QString DOWN_LOADING = "-1";
+static const QString DOWN_LOADING   = "-1";
 
 /**
 @author Matthias Reif
@@ -58,13 +58,13 @@ class DownloadItem : public Item
 {
 Q_OBJECT
 public:
-    DownloadItem( QString id, QTreeWidget *parent = 0 );
+    DownloadItem( const QString& id, QTreeWidget *parent = 0 );
     ~DownloadItem();
 
     enum {FILENAME_COL, SOURCES_COL, SPEED_COL, STATUS_COL, FINISHED_COL, POWER_COL,
           SIZE_COL, FINISHED_SIZE_COL, REMAIN_SIZE_COL, REMAIN_TIME_COL, MISSING_COL};
 
-    void moveItem( UserItem *userItem, QString oldStatus );
+    void moveItem( UserItem *userItem, const QString& oldStatus );
     void update( const QString& hash, const QString& fileName, const QString& status, const QString& size, const QString& ready, const QString& power, const QString& tempNumber );
     void updateUser( const QString& id, const QString& fileName, const QString& nickname, const QString& speed, const QString& status, const QString& power, const QString& queuePos, const QString& statusString, QIcon& osIcon, const QString& downloadfrom, const QString& downloadto, const QString& actualdownloadposition, const QTime& time );
 
@@ -77,7 +77,7 @@ public:
     QTreeWidgetItem* queuedSourcesItem;
     QTreeWidgetItem* otherSourcesItem;
 
-    int getActiveSources()
+    int getActiveSources() const
     {
         return activeSourcesItem->childCount();
     }
@@ -93,31 +93,37 @@ public:
 
     QHash<QString, UserItem*> users;
 
-    double getReady()
+    double getReady() const
     {
         return ready;
     }
-    double getRemainingSize()
+
+    double getRemainingSize() const
     {
         return remainingSize;
     }
-    double getRemainingSec()
+
+    double getRemainingSec() const
     {
         return remainingSec;
     }
-    double getSpeed()
+
+    double getSpeed() const
     {
         return speed;
     }
-    double getMissing()
+
+    double getMissing() const
     {
         return missing;
     }
-    double getFinished()
+
+    double getFinished() const
     {
         return finished;
     }
-    int getPercent()
+
+    int getPercent() const
     {
         return percent;
     }

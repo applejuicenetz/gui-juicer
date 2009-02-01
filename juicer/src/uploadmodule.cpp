@@ -21,7 +21,9 @@
 #include "uploadmodule.h"
 #include "juicer.h"
 
-UploadModule::UploadModule(Juicer* juicer) : ModuleBase(juicer, juicer->uploadsTreeWidget, juicer->uploadToolBar) {
+UploadModule::UploadModule(Juicer* juicer)
+  : ModuleBase(juicer, juicer->uploadsTreeWidget, juicer->uploadToolBar)
+{
     uploadStatusDescr["1"] = "active";
     uploadStatusDescr["2"] = "queueing";
 
@@ -39,7 +41,9 @@ UploadModule::~UploadModule()
 bool UploadModule::insertUpload(
             const QString& id, const QString& shareId, const QString& version,
             const QString& os, const QString& status, const QString& directState,
-            const QString& priority, const QString& nick, const QString& speed)
+            const QString& priority, const QString& nick, const QString& speed,
+            const QString& loaded, const QString& chunkStart, const QString& chunkEnd,
+            const QString& chunkPos, const QString& lastConnected )
 {
     UploadItem *uploadItem = findUpload(id);
     bool newUpload = uploadItem == NULL;
@@ -49,12 +53,14 @@ bool UploadModule::insertUpload(
     }
 
     uploadItem->update(juicer->osIcons[os], status, uploadStatusDescr[status],
-                       uploadDirectStateDescr[directState], priority, nick, speed, version, newUpload);
+                       uploadDirectStateDescr[directState], priority, nick, speed, version,
+                       loaded, chunkStart, chunkEnd, chunkPos, lastConnected, newUpload );
 
     return !newUpload;
 }
 
-bool UploadModule::remove(QString id) {
+bool UploadModule::remove( const QString& id )
+{
     QTreeWidgetItem *item = findUpload(id);
     if(item != NULL) {
         uploads.remove(id);
@@ -65,7 +71,8 @@ bool UploadModule::remove(QString id) {
 }
 
 
-UploadItem* UploadModule::findUpload(QString id) {
+UploadItem* UploadModule::findUpload( const QString& id )
+{
     if(uploads.contains(id)) {
         return uploads[id];
     }
@@ -76,10 +83,11 @@ UploadItem* UploadModule::findUpload(QString id) {
 /*!
     \fn UploadModule::setFilename(QString shareId, QString filename)
  */
-void UploadModule::setFilename(QString shareId, QString filename) {
+void UploadModule::setFilename( const QString& shareId, const QString& filename )
+{
     QHash<QString, UploadItem*>::const_iterator item;
     for(item = uploads.constBegin(); item != uploads.constEnd(); item++) {
-        if((*item)->shareId == shareId) {
+        if((*item)->getShareID() == shareId) {
             (*item)->setText(UploadItem::FILENAME_COL, filename);
         }
     }
@@ -89,20 +97,22 @@ void UploadModule::setFilename(QString shareId, QString filename) {
 /*!
     \fn UploadModule::adjustSizeOfColumns()
  */
-void UploadModule::adjustSizeOfColumns() {
+void UploadModule::adjustSizeOfColumns()
+{
     for(int i = 0; i < treeWidget->columnCount(); i++) {
         treeWidget->resizeColumnToContents(i);
     }
 }
 
-void UploadModule::selectionChanged() {
-
+void UploadModule::selectionChanged()
+{
 }
 
 /*!
     \fn UploadModule::hideQueuedSlot(bool checked)
  */
-void UploadModule::hideQueuedSlot(bool checked) {
+void UploadModule::hideQueuedSlot( bool checked )
+{
     QHash<QString,UploadItem*>::const_iterator i;
     for(i = uploads.constBegin(); i != uploads.constEnd(); i++) {
         (*i)->setHidden(checked && ((*i)->getStatus() == QUEUEING_UPLOAD));

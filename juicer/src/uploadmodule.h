@@ -39,16 +39,18 @@ public:
 
     bool insertUpload(const QString& id, const QString& shareId, const QString& version,
                       const QString& os, const QString& status, const QString& directState,
-                      const QString& priority, const QString& nick, const QString& speed);
+                      const QString& priority, const QString& nick, const QString& speed,
+                      const QString& loaded, const QString& chunkStart, const QString& chunkEnd,
+                      const QString& chunkPos, const QString& lastConnected);
 
-    bool remove(QString id);
-    void setFilename(QString shareId, QString filename);
+    bool remove( const QString& id );
+    void setFilename( const QString& shareId, const QString& filename );
 public slots:
     void adjustSizeOfColumns();
     void selectionChanged();
-    void hideQueuedSlot(bool checked);
+    void hideQueuedSlot( bool checked );
 private:
-    UploadItem* findUpload( QString id );
+    UploadItem* findUpload( const QString& id );
     QHash<QString, QString> uploadStatusDescr;
     QHash<QString, QString> uploadDirectStateDescr;
     QHash<QString, UploadItem*> uploads;

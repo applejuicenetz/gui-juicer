@@ -20,12 +20,19 @@
 #include "uploaditem.h"
 #include "juicer.h"
 
-UploadItem::UploadItem( QString id, QString shareId, QTreeWidget *parent ) 
-  : Item(parent, id)
-  , shareId(shareId)
+UploadItem::UploadItem( const QString& id, const QString& shareId, QTreeWidget *parent )
+  : Item( parent, id )
+  , shareId( shareId )
 {
     status_ = NEW_UPLOAD;
     speed = 0.0;
+
+    progressChunk_.setMaximumHeight(20);
+    setSizeHint(CHUNK_COL,  progressChunk_.sizeHint());
+    initProgressBar( progressChunk_, CHUNK_COL );
+    progressLoaded_.setMaximumHeight(20);
+    setSizeHint(LOADED_COL, progressLoaded_.sizeHint());
+    initProgressBar( progressLoaded_, LOADED_COL );
 }
 
 
@@ -34,7 +41,8 @@ UploadItem::~UploadItem()
 }
 
 
-bool UploadItem::operator<( const QTreeWidgetItem & other ) const {
+bool UploadItem::operator<( const QTreeWidgetItem & other ) const
+{
     int sortIndex = treeWidget()->header()->sortIndicatorSection();
     UploadItem* upItem = (UploadItem*)&other;
     switch ( sortIndex ) {
@@ -48,15 +56,18 @@ bool UploadItem::operator<( const QTreeWidgetItem & other ) const {
 /*!
     \fn UploadItem::update(const QIcon& osIcon,const QString& status,
         const QString& statusDescr, const QString& directState,
-        const QString& priority, const QString& nick, const QString& speed, bool newUpload)
+        const QString& priority, const QString& nick, const QString& speed, const QString& chunkStart,
+        const QString& chunkEnd, const QString chunkPos, bool newUpload)
  */
 void UploadItem::update(const QIcon& osIcon,const QString& status,
         const QString& statusDescr, const QString& directState,
-        const QString& priority, const QString& nick, const QString& speed, const QString& version, bool newUpload) {
-
+        const QString& priority, const QString& nick, const QString& speed,
+        const QString& version, const QString& loaded, const QString& chunkStart,
+        const QString& chunkEnd, const QString chunkPos, const QString& lastConnected, bool newUpload)
+{
     this->speed = speed.toDouble();
-    setStatus(status);
-    if(newUpload) {
+    setStatus( status );
+    if( newUpload ) {
         setText(NICK_COL, nick);
         setIcon(OS_COL, osIcon);
         setText(VERSION_COL, version);
@@ -65,4 +76,57 @@ void UploadItem::update(const QIcon& osIcon,const QString& status,
     setText(STATUS_COL, statusDescr);
     setText(DIRECTSTATE_COL, directState);
     setText(PRIORITY_COL, priority );
+
+    updateLoadedProgress( loaded );
+    updateChunkProgress( chunkStart.toInt(), chunkEnd.toInt(), chunkPos.toInt() );
+    updateLastSeen( lastConnected );
 }
+
+void UploadItem::initProgressBar( QProgressBar& progressBar, column col )
+{
+    QWidget* progressBarWidget = new QWidget( treeWidget() );
+    QVBoxLayout* layout = new QVBoxLayout();
+    layout->addStretch( 2 );
+    layout->addWidget( &progressBar );
+    layout->addStretch( 2 );
+    progressBarWidget->setLayout( layout );
+
+    treeWidget()->setItemWidget( this, col, progressBarWidget );
+}
+
+void UploadItem::updateChunkProgress( int uploadFrom, int uploadTo, int uploadCurrent )
+{
+    if ( getStatus() != ACTIVE_UPLOAD ) {
+        progressChunk_.hide();
+        return;
+    }
+    if ( false == progressChunk_.isVisible() ) progressChunk_.setVisible( true );
+    if ( uploadFrom  != progressChunk_.minimum() ) progressChunk_.setMinimum( uploadFrom );
+    if ( uploadTo    != progressChunk_.maximum() ) progressChunk_.setMaximum( uploadTo );
+    progressChunk_.setValue( uploadCurrent );
+}
+
+void UploadItem::updateLoadedProgress( const QString& loaded )
+{
+  if ( loaded.toInt() == -1 ) {
+      progressLoaded_.hide();
+      return;
+  }
+  if ( false == progressLoaded_.isVisible() ) progressLoaded_.setVisible( true );
+  progressLoaded_.setValue( loaded.toDouble() * 100 );
+}
+
+void UploadItem::updateLastSeen( const QString& lastConnected )
+{
+    if ( getStatus() != ACTIVE_UPLOAD ) {
+        if ( false == lastConnected.isEmpty() ) {
+            // lastConnected in milli seconds, fromTime_t needs seconds since 1.1.1970
+            unsigned int seconds = lastConnected.toULongLong() / 1000;
+            setText( LASTSEEN_COL, QDateTime::fromTime_t( seconds ).toString("dd.MM.yyyy, hh:mm") );
+        }
+        else setText( LASTSEEN_COL, tr("unknown") );
+    }
+    else setText( LASTSEEN_COL, tr("current") );
+}
+
+

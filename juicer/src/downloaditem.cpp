@@ -20,7 +20,7 @@
 #include "downloaditem.h"
 
 
-DownloadItem::DownloadItem( QString id, QTreeWidget *parent )
+DownloadItem::DownloadItem( const QString& id, QTreeWidget *parent )
   : Item( parent, id )
   , activeSourcesItem( 0 )
   , queuedSourcesItem( 0 )
@@ -97,7 +97,7 @@ void DownloadItem::initPowerSpin()
 //     connect( powerSpin, SIGNAL( valueChanged( double ) ), this, SLOT( applyPowerDownload() ) );
 }
 
-void DownloadItem::moveItem( UserItem *userItem, QString oldStatus )
+void DownloadItem::moveItem( UserItem *userItem, const QString& oldStatus )
 {
     if ( oldStatus != userItem->getStatus() ) {
         if ( userItem->QTreeWidgetItem::parent() && ( oldStatus != NEW_SOURCE ) ) {
