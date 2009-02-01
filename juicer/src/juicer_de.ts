@@ -189,37 +189,37 @@ Use Quit GUI to close the GUI.</source>
 Benutzen Sie &quot;GUI schließen&quot; aus dem Menu um die HUI zu beenden.</translation>
     </message>
     <message>
-        <location filename="juicer.cpp" line="385"/>
+        <location filename="juicer.cpp" line="387"/>
         <source>Downstream: %1/s</source>
         <translation type="unfinished">Downstream: %1/s</translation>
     </message>
     <message>
-        <location filename="juicer.cpp" line="386"/>
+        <location filename="juicer.cpp" line="388"/>
         <source>Upstream: %1/s</source>
         <translation type="unfinished">Upstream: %1/s</translation>
     </message>
     <message>
-        <location filename="juicer.cpp" line="387"/>
+        <location filename="juicer.cpp" line="389"/>
         <source>Credits: %1</source>
         <translation type="unfinished">Credits: %1</translation>
     </message>
     <message>
-        <location filename="juicer.cpp" line="388"/>
+        <location filename="juicer.cpp" line="390"/>
         <source>Downloaded: %1</source>
         <translation type="unfinished">Runtergeladen: %1</translation>
     </message>
     <message>
-        <location filename="juicer.cpp" line="389"/>
+        <location filename="juicer.cpp" line="391"/>
         <source>Uploaded: %1</source>
         <translation type="unfinished">Hochgeladen: %1</translation>
     </message>
     <message>
-        <location filename="juicer.cpp" line="420"/>
+        <location filename="juicer.cpp" line="422"/>
         <source>Information</source>
         <translation type="unfinished">Information</translation>
     </message>
     <message>
-        <location filename="juicer.cpp" line="418"/>
+        <location filename="juicer.cpp" line="420"/>
         <source>The file seems to be already in the share
 
 %1</source>
@@ -228,7 +228,7 @@ Benutzen Sie &quot;GUI schließen&quot; aus dem Menu um die HUI zu beenden.</tra
 %1</translation>
     </message>
     <message>
-        <location filename="juicer.cpp" line="421"/>
+        <location filename="juicer.cpp" line="423"/>
         <source>The file seems to be already in the download list
 
 %1</source>
@@ -237,96 +237,96 @@ Benutzen Sie &quot;GUI schließen&quot; aus dem Menu um die HUI zu beenden.</tra
 %1</translation>
     </message>
     <message>
-        <location filename="juicer.cpp" line="450"/>
+        <location filename="juicer.cpp" line="452"/>
         <source>Question</source>
         <translation type="unfinished">Frage</translation>
     </message>
     <message>
-        <location filename="juicer.cpp" line="450"/>
+        <location filename="juicer.cpp" line="452"/>
         <source>You&apos;ve changed your shares.
 Do you want to transfer the changes to the core?</source>
         <translation type="unfinished">Sie haben ihre Shares geändert.
 Möchten Sie die Änderungen zum Core übertragen?</translation>
     </message>
     <message>
-        <location filename="juicer.cpp" line="463"/>
+        <location filename="juicer.cpp" line="465"/>
         <source>Confirm</source>
         <translation type="unfinished">Bestätigen</translation>
     </message>
     <message>
-        <location filename="juicer.cpp" line="463"/>
+        <location filename="juicer.cpp" line="465"/>
         <source>Do you realy want to exit the core?
 All your credits will be lost!</source>
         <translation type="unfinished">Möchten Sie den Core wirklich beenden?
-All Ihre Credits werden verloren gehen.</translation>
+All Ihre Credits werden verloren gehen!</translation>
     </message>
     <message>
-        <location filename="juicer.cpp" line="470"/>
+        <location filename="juicer.cpp" line="472"/>
         <source>Core: %1</source>
         <translation type="unfinished">Core: %1</translation>
     </message>
     <message>
-        <location filename="juicer.cpp" line="476"/>
+        <location filename="juicer.cpp" line="478"/>
         <source>connected since %1</source>
         <translation type="unfinished">verbunden seit %1</translation>
     </message>
     <message>
-        <location filename="juicer.cpp" line="478"/>
+        <location filename="juicer.cpp" line="480"/>
         <source>NOT connected</source>
         <translation type="unfinished">NICHT verbunden</translation>
     </message>
     <message>
-        <location filename="juicer.cpp" line="513"/>
+        <location filename="juicer.cpp" line="515"/>
         <source>The Core is not running on the local machine. In order to use the full functionality like directly opening downloads or the incoming view you have to specify the incoming and temporary directory in the options menu.</source>
         <translation type="unfinished">Der Core läuft nicht auf dem lokalen Rechner. Um die volle Funktionalität wie direktes Öffnen von Downloads oder das Incoming-Fenster nutzen zu können, müssen Sie das Incoming und das temporäre Verzeichnis bei den Einstellungen angeben.</translation>
     </message>
     <message>
-        <location filename="juicer.cpp" line="663"/>
+        <location filename="juicer.cpp" line="665"/>
         <source>Download finished</source>
         <translation type="unfinished">Download abgeschlossen</translation>
     </message>
     <message>
-        <location filename="juicer.cpp" line="674"/>
+        <location filename="juicer.cpp" line="676"/>
         <source>Select AJ link list file</source>
         <translation type="unfinished">Wähle Aj Linklistdatei</translation>
     </message>
     <message>
-        <location filename="juicer.cpp" line="676"/>
+        <location filename="juicer.cpp" line="678"/>
         <source>AJ Link Lists (*.ajl)</source>
         <translation type="unfinished">Aj Linkliste (*.ajl)</translation>
     </message>
     <message>
-        <location filename="juicer.cpp" line="684"/>
+        <location filename="juicer.cpp" line="686"/>
         <source>Error while opening file</source>
         <translation type="unfinished">Fehler beim Öffnen der Datei</translation>
     </message>
     <message>
-        <location filename="juicer.cpp" line="691"/>
+        <location filename="juicer.cpp" line="693"/>
         <source>No valid AJ list file</source>
         <translation type="unfinished">Keine gültige Aj Linklistdatei</translation>
     </message>
     <message>
-        <location filename="juicer.cpp" line="708"/>
+        <location filename="juicer.cpp" line="710"/>
         <source>Files successfully added from link list</source>
         <translation type="unfinished">Dateien erfolgreich aus der Linkliste hinzugefügt</translation>
     </message>
     <message>
-        <location filename="juicer.cpp" line="716"/>
+        <location filename="juicer.cpp" line="718"/>
         <source>No such file</source>
         <translation type="unfinished">Datei nicht vorhanden</translation>
     </message>
     <message>
-        <location filename="juicer.cpp" line="728"/>
+        <location filename="juicer.cpp" line="730"/>
         <source>Juicer Info</source>
         <translation type="unfinished">Juicer Info</translation>
     </message>
     <message>
-        <location filename="juicer.cpp" line="733"/>
+        <location filename="juicer.cpp" line="735"/>
         <source>Juicer: About Qt</source>
         <translation type="unfinished">Juicer: Über Qt</translation>
     </message>
     <message>
-        <location filename="juicer.cpp" line="729"/>
+        <location filename="juicer.cpp" line="731"/>
         <source>Juicer
 
 GUI for appleJuice Filesharing
@@ -350,32 +350,32 @@ URL: http://ajqtgui.sf.net</translation>
         <translation type="unfinished">&lt;h3&gt;Login&lt;/h3&gt;</translation>
     </message>
     <message>
-        <location filename="logindialogbase.ui" line="46"/>
+        <location filename="logindialogbase.ui" line="49"/>
         <source>Host:</source>
         <translation type="unfinished">Host:</translation>
     </message>
     <message>
-        <location filename="logindialogbase.ui" line="69"/>
+        <location filename="logindialogbase.ui" line="72"/>
         <source>Core-Port:</source>
         <translation type="unfinished">Core-Port:</translation>
     </message>
     <message>
-        <location filename="logindialogbase.ui" line="97"/>
+        <location filename="logindialogbase.ui" line="100"/>
         <source>reset to default value</source>
         <translation type="unfinished">auf Standardwert zurücksetzen</translation>
     </message>
     <message>
-        <location filename="logindialogbase.ui" line="100"/>
+        <location filename="logindialogbase.ui" line="103"/>
         <source>default value</source>
         <translation type="unfinished">Standardwert</translation>
     </message>
     <message>
-        <location filename="logindialogbase.ui" line="119"/>
+        <location filename="logindialogbase.ui" line="122"/>
         <source>Password:</source>
         <translation type="unfinished">Passwort:</translation>
     </message>
     <message>
-        <location filename="logindialogbase.ui" line="144"/>
+        <location filename="logindialogbase.ui" line="147"/>
         <source>save password</source>
         <translation type="unfinished">Passwort speichern</translation>
     </message>
@@ -393,7 +393,7 @@ URL: http://ajqtgui.sf.net</translation>
         <translation type="unfinished">Downloads</translation>
     </message>
     <message>
-        <location filename="mainwindowbase.ui" line="409"/>
+        <location filename="mainwindowbase.ui" line="424"/>
         <source>Filename</source>
         <translation type="unfinished">Dateiname</translation>
     </message>
@@ -403,12 +403,12 @@ URL: http://ajqtgui.sf.net</translation>
         <translation type="unfinished">Quellen</translation>
     </message>
     <message>
-        <location filename="mainwindowbase.ui" line="194"/>
+        <location filename="mainwindowbase.ui" line="199"/>
         <source>Speed</source>
         <translation type="unfinished">Geschwindigkeit</translation>
     </message>
     <message>
-        <location filename="mainwindowbase.ui" line="199"/>
+        <location filename="mainwindowbase.ui" line="204"/>
         <source>Status</source>
         <translation type="unfinished">Status</translation>
     </message>
@@ -423,7 +423,7 @@ URL: http://ajqtgui.sf.net</translation>
         <translation type="unfinished">Power</translation>
     </message>
     <message>
-        <location filename="mainwindowbase.ui" line="414"/>
+        <location filename="mainwindowbase.ui" line="429"/>
         <source>Size</source>
         <translation type="unfinished">Größe</translation>
     </message>
@@ -453,334 +453,349 @@ URL: http://ajqtgui.sf.net</translation>
         <translation type="unfinished">Uploads</translation>
     </message>
     <message>
-        <location filename="mainwindowbase.ui" line="189"/>
+        <location filename="mainwindowbase.ui" line="194"/>
         <source>Nick</source>
         <translation type="unfinished">Spitzname</translation>
     </message>
     <message>
-        <location filename="mainwindowbase.ui" line="383"/>
+        <location filename="mainwindowbase.ui" line="398"/>
         <source>Priority</source>
         <translation type="unfinished">Priorität</translation>
     </message>
     <message>
-        <location filename="mainwindowbase.ui" line="209"/>
+        <location filename="mainwindowbase.ui" line="214"/>
         <source>OS</source>
         <translation type="unfinished">BS</translation>
     </message>
     <message>
-        <location filename="mainwindowbase.ui" line="214"/>
+        <location filename="mainwindowbase.ui" line="219"/>
         <source>Direct State</source>
         <translation type="unfinished">Status</translation>
     </message>
     <message>
-        <location filename="mainwindowbase.ui" line="219"/>
+        <location filename="mainwindowbase.ui" line="224"/>
         <source>Core</source>
         <translation type="unfinished">Core</translation>
     </message>
     <message>
-        <location filename="mainwindowbase.ui" line="994"/>
+        <location filename="mainwindowbase.ui" line="1009"/>
         <source>Search</source>
         <translation type="unfinished">Suche</translation>
     </message>
     <message>
-        <location filename="mainwindowbase.ui" line="255"/>
+        <location filename="mainwindowbase.ui" line="270"/>
         <source>Hits</source>
         <translation type="unfinished">Treffer</translation>
     </message>
     <message>
-        <location filename="mainwindowbase.ui" line="493"/>
+        <location filename="mainwindowbase.ui" line="508"/>
         <source>Server</source>
         <translation type="unfinished">Server</translation>
     </message>
     <message>
-        <location filename="mainwindowbase.ui" line="293"/>
+        <location filename="mainwindowbase.ui" line="308"/>
         <source>Name</source>
         <translation type="unfinished">Name</translation>
     </message>
     <message>
-        <location filename="mainwindowbase.ui" line="298"/>
+        <location filename="mainwindowbase.ui" line="313"/>
         <source>Host</source>
         <translation type="unfinished">Host</translation>
     </message>
     <message>
-        <location filename="mainwindowbase.ui" line="303"/>
+        <location filename="mainwindowbase.ui" line="318"/>
         <source>Port</source>
         <translation type="unfinished">Port</translation>
     </message>
     <message>
-        <location filename="mainwindowbase.ui" line="308"/>
+        <location filename="mainwindowbase.ui" line="323"/>
         <source>Last Seen</source>
         <translation type="unfinished">Zuletzt Gesehen</translation>
     </message>
     <message>
-        <location filename="mainwindowbase.ui" line="313"/>
+        <location filename="mainwindowbase.ui" line="328"/>
         <source>Tests</source>
         <translation type="unfinished">Versuche</translation>
     </message>
     <message>
-        <location filename="mainwindowbase.ui" line="336"/>
+        <location filename="mainwindowbase.ui" line="351"/>
         <source>Server Welcome Message</source>
         <translation type="unfinished">Server Willkommensnachricht</translation>
     </message>
     <message>
-        <location filename="mainwindowbase.ui" line="356"/>
+        <location filename="mainwindowbase.ui" line="371"/>
         <source>Shares</source>
         <translation type="unfinished">Shares</translation>
     </message>
     <message>
-        <location filename="mainwindowbase.ui" line="373"/>
+        <location filename="mainwindowbase.ui" line="388"/>
         <source>Path</source>
         <translation type="unfinished">Pfad</translation>
     </message>
     <message>
-        <location filename="mainwindowbase.ui" line="515"/>
+        <location filename="mainwindowbase.ui" line="530"/>
         <source>Incoming</source>
         <translation type="unfinished">Incoming</translation>
     </message>
     <message>
-        <location filename="mainwindowbase.ui" line="419"/>
+        <location filename="mainwindowbase.ui" line="434"/>
         <source>Last Modified</source>
         <translation type="unfinished">Zuletzt Geändert</translation>
     </message>
     <message>
-        <location filename="mainwindowbase.ui" line="441"/>
+        <location filename="mainwindowbase.ui" line="456"/>
         <source>&amp;AppleJuice</source>
         <translation type="unfinished">&amp;Applejuice</translation>
     </message>
     <message>
-        <location filename="mainwindowbase.ui" line="453"/>
+        <location filename="mainwindowbase.ui" line="468"/>
         <source>&amp;Help</source>
         <translation type="unfinished">&amp;Help</translation>
     </message>
     <message>
-        <location filename="mainwindowbase.ui" line="460"/>
+        <location filename="mainwindowbase.ui" line="475"/>
         <source>Download</source>
         <translation type="unfinished">Download</translation>
     </message>
     <message>
-        <location filename="mainwindowbase.ui" line="479"/>
+        <location filename="mainwindowbase.ui" line="494"/>
         <source>Upload</source>
         <translation type="unfinished">Upload</translation>
     </message>
     <message>
-        <location filename="mainwindowbase.ui" line="503"/>
+        <location filename="mainwindowbase.ui" line="518"/>
         <source>Share</source>
         <translation type="unfinished">Share</translation>
     </message>
     <message>
-        <location filename="mainwindowbase.ui" line="699"/>
+        <location filename="mainwindowbase.ui" line="714"/>
         <source>toolBar</source>
         <translation type="unfinished">toolBar</translation>
     </message>
     <message>
-        <location filename="mainwindowbase.ui" line="725"/>
+        <location filename="mainwindowbase.ui" line="740"/>
         <source>Configure</source>
         <translation type="unfinished">Einstellungen</translation>
     </message>
     <message>
-        <location filename="mainwindowbase.ui" line="728"/>
+        <location filename="mainwindowbase.ui" line="743"/>
         <source>Ctrl+O</source>
         <translation type="unfinished">Strg+O</translation>
     </message>
     <message>
-        <location filename="mainwindowbase.ui" line="737"/>
+        <location filename="mainwindowbase.ui" line="752"/>
         <source>Net Info</source>
         <translation type="unfinished">Netzinfo</translation>
     </message>
     <message>
-        <location filename="mainwindowbase.ui" line="740"/>
+        <location filename="mainwindowbase.ui" line="755"/>
         <source>Ctrl+N</source>
         <translation type="unfinished">Strg+N</translation>
     </message>
     <message>
-        <location filename="mainwindowbase.ui" line="749"/>
+        <location filename="mainwindowbase.ui" line="764"/>
         <source>Open Aj Link List</source>
         <translation type="unfinished">Aj Linkliste öffnen</translation>
     </message>
     <message>
-        <location filename="mainwindowbase.ui" line="758"/>
+        <location filename="mainwindowbase.ui" line="773"/>
         <source>Exit Core</source>
         <translation type="unfinished">Core Beenden</translation>
     </message>
     <message>
-        <location filename="mainwindowbase.ui" line="761"/>
+        <location filename="mainwindowbase.ui" line="776"/>
         <source>Ctrl+E</source>
         <translation type="unfinished">Strg+E</translation>
     </message>
     <message>
-        <location filename="mainwindowbase.ui" line="770"/>
+        <location filename="mainwindowbase.ui" line="785"/>
         <source>Quit GUI</source>
         <translation type="unfinished">GUI Schließen</translation>
     </message>
     <message>
-        <location filename="mainwindowbase.ui" line="773"/>
+        <location filename="mainwindowbase.ui" line="788"/>
         <source>Ctrl+Q</source>
         <translation type="unfinished">Strg+Q</translation>
     </message>
     <message>
-        <location filename="mainwindowbase.ui" line="782"/>
+        <location filename="mainwindowbase.ui" line="797"/>
         <source>About</source>
         <translation type="unfinished">Über</translation>
     </message>
     <message>
-        <location filename="mainwindowbase.ui" line="785"/>
+        <location filename="mainwindowbase.ui" line="800"/>
         <source>F1</source>
         <translation type="unfinished">F1</translation>
     </message>
     <message>
-        <location filename="mainwindowbase.ui" line="790"/>
+        <location filename="mainwindowbase.ui" line="805"/>
         <source>About Qt</source>
         <translation type="unfinished">Über Qt</translation>
     </message>
     <message>
-        <location filename="mainwindowbase.ui" line="799"/>
+        <location filename="mainwindowbase.ui" line="814"/>
         <source>Adjust Column</source>
         <translation type="unfinished">Spalte anpassen</translation>
     </message>
     <message>
-        <location filename="mainwindowbase.ui" line="808"/>
+        <location filename="mainwindowbase.ui" line="823"/>
         <source>Process Link From Clipboard</source>
         <translation type="unfinished">Link aus der Zwischenablage verarbeiten</translation>
     </message>
     <message>
-        <location filename="mainwindowbase.ui" line="817"/>
+        <location filename="mainwindowbase.ui" line="832"/>
         <source>Pause</source>
         <translation type="unfinished">Pause</translation>
     </message>
     <message>
-        <location filename="mainwindowbase.ui" line="826"/>
+        <location filename="mainwindowbase.ui" line="841"/>
         <source>Resume</source>
         <translation type="unfinished">Fortsetzen</translation>
     </message>
     <message>
-        <location filename="mainwindowbase.ui" line="949"/>
+        <location filename="mainwindowbase.ui" line="964"/>
         <source>Cancel</source>
         <translation type="unfinished">Abbrechen</translation>
     </message>
     <message>
-        <location filename="mainwindowbase.ui" line="844"/>
+        <location filename="mainwindowbase.ui" line="859"/>
         <source>Show Part List Dialog</source>
         <translation type="unfinished">Zeige Teilelistendialog</translation>
     </message>
     <message>
-        <location filename="mainwindowbase.ui" line="853"/>
+        <location filename="mainwindowbase.ui" line="868"/>
         <source>Rename</source>
         <translation type="unfinished">Umbenennen</translation>
     </message>
     <message>
-        <location filename="mainwindowbase.ui" line="862"/>
+        <location filename="mainwindowbase.ui" line="877"/>
         <source>Rename By Clipboard</source>
         <translation type="unfinished">Durch Zwischenablage umbenennen</translation>
     </message>
     <message>
-        <location filename="mainwindowbase.ui" line="1084"/>
+        <location filename="mainwindowbase.ui" line="1099"/>
         <source>Open</source>
         <translation type="unfinished">Öffnen</translation>
     </message>
     <message>
-        <location filename="mainwindowbase.ui" line="1066"/>
+        <location filename="mainwindowbase.ui" line="1081"/>
         <source>Copy Link</source>
         <translation type="unfinished">Kopiere Link</translation>
     </message>
     <message>
-        <location filename="mainwindowbase.ui" line="889"/>
+        <location filename="mainwindowbase.ui" line="904"/>
         <source>Remove Finished</source>
         <translation type="unfinished">Entferne fertige</translation>
     </message>
     <message>
-        <location filename="mainwindowbase.ui" line="1075"/>
+        <location filename="mainwindowbase.ui" line="1090"/>
         <source>Create Link List</source>
         <translation type="unfinished">Erzeuge Linkliste</translation>
     </message>
     <message>
-        <location filename="mainwindowbase.ui" line="910"/>
+        <location filename="mainwindowbase.ui" line="925"/>
         <source>Hide Paused</source>
         <translation type="unfinished">Verberge pausierte</translation>
     </message>
     <message>
-        <location filename="mainwindowbase.ui" line="919"/>
+        <location filename="mainwindowbase.ui" line="934"/>
         <source>Maximal Power</source>
         <translation type="unfinished">Maximale Power</translation>
     </message>
     <message>
-        <location filename="mainwindowbase.ui" line="931"/>
+        <location filename="mainwindowbase.ui" line="946"/>
         <source>Hide Queued</source>
         <translation type="unfinished">Verberge Warteschlange</translation>
     </message>
     <message>
-        <location filename="mainwindowbase.ui" line="940"/>
+        <location filename="mainwindowbase.ui" line="955"/>
         <source>download</source>
         <translation type="unfinished">Download</translation>
     </message>
     <message>
-        <location filename="mainwindowbase.ui" line="976"/>
+        <location filename="mainwindowbase.ui" line="991"/>
         <source>Connect</source>
         <translation type="unfinished">Verbinde</translation>
     </message>
     <message>
-        <location filename="mainwindowbase.ui" line="1027"/>
+        <location filename="mainwindowbase.ui" line="1042"/>
         <source>Remove</source>
         <translation type="unfinished">Entferne</translation>
     </message>
     <message>
-        <location filename="mainwindowbase.ui" line="1006"/>
+        <location filename="mainwindowbase.ui" line="1021"/>
         <source>Show Welcome Message</source>
         <translation type="unfinished">Zeige Willkommensnachricht</translation>
     </message>
     <message>
-        <location filename="mainwindowbase.ui" line="1015"/>
+        <location filename="mainwindowbase.ui" line="1030"/>
         <source>Add</source>
         <translation type="unfinished">Hinzufügen</translation>
     </message>
     <message>
-        <location filename="mainwindowbase.ui" line="1018"/>
+        <location filename="mainwindowbase.ui" line="1033"/>
         <source>Add New Share Folder</source>
         <translation type="unfinished">Füge neues Shareverzeichnis hinzu</translation>
     </message>
     <message>
-        <location filename="mainwindowbase.ui" line="1030"/>
+        <location filename="mainwindowbase.ui" line="1045"/>
         <source>Remove Share Folder</source>
         <translation type="unfinished">Entferne Shareverzeichnis</translation>
     </message>
     <message>
-        <location filename="mainwindowbase.ui" line="1111"/>
+        <location filename="mainwindowbase.ui" line="1126"/>
         <source>Reload</source>
         <translation type="unfinished">Aktualisieren</translation>
     </message>
     <message>
-        <location filename="mainwindowbase.ui" line="1042"/>
+        <location filename="mainwindowbase.ui" line="1057"/>
         <source>Reload Shares From The Core</source>
         <translation type="unfinished">Aktualisiere Shares vom Core </translation>
     </message>
     <message>
-        <location filename="mainwindowbase.ui" line="1054"/>
+        <location filename="mainwindowbase.ui" line="1069"/>
         <source>Commit</source>
         <translation type="unfinished">Anwenden</translation>
     </message>
     <message>
-        <location filename="mainwindowbase.ui" line="1057"/>
+        <location filename="mainwindowbase.ui" line="1072"/>
         <source>Commit Changes And Start Share Checking</source>
         <translation type="unfinished">Änderungen anwenden und Shareüberprüfung starten</translation>
     </message>
     <message>
-        <location filename="mainwindowbase.ui" line="1093"/>
+        <location filename="mainwindowbase.ui" line="1108"/>
         <source>Copy</source>
         <translation type="unfinished">Kopieren</translation>
     </message>
     <message>
-        <location filename="mainwindowbase.ui" line="1102"/>
+        <location filename="mainwindowbase.ui" line="1117"/>
         <source>Delete</source>
         <translation type="unfinished">Löschen</translation>
     </message>
     <message>
-        <location filename="mainwindowbase.ui" line="1126"/>
+        <location filename="mainwindowbase.ui" line="1141"/>
         <source>Show Part List Dock</source>
         <translation type="unfinished">Zeige Teilelisten-Dock</translation>
     </message>
     <message>
-        <location filename="mainwindowbase.ui" line="1129"/>
+        <location filename="mainwindowbase.ui" line="1144"/>
         <source>Show Part List Dock Widget</source>
         <translation type="unfinished">Zeige Teilelisten-Dockfenster</translation>
+    </message>
+    <message>
+        <location filename="mainwindowbase.ui" line="189"/>
+        <source>% part loaded</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="mainwindowbase.ui" line="229"/>
+        <source>% distributed</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="mainwindowbase.ui" line="234"/>
+        <source>last connection</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -899,357 +914,357 @@ URL: http://ajqtgui.sf.net</translation>
         <translation type="unfinished">Core</translation>
     </message>
     <message>
-        <location filename="optionsdialogbase.ui" line="88"/>
+        <location filename="optionsdialogbase.ui" line="91"/>
         <source>Nick:</source>
         <translation type="unfinished">Spitzname:</translation>
     </message>
     <message>
-        <location filename="optionsdialogbase.ui" line="98"/>
+        <location filename="optionsdialogbase.ui" line="101"/>
         <source>New Password:</source>
         <translation type="unfinished">Neues Passwort:</translation>
     </message>
     <message>
-        <location filename="optionsdialogbase.ui" line="112"/>
+        <location filename="optionsdialogbase.ui" line="115"/>
         <source>Retype Password:</source>
         <translation type="unfinished">Passwort wiederholen:</translation>
     </message>
     <message>
-        <location filename="optionsdialogbase.ui" line="126"/>
+        <location filename="optionsdialogbase.ui" line="129"/>
         <source>Core Address:</source>
         <translation type="unfinished">Core-Adresse:</translation>
     </message>
     <message>
-        <location filename="optionsdialogbase.ui" line="136"/>
+        <location filename="optionsdialogbase.ui" line="139"/>
         <source>XML Port:</source>
         <translation type="unfinished">XMl-Port:</translation>
     </message>
     <message>
-        <location filename="optionsdialogbase.ui" line="1141"/>
+        <location filename="optionsdialogbase.ui" line="1156"/>
         <source>Incoming Directory:</source>
         <translation type="unfinished">Incoming-Verzeichnis:</translation>
     </message>
     <message>
-        <location filename="optionsdialogbase.ui" line="1030"/>
+        <location filename="optionsdialogbase.ui" line="1042"/>
         <source>...</source>
         <translation type="unfinished">...</translation>
     </message>
     <message>
-        <location filename="optionsdialogbase.ui" line="1151"/>
+        <location filename="optionsdialogbase.ui" line="1166"/>
         <source>Temporary Directory:</source>
         <translation type="unfinished">Temporäres Verzeichnis:</translation>
     </message>
     <message>
-        <location filename="optionsdialogbase.ui" line="188"/>
+        <location filename="optionsdialogbase.ui" line="191"/>
         <source>TCP Port:</source>
         <translation type="unfinished">TCP-Port:</translation>
     </message>
     <message>
-        <location filename="optionsdialogbase.ui" line="200"/>
+        <location filename="optionsdialogbase.ui" line="203"/>
         <source>automatically connect to servers</source>
         <translation type="unfinished">automatisch mit Server verbinden</translation>
     </message>
     <message>
-        <location filename="optionsdialogbase.ui" line="207"/>
+        <location filename="optionsdialogbase.ui" line="210"/>
         <source>save core password</source>
         <translation type="unfinished">Core Passwort speichern</translation>
     </message>
     <message>
-        <location filename="optionsdialogbase.ui" line="236"/>
+        <location filename="optionsdialogbase.ui" line="239"/>
         <source>Limits</source>
         <translation type="unfinished">Grenzen</translation>
     </message>
     <message>
-        <location filename="optionsdialogbase.ui" line="258"/>
+        <location filename="optionsdialogbase.ui" line="264"/>
         <source>Max. Download Speed:</source>
         <translation type="unfinished">Max. Download Geschw.:</translation>
     </message>
     <message>
-        <location filename="optionsdialogbase.ui" line="338"/>
+        <location filename="optionsdialogbase.ui" line="344"/>
         <source> kByte/s</source>
         <translation type="unfinished">kByte/s</translation>
     </message>
     <message>
-        <location filename="optionsdialogbase.ui" line="290"/>
+        <location filename="optionsdialogbase.ui" line="296"/>
         <source>Max. Upload Speed:</source>
         <translation type="unfinished">Max. Upload Geschw.:</translation>
     </message>
     <message>
-        <location filename="optionsdialogbase.ui" line="322"/>
+        <location filename="optionsdialogbase.ui" line="328"/>
         <source>Max. Speed Per Slot:</source>
         <translation type="unfinished">Max. Geschw. pro Slot:</translation>
     </message>
     <message>
-        <location filename="optionsdialogbase.ui" line="354"/>
+        <location filename="optionsdialogbase.ui" line="360"/>
         <source>Max. Sources Per File:</source>
         <translation type="unfinished">Max. Quellen pro Datei:</translation>
     </message>
     <message>
-        <location filename="optionsdialogbase.ui" line="386"/>
+        <location filename="optionsdialogbase.ui" line="392"/>
         <source>Max. Connections:</source>
         <translation type="unfinished">Max. Verbindungen:</translation>
     </message>
     <message>
-        <location filename="optionsdialogbase.ui" line="418"/>
+        <location filename="optionsdialogbase.ui" line="424"/>
         <source>Max. New Connections:</source>
         <translation type="unfinished">Max. neue Verbindungen:</translation>
     </message>
     <message>
-        <location filename="optionsdialogbase.ui" line="434"/>
+        <location filename="optionsdialogbase.ui" line="440"/>
         <source> per 10 seconds</source>
         <translation type="unfinished">pro 10 Sekunden</translation>
     </message>
     <message>
-        <location filename="optionsdialogbase.ui" line="468"/>
+        <location filename="optionsdialogbase.ui" line="474"/>
         <source>Appearance</source>
         <translation type="unfinished">Erscheinung</translation>
     </message>
     <message>
-        <location filename="optionsdialogbase.ui" line="482"/>
+        <location filename="optionsdialogbase.ui" line="488"/>
         <source>show splash screen on startup</source>
         <translation type="unfinished">Zeige Startbild</translation>
     </message>
     <message>
-        <location filename="optionsdialogbase.ui" line="489"/>
+        <location filename="optionsdialogbase.ui" line="495"/>
         <source>use tray icon</source>
         <translation type="unfinished">benutze Trayicon</translation>
     </message>
     <message>
-        <location filename="optionsdialogbase.ui" line="496"/>
+        <location filename="optionsdialogbase.ui" line="502"/>
         <source>alternating row colors</source>
         <translation type="unfinished">abwechselnde Zeilenfarben</translation>
     </message>
     <message>
-        <location filename="optionsdialogbase.ui" line="517"/>
+        <location filename="optionsdialogbase.ui" line="526"/>
         <source>language:</source>
         <translation type="unfinished">Sprache:</translation>
     </message>
     <message>
-        <location filename="optionsdialogbase.ui" line="557"/>
+        <location filename="optionsdialogbase.ui" line="566"/>
         <source>font:</source>
         <translation type="unfinished">Schriftart:</translation>
     </message>
     <message>
-        <location filename="optionsdialogbase.ui" line="597"/>
+        <location filename="optionsdialogbase.ui" line="606"/>
         <source>show in statusbar:</source>
         <translation type="unfinished">In Statuszeile anzeigen:</translation>
     </message>
     <message>
-        <location filename="optionsdialogbase.ui" line="635"/>
+        <location filename="optionsdialogbase.ui" line="644"/>
         <source>connected since</source>
         <translation type="unfinished">verbunden seit</translation>
     </message>
     <message>
-        <location filename="optionsdialogbase.ui" line="640"/>
+        <location filename="optionsdialogbase.ui" line="649"/>
         <source>core version</source>
         <translation type="unfinished">Core-Version</translation>
     </message>
     <message>
-        <location filename="optionsdialogbase.ui" line="645"/>
+        <location filename="optionsdialogbase.ui" line="654"/>
         <source>downstream</source>
         <translation type="unfinished">downstream</translation>
     </message>
     <message>
-        <location filename="optionsdialogbase.ui" line="650"/>
+        <location filename="optionsdialogbase.ui" line="659"/>
         <source>upstream</source>
         <translation type="unfinished">upstream</translation>
     </message>
     <message>
-        <location filename="optionsdialogbase.ui" line="655"/>
+        <location filename="optionsdialogbase.ui" line="664"/>
         <source>downloaded</source>
         <translation type="unfinished">runtergeladen</translation>
     </message>
     <message>
-        <location filename="optionsdialogbase.ui" line="660"/>
+        <location filename="optionsdialogbase.ui" line="669"/>
         <source>uploaded</source>
         <translation type="unfinished">hochgeladen</translation>
     </message>
     <message>
-        <location filename="optionsdialogbase.ui" line="665"/>
+        <location filename="optionsdialogbase.ui" line="674"/>
         <source>credits</source>
         <translation type="unfinished">Credits</translation>
     </message>
     <message>
-        <location filename="optionsdialogbase.ui" line="688"/>
+        <location filename="optionsdialogbase.ui" line="697"/>
         <source>show in download tab:</source>
         <translation type="unfinished">Zeige in Downloadfenster:</translation>
     </message>
     <message>
-        <location filename="optionsdialogbase.ui" line="729"/>
+        <location filename="optionsdialogbase.ui" line="738"/>
         <source>filename</source>
         <translation type="unfinished">Dateiname</translation>
     </message>
     <message>
-        <location filename="optionsdialogbase.ui" line="734"/>
+        <location filename="optionsdialogbase.ui" line="743"/>
         <source>sources</source>
         <translation type="unfinished">Quellen</translation>
     </message>
     <message>
-        <location filename="optionsdialogbase.ui" line="739"/>
+        <location filename="optionsdialogbase.ui" line="748"/>
         <source>speed</source>
         <translation type="unfinished">Geschwindigkeit</translation>
     </message>
     <message>
-        <location filename="optionsdialogbase.ui" line="744"/>
+        <location filename="optionsdialogbase.ui" line="753"/>
         <source>status</source>
         <translation type="unfinished">Status</translation>
     </message>
     <message>
-        <location filename="optionsdialogbase.ui" line="749"/>
+        <location filename="optionsdialogbase.ui" line="758"/>
         <source>power</source>
         <translation type="unfinished">Power</translation>
     </message>
     <message>
-        <location filename="optionsdialogbase.ui" line="754"/>
+        <location filename="optionsdialogbase.ui" line="763"/>
         <source>size</source>
         <translation type="unfinished">Größe</translation>
     </message>
     <message>
-        <location filename="optionsdialogbase.ui" line="759"/>
+        <location filename="optionsdialogbase.ui" line="768"/>
         <source>ready</source>
         <translation type="unfinished">fertig</translation>
     </message>
     <message>
-        <location filename="optionsdialogbase.ui" line="764"/>
+        <location filename="optionsdialogbase.ui" line="773"/>
         <source>missing</source>
         <translation type="unfinished">fehlt</translation>
     </message>
     <message>
-        <location filename="optionsdialogbase.ui" line="769"/>
+        <location filename="optionsdialogbase.ui" line="778"/>
         <source>eta</source>
         <translation type="unfinished">eta</translation>
     </message>
     <message>
-        <location filename="optionsdialogbase.ui" line="788"/>
+        <location filename="optionsdialogbase.ui" line="797"/>
         <source>Behaviour</source>
         <translation type="unfinished">Verhalten</translation>
     </message>
     <message>
-        <location filename="optionsdialogbase.ui" line="804"/>
+        <location filename="optionsdialogbase.ui" line="816"/>
         <source>Refresh:</source>
         <translation type="unfinished">Aktualisieren:</translation>
     </message>
     <message>
-        <location filename="optionsdialogbase.ui" line="819"/>
+        <location filename="optionsdialogbase.ui" line="831"/>
         <source>sec.</source>
         <translation type="unfinished">sek.</translation>
     </message>
     <message>
-        <location filename="optionsdialogbase.ui" line="844"/>
+        <location filename="optionsdialogbase.ui" line="856"/>
         <source>Server Source:</source>
         <translation type="unfinished">Serverquelle:</translation>
     </message>
     <message>
-        <location filename="optionsdialogbase.ui" line="854"/>
+        <location filename="optionsdialogbase.ui" line="866"/>
         <source>fetch new servers on startup</source>
         <translation type="unfinished">neue Server beim Start holen</translation>
     </message>
     <message>
-        <location filename="optionsdialogbase.ui" line="863"/>
+        <location filename="optionsdialogbase.ui" line="875"/>
         <source>ajfsp:// handler</source>
         <translation type="unfinished">ajfsp:// Handler</translation>
     </message>
     <message>
-        <location filename="optionsdialogbase.ui" line="874"/>
+        <location filename="optionsdialogbase.ui" line="886"/>
         <source>check on startup</source>
         <translation type="unfinished">beim Start prüfen</translation>
     </message>
     <message>
-        <location filename="optionsdialogbase.ui" line="881"/>
+        <location filename="optionsdialogbase.ui" line="893"/>
         <source>set as default</source>
         <translation type="unfinished">als Standard setzen</translation>
     </message>
     <message>
-        <location filename="optionsdialogbase.ui" line="890"/>
+        <location filename="optionsdialogbase.ui" line="902"/>
         <source>make default application now</source>
         <translation type="unfinished">zur Standardanwendung machen</translation>
     </message>
     <message>
-        <location filename="optionsdialogbase.ui" line="1206"/>
+        <location filename="optionsdialogbase.ui" line="1221"/>
         <source>Launching</source>
         <translation type="unfinished">Starten</translation>
     </message>
     <message>
-        <location filename="optionsdialogbase.ui" line="944"/>
+        <location filename="optionsdialogbase.ui" line="956"/>
         <source>Open files with:</source>
         <translation type="unfinished">Dateien öffnen mit:</translation>
     </message>
     <message>
-        <location filename="optionsdialogbase.ui" line="977"/>
+        <location filename="optionsdialogbase.ui" line="989"/>
         <source>Location of files</source>
         <translation type="unfinished">Lage der Dateien</translation>
     </message>
     <message>
-        <location filename="optionsdialogbase.ui" line="983"/>
+        <location filename="optionsdialogbase.ui" line="995"/>
         <source>Core is running at the same computer</source>
         <translation type="unfinished">Core lüft auf dem selben Rechner</translation>
     </message>
     <message>
-        <location filename="optionsdialogbase.ui" line="990"/>
+        <location filename="optionsdialogbase.ui" line="1002"/>
         <source>Use specific folders:</source>
         <translation type="unfinished">benutze bestimmte Verzeichnisse:</translation>
     </message>
     <message>
-        <location filename="optionsdialogbase.ui" line="1042"/>
+        <location filename="optionsdialogbase.ui" line="1054"/>
         <source>Use ftp</source>
         <translation type="unfinished">Benutze FTP</translation>
     </message>
     <message>
-        <location filename="optionsdialogbase.ui" line="1049"/>
+        <location filename="optionsdialogbase.ui" line="1061"/>
         <source>jump to ftp settings</source>
         <translation type="unfinished">zu den FTP-Einstellungen springen</translation>
     </message>
     <message>
-        <location filename="optionsdialogbase.ui" line="1081"/>
+        <location filename="optionsdialogbase.ui" line="1093"/>
         <source>FTP</source>
         <translation type="unfinished">FTP</translation>
     </message>
     <message>
-        <location filename="optionsdialogbase.ui" line="1097"/>
+        <location filename="optionsdialogbase.ui" line="1112"/>
         <source>Server:</source>
         <translation type="unfinished">Server:</translation>
     </message>
     <message>
-        <location filename="optionsdialogbase.ui" line="1107"/>
+        <location filename="optionsdialogbase.ui" line="1122"/>
         <source>Port:</source>
         <translation type="unfinished">Port:</translation>
     </message>
     <message>
-        <location filename="optionsdialogbase.ui" line="1117"/>
+        <location filename="optionsdialogbase.ui" line="1132"/>
         <source>User:</source>
         <translation type="unfinished">Nutzer:</translation>
     </message>
     <message>
-        <location filename="optionsdialogbase.ui" line="1127"/>
+        <location filename="optionsdialogbase.ui" line="1142"/>
         <source>Password:</source>
         <translation type="unfinished">Passwort:</translation>
     </message>
     <message>
-        <location filename="optionsdialogbase.ui" line="1171"/>
+        <location filename="optionsdialogbase.ui" line="1186"/>
         <source>Mode</source>
         <translation type="unfinished">Modus</translation>
     </message>
     <message>
-        <location filename="optionsdialogbase.ui" line="1177"/>
+        <location filename="optionsdialogbase.ui" line="1192"/>
         <source>passive</source>
         <translation type="unfinished">passiv</translation>
     </message>
     <message>
-        <location filename="optionsdialogbase.ui" line="1184"/>
+        <location filename="optionsdialogbase.ui" line="1199"/>
         <source>active</source>
         <translation type="unfinished">aktiv</translation>
     </message>
     <message>
-        <location filename="optionsdialogbase.ui" line="1212"/>
+        <location filename="optionsdialogbase.ui" line="1227"/>
         <source>open after 100% </source>
         <translation type="unfinished">Öffnen nach 100%</translation>
     </message>
     <message>
-        <location filename="optionsdialogbase.ui" line="1221"/>
+        <location filename="optionsdialogbase.ui" line="1236"/>
         <source>open after</source>
         <translation type="unfinished">Öffnen nach</translation>
     </message>
     <message>
-        <location filename="optionsdialogbase.ui" line="1243"/>
+        <location filename="optionsdialogbase.ui" line="1258"/>
         <source>MB</source>
         <translation type="unfinished">MB</translation>
     </message>
@@ -1514,6 +1529,19 @@ URL: http://ajqtgui.sf.net</translation>
     </message>
 </context>
 <context>
+    <name>UploadItem</name>
+    <message>
+        <location filename="uploaditem.cpp" line="128"/>
+        <source>unknown</source>
+        <translation type="unfinished">unbekannt</translation>
+    </message>
+    <message>
+        <location filename="uploaditem.cpp" line="130"/>
+        <source>current</source>
+        <translation type="unfinished">gerade</translation>
+    </message>
+</context>
+<context>
     <name>partListDialog</name>
     <message>
         <location filename="partlistdialogbase.ui" line="13"/>
@@ -1521,32 +1549,32 @@ URL: http://ajqtgui.sf.net</translation>
         <translation type="unfinished">Teile</translation>
     </message>
     <message>
-        <location filename="partlistdialogbase.ui" line="296"/>
+        <location filename="partlistdialogbase.ui" line="299"/>
         <source>TextLabel</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="partlistdialogbase.ui" line="103"/>
+        <location filename="partlistdialogbase.ui" line="106"/>
         <source>size:</source>
         <translation type="unfinished">Größe:</translation>
     </message>
     <message>
-        <location filename="partlistdialogbase.ui" line="149"/>
+        <location filename="partlistdialogbase.ui" line="152"/>
         <source>ready:</source>
         <translation type="unfinished">fertig:</translation>
     </message>
     <message>
-        <location filename="partlistdialogbase.ui" line="195"/>
+        <location filename="partlistdialogbase.ui" line="198"/>
         <source>available:</source>
         <translation type="unfinished">verfügbar:</translation>
     </message>
     <message>
-        <location filename="partlistdialogbase.ui" line="241"/>
+        <location filename="partlistdialogbase.ui" line="244"/>
         <source>rare:</source>
         <translation type="unfinished">selten:</translation>
     </message>
     <message>
-        <location filename="partlistdialogbase.ui" line="287"/>
+        <location filename="partlistdialogbase.ui" line="290"/>
         <source>missing:</source>
         <translation type="unfinished">fehlt:</translation>
     </message>
