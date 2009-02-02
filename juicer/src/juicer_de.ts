@@ -784,18 +784,18 @@ URL: http://ajqtgui.sf.net</translation>
     </message>
     <message>
         <location filename="mainwindowbase.ui" line="189"/>
-        <source>% part loaded</source>
-        <translation type="unfinished"></translation>
+        <source>current part</source>
+        <translation type="unfinished">aktueller Part</translation>
     </message>
     <message>
         <location filename="mainwindowbase.ui" line="229"/>
-        <source>% distributed</source>
-        <translation type="unfinished"></translation>
+        <source>distribution</source>
+        <translation type="unfinished">Verteilung</translation>
     </message>
     <message>
         <location filename="mainwindowbase.ui" line="234"/>
         <source>last connection</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">zuletzt verbunden</translation>
     </message>
 </context>
 <context>
@@ -833,37 +833,37 @@ URL: http://ajqtgui.sf.net</translation>
         <translation type="unfinished">Netzwerk Info</translation>
     </message>
     <message>
-        <location filename="networkdialogbase.ui" line="57"/>
+        <location filename="networkdialogbase.ui" line="59"/>
         <source>Number of users:</source>
         <translation type="unfinished">Anzahl an Nutzern:</translation>
     </message>
     <message>
-        <location filename="networkdialogbase.ui" line="202"/>
+        <location filename="networkdialogbase.ui" line="222"/>
         <source>0</source>
         <translation type="unfinished">0</translation>
     </message>
     <message>
-        <location filename="networkdialogbase.ui" line="99"/>
+        <location filename="networkdialogbase.ui" line="107"/>
         <source>Number of files:</source>
         <translation type="unfinished">Anzahl an Dateien:</translation>
     </message>
     <message>
-        <location filename="networkdialogbase.ui" line="141"/>
+        <location filename="networkdialogbase.ui" line="155"/>
         <source>Size of all files:</source>
         <translation type="unfinished">Größe aller Dateien:</translation>
     </message>
     <message>
-        <location filename="networkdialogbase.ui" line="183"/>
+        <location filename="networkdialogbase.ui" line="203"/>
         <source>Your IP:</source>
         <translation type="unfinished">Ihre IP:</translation>
     </message>
     <message>
-        <location filename="networkdialogbase.ui" line="231"/>
+        <location filename="networkdialogbase.ui" line="251"/>
         <source>Behind a firewall:</source>
         <translation type="unfinished">Hinter einer Firewall:</translation>
     </message>
     <message>
-        <location filename="networkdialogbase.ui" line="244"/>
+        <location filename="networkdialogbase.ui" line="270"/>
         <source>no</source>
         <translation type="unfinished">nein</translation>
     </message>

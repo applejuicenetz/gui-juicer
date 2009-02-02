@@ -186,7 +186,7 @@
           </column>
           <column>
            <property name="text" >
-            <string>% part loaded</string>
+            <string>current part</string>
            </property>
           </column>
           <column>
@@ -226,7 +226,7 @@
           </column>
           <column>
            <property name="text" >
-            <string>% distributed</string>
+            <string>distribution</string>
            </property>
           </column>
           <column>
