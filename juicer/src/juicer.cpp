@@ -107,7 +107,6 @@ Juicer::Juicer( const QStringList& argList, QSplashScreen *splash )
 }
 
 Juicer::~Juicer() {
-
 }
 
 /*!
@@ -181,7 +180,7 @@ void Juicer::closeEvent( QCloseEvent* ce ) {
         ce->ignore();
      } else {
         // make sure tray icon disappears when quit (Windows problem)
-        if ( true == tray->isVisible() ) tray->setVisible(false);
+        if ( true == tray->isVisible() ) tray->setVisible(false); // <2DO> doesn't work; possible qt bug?
         quit();
         ce->accept();
     }
@@ -642,7 +641,10 @@ void Juicer::trayActivated( QSystemTrayIcon::ActivationReason reason )
     if( reason == QSystemTrayIcon::Trigger )
     {
         setVisible( !isVisible() );
-        if ( isMinimized() ) showNormal();
+        if ( isMinimized() ) {
+            showNormal();
+            activateWindow();    // make widget active, otherwise one must first click at the tab in the task bar to get Juicer in front
+        }
     }
 }
 
