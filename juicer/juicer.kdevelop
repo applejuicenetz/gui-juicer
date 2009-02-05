@@ -235,17 +235,17 @@
   <dist>
     <custom>false</custom>
     <bzip>false</bzip>
-    <archname/>
+    <archname></archname>
     <appname>juicer</appname>
-    <version>0.1</version>
-    <release/>
-    <vendor/>
-    <licence/>
-    <summary/>
-    <group/>
-    <packager/>
-    <description/>
-    <changelog/>
+    <version>1.1</version>
+    <release>svn-251</release>
+    <vendor></vendor>
+    <licence></licence>
+    <summary></summary>
+    <group></group>
+    <packager></packager>
+    <description></description>
+    <changelog></changelog>
     <devpackage>false</devpackage>
     <docspackage>false</docspackage>
     <appicon>false</appicon>
@@ -254,7 +254,7 @@
     <useRPM>false</useRPM>
     <ftpkde>false</ftpkde>
     <appskde>false</appskde>
-    <url/>
+    <url></url>
   </dist>
   <ctagspart>
     <customArguments/>

@@ -226,7 +226,7 @@ bool Juicer::login(const QString& message, bool error) {
     QString host = OptionsDialog::getSetting("coreAddress", "localhost").toString();
     int port = OptionsDialog::getSetting("xmlPort", 9851 ).toInt();
     // -- ok -> login --
-    if(!password.isEmpty()) {
+    if( !password.isEmpty() || isLocalhost( host ) ) {
         firstModifiedCnt = 0;
         xml->setPassword(password);
         xml->setHost(host, port);
@@ -241,6 +241,11 @@ bool Juicer::login(const QString& message, bool error) {
         login("empty password", true);
     }
     return true;
+}
+
+bool Juicer::isLocalhost( const QString& host )
+{
+    return ( QHostInfo::fromName( host ).hostName() == "localhost" );
 }
 
 QString Juicer::showLoginDialog(const QString& message) {

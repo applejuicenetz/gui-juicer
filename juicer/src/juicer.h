@@ -111,8 +111,10 @@ public:
 
     void sendToTray(  const QString& message1, const QString& message2  );
 
+    bool isLocalhost( const QString& host );
+
     static QStringList getExec();
-    
+
 protected:
     void initToolBars();
     void connectActions();
