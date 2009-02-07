@@ -27,11 +27,9 @@ UploadItem::UploadItem( const QString& id, const QString& shareId, QTreeWidget *
     status_ = NEW_UPLOAD;
     speed = 0.0;
 
-    progressChunk_.setMaximumHeight(20);
-    setSizeHint(CHUNK_COL,  progressChunk_.sizeHint());
+    progressChunk_.setMaximumHeight(18);
     initProgressBar( progressChunk_, CHUNK_COL );
-    progressLoaded_.setMaximumHeight(20);
-    setSizeHint(LOADED_COL, progressLoaded_.sizeHint());
+    progressLoaded_.setMaximumHeight(18);
     initProgressBar( progressLoaded_, LOADED_COL );
 }
 
@@ -86,11 +84,12 @@ void UploadItem::update(const QIcon& osIcon,const QString& status,
 void UploadItem::initProgressBar( QProgressBar& progressBar, column col )
 {
     QWidget* progressBarWidget = new QWidget( treeWidget() );
-    QVBoxLayout* layout = new QVBoxLayout();
-    layout->addStretch( 2 );
-    layout->addWidget( &progressBar );
-    layout->addStretch( 2 );
-    progressBarWidget->setLayout( layout );
+    progressBarWidget->setContentsMargins(5, 0, 5, 0);
+    QVBoxLayout* l = new QVBoxLayout();
+    l->setSpacing(0);
+    l->setMargin(1);
+    l->addWidget(&progressBar);
+    progressBarWidget->setLayout( l );
 
     treeWidget()->setItemWidget( this, col, progressBarWidget );
 }

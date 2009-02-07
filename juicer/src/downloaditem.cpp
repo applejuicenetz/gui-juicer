@@ -51,14 +51,9 @@ DownloadItem::DownloadItem( const QString& id, QTreeWidget *parent )
     partListDialog->hide();
 
     powerSpin = new PowerSpin(id);
-    setSizeHint(POWER_COL, powerSpin->sizeHint());
+    powerSpin->setMaximumHeight(20);
 
     progressBar = new QProgressBar();
-    progressBar->setMaximumHeight(20);
-
-    setSizeHint(FINISHED_COL, progressBar->sizeHint());
-
-    setTextAlignment(FINISHED_COL, Qt::AlignCenter);
 
     setText( SOURCES_COL, getSourcesString() );
     setText( SPEED_COL, QString("0 b/s") );
@@ -84,10 +79,11 @@ DownloadItem::~DownloadItem()
 void DownloadItem::initPowerSpin()
 {
     QWidget* progressBarWidget = new QWidget(treeWidget());
+    progressBarWidget->setContentsMargins(5, 0, 5, 0);
     QVBoxLayout* l = new QVBoxLayout();
-    l->addStretch(2);
+    l->setSpacing(0);
+    l->setMargin(1);
     l->addWidget(progressBar);
-    l->addStretch(2);
     progressBarWidget->setLayout(l);
 
     treeWidget()->setItemWidget(this, POWER_COL, powerSpin);

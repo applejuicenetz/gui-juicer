@@ -735,7 +735,8 @@ void Juicer::sendToTray( const QString& message1, const QString& message2 ) {
 
 void Juicer::about() {
     QMessageBox::about( this, tr("Juicer Info"),
-                        tr("Juicer\n\nGUI for appleJuice Filesharing\n\nURL: http://ajqtgui.sf.net"));
+                        qApp->applicationName() + " " + qApp->applicationVersion()
+                        + tr("\n\nGUI for appleJuice Filesharing\n\nhttp://ajqtgui.sf.net"));
 }
 
 void Juicer::aboutQt() {

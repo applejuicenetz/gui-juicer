@@ -23,10 +23,11 @@ PowerSpin::PowerSpin(const QString& id, QWidget *parent) : QWidget(parent)
 {
     this->id = id;
     QHBoxLayout *layout = new QHBoxLayout;
+
     layout->setSpacing(0);
     layout->setMargin(0);
 
-    layout->insertSpacing(0, 10);
+    layout->addSpacing(5);
     check = new QCheckBox();
     layout->addWidget(check);
 
@@ -36,6 +37,7 @@ PowerSpin::PowerSpin(const QString& id, QWidget *parent) : QWidget(parent)
     spin->setSingleStep(0.1);
     spin->setDecimals(1);
     layout->addWidget(spin);
+    layout->addStretch(1);
 
     setLayout(layout);
 
