@@ -388,11 +388,17 @@ void Juicer::showNetworkInfo()
 
 void Juicer::setStatusBarText( const QString& downSpeed, const QString& upSpeed, const QString& credits, const QString& downSize, const QString& upSize )
 {
-    QString downStreamString = tr("Downstream: %1/s").arg(QConvert::bytes( downSpeed ));
-    QString upStreamString = tr("Upstream: %1/s").arg(QConvert::bytes( upSpeed ));
-    QString creditsString = tr("Credits: %1").arg(QConvert::bytesExtra( credits ));
-    QString downSizeString = tr("Downloaded: %1").arg(QConvert::bytesExtra( downSize ));
-    QString upSizeString = tr("Uploaded: %1").arg(QConvert::bytesExtra( upSize ));
+//     QString downStreamString = tr("Downstream: %1/s").arg(QConvert::bytes( downSpeed ));
+//     QString upStreamString = tr("Upstream: %1/s").arg(QConvert::bytes( upSpeed ));
+//     QString creditsString = tr("Credits: %1").arg(QConvert::bytesExtra( credits ));
+//     QString downSizeString = tr("Downloaded: %1").arg(QConvert::bytesExtra( downSize ));
+//     QString upSizeString = tr("Uploaded: %1").arg(QConvert::bytesExtra( upSize ));
+
+    QString downStreamString = QConvert::bytes( downSpeed ) + "/s";
+    QString upStreamString = QConvert::bytes( upSpeed ) + "/s";
+    QString creditsString = QConvert::bytesExtra( credits );
+    QString downSizeString = QConvert::bytesExtra( downSize );
+    QString upSizeString = QConvert::bytesExtra( upSize );
 
     downSpeedLabel->setText( downStreamString );
     upSpeedLabel->setText( upStreamString );
@@ -473,13 +479,13 @@ void Juicer::exitCore()
 }
 
 void Juicer::setCoreVersion(const QString& version) {
-    coreVersionLabel->setText(tr("Core: %1").arg(version));
+    coreVersionLabel->setText(version);
 }
 
 void Juicer::connectedSince(const QString& since) {
     QDateTime& time = serverModule->setConnectedSince(since);
     if(time.isValid()) {
-        connectedLabel->setText(tr("connected since %1").arg(time.toLocalTime().toString(Qt::LocalDate)));
+        connectedLabel->setText(time.toLocalTime().toString(Qt::LocalDate));
     } else {
         connectedLabel->setText(tr("NOT connected"));
     }
