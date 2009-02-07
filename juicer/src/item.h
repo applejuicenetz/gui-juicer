@@ -35,7 +35,7 @@ public:
 
     virtual ~Item();
 
-    QString getStatus()
+    QString getStatus() const
     {
         return status_;
     }
@@ -60,7 +60,7 @@ public:
         return filename_;
     }
 
-    double getSize()
+    double getSize() const
     {
         return size_;
     }

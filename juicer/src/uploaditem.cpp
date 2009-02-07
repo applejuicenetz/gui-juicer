@@ -42,13 +42,20 @@ UploadItem::~UploadItem()
 bool UploadItem::operator<( const QTreeWidgetItem & other ) const
 {
     int sortIndex = treeWidget()->header()->sortIndicatorSection();
-    UploadItem* upItem = (UploadItem*)&other;
-    switch ( sortIndex ) {
-        case SPEED_COL:
-            return this->speed < upItem->speed;
-        default:
-            return this->text(sortIndex) < other.text(sortIndex);
+    const UploadItem* upItem = dynamic_cast<const UploadItem*>(&other);
+    if ( upItem ) {
+        switch ( sortIndex ) {
+            case SPEED_COL :
+                return speed < upItem->speed;
+            case CHUNK_COL :
+                return ( progressPercentualValue( PRGB_CHUNKS ) < upItem->progressPercentualValue( PRGB_CHUNKS ) );
+            case LOADED_COL :
+                return ( progressPercentualValue( PRGB_LOADED ) < upItem->progressPercentualValue( PRGB_LOADED ) );
+            default:
+                return this->text(sortIndex) < other.text(sortIndex);
+        }
     }
+    return false;
 }
 
 /*!
@@ -128,5 +135,28 @@ void UploadItem::updateLastSeen( const QString& lastConnected )
     }
     else setText( LASTSEEN_COL, tr("current") );
 }
+
+int UploadItem::progressPercentualValue( progressBars p ) const
+{
+    int s, e, v;
+    s = e = v = 0;
+    switch ( p ) {
+    case PRGB_CHUNKS :
+        if ( getStatus() != ACTIVE_UPLOAD ) return 0;
+        s = progressChunk_.minimum();
+        e = progressChunk_.maximum();
+        v = progressChunk_.value();
+        break;
+    case PRGB_LOADED :
+        s = progressLoaded_.minimum();
+        e = progressLoaded_.maximum();
+        v = progressLoaded_.value();
+        break;
+    }
+    if ( e == s ) return 0;
+    if ( v < s )  return 0;
+    return ( ((v-s) *100)/(e-s) );
+}
+
 
 

@@ -40,10 +40,8 @@ bool SearchItem::operator<( const QTreeWidgetItem & other ) const
 {
     int sortIndex = treeWidget()->header()->sortIndicatorSection();
 
-
-    Item* item = (Item*)&other;
-    {
-        SearchItem* searchItem = (SearchItem*)item;
+    const SearchItem* searchItem = dynamic_cast<const SearchItem*>(&other);
+    if ( searchItem ) {
         switch ( sortIndex )
         {
         case TEXT_COL:
@@ -56,5 +54,5 @@ bool SearchItem::operator<( const QTreeWidgetItem & other ) const
             return this->text( sortIndex ) < other.text( sortIndex );
         }
     }
-
+    return false;
 }
