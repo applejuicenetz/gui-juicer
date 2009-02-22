@@ -18,6 +18,9 @@
   </property>
   <widget class="QWidget" name="centralwidget" >
    <layout class="QVBoxLayout" name="verticalLayout" >
+    <property name="margin" >
+     <number>0</number>
+    </property>
     <item>
      <widget class="QTabWidget" name="ajTab" >
       <property name="currentIndex" >
@@ -356,7 +359,7 @@
         <property name="minimumSize" >
          <size>
           <width>66</width>
-          <height>89</height>
+          <height>85</height>
          </size>
         </property>
         <property name="features" >
