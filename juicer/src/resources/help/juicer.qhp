@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<QtHelpProject version="1.0">
+    <namespace>applejuicer.net</namespace>
+    <virtualFolder>doc</virtualFolder>
+    <filterSection>
+	<toc>
+	    <section title="Juicer User Manual" ref="index.html">
+	      <section title="Main Window" ref="index.html#mainwindow">
+	      </section>
+	      <section title="Modules" ref="index.html#modules">
+		<section title="Downloads" ref="index.html#downloads">
+		</section>
+		<section title="Uploads" ref="index.html#uploads">
+		</section>
+		<section title="Search" ref="index.html#search">
+		</section>
+		<section title="Server" ref="index.html#server">
+		</section>
+		<section title="Shares" ref="index.html#shares">
+		</section>
+		<section title="Incoming" ref="index.html#incoming">
+		</section>
+	      </section>
+	      <section title="Configuration" ref="index.html#configuration">
+		<section title="Core" ref="index.html#conf_core">
+		</section>
+		<section title="Limits" ref="index.html#conf_limits">
+		</section>
+		<section title="Appearance" ref="index.html#conf_appearance">
+		</section>
+		<section title="Behaviour" ref="index.html#conf_behaviour">
+		</section>
+		<section title="Launching" ref="index.html#conf_launching">
+		</section>
+		<section title="FTP" ref="index.html#conf_ftp">
+		</section>
+	      </section>
+	    </section>
+	    </toc>
+	<keywords>
+	    <keyword name="Juicer" ref="./index.html"/>
+	</keywords>
+	<files>
+	    <file>index.html</file>
+	    <file>images/juicer.png</file>
+	    <file>images/mainwindow.png</file>
+	    <file>images/downloads.png</file>
+	    <file>images/uploads.png</file>
+	    <file>images/server.png</file>
+	    <file>images/search.png</file>
+	    <file>images/shares.png</file>
+	    <file>images/incoming.png</file>
+	    <file>images/configure_core.png</file>
+	    <file>images/configure_limits.png</file>
+	    <file>images/configure_appearance.png</file>
+	    <file>images/configure_behaviour.png</file>
+	    <file>images/configure_launching.png</file>
+	    <file>images/configure_ftp.png</file>
+	    </files>
+	</filterSection>
+    </QtHelpProject>

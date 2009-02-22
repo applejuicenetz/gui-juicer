@@ -37,6 +37,10 @@ Juicer::Juicer( const QStringList& argList, QSplashScreen *splash )
 {
     setupUi( this );
 
+//     QHelpEngine helpEngine(":/docs/help");
+//     QMap<QString, QUrl> links = helpEngine.linksForIdentifier(QLatin1String("MyDialog::Downloads"));
+
+
     downloads->setCentralWidget(downloadsTreeWidget);
     downloads->addDockWidget(Qt::RightDockWidgetArea, partListDock);
 
@@ -138,6 +142,7 @@ void Juicer::connectActions() {
     connect(actionProcess_Link_From_Clipboard, SIGNAL(triggered()), this, SLOT(processClipboard()));
     connect(actionExit_Core, SIGNAL(triggered()), this, SLOT(exitCore()));
     connect(actionQuit_GUI, SIGNAL(triggered()), this, SLOT(quit()));
+    connect(actionManual, SIGNAL(triggered()), this, SLOT(showManual()));
     connect(actionAbout, SIGNAL(triggered()), this, SLOT(about()));
     connect(actionAbout_Qt, SIGNAL(triggered()), this, SLOT(aboutQt()));
 }
@@ -756,4 +761,13 @@ void Juicer::hostLookedUp(const QHostInfo &host) {
     for(int i=0; i<localAddresses.size() && !localCore; i++) {
         localCore = (coreAddresses.contains(localAddresses[i]));
     }
+}
+
+
+/*!
+    \fn Juicer::showManual()
+ */
+void Juicer::showManual() {
+    HelpDialog h;
+    h.exec();
 }

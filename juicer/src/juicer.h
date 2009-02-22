@@ -47,7 +47,6 @@
 #include <QTextStream>
 #include <QNetworkInterface>
 #include <QHostInfo>
-
 #include <QSystemTrayIcon>
 
 #include "ui_mainwindowbase.h"
@@ -68,6 +67,8 @@
 #include "application.h"
 
 #include "iconwidget.h"
+
+#include "helpdialog.h"
 
 static const QString WINDOWS = "1";
 static const QString LINUX = "2";
@@ -179,6 +180,7 @@ private slots:
     void trayActivated(QSystemTrayIcon::ActivationReason reason);
     void downloadsFinished(const QList<DownloadItem*>& list);
     void hostLookedUp(const QHostInfo& host);
+    void showManual();
 };
 
 #endif

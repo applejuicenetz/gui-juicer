@@ -9,7 +9,8 @@ logindialogbase.ui \
  handlerdialogbase.ui \
  partlistdialogbase.ui \
  mainwindowbase.ui \
- shareselectiondialogbase.ui
+ shareselectiondialogbase.ui \
+ helpdialogbase.ui
 HEADERS += ftp.h \
            global.h \
            md5class.h \
@@ -45,7 +46,8 @@ HEADERS += ftp.h \
  servermodule.h \
  sharemodule.h \
  incomingmodule.h \
- shareselectiondialog.h
+ shareselectiondialog.h \
+ helpdialog.h
 SOURCES += ftp.cpp \
            main.cpp \
            md5c.c \
@@ -81,13 +83,16 @@ SOURCES += ftp.cpp \
  servermodule.cpp \
  sharemodule.cpp \
  incomingmodule.cpp \
- shareselectiondialog.cpp
+ shareselectiondialog.cpp \
+ helpdialog.cpp
 CONFIG += warn_on \
           qt \
           stl \
- debug
+ debug \
+ assistant
 TEMPLATE = app
-QT += core gui network xml
+QT += core gui network xml \
+ webkit
 
 RESOURCES += images.qrc \
 translations.qrc
@@ -126,6 +131,7 @@ resources/vcs_commit.png \
 resources/vcs_remove.png \
 resources/vcs_update.png \
 resources/wizard.png \
+resources/help.png \
  resources/small/arrow_down.png \
  resources/small/arrow_up.png \
  resources/small/basket_put.png \

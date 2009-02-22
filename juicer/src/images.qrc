@@ -31,6 +31,7 @@
     <file alias="folder_open.png">resources/folder_open.png</file>
     <file alias="toggle_log.png">resources/toggle_log.png</file>
     <file alias="pause_fade.png">resources/pause_fade.png</file>
+    <file alias="help.png">resources/help.png</file>
 </qresource>
 
 <qresource prefix="/small">
