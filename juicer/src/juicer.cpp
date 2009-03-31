@@ -37,10 +37,6 @@ Juicer::Juicer( const QStringList& argList, QSplashScreen *splash )
 {
     setupUi( this );
 
-//     QHelpEngine helpEngine(":/docs/help");
-//     QMap<QString, QUrl> links = helpEngine.linksForIdentifier(QLatin1String("MyDialog::Downloads"));
-
-
     downloads->setCentralWidget(downloadsTreeWidget);
     downloads->addDockWidget(Qt::RightDockWidgetArea, partListDock);
 
@@ -108,6 +104,8 @@ Juicer::Juicer( const QStringList& argList, QSplashScreen *splash )
     queueLinks( argList );
     initTrayIcon();
     connect(downloadModule, SIGNAL( downloadsFinished( const QList<DownloadItem*>&  ) ),this, SLOT( downloadsFinished( const QList<DownloadItem*>& ) ) );
+
+    connect(qApp->clipboard(), SIGNAL(changed(QClipboard::Mode)), this, SLOT(clipboardChanged(QClipboard::Mode)));
 }
 
 Juicer::~Juicer() {
@@ -329,13 +327,12 @@ void Juicer::showOptions()
         // save options
         AjSettings settings = optionsDialog->getAjSettings();
         QApplication::setFont(optionsDialog->getFont());
-        bool altRows = optionsDialog->altRowsCheckBox->isChecked();
-        downloadsTreeWidget->setAlternatingRowColors( altRows );
-        uploadsTreeWidget->setAlternatingRowColors( altRows );
-        serverTreeWidget->setAlternatingRowColors( altRows );
-        searchsTreeWidget->setAlternatingRowColors( altRows );
-        sharesTreeWidget->setAlternatingRowColors( altRows );
-        incomingTreeWidget->setAlternatingRowColors( altRows );
+        downloadModule->updateAlternatingRowColors();
+        uploadModule->updateAlternatingRowColors();
+        serverModule->updateAlternatingRowColors();
+        searchModule->updateAlternatingRowColors();
+        shareModule->updateAlternatingRowColors();
+        incomingModule->updateAlternatingRowColors();
         initStatusBar();
 
         timer->stop();
@@ -383,7 +380,7 @@ void Juicer::gotSession()
     timer->start( lokalSettings.value( "refresh", 3 ).toInt() * 1000 );
     partListTimer->setSingleShot( false );
     partListTimer->start( 3000 );
-    xml->get( "share" );
+    shareModule->reloadSlot();
 }
 
 void Juicer::showNetworkInfo()
@@ -770,4 +767,50 @@ void Juicer::hostLookedUp(const QHostInfo &host) {
 void Juicer::showManual() {
     HelpDialog h;
     h.exec();
+}
+
+
+/*!
+    \fn Juicer::clipboardChanged(QClipboard::Mode mode)
+ */
+void Juicer::clipboardChanged(QClipboard::Mode mode) {
+    processLinks(qApp->clipboard()->text(mode));
+    clipboardTexts.clear();
+}
+
+
+/*!
+    \fn Juicer::setClipboard(const QString& text)
+ */
+void Juicer::setClipboard(const QString& text) {
+    clipboardTexts.append(text);
+    QApplication::clipboard()->setText(text);
+}
+
+
+/*!
+    \fn Juicer::getAjfspLinks(const QString& text, const QString& type)
+ */
+QStringList Juicer::getAjfspLinks(const QString& text, const QString& type) {
+    QStringList result;
+    QRegExp re("ajfsp://"+type+"[|][^/]*[/]");
+    int d = 0;
+    while((d = re.indexIn(text, d)) >= 0) {
+        result.append(text.mid(d, re.matchedLength()));
+        d += re.matchedLength();
+    }
+    return result;
+}
+
+
+/*!
+    \fn Juicer::processLinks(const QString& text, const QString& type)
+ */
+void Juicer::processLinks(const QString& text, const QString& type) {
+    QStringList links = getAjfspLinks(text, type);
+    for(int i=0; i<links.size(); i++) {
+        if(!clipboardTexts.contains(links.at(i))) {
+            processLink(links.at(i));
+        }
+    }
 }

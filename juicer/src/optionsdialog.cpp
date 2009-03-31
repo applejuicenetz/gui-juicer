@@ -85,6 +85,7 @@ OptionsDialog::OptionsDialog( QWidget* parent ) : QDialog( parent )
     connect( this, SIGNAL( accepted() ), this, SLOT( acceptedSlot() ) );
 
     connect(handlerPushButton, SIGNAL(clicked()), this, SLOT(setAjfspHandler()));
+    connect(resetPushButton, SIGNAL(clicked()), this, SLOT(reset()));
 
     listWidget->setCurrentRow( 0 );
 }
@@ -190,6 +191,8 @@ void OptionsDialog::setSettings()
     handlerDefaultCheckBox->setChecked(OptionsDialog::hasSetting("handler") && OptionsDialog::getSetting("handler", false).toBool());
     handlerDefaultCheckBox->setEnabled(handlerCheckCheckBox->isChecked());
 #endif
+
+    observeClipboardCheckBox->setChecked(getSetting("observeClipboard", false).toBool());
 }
 
 void OptionsDialog::selectIncomingDir()
@@ -329,6 +332,8 @@ void OptionsDialog::writeSettings()
         OptionsDialog::setSetting("handler", handlerCheckCheckBox->isChecked() && handlerDefaultCheckBox->isChecked());
     }
 #endif
+
+    OptionsDialog::setSetting("observeClipboard", observeClipboardCheckBox->isChecked());
 }
 
 
@@ -350,7 +355,6 @@ void OptionsDialog::setSetting( const QString& key, QVariant value )
     QSettings lokalSettings;
     lokalSettings.setValue(key, value);
 }
-
 
 
 /*!
@@ -510,4 +514,13 @@ void OptionsDialog::removeSetting(const QString& group, const QString& key)
 void OptionsDialog::setAjfspHandler()
 {
     printf("%s\n", ((Application*)qApp)->appPath.toLatin1().data());
+}
+
+
+/*!
+    \fn OptionsDialog::reset()
+ */
+void OptionsDialog::reset() {
+    QSettings lokalSettings;
+    lokalSettings.clear();
 }

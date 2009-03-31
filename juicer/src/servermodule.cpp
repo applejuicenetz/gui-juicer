@@ -105,51 +105,41 @@ void ServerModule::searchSlot()
     serverHttp->get( serverURL );
 }
 
-void ServerModule::connectedWith( QString id )
-{
-    if ( ! connectingToId.isEmpty() && servers.contains( connectingToId ) )
-    {
-        servers[ connectingToId ]->setIcon( ServerItem::NAME_COL, QIcon() );
+void ServerModule::connectedWith(QString id) {
+    if(!connectingToId.isEmpty() && servers.contains(connectingToId)) {
+        servers[connectingToId]->setIcon(ServerItem::NAME_COL, QIcon());
     }
-    if ( ! connectedWithId.isEmpty() && servers.contains( connectedWithId ) )
-    {
-        servers[ connectedWithId ]->setIcon( ServerItem::NAME_COL, QIcon() );
+    if(!connectedWithId.isEmpty() && servers.contains(connectedWithId)) {
+        servers[connectedWithId]->setIcon(ServerItem::NAME_COL, QIcon());
     }
-    if ( servers.contains( id ) )
-    {
-        servers[ id ]->setIcon( ServerItem::NAME_COL, QIcon(":/small/connected.png") );
+    if(servers.contains(id)) {
+        servers[id]->setIcon(ServerItem::NAME_COL, QIcon(":/small/connected.png"));
         //connected( servers[ id ]->text( NAME_COL ) );
     }
     connectedWithId = id;
     connectingToId = "";
 }
 
-void ServerModule::connectingTo( QString id )
-{
-    if ( ! connectingToId.isEmpty() && servers.contains( connectingToId ) )
-    {
-        servers[ connectingToId ]->setIcon( ServerItem::NAME_COL, QIcon() );
+void ServerModule::connectingTo(QString id) {
+    if(!connectingToId.isEmpty() && servers.contains(connectingToId)) {
+        servers[connectingToId]->setIcon(ServerItem::NAME_COL, QIcon());
     }
-    if ( servers.contains( id ) )
-    {
-        servers[ id ]->setIcon( ServerItem::NAME_COL, QIcon(":/small/connect.png") );
+    if(servers.contains(id)) {
+        servers[id]->setIcon(ServerItem::NAME_COL, QIcon(":/small/connect.png"));
     }
     connectingToId = id;
 }
 
-ServerItem* ServerModule::findServer( QString id )
-{
-    if ( servers.contains( id ) )
+ServerItem* ServerModule::findServer(QString id) {
+    if(servers.contains(id))
         return servers[ id ];
     else
         return NULL;
 }
 
-bool ServerModule::remove( QString id )
-{
-    QTreeWidgetItem *item = findServer( id );
-    if( item != NULL )
-    {
+bool ServerModule::remove(QString id) {
+    QTreeWidgetItem *item = findServer(id);
+    if(item != NULL) {
         servers.remove( id );
         delete item;
         return true;
@@ -157,27 +147,11 @@ bool ServerModule::remove( QString id )
     return false;
 }
 
-void ServerModule::gotServer( int , bool error )
-{
-    if ( error )
-    {
+void ServerModule::gotServer(int , bool error) {
+    if(error) {
         QMessageBox::critical( NULL, tr("error"), tr("Could not fetch server source.") , QMessageBox::Abort, QMessageBox::Cancel );
-    }
-    else
-    {
-        QString data( serverHttp->readAll() );
-        // TODO: use regular expressions
-        int begin, start, end;
-        begin = 0;
-        QString link;
-        // while we found an ajfsp server link
-        while ( ( start = data.indexOf( "ajfsp://server|", begin, Qt::CaseInsensitive ) ) != -1 )
-        {
-            end = data.indexOf( "/", start + 15 );
-            link = QString( QUrl::toPercentEncoding( data.mid(start, end - start +1) ) );
-            xml->set( "processlink", "&link=" + link );
-            begin = end;
-        }
+    } else {
+        juicer->processLinks(serverHttp->readAll(), "server");
     }
 }
 
@@ -195,8 +169,7 @@ void ServerModule::selectionChanged() {
 /*!
     \fn ServerModule::setConnectedSince(const QString& time)
  */
-QDateTime& ServerModule::setConnectedSince(const QString& time)
-{
+QDateTime& ServerModule::setConnectedSince(const QString& time) {
     if(time != "0") {
         connectedSince = zeroTime.addMSecs(time.toULongLong());
     } else {

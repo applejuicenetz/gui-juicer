@@ -20,6 +20,7 @@ ModuleBase::ModuleBase(Juicer* juicer, QTreeWidget* treeWidget, QToolBar* toolba
     this->toolbar = toolbar;
     this->treeWidget->insertActions(NULL, toolbar->actions());
     this->treeWidget->setContextMenuPolicy(Qt::ActionsContextMenu);
+    updateAlternatingRowColors();
     connect(treeWidget, SIGNAL(itemSelectionChanged()), this, SLOT(selectionChanged()));
 }
 
@@ -125,4 +126,12 @@ void ModuleBase::linkListSlot() {
             QMessageBox::critical(juicer, tr("Error while saving link list."), tr("The error message was:\n\n") + error);
         }
     }
+}
+
+
+/*!
+    \fn ModuleBase::updateAlternatingRowColors()
+ */
+void ModuleBase::updateAlternatingRowColors() {
+    this->treeWidget->setAlternatingRowColors(OptionsDialog::getSetting("altRows", false).toBool());
 }

@@ -119,7 +119,10 @@ void DownloadModule::insertDownload( const QString& id,
         updateView(true);
         connect(downloadItem->powerSpin, SIGNAL(powerChanged(QString, double)), this, SLOT(applyPowerDownload(const QString &, double)));
     } else {
-        downloadItem->update(hash, fileName, status, size, ready, power, tempNumber);
+        if(downloadItem->update(hash, fileName, status, size, ready, power, tempNumber)) {
+            // -- if status changed => reset tool buttons --
+            selectionChanged();
+        }
     }
 }
 
@@ -402,7 +405,7 @@ void DownloadModule::openSlot()
 void DownloadModule::linkSlot()
 {
     QString link = ((DownloadItem*)(treeWidget->selectedItems()[0]))->getLinkAJFSP();
-    QApplication::clipboard()->setText(link);
+    juicer->setClipboard(link);
 }
 
 /*!

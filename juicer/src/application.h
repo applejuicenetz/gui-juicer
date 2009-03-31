@@ -27,6 +27,7 @@
 #include "serversocket.h"
 #include "socket.h"
 #include "juicer.h"
+#include "autoupdate.h"
 
 /**
 @author Matthias Reif
@@ -44,6 +45,8 @@ public:
 public slots:
     void start();
 private:
+    AutoUpdate* au;
+
     Socket *socket;
     QStringList argList;
 };

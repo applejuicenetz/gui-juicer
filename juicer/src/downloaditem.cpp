@@ -71,8 +71,6 @@ DownloadItem::~DownloadItem()
     if ( activeSourcesItem )  delete activeSourcesItem;
     if ( queuedSourcesItem )  delete queuedSourcesItem;
     if ( otherSourcesItem )   delete otherSourcesItem;
-//    delete progressBar;
-//    delete powerSpin;
     if ( partListDialog )     delete partListDialog;
 }
 
@@ -168,7 +166,7 @@ void DownloadItem::updateUser( const QString& id,
     moveItem( userItem, oldStatus );
 }
 
-void DownloadItem::update( const QString& hash,
+bool DownloadItem::update( const QString& hash,
                               const QString& fileName,
                               const QString& status,
                               const QString& size,
@@ -176,6 +174,7 @@ void DownloadItem::update( const QString& hash,
                               const QString& power,
                               const QString& tempNumber )
 {
+    bool newStatus = false;
     if ( status != status_ ) {
         if ( status == DOWN_PAUSED ) {
             this->setTextColor( FILENAME_COL, Qt::darkGray );
@@ -188,6 +187,7 @@ void DownloadItem::update( const QString& hash,
             this->setTextColor( FILENAME_COL, Qt::black );
         }
         status_ = status;
+        newStatus = true;
     }
 
     this->tempNumber = tempNumber;
@@ -224,6 +224,7 @@ void DownloadItem::update( const QString& hash,
     this->powerSpin->spin->setEnabled( p > 1.0 );
 
     firstFinished = false;
+    return newStatus;
 }
 
 

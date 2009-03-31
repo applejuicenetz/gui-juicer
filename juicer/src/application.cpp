@@ -33,10 +33,15 @@ Application::Application( int & argc, char ** argv )
     setQuitOnLastWindowClosed( false );
     socket = NULL;
 
-    QFileInfo appFileInfo( argv[0] );
+    QFileInfo appFileInfo(argv[0]);
     appPath = appFileInfo.absoluteFilePath();    // contains path and filename
+
     // -- check if juicer is default application for ajfsp links --
     #ifdef Q_WS_WIN
+//         -- disabled because insufficiently tested --
+//         au = new AutoUpdate(appFileInfo.absolutePath());
+//         au->check();
+
         QString appCmd = appPath.replace("/","\\");
         appCmd = "\"" + appCmd + "\" \"%1\"";
         QSettings settings("HKEY_CLASSES_ROOT\\ajfsp", QSettings::NativeFormat);
@@ -116,6 +121,7 @@ void Application::start()
     splash->setVisible(OptionsDialog::getSetting( "showSplash", true ).toBool());
 
     Juicer* juicer = new Juicer(argList, splash);
+    juicer->appPath = appPath;
     juicer->setWindowTitle("Juicer");
 }
 

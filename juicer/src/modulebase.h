@@ -33,6 +33,7 @@ public:
     ~ModuleBase();
     void sortItemsInitially(QString settingsGroup);
     void saveSortOrder(QString settingsGroup);
+    void updateAlternatingRowColors();
 protected:
     Juicer* juicer;
     QTreeWidget* treeWidget;

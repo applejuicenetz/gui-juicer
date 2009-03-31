@@ -71,6 +71,7 @@ public:
 public slots:
     void commitSlot();
     void selectionChanged();
+    void reloadSlot();
 
 protected:
     ShareItem* findShare(const QString& fileName);
@@ -81,7 +82,6 @@ protected:
 private slots:
     void insertSlot();
     void removeSlot();
-    void reloadSlot();
     void linkSlot();
     void setTmpPriority(int prio);
     void setPriority();

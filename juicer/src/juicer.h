@@ -69,6 +69,7 @@
 #include "iconwidget.h"
 
 #include "helpdialog.h"
+#include "autoupdate.h"
 
 static const QString WINDOWS = "1";
 static const QString LINUX = "2";
@@ -115,6 +116,11 @@ public:
     bool isLocalhost( const QString& host );
 
     static QStringList getExec();
+    void setClipboard(const QString& text);
+    static QStringList getAjfspLinks(const QString& text, const QString& type = "[^|]*");
+    void processLinks(const QString& text, const QString& type = "[^|]*");
+
+    QString appPath;
 
 protected:
     void initToolBars();
@@ -150,6 +156,7 @@ protected:
 
     int firstModifiedCnt, firstModifiedMax;
     QSplashScreen *splash;
+    QStringList clipboardTexts;
 
 private slots:
     bool login(const QString& message = "<h3>Login</h3>", bool error = false);
@@ -181,6 +188,8 @@ private slots:
     void downloadsFinished(const QList<DownloadItem*>& list);
     void hostLookedUp(const QHostInfo& host);
     void showManual();
+private slots:
+    void clipboardChanged(QClipboard::Mode mode);
 };
 
 #endif

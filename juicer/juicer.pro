@@ -1,5 +1,5 @@
 TEMPLATE = subdirs 
-SUBDIRS = src
+SUBDIRS = quazip src
 CONFIG += warn_on \
           qt \
           thread \

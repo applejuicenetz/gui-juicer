@@ -10,7 +10,8 @@ logindialogbase.ui \
  partlistdialogbase.ui \
  mainwindowbase.ui \
  shareselectiondialogbase.ui \
- helpdialogbase.ui
+ helpdialogbase.ui \
+ updatedialogbase.ui
 HEADERS += ftp.h \
            global.h \
            md5class.h \
@@ -47,7 +48,9 @@ HEADERS += ftp.h \
  sharemodule.h \
  incomingmodule.h \
  shareselectiondialog.h \
- helpdialog.h
+ helpdialog.h \
+ autoupdate.h \
+ updatedialog.h
 SOURCES += ftp.cpp \
            main.cpp \
            md5c.c \
@@ -84,7 +87,9 @@ SOURCES += ftp.cpp \
  sharemodule.cpp \
  incomingmodule.cpp \
  shareselectiondialog.cpp \
- helpdialog.cpp
+ helpdialog.cpp \
+ autoupdate.cpp \
+ updatedialog.cpp
 CONFIG += warn_on \
           qt \
           stl \
@@ -200,4 +205,10 @@ CONFIG -= release
 INSTALLS += target
 
 target.path = /usr/local/bin
+
+TARGETDEPS += ../quazip/libquazip.a
+
+INCLUDEPATH += ../quazip
+
+LIBS += ../quazip/libquazip.a
 
