@@ -744,7 +744,7 @@ void Juicer::sendToTray( const QString& message1, const QString& message2 ) {
 void Juicer::about() {
     QMessageBox::about( this, tr("Juicer Info"),
                         qApp->applicationName() + " " + qApp->applicationVersion()
-                        + tr("\n\nGUI for appleJuice Filesharing\n\nhttp://ajqtgui.sf.net"));
+                        + tr("\n\nGUI for appleJuice Filesharing\n\nhttp://applejuicer.net"));
 }
 
 void Juicer::aboutQt() {
@@ -774,7 +774,9 @@ void Juicer::showManual() {
     \fn Juicer::clipboardChanged(QClipboard::Mode mode)
  */
 void Juicer::clipboardChanged(QClipboard::Mode mode) {
-    processLinks(qApp->clipboard()->text(mode));
+    if(OptionsDialog::getSetting("observeClipboard", false).toBool()) {
+        processLinks(qApp->clipboard()->text(mode));
+    }
     clipboardTexts.clear();
 }
 

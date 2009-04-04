@@ -58,6 +58,12 @@ OptionsDialog::OptionsDialog( QWidget* parent ) : QDialog( parent )
     item->setSizeHint(l->size());
     listWidget->setItemWidget(item, l);
 
+    l = new IconWidget(":/options/reset.png", tr("Reset"), QBoxLayout::TopToBottom, listWidget);
+    item = new QListWidgetItem(listWidget);
+    item->setSizeHint(l->size());
+    listWidget->setItemWidget(item, l);
+
+
     languageComboBox->addItem(QIcon(":/options/de.png"), "deutsch", "de");
     languageComboBox->addItem(QIcon(":/options/gb.png"), "english", "en");
 
@@ -177,8 +183,7 @@ void OptionsDialog::setSettings()
 
     QStringList statusbarComponents = getSetting( "statusbarComponents", getDefaultStatusbarComponents() ).toStringList();
     statusbarList->clearSelection();
-    int i;
-    for(i=0; i<statusbarComponents.size(); i++) {
+    for(int i=0; i<statusbarComponents.size(); i++) {
         statusbarList->item( statusbarComponents[i].toInt() )->setSelected( true );
     }
 
@@ -195,68 +200,64 @@ void OptionsDialog::setSettings()
     observeClipboardCheckBox->setChecked(getSetting("observeClipboard", false).toBool());
 }
 
-void OptionsDialog::selectIncomingDir()
-{
-    QString dir = QFileDialog::getExistingDirectory( this, "Choose a directory", incomingEdit->text() );
-    if( ! dir.isEmpty() )
-        incomingEdit->setText( dir );
+void OptionsDialog::selectIncomingDir()  {
+    QString dir = QFileDialog::getExistingDirectory(this, "Choose a directory", incomingEdit->text());
+    if(!dir.isEmpty()) {
+        incomingEdit->setText(dir);
+    }
 }
 
-void OptionsDialog::selectTempDir()
-{
-    QString dir = QFileDialog::getExistingDirectory( this, "Choose a directory", tempEdit->text() );
-    if( ! dir.isEmpty() )
-        tempEdit->setText( dir );
+void OptionsDialog::selectTempDir() {
+    QString dir = QFileDialog::getExistingDirectory(this, "Choose a directory", tempEdit->text());
+    if(!dir.isEmpty()) {
+        tempEdit->setText(dir);
+    }
 }
 
-void OptionsDialog::selectLauncher()
-{
+void OptionsDialog::selectLauncher() {
     #ifdef Q_WS_WIN
     QString file = QFileDialog::getOpenFileName(this, "Select a executable", launchCombo->currentText(), "Executable (*.exe)");
     #else
     QString file = QFileDialog::getOpenFileName(this, "Select a executable", launchCombo->currentText());
     #endif
-    if( ! file.isEmpty() )
-        launchCombo->setEditText( file );
+    if(!file.isEmpty()) {
+        launchCombo->setEditText(file);
+    }
 }
 
-void OptionsDialog::selectIncomingDirSpecific()
-{
-    QString dir = QFileDialog::getExistingDirectory( this, "Choose a directory", incomingSpecificEdit->text() );
-    if( ! dir.isEmpty() )
-        incomingSpecificEdit->setText( dir );
+void OptionsDialog::selectIncomingDirSpecific() {
+    QString dir = QFileDialog::getExistingDirectory(this, "Choose a directory", incomingSpecificEdit->text());
+    if(!dir.isEmpty()) {
+        incomingSpecificEdit->setText(dir);
+    }
 }
 
-void OptionsDialog::selectTempDirSpecific()
-{
-    QString dir = QFileDialog::getExistingDirectory( this, "Choose a directory", tempSpecificEdit->text() );
-    if( ! dir.isEmpty() )
-        tempSpecificEdit->setText( dir );
+void OptionsDialog::selectTempDirSpecific() {
+    QString dir = QFileDialog::getExistingDirectory(this, "Choose a directory", tempSpecificEdit->text());
+    if(!dir.isEmpty()) {
+        tempSpecificEdit->setText(dir);
+    }
 }
 
 /*!
-    \fn OptionsDialog::specificRadioToggled( bool checked )
+    \fn OptionsDialog::specificRadioToggled(bool checked)
  */
-void OptionsDialog::specificRadioToggled( bool checked )
-{
-    incomingSpecificEdit->setEnabled( checked );
-    tempSpecificEdit->setEnabled( checked );
-    incomingSpecificLabel->setEnabled( checked );
-    tempSpecificLabel->setEnabled( checked );
-    incomingSpecificButton->setEnabled( checked );
-    tempSpecificButton->setEnabled( checked );
+void OptionsDialog::specificRadioToggled(bool checked) {
+    incomingSpecificEdit->setEnabled(checked);
+    tempSpecificEdit->setEnabled(checked);
+    incomingSpecificLabel->setEnabled(checked);
+    tempSpecificLabel->setEnabled(checked);
+    incomingSpecificButton->setEnabled(checked);
+    tempSpecificButton->setEnabled(checked);
 }
 
 
 /*!
     \fn OptionsDialog::getDefaultStatusbarComponents()
  */
-QStringList OptionsDialog::getDefaultStatusbarComponents()
-{
+QStringList OptionsDialog::getDefaultStatusbarComponents() {
     QStringList x;
-    int i;
-    for(i=0; i<statusbarList->count(); i++)
-    {
+    for(int i=0; i<statusbarList->count(); i++) {
         x << QString::number(i);
     }
     return x;
@@ -266,8 +267,7 @@ QStringList OptionsDialog::getDefaultStatusbarComponents()
 /*!
     \fn OptionsDialog::jumpToFtpSlot()
  */
-void OptionsDialog::jumpToFtpSlot()
-{
+void OptionsDialog::jumpToFtpSlot() {
     stackedWidget->setCurrentIndex(stackedWidget->count() -1);
 }
 
@@ -275,51 +275,49 @@ void OptionsDialog::jumpToFtpSlot()
 /*!
     \fn OptionsDialog::writeSettings()
  */
-void OptionsDialog::writeSettings()
-{
+void OptionsDialog::writeSettings() {
     if(savePassword->isChecked()) {
         setSetting("password", passwordEdit->text());
     } else {
         removeSetting("password");
     }
 
-    setSetting( "coreAddress", coreEdit->text() );
-    setSetting( "savePassword", savePassword->isChecked() );
-    setSetting( "showSplash", showSplash->isChecked() );
-    setSetting( "useTray", trayCheckBox->isChecked() );
-    setSetting( "altRows", altRowsCheckBox->isChecked() );
-    setSetting( "serverURL", serverEdit->text() );
-    setSetting( "refresh", refreshSpin->value() );
-    setSetting( "launcher", launchCombo->currentText() );
+    setSetting("coreAddress", coreEdit->text());
+    setSetting("savePassword", savePassword->isChecked());
+    setSetting("showSplash", showSplash->isChecked());
+    setSetting("useTray", trayCheckBox->isChecked());
+    setSetting("altRows", altRowsCheckBox->isChecked());
+    setSetting("serverURL", serverEdit->text());
+    setSetting("refresh", refreshSpin->value());
+    setSetting("launcher", launchCombo->currentText());
 
-    if( sameComputerRadio->isChecked() )
-        setSetting( "location", AjSettings::SAME );
-    else if( specificRadio->isChecked() )
-        setSetting( "location", AjSettings::SPECIFIC );
-    else
-        setSetting( "location", AjSettings::FTP );
+    if(sameComputerRadio->isChecked()) {
+        setSetting("location", AjSettings::SAME);
+    } else if(specificRadio->isChecked()) {
+        setSetting("location", AjSettings::SPECIFIC);
+    } else {
+        setSetting("location", AjSettings::FTP);
+    }
 
-    setSetting( "incomingDirSpecific", incomingSpecificEdit->text() );
-    setSetting( "tempDirSpecific", tempSpecificEdit->text() );
+    setSetting("incomingDirSpecific", incomingSpecificEdit->text());
+    setSetting("tempDirSpecific", tempSpecificEdit->text());
 
-    setSetting( "ftp", "server", ftpServerEdit->text() );
-    setSetting( "ftp", "port", ftpPortEdit->text() );
-    setSetting( "ftp", "user", ftpUserEdit->text() );
-    setSetting( "ftp", "password", ftpPasswordEdit->text() );
-    setSetting( "ftp", "inDir", ftpInDirEdit->text() );
-    setSetting( "ftp", "tmpDir", ftpTmpDirEdit->text() );
-    setSetting( "ftp", "mode", ftpActiveRadioButton->isChecked()?QFtp::Active:QFtp::Passive );
-    setSetting( "ftp", "full", ftpFullRadioButton->isChecked() );
-    setSetting( "ftp", "mb", ftpMbSpinBox->value() );
+    setSetting("ftp", "server", ftpServerEdit->text());
+    setSetting("ftp", "port", ftpPortEdit->text());
+    setSetting("ftp", "user", ftpUserEdit->text());
+    setSetting("ftp", "password", ftpPasswordEdit->text());
+    setSetting("ftp", "inDir", ftpInDirEdit->text());
+    setSetting("ftp", "tmpDir", ftpTmpDirEdit->text());
+    setSetting("ftp", "mode", ftpActiveRadioButton->isChecked()?QFtp::Active:QFtp::Passive);
+    setSetting("ftp", "full", ftpFullRadioButton->isChecked());
+    setSetting("ftp", "mb", ftpMbSpinBox->value());
 
     setSetting( "fetchServersOnStartup",  fetchServersCheckBox->isChecked() );
     setSetting( "language",  languageComboBox->itemData(languageComboBox->currentIndex()) );
 
     QStringList statusbarComponents;
     QList<QListWidgetItem *> items = statusbarList->selectedItems();
-    int i;
-    for(i=0; i<items.size(); i++)
-    {
+    for(int i=0; i<items.size(); i++) {
         statusbarComponents << QString::number(statusbarList->row(items[i]));
     }
     setSetting( "statusbarComponents",  statusbarComponents );
@@ -338,19 +336,18 @@ void OptionsDialog::writeSettings()
 
 
 /*!
-    \fn OptionsDialog::getSetting( const QString& key, QVariant defaultValue )
+    \fn OptionsDialog::getSetting(const QString& key, QVariant defaultValue)
  */
-QVariant OptionsDialog::getSetting( const QString& key, QVariant defaultValue )
-{
+QVariant OptionsDialog::getSetting(const QString& key, QVariant defaultValue) {
     QSettings lokalSettings;
-    return lokalSettings.value( key, defaultValue);
+    return lokalSettings.value(key, defaultValue);
 }
 
 
 /*!
-    \fn OptionsDialog::setSetting( const QString& key, QVariant value )
+    \fn OptionsDialog::setSetting(const QString& key, QVariant value)
  */
-void OptionsDialog::setSetting( const QString& key, QVariant value )
+void OptionsDialog::setSetting(const QString& key, QVariant value)
 {
     QSettings lokalSettings;
     lokalSettings.setValue(key, value);
@@ -358,32 +355,29 @@ void OptionsDialog::setSetting( const QString& key, QVariant value )
 
 
 /*!
-    \fn OptionsDialog::getSetting( const QString& group, const QString& key, QVariant defaultValue )
+    \fn OptionsDialog::getSetting(const QString& group, const QString& key, QVariant defaultValue)
  */
-QVariant OptionsDialog::getSetting( const QString& group, const QString& key, QVariant defaultValue )
-{
+QVariant OptionsDialog::getSetting(const QString& group, const QString& key, QVariant defaultValue) {
     QSettings lokalSettings;
-    lokalSettings.beginGroup( group );
-    QVariant value =  lokalSettings.value( key, defaultValue);
+    lokalSettings.beginGroup(group);
+    QVariant value =  lokalSettings.value(key, defaultValue);
     lokalSettings.endGroup();
     return value;
 }
 
 /*!
-    \fn OptionsDialog::getGroupSetting( const QString& group, const QString& key )
+    \fn OptionsDialog::getGroupSetting(const QString& group, const QString& key)
  */
-QVariant OptionsDialog::getGroupSetting( const QString& group, const QString& key )
-{
+QVariant OptionsDialog::getGroupSetting(const QString& group, const QString& key){
     return getSetting(group, key, QVariant());
 }
 
 /*!
-    \fn OptionsDialog::setSetting( const QString& group, const QString& key, QVariant value )
+    \fn OptionsDialog::setSetting(const QString& group, const QString& key, QVariant value)
  */
-void OptionsDialog::setSetting( const QString& group, const QString& key, QVariant value )
-{
+void OptionsDialog::setSetting(const QString& group, const QString& key, QVariant value) {
     QSettings lokalSettings;
-    lokalSettings.beginGroup( group );
+    lokalSettings.beginGroup(group);
     lokalSettings.setValue(key, value);
     lokalSettings.endGroup();
 }
@@ -392,31 +386,27 @@ void OptionsDialog::setSetting( const QString& group, const QString& key, QVaria
 /*!
     \fn OptionsDialog::acceptedSlot()
  */
-void OptionsDialog::acceptedSlot()
-{
+void OptionsDialog::acceptedSlot() {
     writeSettings();
 }
 
 /*!
-    \fn OptionsDialog::setFontSizes( const QFont& font )
+    \fn OptionsDialog::setFontSizes(const QFont& font)
  */
-void OptionsDialog::setFontSizes( const QFont& font )
-{
-    QList<int> sizes = fontDatabase.pointSizes( font.family() );
+void OptionsDialog::setFontSizes(const QFont& font) {
+    QList<int> sizes = fontDatabase.pointSizes(font.family());
     fontSizeComboBox->clear();
     int index = 0;
     int i = 0;
-    while( ! sizes.isEmpty() )
-    {
+    while(!sizes.isEmpty()) {
         int size = sizes.takeFirst();
         fontSizeComboBox->addItem(QString::number(size));
-        if(size == QApplication::font().pointSize())
-        {
+        if(size == QApplication::font().pointSize()) {
             index = i;
         }
         i++;
     }
-    fontSizeComboBox->setCurrentIndex( index );
+    fontSizeComboBox->setCurrentIndex(index);
 }
 
 /*!
@@ -432,8 +422,7 @@ QFont OptionsDialog::getFont() {
 /*!
     \fn OptionsDialog::setConnected(bool connected)
  */
-void OptionsDialog::setConnected(bool connected)
-{
+void OptionsDialog::setConnected(bool connected) {
     nickLabel->setEnabled(connected);
     nickEdit->setEnabled(connected);
     passwordLabel->setEnabled(connected);
@@ -466,8 +455,7 @@ void OptionsDialog::setConnected(bool connected)
 /*!
     \fn OptionsDialog::hasSetting(const QString& key)
  */
-bool OptionsDialog::hasSetting(const QString& key)
-{
+bool OptionsDialog::hasSetting(const QString& key) {
     QSettings lokalSettings;
     return lokalSettings.contains(key);
 }
@@ -476,8 +464,7 @@ bool OptionsDialog::hasSetting(const QString& key)
 /*!
     \fn OptionsDialog::hasSetting(const QString& group, const QString& key)
  */
-bool OptionsDialog::hasSetting(const QString& group, const QString& key)
-{
+bool OptionsDialog::hasSetting(const QString& group, const QString& key) {
     QSettings lokalSettings;
     lokalSettings.beginGroup( group );
     bool ret = lokalSettings.contains(key);
@@ -489,8 +476,7 @@ bool OptionsDialog::hasSetting(const QString& group, const QString& key)
 /*!
     \fn OptionsDialog::removeSetting(const QString& key)
  */
-void OptionsDialog::removeSetting(const QString& key)
-{
+void OptionsDialog::removeSetting(const QString& key) {
     QSettings lokalSettings;
     lokalSettings.remove(key);
 }
@@ -499,8 +485,7 @@ void OptionsDialog::removeSetting(const QString& key)
 /*!
     \fn OptionsDialog::removeSetting(const QString& group, const QString& key)
  */
-void OptionsDialog::removeSetting(const QString& group, const QString& key)
-{
+void OptionsDialog::removeSetting(const QString& group, const QString& key) {
     QSettings lokalSettings;
     lokalSettings.beginGroup( group );
     lokalSettings.remove(key);
@@ -511,8 +496,7 @@ void OptionsDialog::removeSetting(const QString& group, const QString& key)
 /*!
     \fn OptionsDialog::setAjfspHandler()
  */
-void OptionsDialog::setAjfspHandler()
-{
+void OptionsDialog::setAjfspHandler() {
     printf("%s\n", ((Application*)qApp)->appPath.toLatin1().data());
 }
 
@@ -521,6 +505,8 @@ void OptionsDialog::setAjfspHandler()
     \fn OptionsDialog::reset()
  */
 void OptionsDialog::reset() {
-    QSettings lokalSettings;
-    lokalSettings.clear();
+    if(QMessageBox::question(this, tr("Reset"), tr("Are you sure to reset Juicer?"), QMessageBox::Yes | QMessageBox::No) == QMessageBox::Yes) {
+        QSettings lokalSettings;
+        lokalSettings.clear();
+    }
 }
