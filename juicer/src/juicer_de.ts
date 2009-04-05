@@ -39,7 +39,7 @@ Möchten Sie das ändern?</translation>
     <message>
         <location filename="shareselectiondialogbase.ui" line="19"/>
         <source>Select a directory you want to share:</source>
-        <translation type="unfinished">Wählen Sie ein Verzeichnis aus, welches Sie teilen möchten:</translation>
+        <translation type="unfinished">Wählen Sie ein Verzeichnis aus, welches Sie freigeben möchten:</translation>
     </message>
     <message>
         <location filename="shareselectiondialogbase.ui" line="33"/>
@@ -750,8 +750,8 @@ http://applejucier.net</translation>
     </message>
     <message>
         <location filename="mainwindowbase.ui" line="1050"/>
-        <source>Show Welcome Message</source>
-        <translation type="unfinished">Zeige Willkommensnachricht</translation>
+        <source>Welcome Message</source>
+        <translation type="unfinished">Willkommensnachricht</translation>
     </message>
     <message>
         <location filename="mainwindowbase.ui" line="1059"/>
@@ -826,7 +826,7 @@ http://applejucier.net</translation>
     <message>
         <location filename="mainwindowbase.ui" line="1182"/>
         <source>Manual</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Handbuch</translation>
     </message>
 </context>
 <context>
@@ -939,7 +939,7 @@ http://applejucier.net</translation>
     <message>
         <location filename="optionsdialog.cpp" line="508"/>
         <source>Are you sure to reset Juicer?</source>
-        <translation type="unfinished">Sind sie sicher, dass sie Jucier zurücksetzen wollen?</translation>
+        <translation type="unfinished">Sind sie sicher, dass sie Juicer zurücksetzen wollen?</translation>
     </message>
 </context>
 <context>
@@ -977,7 +977,7 @@ http://applejucier.net</translation>
     <message>
         <location filename="optionsdialogbase.ui" line="139"/>
         <source>XML Port:</source>
-        <translation type="unfinished">XMl-Port:</translation>
+        <translation type="unfinished">XML-Port:</translation>
     </message>
     <message>
         <location filename="optionsdialogbase.ui" line="1163"/>
@@ -1062,7 +1062,7 @@ http://applejucier.net</translation>
     <message>
         <location filename="optionsdialogbase.ui" line="488"/>
         <source>show splash screen on startup</source>
-        <translation type="unfinished">Zeige Startbild</translation>
+        <translation type="unfinished">zeige Startbild</translation>
     </message>
     <message>
         <location filename="optionsdialogbase.ui" line="495"/>
@@ -1127,7 +1127,7 @@ http://applejucier.net</translation>
     <message>
         <location filename="optionsdialogbase.ui" line="697"/>
         <source>show in download tab:</source>
-        <translation type="unfinished">Zeige in Downloadfenster:</translation>
+        <translation type="unfinished">zeige in Downloadfenster:</translation>
     </message>
     <message>
         <location filename="optionsdialogbase.ui" line="738"/>
@@ -1237,7 +1237,7 @@ http://applejucier.net</translation>
     <message>
         <location filename="optionsdialogbase.ui" line="1002"/>
         <source>Core is running at the same computer</source>
-        <translation type="unfinished">Core lüft auf dem selben Rechner</translation>
+        <translation type="unfinished">Core läuft auf dem selben Rechner</translation>
     </message>
     <message>
         <location filename="optionsdialogbase.ui" line="1009"/>
@@ -1312,7 +1312,7 @@ http://applejucier.net</translation>
     <message>
         <location filename="optionsdialogbase.ui" line="875"/>
         <source>automatically add links from the clipboard</source>
-        <translation type="unfinished">automatisch Links aus der Zwischenablgae übernehmen</translation>
+        <translation type="unfinished">automatisch Links aus der Zwischenablage übernehmen</translation>
     </message>
     <message>
         <location filename="optionsdialogbase.ui" line="1301"/>
@@ -1341,7 +1341,7 @@ auf Standardwerte zurücksetzen.</translation>
     <message>
         <location filename="qconvert.cpp" line="203"/>
         <source>A fatal error occurred.</source>
-        <translation type="unfinished">Ein trat ein fataler Fehler auf.</translation>
+        <translation type="unfinished">Es trat ein fataler Fehler auf.</translation>
     </message>
     <message>
         <location filename="qconvert.cpp" line="205"/>
@@ -1574,7 +1574,7 @@ auf Standardwerte zurücksetzen.</translation>
     <message>
         <location filename="sharemodule.cpp" line="70"/>
         <source>Share subdirectories?</source>
-        <translation type="unfinished">Unterverzeichnisse teilen?</translation>
+        <translation type="unfinished">Unterverzeichnisse freigeben?</translation>
     </message>
 </context>
 <context>
@@ -1582,7 +1582,7 @@ auf Standardwerte zurücksetzen.</translation>
     <message>
         <location filename="handlerdialog.cpp" line="31"/>
         <source>Don&apos;t show this message again.</source>
-        <translation type="unfinished">Die Meldung nicht wieder anzeigen.</translation>
+        <translation type="unfinished">Diese Meldung nicht wieder anzeigen.</translation>
     </message>
 </context>
 <context>
