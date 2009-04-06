@@ -19,13 +19,9 @@
  ***************************************************************************/
 #include "application.h"
 
-#include <QMessageBox>
-#include <QFileInfo>
 #include "handlerdialog.h"
 
-Application::Application( int & argc, char ** argv ) 
-    : QApplication( argc, argv )
-{
+Application::Application(int & argc, char ** argv) : QApplication( argc, argv ) {
     QCoreApplication::setOrganizationName("progeln.de");
     QCoreApplication::setOrganizationDomain("progeln.de");
     QCoreApplication::setApplicationName("Juicer");
@@ -83,8 +79,7 @@ Application::Application( int & argc, char ** argv )
     #endif
 
     *argv++;
-    while (argc-- > 1)
-    {
+    while(argc-- > 1) {
         QString arg(*argv++);
         if(arg == "--reset") {
             QSettings lokalSettings;
@@ -93,20 +88,17 @@ Application::Application( int & argc, char ** argv )
             argList << QString(arg);
         }
     }
-    if( ! argList.isEmpty() )
-    {
-        socket = new Socket( APP_PORT, argList, this );
-        connect( socket, SIGNAL( error( QAbstractSocket::SocketError ) ), this, SLOT( start() ) );
+    if(!argList.isEmpty()) {
+        socket = new Socket(APP_PORT, argList, this);
+        connect(socket, SIGNAL(error(QAbstractSocket::SocketError)), this, SLOT(start()));
     }
 }
 
 
-Application::~Application() 
-{
+Application::~Application() {
 }
 
-int Application::exec() 
-{
+int Application::exec() {
     if(socket != NULL) {
         socket->start();
     } else {
@@ -115,13 +107,10 @@ int Application::exec()
     return QApplication::exec();
 }
 
-void Application::start() 
-{
+void Application::start() {
     QSplashScreen *splash = new QSplashScreen(QPixmap(":/splash.png"));
     splash->setVisible(OptionsDialog::getSetting( "showSplash", true ).toBool());
-
     Juicer* juicer = new Juicer(argList, splash);
     juicer->appPath = appPath;
     juicer->setWindowTitle("Juicer");
 }
-

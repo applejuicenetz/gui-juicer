@@ -35,33 +35,22 @@ public:
 
     virtual ~Item();
 
-    QString getStatus() const
-    {
+    QString getStatus() const {
         return status_;
     }
-
-    void setStatus( const QString& newStatus )
-    {
+    void setStatus( const QString& newStatus )  {
         status_ = newStatus;
     }
-
-    QString getId() const
-    {
+    QString getId() const {
         return id_;
     }
-
-    QString getHash() const
-    {
+    QString getHash() const {
         return hash_;
     }
-
-    QString getFilename() const
-    {
+    QString getFilename() const {
         return filename_;
     }
-
-    double getSize() const
-    {
+    double getSize() const {
         return size_;
     }
 

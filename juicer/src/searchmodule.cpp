@@ -44,74 +44,61 @@ SearchModule::~SearchModule()
 {}
 
 
-void SearchModule::insertSearch( const QString& id, const QString& searchText, const QString& running, const QString& foundFiles )
-{
-    SearchItem *item = findSearch( id );
-    if ( item == NULL )
-    {
+void SearchModule::insertSearch(const QString& id, const QString& searchText, const QString& running, const QString& foundFiles) {
+    SearchItem *item = findSearch(id);
+    if(item == NULL) {
         item = new SearchItem(id, treeWidget);
         searches[id] = item;
-        item->setText( SearchItem::TEXT_COL, searchText );
-        item->setText( SearchItem::COUNT_COL, "0" );
+        item->setText(SearchItem::TEXT_COL, searchText);
+        item->setText(SearchItem::COUNT_COL, "0");
     }
-    item->setText( SearchItem::TEXT_COL, searchText + " (" + foundFiles + ")" );
-    if ( running == "true" )
-        item->setIcon( SearchItem::TEXT_COL, QIcon(":/small/searching.png") );
-    else
-        item->setIcon( SearchItem::TEXT_COL, QIcon(":/small/ok.png") );
+    item->setText(SearchItem::TEXT_COL, searchText + " (" + foundFiles + ")");
+    if(running == "true") {
+        item->setIcon(SearchItem::TEXT_COL, QIcon(":/small/searching.png"));
+    } else {
+        item->setIcon(SearchItem::TEXT_COL, QIcon(":/small/ok.png"));
+    }
 
 }
 
-void SearchModule::insertSearchEntry( const QString& id, const QString& searchId, const QString& size, const QString& checksum, const QStringList& filenames )
-{
-    SearchItem *searchItem = findSearch( searchId );
-    if ( searchItem == NULL )
-    {
+void SearchModule::insertSearchEntry(const QString& id, const QString& searchId, const QString& size, const QString& checksum, const QStringList& filenames) {
+    SearchItem *searchItem = findSearch(searchId);
+    if(searchItem == NULL) {
         searchItem = new SearchItem( searchId, treeWidget );
         searches[searchId] = searchItem;
     }
-
-    if ( searchItem->entriesCount < MAX_SEARCH_ENTRIES )
-    {
-        if ( searchItem->findSearchEntry( id ) == NULL )
-        {
-            SearchEntryItem *searchEntryItem = new SearchEntryItem( id, searchItem, checksum, size, searchItem );
+    if(searchItem->entriesCount < MAX_SEARCH_ENTRIES) {
+        if(searchItem->findSearchEntry( id ) == NULL) {
+            SearchEntryItem *searchEntryItem = new SearchEntryItem(id, searchItem, checksum, size, searchItem);
             searchItem->entries[ id ] = searchEntryItem;
             searchEntries[ id ] = searchEntryItem;
             searchEntryItem->setText( SearchItem::SIZE_COL, QConvert::bytes(size) );
             QStringListIterator it(filenames);
-            while (it.hasNext())
-            {
+            while(it.hasNext()) {
                 QString filename = it.next();
-                if ( searchEntryItem->text( SearchItem::TEXT_COL ) == "" )
-                {
+                if(searchEntryItem->text( SearchItem::TEXT_COL ) == "") {
                     searchEntryItem->setText( SearchItem::TEXT_COL, filename);
                     searchEntryItem->setFilename( filename );
                 }
             }
             searchItem->hits++;
-            searchItem->setText( SearchItem::COUNT_COL, QString::number(searchItem->hits) );
+            searchItem->setText(SearchItem::COUNT_COL, QString::number(searchItem->hits));
             searchItem->entriesCount++;
         }
     }
 }
 
-bool SearchModule::removeSearch( const QString& id )
-{
-    SearchItem* item = findSearch( id );
-    if( item != NULL )
-    {
-        searches.remove( id );
-
+bool SearchModule::removeSearch(const QString& id) {
+    SearchItem* item = findSearch(id);
+    if(item != NULL) {
+        searches.remove(id);
         // -- delete all corresponding search entries --
         QList<QString> entryIds = item->entries.keys();
-        while(!entryIds.isEmpty())
-        {
+        while(!entryIds.isEmpty()) {
             QString entryId = entryIds.takeFirst();
-            searchEntries.remove( entryId );
-            delete item->entries[ entryId ];
+            searchEntries.remove(entryId);
+            delete item->entries[entryId];
         }
-
         delete item;
         return true;
     }
@@ -119,14 +106,12 @@ bool SearchModule::removeSearch( const QString& id )
 }
 
 
-bool SearchModule::removeSearchEntry( const QString& id )
-{
-    SearchEntryItem* item = findSearchEntry( id );
-    if( item != NULL )
-    {
-        searchEntries.remove( id );
+bool SearchModule::removeSearchEntry(const QString& id) {
+    SearchEntryItem* item = findSearchEntry(id);
+    if(item != NULL) {
+        searchEntries.remove(id);
         // -- delete this entry in the parent search
-        item->search->entries.remove( id );
+        item->search->entries.remove(id);
         delete item;
         return true;
     }
@@ -134,21 +119,14 @@ bool SearchModule::removeSearchEntry( const QString& id )
 }
 
 
-bool SearchModule::remove( const QString& id )
-{
-    if(removeSearch( id ))
-        return true;
-    else if(removeSearchEntry( id ))
-        return true;
-    else
-        return false;
+bool SearchModule::remove(const QString& id) {
+    return removeSearch(id) || removeSearchEntry( id );
 }
 
 
-void SearchModule::searchSlot()
-{
-    QString text( QUrl::toPercentEncoding( searchEdit->text() ) );
-    xml->set( "search", "&search=" + text );
+void SearchModule::searchSlot() {
+    QString text(QUrl::toPercentEncoding(searchEdit->text()));
+    xml->set("search", "&search=" + text);
     searchEdit->clear();
 }
 
@@ -166,11 +144,11 @@ void SearchModule::downloadSlot() {
         SearchEntryItem *searchEntryItem = findSearchEntry(((SearchItem*)selectedItems[i])->getId());
         if( searchEntryItem != NULL ) {
             QString link = "ajfsp://file|";
-            link += searchEntryItem->text( SearchItem::TEXT_COL );
+            link += searchEntryItem->text(SearchItem::TEXT_COL);
             link += "|" + searchEntryItem->getHash();
-            link += "|" + QString::number( (int)searchEntryItem->getSize() ) + "/";
-            link = QString( QUrl::toPercentEncoding(link) );
-            xml->set( "processlink", "&link=" +link );
+            link += "|" + QString::number((int)searchEntryItem->getSize()) + "/";
+            link = QString(QUrl::toPercentEncoding(link));
+            xml->set("processlink", "&link=" +link);
         }
     }
 }
@@ -189,30 +167,29 @@ void SearchModule::selectionChanged() {
     juicer->actionCreate_Link_List_Search->setEnabled(entrySelected);
 }
 
-void SearchModule::linkSlot()
-{
+void SearchModule::linkSlot() {
     QString link;
     QList<QTreeWidgetItem *>  selectedItems = treeWidget->selectedItems();
-    SearchEntryItem *searchEntryItem = findSearchEntry(((SearchItem*)selectedItems[0])->getId() );
-    if( searchEntryItem != NULL ) {
+    SearchEntryItem *searchEntryItem = findSearchEntry(((SearchItem*)selectedItems[0])->getId());
+    if(searchEntryItem != NULL) {
         link += "ajfsp://file|";
-        link += searchEntryItem->text( SearchItem::TEXT_COL );
+        link += searchEntryItem->text(SearchItem::TEXT_COL);
         link += "|" + searchEntryItem->getHash();
-        link += "|" + QString::number( (int)searchEntryItem->getSize() ) + "/";
+        link += "|" + QString::number((int)searchEntryItem->getSize()) + "/";
     }
     QApplication::clipboard()->setText(link);
 }
 
-SearchItem* SearchModule::findSearch( const QString& id ) {
-    if (searches.contains( id )) {
-        return searches[ id ];
+SearchItem* SearchModule::findSearch(const QString& id) {
+    if(searches.contains(id)) {
+        return searches[id];
     }
     return NULL;
 }
 
-SearchEntryItem* SearchModule::findSearchEntry( const QString& id ) {
-    if (searchEntries.contains( id )) {
-        return searchEntries[ id ];
+SearchEntryItem* SearchModule::findSearchEntry(const QString& id) {
+    if(searchEntries.contains(id)) {
+        return searchEntries[id];
     }
     return NULL;
 }

@@ -50,14 +50,12 @@ Juicer::Juicer( const QStringList& argList, QSplashScreen *splash )
     linkServer = new ServerSocket( Application::APP_PORT );
     connect( linkServer, SIGNAL( lineReady( QString ) ), this, SLOT( processLink( QString ) ) );
 
-//     setWindowIcon(QIcon(":/juicer.png"));
     osIcons[LINUX] = QIcon(":/small/linux.png");
     osIcons[WINDOWS] = QIcon(":/small/windows.png");
     osIcons[MAC] = QIcon(":/small/mac.png");
     osIcons[SOLARIS] = QIcon(":/small/solaris.png");
     osIcons[FREEBSD] = QIcon(":/small/freebsd.png");
     osIcons[NETWARE] = QIcon(":/small/netware.png");
-
 
     xml = new QXMLModule(this);
     downloadModule = new DownloadModule(this);
@@ -115,18 +113,17 @@ Juicer::~Juicer() {
     \fn Juicer::initToolBars()
     initializes the tool bars
  */
-void Juicer::initToolBars()
-{
+void Juicer::initToolBars() {
     ajAddressLabel = new QLabel(ajLinks);
     ajAddressLabel->setText("ajfsp link:");
     ajAddressLabel->adjustSize();
-    ajLinks->addWidget( ajAddressLabel );
+    ajLinks->addWidget(ajAddressLabel);
 
     ajAddressEdit = new QLineEdit(ajLinks);
-    ajLinks->addWidget( ajAddressEdit );
-    connect( ajAddressEdit, SIGNAL( returnPressed() ), this, SLOT( processLink() ) );
+    ajLinks->addWidget(ajAddressEdit);
+    connect(ajAddressEdit, SIGNAL(returnPressed()), this, SLOT(processLink()));
 
-    ajLinks->addAction( QIcon(":/ok.png"), tr("process link"), this, SLOT( processLink() ) );
+    ajLinks->addAction(QIcon(":/ok.png"), tr("process link"), this, SLOT(processLink()));
 }
 
 /*!
@@ -149,15 +146,13 @@ void Juicer::connectActions() {
     \fn Juicer::initTrayIcon()
     initializes the tray icon if necessarry
  */
-void Juicer::initTrayIcon()
-{
-    tray = new QSystemTrayIcon( QIcon(":/juicer.png"), this );
-    if( OptionsDialog::getSetting( "useTray", false ).toBool() )
-    {
+void Juicer::initTrayIcon() {
+    tray = new QSystemTrayIcon(QIcon(":/juicer.png"), this);
+    if( OptionsDialog::getSetting("useTray", false).toBool()) {
         tray->setVisible(true);
         tray->setContextMenu(menuAppleJuice);
-        connect( tray, SIGNAL( activated( QSystemTrayIcon::ActivationReason ) ),
-                 this, SLOT( trayActivated( QSystemTrayIcon::ActivationReason ) ) );
+        connect(tray, SIGNAL(activated(QSystemTrayIcon::ActivationReason)),
+                 this, SLOT(trayActivated(QSystemTrayIcon::ActivationReason)));
     } else {
         tray->setVisible(false);
     }
@@ -168,9 +163,8 @@ void Juicer::initTrayIcon()
     handler when closing the app, saves a lot of settings
     @param ce the close event
  */
-void Juicer::closeEvent( QCloseEvent* ce ) {
-     if ( tray->isVisible() && !isMinimized() ) {
-
+void Juicer::closeEvent(QCloseEvent* ce) {
+     if(tray->isVisible() && !isMinimized()) {
         HandlerDialog trayDialog(
                 tr("Minimizing to tray"),
                 tr("Tray Icon is enabled so Juicer runs minimized in the background.\nUse Quit GUI to close the GUI."),
@@ -179,11 +173,13 @@ void Juicer::closeEvent( QCloseEvent* ce ) {
                 this);
         trayDialog.exec("minimize");
         showMinimized();
-        setHidden( true );
+        setHidden(true);
         ce->ignore();
      } else {
         // make sure tray icon disappears when quit (Windows problem)
-        if ( true == tray->isVisible() ) tray->setVisible(false); // <2DO> doesn't work; possible qt bug?
+        if(tray->isVisible()) {
+            tray->setVisible(false); // <2DO> doesn't work; possible qt bug?
+        }
         quit();
         ce->accept();
     }
@@ -205,7 +201,6 @@ void Juicer::saveGUIState() {
     serverModule->saveSortOrder("ServerWidget");
     shareModule->saveSortOrder("ShareWidget");
     incomingModule->saveSortOrder("IncomingWidget");
-
     OptionsDialog::setSetting("JuicerMain", this->saveState());
     OptionsDialog::setSetting("DownloadsMain", downloads->saveState());
     OptionsDialog::setSetting("ServerMain", server->saveState());
@@ -227,9 +222,9 @@ bool Juicer::login(const QString& message, bool error) {
         password = OptionsDialog::getSetting("password", "").toString();
     }
     QString host = OptionsDialog::getSetting("coreAddress", "localhost").toString();
-    int port = OptionsDialog::getSetting("xmlPort", 9851 ).toInt();
+    int port = OptionsDialog::getSetting("xmlPort", 9851).toInt();
     // -- ok -> login --
-    if( !password.isEmpty() || isLocalhost( host ) ) {
+    if(!password.isEmpty() || isLocalhost(host)) {
         firstModifiedCnt = 0;
         xml->setPassword(password);
         xml->setHost(host, port);
@@ -246,9 +241,8 @@ bool Juicer::login(const QString& message, bool error) {
     return true;
 }
 
-bool Juicer::isLocalhost( const QString& host )
-{
-    return ( QHostInfo::fromName( host ).hostName() == "localhost" );
+bool Juicer::isLocalhost(const QString& host) {
+    return (QHostInfo::fromName(host).hostName() == "localhost");
 }
 
 QString Juicer::showLoginDialog(const QString& message) {
@@ -289,7 +283,9 @@ void Juicer::xmlError(const QString& reason) {
     connected = false;
     timer->stop();
     partListTimer->stop();
-    if ( shareModule != NULL ) shareModule->reset();
+    if(shareModule != NULL) {
+        shareModule->reset();
+    }
     login(reason, true);
 }
 
@@ -323,7 +319,7 @@ void Juicer::showOptions()
         xml->get( "settings" );
     }
     optionsDialog->setConnected(connected);
-    if ( optionsDialog->exec() == QDialog::Accepted ) {
+    if(optionsDialog->exec() == QDialog::Accepted) {
         // save options
         AjSettings settings = optionsDialog->getAjSettings();
         QApplication::setFont(optionsDialog->getFont());
@@ -336,8 +332,8 @@ void Juicer::showOptions()
         initStatusBar();
 
         timer->stop();
-        timer->setSingleShot( false );
-        timer->start( OptionsDialog::getSetting("refresh", 3).toInt() * 1000 );
+        timer->setSingleShot(false);
+        timer->start(OptionsDialog::getSetting("refresh", 3).toInt() * 1000);
 
         if(connected) {
             QString settingsString = "";
@@ -353,69 +349,64 @@ void Juicer::showOptions()
             settingsString += "&Incomingdirectory=" + settings.incomingDir;
             settingsString += "&Temporarydirectory=" + settings.tempDir;
             settingsString += "&MaxNewConnectionsPerTurn=" + settings.maxNewCon;
-            xml->set( "setsettings", settingsString );
+            xml->set("setsettings", settingsString);
         }
     }
 }
 
-void Juicer::settingsReady( const AjSettings& settings )
-{
-    downloadModule->setDirs( settings.tempDir, settings.incomingDir );
-    incomingModule->setDir( settings.incomingDir );
-    if ( optionsDialog != NULL )
-    {
-        optionsDialog->setAjSettings( settings );
+void Juicer::settingsReady(const AjSettings& settings) {
+    downloadModule->setDirs(settings.tempDir, settings.incomingDir);
+    incomingModule->setDir(settings.incomingDir);
+    if(optionsDialog != NULL) {
+        optionsDialog->setAjSettings(settings);
 //         optionsDialog->setSettings();
     }
 }
 
-void Juicer::gotSession()
-{
+void Juicer::gotSession() {
     connected = true;
-    xml->get( "information" );
-    xml->get( "settings" );
+    xml->get("information");
+    xml->get("settings");
     QSettings lokalSettings;
     timerSlot();
-    timer->setSingleShot( false );
-    timer->start( lokalSettings.value( "refresh", 3 ).toInt() * 1000 );
-    partListTimer->setSingleShot( false );
-    partListTimer->start( 3000 );
+    timer->setSingleShot(false);
+    timer->start(lokalSettings.value("refresh", 3).toInt() * 1000);
+    partListTimer->setSingleShot(false);
+    partListTimer->start(3000);
     shareModule->reloadSlot();
 }
 
-void Juicer::showNetworkInfo()
-{
+void Juicer::showNetworkInfo() {
     networkDialog->exec();
 }
 
-void Juicer::setStatusBarText( const QString& downSpeed, const QString& upSpeed, const QString& credits, const QString& downSize, const QString& upSize )
-{
+void Juicer::setStatusBarText(const QString& downSpeed, const QString& upSpeed,
+        const QString& credits, const QString& downSize, const QString& upSize) {
 //     QString downStreamString = tr("Downstream: %1/s").arg(QConvert::bytes( downSpeed ));
 //     QString upStreamString = tr("Upstream: %1/s").arg(QConvert::bytes( upSpeed ));
 //     QString creditsString = tr("Credits: %1").arg(QConvert::bytesExtra( credits ));
 //     QString downSizeString = tr("Downloaded: %1").arg(QConvert::bytesExtra( downSize ));
 //     QString upSizeString = tr("Uploaded: %1").arg(QConvert::bytesExtra( upSize ));
 
-    QString downStreamString = QConvert::bytes( downSpeed ) + "/s";
-    QString upStreamString = QConvert::bytes( upSpeed ) + "/s";
-    QString creditsString = QConvert::bytesExtra( credits );
-    QString downSizeString = QConvert::bytesExtra( downSize );
-    QString upSizeString = QConvert::bytesExtra( upSize );
+    QString downStreamString = QConvert::bytes(downSpeed) + "/s";
+    QString upStreamString = QConvert::bytes(upSpeed) + "/s";
+    QString creditsString = QConvert::bytesExtra(credits);
+    QString downSizeString = QConvert::bytesExtra(downSize);
+    QString upSizeString = QConvert::bytesExtra(upSize);
 
-    downSpeedLabel->setText( downStreamString );
-    upSpeedLabel->setText( upStreamString );
-    creditsLabel->setText( creditsString );
-    downSizeLabel->setText( downSizeString );
-    upSizeLabel->setText( upSizeString );
+    downSpeedLabel->setText(downStreamString);
+    upSpeedLabel->setText(upStreamString);
+    creditsLabel->setText(creditsString);
+    downSizeLabel->setText(downSizeString);
+    upSizeLabel->setText(upSizeString);
 
     // show all information via tray icon
-    tray->setToolTip( "Juicer - appleJuice Qt4 GUI\n\n" +
+    tray->setToolTip("Juicer - appleJuice Qt4 GUI\n\n" +
         downStreamString + "\n" +
         upStreamString + "\n" +
         creditsString + "\n" +
         downSizeString + "\n" +
-        upSizeString
-    );
+        upSizeString);
 }
 
 void Juicer::processLink(const QString& link) {
@@ -533,32 +524,29 @@ void Juicer::firstModified() {
     }
 }
 
-void Juicer::processQueuedLinks()
-{
-    while ( ! queuedLinks.isEmpty() )
-        processLink( queuedLinks.takeFirst() );
+void Juicer::processQueuedLinks() {
+    while(!queuedLinks.isEmpty()) {
+        processLink(queuedLinks.takeFirst());
+    }
 }
 
-void Juicer::queueLinks( const QStringList& links )
-{
+void Juicer::queueLinks(const QStringList& links) {
     queuedLinks = links;
 }
 
 
 /*!
-    \fn Juicer::setUploadFilename( const QString& shareId, const QString& filename )
+    \fn Juicer::setUploadFilename(const QString& shareId, const QString& filename)
  */
-void Juicer::setUploadFilename( const QString& shareId, const QString& filename )
-{
-      uploadModule->setFilename( shareId, downloadModule->findDownloadByTempNum( filename ) );
+void Juicer::setUploadFilename(const QString& shareId, const QString& filename) {
+    uploadModule->setFilename(shareId, downloadModule->findDownloadByTempNum(filename));
 }
 
 
 /*!
     \fn Juicer::adjustColumns()
  */
-void Juicer::adjustColumns()
-{
+void Juicer::adjustColumns() {
     if(downloads->isVisible())
         downloadModule->adjustSizeOfColumns();
     if(uploads->isVisible())
@@ -575,36 +563,26 @@ void Juicer::adjustColumns()
 /*!
     \fn Juicer::getExec()
  */
-QStringList Juicer::getExec()
-{
+QStringList Juicer::getExec() {
     QSettings lokalSettings;
     QString launcher = lokalSettings.value( "launcher", DEFAULT_LAUNCHER ).toString().simplified();
 
     QStringList args;
-    if ( launcher == KDE_LAUNCHER )
-    {
+    if(launcher == KDE_LAUNCHER) {
         args.clear();
         args << "kfmclient";
         args << "exec";
-    }
-    else if ( launcher == GNOME_LAUNCHER )
-    {
+    } else if(launcher == GNOME_LAUNCHER) {
         args.clear();
         args << "gnome-open";
-    }
-    else if ( launcher == MAC_LAUNCHER )
-    {
+    } else if(launcher == MAC_LAUNCHER) {
         args.clear();
         args << "open";
-    }
-    else if ( launcher == WIN_LAUNCHER )
-    {
+    } else if(launcher == WIN_LAUNCHER) {
         args.clear();
         args << "start";
         args << "\"\"";
-    }
-    else
-    {
+    } else {
         args << launcher.split(" ");
     }
     return args;
@@ -614,8 +592,7 @@ QStringList Juicer::getExec()
 /*!
     \fn Juicer::initStatusBar()
  */
-void Juicer::initStatusBar()
-{
+void Juicer::initStatusBar() {
     static bool first = true;
     if(first) {
         downSpeedLabel = new IconWidget(":/small/downstream.png", "0", QBoxLayout::LeftToRight, this, 2, 2);
@@ -625,13 +602,13 @@ void Juicer::initStatusBar()
         upSizeLabel = new IconWidget(":/small/uploaded.png", "0", QBoxLayout::LeftToRight, this, 2, 2);
         coreVersionLabel = new IconWidget(":/small/version.png", "0", QBoxLayout::LeftToRight, this, 2, 2);
         connectedLabel = new IconWidget(":/small/connected.png", "0", QBoxLayout::LeftToRight, this, 2, 2);
-        statusBar()->addPermanentWidget( connectedLabel );
-        statusBar()->addPermanentWidget( coreVersionLabel );
-        statusBar()->addPermanentWidget( downSpeedLabel );
-        statusBar()->addPermanentWidget( upSpeedLabel );
-        statusBar()->addPermanentWidget( downSizeLabel );
-        statusBar()->addPermanentWidget( upSizeLabel );
-        statusBar()->addPermanentWidget( creditsLabel );
+        statusBar()->addPermanentWidget(connectedLabel);
+        statusBar()->addPermanentWidget(coreVersionLabel);
+        statusBar()->addPermanentWidget(downSpeedLabel);
+        statusBar()->addPermanentWidget(upSpeedLabel);
+        statusBar()->addPermanentWidget(downSizeLabel);
+        statusBar()->addPermanentWidget(upSizeLabel);
+        statusBar()->addPermanentWidget(creditsLabel);
         first = false;
     }
     QStringList show = OptionsDialog::getSetting( "statusbarComponents", optionsDialog->getDefaultStatusbarComponents() ).toStringList();
@@ -647,14 +624,12 @@ void Juicer::initStatusBar()
 
 
 /*!
-    \fn Juicer::trayActivated( QSystemTrayIcon::ActivationReason reason )
+    \fn Juicer::trayActivated(QSystemTrayIcon::ActivationReason reason)
  */
-void Juicer::trayActivated( QSystemTrayIcon::ActivationReason reason )
-{
-    if( reason == QSystemTrayIcon::Trigger )
-    {
-        setVisible( !isVisible() );
-        if ( isMinimized() ) {
+void Juicer::trayActivated(QSystemTrayIcon::ActivationReason reason) {
+    if(reason == QSystemTrayIcon::Trigger) {
+        setVisible(!isVisible());
+        if(isMinimized()) {
             showNormal();
             activateWindow();    // make widget active, otherwise one must first click at the tab in the task bar to get Juicer in front
         }
@@ -663,81 +638,68 @@ void Juicer::trayActivated( QSystemTrayIcon::ActivationReason reason )
 
 
 /*!
-    \fn Juicer::downloadsFinished( const QList<DownloadItem*>& list )
+    \fn Juicer::downloadsFinished(const QList<DownloadItem*>& list)
     show a message with all finished downloads in tray icon
     @param list list with all finished downloads to show
  */
-void Juicer::downloadsFinished( const QList<DownloadItem*>& list )
-{
-    if( QSystemTrayIcon::supportsMessages() )
-    {
+void Juicer::downloadsFinished(const QList<DownloadItem*>& list) {
+    if(QSystemTrayIcon::supportsMessages()) {
         QString msg = "";
-        int i;
-        for( i=0; i<list.size(); i++ )
-        {
-            msg += list[i]->text( DownloadItem::FILENAME_COL ) + "\n";
+        for(int i=0; i<list.size(); i++ ) {
+            msg += list[i]->text(DownloadItem::FILENAME_COL) + "\n";
         }
-        tray->showMessage( tr("Download finished"), msg, QSystemTrayIcon::Information, 3000 );
+        tray->showMessage(tr("Download finished"), msg, QSystemTrayIcon::Information, 3000);
     }
 }
 
 /*!
     \fn Juicer::openAjL()
  */
-void Juicer::openAjL()
-{
+void Juicer::openAjL() {
     QString ajListFileName = QFileDialog::getOpenFileName(
                               this,
                               tr("Select AJ link list file"),
                               QString::null,
                               tr("AJ Link Lists (*.ajl)"));
 
-    if ( !ajListFileName.isNull() ) {
-
-        QFile ajListFile( ajListFileName );
-
-        if ( ajListFile.exists() ) {
-            if (!ajListFile.open(QIODevice::ReadOnly | QIODevice::Text)) {
-                tray->showMessage( tr("Error while opening file"), ajListFileName, QSystemTrayIcon::Information, 3000 );
-            }
-            else {
+    if(!ajListFileName.isNull()) {
+        QFile ajListFile(ajListFileName);
+        if(ajListFile.exists()) {
+            if(!ajListFile.open(QIODevice::ReadOnly | QIODevice::Text)) {
+                tray->showMessage(tr("Error while opening file"), ajListFileName, QSystemTrayIcon::Information, 3000);
+            } else {
                 QTextStream in(&ajListFile);
                 QString line = in.readLine();
-                while ( line.compare("100") != 0) {
-                    if ( in.atEnd() ) {
+                while(line.compare("100") != 0) {
+                    if(in.atEnd()) {
                         tray->showMessage( tr("No valid AJ list file"), ajListFileName,
                                           QSystemTrayIcon::Information, 3000 );
                         break;
                     }
                     line = in.readLine();
                 }
-                if ( !in.atEnd() ) {
+                if(!in.atEnd()) {
                     while (!in.atEnd()) {
                         QString filename = in.readLine();
                         QString filehash = in.readLine();
                         QString filesize = in.readLine();
-
                         QString link = "ajfsp://file|" + filename + "|" + filehash + "|" + filesize + "/";
-
-                        this->processLink( link );
+                        this->processLink(link);
                     }
-
-                    tray->showMessage( tr("Files successfully added from link list"),
-                                      ajListFileName, QSystemTrayIcon::Information, 3000 );
+                    tray->showMessage(tr("Files successfully added from link list"),
+                                      ajListFileName, QSystemTrayIcon::Information, 3000);
                 }
-
                 ajListFile.close();
             }
-        }
-        else {
-            tray->showMessage( tr("No such file"), ajListFileName, QSystemTrayIcon::Information, 3000 );
+        } else {
+            tray->showMessage(tr("No such file"), ajListFileName, QSystemTrayIcon::Information, 3000);
         }
     }
 
 }
 
-void Juicer::sendToTray( const QString& message1, const QString& message2 ) {
-    tray->showMessage( message1, message2, QSystemTrayIcon::Information, 3000 );
+void Juicer::sendToTray(const QString& message1, const QString& message2) {
+    tray->showMessage(message1, message2, QSystemTrayIcon::Information, 3000);
 }
 
 
@@ -748,7 +710,7 @@ void Juicer::about() {
 }
 
 void Juicer::aboutQt() {
-    QMessageBox::aboutQt( this, tr("Juicer: About Qt") );
+    QMessageBox::aboutQt(this, tr("Juicer: About Qt"));
 }
 
 
@@ -815,4 +777,25 @@ void Juicer::processLinks(const QString& text, const QString& type) {
             processLink(links.at(i));
         }
     }
+}
+
+/*!
+    \fn Juicer::setFilesystemSeparator(const QString& separator)
+ */
+void Juicer::setFilesystemSeparator(const QString& separator) {
+    filesystemSeparator = separator;
+}
+
+/*!
+    \fn Juicer::getFilesystemSeparator( ) const
+ */
+QString Juicer::getFilesystemSeparator( ) const {
+    return filesystemSeparator;
+}
+
+/*!
+    \fn Juicer::isCoreLocal()
+ */
+bool Juicer::isCoreLocal() {
+    return localCore;
 }

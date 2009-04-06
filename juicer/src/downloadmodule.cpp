@@ -165,7 +165,7 @@ void DownloadModule::updateView( bool force )
         for (i=0; i < treeWidget->topLevelItemCount(); i++)
         {
             DownloadItem* item = ((DownloadItem*)treeWidget->topLevelItem(i));
-            if( item->updateView( &downloadStatusDescr ) )
+            if( item->updateView( downloadStatusDescr ) )
                 finished << item;
         }
     }

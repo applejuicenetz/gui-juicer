@@ -23,8 +23,10 @@ x share tab: add rehashing of the share and the possibility to copy ajfsp links 
 - handle ftp erros in incoming widget
 x fix: save welcome dock widgets visibility
 - auto update
-- button to reset everthing to default values/delete any configuration
-- finish clipboard observation
+x button to reset everthing to default values/delete any configuration
+x finish clipboard observation
+- more search criterions like file size, file type, ...
+
 
 Ideas
 =====

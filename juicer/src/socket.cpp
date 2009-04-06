@@ -19,7 +19,7 @@
  ***************************************************************************/
 #include "socket.h"
 
-Socket::Socket(int appPort, QStringList argList, QObject *parent) : QTcpSocket(parent) {
+Socket::Socket(int appPort, const QStringList& argList, QObject *parent) : QTcpSocket(parent) {
     this->appPort = appPort;
     this->argList = argList;
     connect(this, SIGNAL(connected()), this, SLOT(connected()));

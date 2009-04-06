@@ -31,7 +31,7 @@ class Socket : public QTcpSocket
 {
     Q_OBJECT
 public:
-    Socket( int appPort, QStringList argList, QObject *parent = 0 );
+    Socket( int appPort, const QStringList& argList, QObject *parent = 0 );
     ~Socket();
     void start();
 

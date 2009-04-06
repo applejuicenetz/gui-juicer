@@ -29,8 +29,8 @@ class NetworkDialog : public QDialog, private Ui::NetworkDialog
   Q_OBJECT
 
 public:
-  NetworkDialog(QWidget* parent = 0, Qt::WFlags fl = 0 );
-  ~NetworkDialog();
+    NetworkDialog(QWidget* parent = 0, Qt::WFlags fl = 0 );
+    ~NetworkDialog();
     void setValues( const QString& users, const QString& files, const QString& size, const QString& ip, const QString& firewalled );
 
 

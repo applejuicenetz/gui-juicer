@@ -47,8 +47,7 @@ public:
 
     virtual bool operator<( const QTreeWidgetItem & other ) const;
 
-    int getHits() const
-    {
+    int getHits() const {
       return hits;
     }
 

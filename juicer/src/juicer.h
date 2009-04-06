@@ -96,16 +96,10 @@ public:
     IncomingModule *incomingModule;
     QHash<QString, QIcon> osIcons;
 
-    void setFilesystemSeparator( const QString& separator )
-    {
-        filesystemSeparator = separator;
-    }
+    void setFilesystemSeparator(const QString& separator);
     // returns filesystemseperator of the remote filesystem where the Core runs
-    QString getFilesystemSeparator( ) const
-    {
-        return filesystemSeparator;
-    }
-    bool isCoreLocal() { return localCore; }
+    QString getFilesystemSeparator( ) const;
+    bool isCoreLocal();
     void setCoreVersion( const QString& version );
     void connectedSince( const QString& since );
     void queueLinks( const QStringList& links );

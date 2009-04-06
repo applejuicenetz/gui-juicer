@@ -23,6 +23,8 @@
 #include <qglobal.h>
 #include <QApplication>
 #include <QSplashScreen>
+#include <QMessageBox>
+#include <QFileInfo>
 
 #include "serversocket.h"
 #include "socket.h"
@@ -37,7 +39,6 @@ class Application : public QApplication
     Q_OBJECT
 public:
     Application( int & argc, char ** argv );
-
     ~Application();
     int exec();
     static const int APP_PORT = 21456;
@@ -46,7 +47,6 @@ public slots:
     void start();
 private:
     AutoUpdate* au;
-
     Socket *socket;
     QStringList argList;
 };

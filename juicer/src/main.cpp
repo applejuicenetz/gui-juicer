@@ -20,16 +20,14 @@
 
 #include "application.h"
 
-int main( int argc, char ** argv )
-{
+int main( int argc, char ** argv ) {
     Application a( argc, argv );
-
     QSettings settings;
     QString locale = settings.value("language", QLocale::system().name()).toString();
     QTranslator translator;
-    if( ! translator.load(":/translations/" + locale))
+    if(!translator.load(":/translations/" + locale)) {
         translator.load("juicer_" + locale);
+    }
     a.installTranslator(&translator);
-
     return a.exec();
 }

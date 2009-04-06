@@ -77,71 +77,47 @@ public:
     QTreeWidgetItem* queuedSourcesItem;
     QTreeWidgetItem* otherSourcesItem;
 
-    int getActiveSources() const
-    {
-        return activeSourcesItem->childCount();
-    }
-
     QString getSourcesString();
-
-    bool updateView( QHash<QString, QString>* downloadStatusDescr );
-
+    bool updateView(const QHash<QString, QString>& downloadStatusDescr);
     void deleteUsers();
-
-//     int compare( QTreeWidgetItem * i, int col, bool ) const;
+    PartListDialog* getPartListDialog();
+    void setParts( qulonglong size, QLinkedList<PartsWidget::Part>& partList );
     void showWidget( const QPoint &p );
 
     QHash<QString, UserItem*> users;
 
-    double getReady() const
-    {
+    int getActiveSources() const  {
+        return activeSourcesItem->childCount();
+    }
+    double getReady() const {
         return ready;
     }
-
-    double getRemainingSize() const
-    {
+    double getRemainingSize() const {
         return remainingSize;
     }
-
-    double getRemainingSec() const
-    {
+    double getRemainingSec() const {
         return remainingSec;
     }
-
-    double getSpeed() const
-    {
+    double getSpeed() const {
         return speed;
     }
-
-    double getMissing() const
-    {
+    double getMissing() const {
         return missing;
     }
-
-    double getFinished() const
-    {
+    double getFinished() const {
         return finished;
     }
-
-    int getPercent() const
-    {
+    int getPercent() const {
         return percent;
     }
-    PartListDialog* getPartListDialog();
-    void setParts( qulonglong size, QLinkedList<PartsWidget::Part>& partList );
-
-    QString getTempNumber()
-    {
+    QString getTempNumber() {
         return tempNumber;
     }
-
     // Powerdownload for this Item
-    bool powerDownloadActive() const
-    {
+    bool powerDownloadActive() const {
         return (powerSpin->check->checkState() == Qt::Checked) ? true : false;
     }
-    float powerDownloadValue() const
-    {
+    float powerDownloadValue() const {
         return powerSpin->spin->value();
     }
 
@@ -159,12 +135,9 @@ protected:
     int percent;
     double missing;
     long int remainingSec;
-
     /// used for notifications about finished downloads
     bool firstFinished;
-
     PartListDialog* partListDialog;
-
     QString tempNumber;
 };
 

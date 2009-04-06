@@ -236,20 +236,20 @@ QString DownloadItem::getSourcesString() {
     return sources;
 }
 
-bool DownloadItem::updateView( QHash<QString, QString>* downloadStatusDescr ) 
+bool DownloadItem::updateView(const QHash<QString, QString>& downloadStatusDescr ) 
 {
     if( ( status_ == DOWN_SEARCHING ) || ( status_ == DOWN_LOADING ) )     {
         if ( getActiveSources() > 0 )         {
             setTextColor( FILENAME_COL, Qt::darkBlue );
-            setText( STATUS_COL, downloadStatusDescr->value( "-1", "unknown" ) );
+            setText( STATUS_COL, downloadStatusDescr.value( "-1", "unknown" ) );
             status_ = DOWN_LOADING;
         } else if ( getActiveSources() <= 0 ) {
             setTextColor( FILENAME_COL, Qt::black );
-            setText( STATUS_COL, downloadStatusDescr->value( status_, "unknown" ) );
+            setText( STATUS_COL, downloadStatusDescr.value( status_, "unknown" ) );
             status_ = DOWN_SEARCHING;
         }
     } else {
-        setText( STATUS_COL, downloadStatusDescr->value( status_, "unknown" ) );
+        setText( STATUS_COL, downloadStatusDescr.value( status_, "unknown" ) );
     }
 
     setText( SOURCES_COL, getSourcesString() );
