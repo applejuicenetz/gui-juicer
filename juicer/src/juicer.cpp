@@ -48,7 +48,7 @@ Juicer::Juicer( const QStringList& argList, QSplashScreen *splash )
     firstModifiedMax = 2;// + argList.size();
 
     linkServer = new ServerSocket( Application::APP_PORT );
-    connect( linkServer, SIGNAL( lineReady( QString ) ), this, SLOT( processLink( QString ) ) );
+    connect( linkServer, SIGNAL( lineReady(const QString& ) ), this, SLOT( processLink(const QString& ) ) );
 
     osIcons[LINUX] = QIcon(":/small/linux.png");
     osIcons[WINDOWS] = QIcon(":/small/windows.png");
@@ -81,7 +81,7 @@ Juicer::Juicer( const QStringList& argList, QSplashScreen *splash )
     server->restoreState(OptionsDialog::getSetting("ServerMain").toByteArray());
 
     connect( xml, SIGNAL( settingsReady( const AjSettings& ) ), this, SLOT( settingsReady( const AjSettings& ) ) );
-    connect( xml, SIGNAL( error( QString ) ), this, SLOT( xmlError( QString ) ) );
+    connect( xml, SIGNAL( error(const QString& ) ), this, SLOT( xmlError(const QString& ) ) );
     connect( xml, SIGNAL( gotSession() ), this, SLOT( gotSession() ) );
     connect( xml, SIGNAL( modifiedDone( ) ), downloadModule, SLOT( updateView( ) ) );
     connect( xml, SIGNAL( modifiedDone( ) ), this, SLOT( firstModified() ) );

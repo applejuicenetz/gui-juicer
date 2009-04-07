@@ -39,7 +39,7 @@ Q_OBJECT
 public:
     IncomingModule(Juicer* juicer);
     ~IncomingModule();
-    void setDir(QString dir);
+    void setDir(const QString& dir);
 
 private:
     void initToolBar();

@@ -555,7 +555,7 @@ void QXMLModule::handlePartList( int id )
     }
 }
 
-void QXMLModule::sendToTray( QString & message1, QString & message2 ) {
+void QXMLModule::sendToTray(const QString & message1, const QString & message2 ) {
     juicer->sendToTray( message1, message2 );
 }
 

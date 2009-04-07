@@ -31,7 +31,7 @@
 class ServerItem : public Item
 {
 public:
-    ServerItem( QString id, QTreeWidget *parent );
+    ServerItem( const QString& id, QTreeWidget *parent );
 
     ~ServerItem();
 

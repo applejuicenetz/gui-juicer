@@ -32,13 +32,13 @@
 class SearchItem : public Item
 {
 public:
-    SearchItem( QString id, QTreeWidget* parent );
+    SearchItem( const QString& id, QTreeWidget* parent );
 
     ~SearchItem();
 
     enum {TEXT_COL, SIZE_COL, COUNT_COL};
 
-    SearchEntryItem* findSearchEntry( QString id );
+    SearchEntryItem* findSearchEntry( const QString& id );
 
     int hits;
     int entriesCount;

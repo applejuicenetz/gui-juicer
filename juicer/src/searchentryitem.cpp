@@ -21,7 +21,7 @@
 
 #include "searchitem.h"
 
-SearchEntryItem::SearchEntryItem( QString id, SearchItem* search, QString checksum, QString size, QTreeWidgetItem* parent ) 
+SearchEntryItem::SearchEntryItem( const QString& id, SearchItem* search, const QString& checksum, const QString& size, QTreeWidgetItem* parent ) 
   : Item( parent, id )
 {
     this->search = search;
@@ -48,7 +48,7 @@ bool SearchEntryItem::operator<( const QTreeWidgetItem & other ) const
     }
 }
 
-void SearchEntryItem::setFilename( QString filename ) {
+void SearchEntryItem::setFilename( const QString& filename ) {
     filename_ = filename;
 }
 

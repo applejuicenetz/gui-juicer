@@ -305,10 +305,9 @@ void IncomingModule::reload()
 
 
 /*!
-    \fn IncomingModule::setDir( QString dir )
+    \fn IncomingModule::setDir(const QString& dir)
  */
-void IncomingModule::setDir( QString dir )
-{
+void IncomingModule::setDir(const QString& dir) {
     this->dir = dir;
 }
 

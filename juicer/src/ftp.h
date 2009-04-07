@@ -40,12 +40,12 @@ class FTP : public QThread
 {
     Q_OBJECT
 public:
-    FTP( QString host, int port, QString user, QString password, bool binary, QObject *parent = 0 );
-    FTP( QObject *parent = 0 );
+    FTP(const QString& host, int port, const QString& user, const QString& password, bool binary, QObject *parent = 0);
+    FTP(QObject *parent = 0);
     ~FTP();
     void getNext();
-    void add( QString srcFilename, QFile* dstFile );
-    void add( QString srcFilename );
+    void add(const QString& srcFilename, QFile* dstFile);
+    void add(const QString& srcFilename);
 
 private:
     class StoreInfo {
@@ -71,17 +71,17 @@ private:
     bool tmpMode;
 
 private slots:
-    void stateChangedSlot( int state ) ;
-    void commandFinishedSlot( int id, bool error );
+    void stateChangedSlot(int state);
+    void commandFinishedSlot(int id, bool error);
 signals:
     void done();
-    void errorOccured( QString message );
-    void downloadFinished( QFile* file, FTP* ftp );
-    void readyRead( QFile* dstFile, FTP* ftp);
+    void errorOccured(const QString& message);
+    void downloadFinished(QFile* file, FTP* ftp);
+    void readyRead(QFile* dstFile, FTP* ftp);
 protected:
     void run();
 public slots:
-    void dataTransferProgressSlot( qint64 done, qint64 total );
+    void dataTransferProgressSlot(qint64 done, qint64 total);
     void abort();
 private:
     void init();

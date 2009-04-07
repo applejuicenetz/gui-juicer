@@ -19,7 +19,7 @@
  ***************************************************************************/
 #include "searchitem.h"
 
-SearchItem::SearchItem( QString id, QTreeWidget* parent ) : Item( parent, id )
+SearchItem::SearchItem( const QString& id, QTreeWidget* parent ) : Item( parent, id )
 {
     hits = 0;
     entriesCount = 0;
@@ -28,7 +28,7 @@ SearchItem::SearchItem( QString id, QTreeWidget* parent ) : Item( parent, id )
 SearchItem::~SearchItem()
 {}
 
-SearchEntryItem* SearchItem::findSearchEntry( QString id )
+SearchEntryItem* SearchItem::findSearchEntry( const QString& id )
 {
     if ( entries.contains( id ) )
         return entries[ id ];

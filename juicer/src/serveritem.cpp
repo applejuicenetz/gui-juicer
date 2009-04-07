@@ -19,7 +19,7 @@
  ***************************************************************************/
 #include "serveritem.h"
 
-ServerItem::ServerItem( QString id, QTreeWidget *parent ) : Item( parent, id )
+ServerItem::ServerItem( const QString& id, QTreeWidget *parent ) : Item( parent, id )
 {
 }
 

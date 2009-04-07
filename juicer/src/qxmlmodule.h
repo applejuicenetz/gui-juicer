@@ -66,7 +66,7 @@ public:
     {
         this->passwordMD5 = passwordMD5;
     }
-    void sendToTray( QString & message1, QString & message2 );
+    void sendToTray(const QString & message1, const QString & message2 );
     QString getRecentTime() { return timeStamp; }
     static void printAllAttributes(QDomElement& e);
 
@@ -89,7 +89,7 @@ public slots:
     void requestFinished(int id, bool error);
 signals:
     void settingsReady( const AjSettings& settings );
-    void error( QString message );
+    void error(const QString& message );
     void gotSession();
     void modifiedDone();
 private:

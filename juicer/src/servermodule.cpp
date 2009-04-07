@@ -105,7 +105,7 @@ void ServerModule::searchSlot()
     serverHttp->get( serverURL );
 }
 
-void ServerModule::connectedWith(QString id) {
+void ServerModule::connectedWith(const QString& id) {
     if(!connectingToId.isEmpty() && servers.contains(connectingToId)) {
         servers[connectingToId]->setIcon(ServerItem::NAME_COL, QIcon());
     }
@@ -120,7 +120,7 @@ void ServerModule::connectedWith(QString id) {
     connectingToId = "";
 }
 
-void ServerModule::connectingTo(QString id) {
+void ServerModule::connectingTo(const QString& id) {
     if(!connectingToId.isEmpty() && servers.contains(connectingToId)) {
         servers[connectingToId]->setIcon(ServerItem::NAME_COL, QIcon());
     }
@@ -130,14 +130,14 @@ void ServerModule::connectingTo(QString id) {
     connectingToId = id;
 }
 
-ServerItem* ServerModule::findServer(QString id) {
+ServerItem* ServerModule::findServer(const QString& id) {
     if(servers.contains(id))
         return servers[ id ];
     else
         return NULL;
 }
 
-bool ServerModule::remove(QString id) {
+bool ServerModule::remove(const QString& id) {
     QTreeWidgetItem *item = findServer(id);
     if(item != NULL) {
         servers.remove( id );

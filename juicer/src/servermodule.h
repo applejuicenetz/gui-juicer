@@ -40,10 +40,10 @@ public:
 
     ~ServerModule();
     void insertServer(const QString& id, const QString& name, const QString& host, const QString& port, const QString& lastseen, const QString& tests);
-    void connectedWith( QString id );
-    void connectingTo( QString id );
-    ServerItem* findServer( QString id );
-    bool remove( QString id );
+    void connectedWith( const QString& id );
+    void connectingTo( const QString& id );
+    ServerItem* findServer( const QString& id );
+    bool remove( const QString& id );
     QDateTime& setConnectedSince(const QString& time);
 
 private:

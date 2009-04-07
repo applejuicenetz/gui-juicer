@@ -38,7 +38,7 @@ protected:
 public slots:
     void readLine();
 signals:
-    void lineReady(QString line);
+    void lineReady(const QString& line);
 protected slots:
     void newConnectionSlot();
 };

@@ -30,16 +30,12 @@ class SearchItem;
 class SearchEntryItem : public Item
 {
 public:
-    SearchEntryItem( QString id, SearchItem* search, QString checksum, QString size, QTreeWidgetItem* parent );
-
+    SearchEntryItem( const QString& id, SearchItem* search, const QString& checksum, const QString& size, QTreeWidgetItem* parent );
     ~SearchEntryItem();
 
-//     QString checksum;
     SearchItem* search;
-
     virtual bool operator<( const QTreeWidgetItem & other ) const;
-
-    void setFilename( QString filename );
+    void setFilename( const QString& filename );
 };
 
 #endif
