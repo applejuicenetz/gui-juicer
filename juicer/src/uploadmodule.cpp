@@ -32,6 +32,8 @@ UploadModule::UploadModule(Juicer* juicer)
     uploadDirectStateDescr["2"] = "passive";
 
     connect(juicer->actionHide_Queued, SIGNAL(triggered(bool)), this, SLOT(hideQueuedSlot(bool)));
+    juicer->actionHide_Queued->setChecked(OptionsDialog::getSetting("upload", "hideQueued", false).toBool());
+    hideQueuedSlot(juicer->actionHide_Queued->isChecked());
 }
 
 
@@ -55,7 +57,7 @@ bool UploadModule::insertUpload(
     uploadItem->update(juicer->osIcons[os], status, uploadStatusDescr[status],
                        uploadDirectStateDescr[directState], priority, nick, speed, version,
                        loaded, chunkStart, chunkEnd, chunkPos, lastConnected, newUpload );
-
+    uploadItem->setHidden(hideQueued && uploadItem->getStatus() == QUEUEING_UPLOAD);
     return !newUpload;
 }
 
@@ -111,10 +113,11 @@ void UploadModule::selectionChanged()
 /*!
     \fn UploadModule::hideQueuedSlot(bool checked)
  */
-void UploadModule::hideQueuedSlot( bool checked )
-{
+void UploadModule::hideQueuedSlot(bool checked) {
+    hideQueued = checked;
     QHash<QString,UploadItem*>::const_iterator i;
     for(i = uploads.constBegin(); i != uploads.constEnd(); i++) {
-        (*i)->setHidden(checked && ((*i)->getStatus() == QUEUEING_UPLOAD));
+        (*i)->setHidden(hideQueued && ((*i)->getStatus() == QUEUEING_UPLOAD));
     }
+    OptionsDialog::setSetting("upload", "hideQueued", hideQueued);
 }

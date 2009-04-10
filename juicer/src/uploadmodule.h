@@ -54,6 +54,7 @@ private:
     QHash<QString, QString> uploadStatusDescr;
     QHash<QString, QString> uploadDirectStateDescr;
     QHash<QString, UploadItem*> uploads;
+    bool hideQueued;
 };
 
 #endif
