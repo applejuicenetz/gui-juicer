@@ -24,7 +24,7 @@
 #include "qconvert.h"
 #include "ftp.h"
 #include "optionsdialog.h"
-
+#include "targetfolderdialog.h"
 
 class DownloadModule : public ModuleBase {
   Q_OBJECT
@@ -88,6 +88,7 @@ protected slots:
     void storeDownloadFtp();
     void hidePausedSlot(bool checked);
     void partListWidgetSlot();
+    void targetFolder();
 signals:
     void downloadsFinished( const QList<DownloadItem*>& downloads );
 };

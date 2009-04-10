@@ -113,8 +113,12 @@ public:
     void setClipboard(const QString& text);
     static QStringList getAjfspLinks(const QString& text, const QString& type = "[^|]*");
     void processLinks(const QString& text, const QString& type = "[^|]*");
-
-    QString appPath;
+    QString getTempDirectory() const;
+    QString getIncomingDirectory() const;
+    void setTempDirectory(const QString& folder);
+    void setIncomingDirectory(const QString& folder);
+    QString getAppPath() const;
+    void setAppPath(const QString& path);
 
 protected:
     void initToolBars();
@@ -128,7 +132,7 @@ protected:
 
     QSystemTrayIcon* tray;
     QString password;
-    QString filesystemSeparator;
+    QString appPath, incomingDir, tempDir, filesystemSeparator;
 
     QTimer *timer;
     QTimer *partListTimer;

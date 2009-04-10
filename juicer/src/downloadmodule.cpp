@@ -76,6 +76,7 @@ DownloadModule::DownloadModule(Juicer* juicer)
     connect(juicer->actionCreate_Link_List, SIGNAL(triggered()), this, SLOT(linkListSlot()));
     connect(juicer->actionHide_Paused, SIGNAL(triggered(bool)), this, SLOT(hidePausedSlot(bool)));
     connect(juicer->actionMaximal_Power, SIGNAL(triggered()), this, SLOT(maxPowerDownload()));
+    connect(juicer->actionTarget_Folder, SIGNAL(triggered()), this, SLOT(targetFolder()));
 
     connect(treeWidget, SIGNAL(itemSelectionChanged()), this, SLOT(partListSlot()));
 
@@ -514,6 +515,7 @@ void DownloadModule::selectionChanged()
     juicer->actionOpen->setEnabled(oneSelected);
     juicer->actionCopy_Link->setEnabled(oneSelected);
     juicer->actionCreate_Link_List->setEnabled(oneSelected);
+    juicer->actionTarget_Folder->setEnabled(oneSelected);
 
     // clear part list widget if none or more than one item is selected
     if( selectedItems.count() != 1 ) {
@@ -605,10 +607,9 @@ void DownloadModule::storeDownloadFtp()
 /*!
     \fn DownloadModule::setPartList(const QString& id, qulonglong size, QLinkedList<PartsWidget::Part>& partList)
  */
-void DownloadModule::setPartList(const QString& id, qulonglong size, QLinkedList<PartsWidget::Part>& partList)
-{
+void DownloadModule::setPartList(const QString& id, qulonglong size, QLinkedList<PartsWidget::Part>& partList) {
     DownloadItem* item = findDownload(id);
-    if( item != NULL ) {
+    if(item != NULL) {
         if(item->getPartListDialog()->isVisible()) {
             item->getPartListDialog()->update(size, partList);
         }
@@ -622,14 +623,23 @@ void DownloadModule::setPartList(const QString& id, qulonglong size, QLinkedList
 /*!
     \fn DownloadModule::partListWidgetSlot()
  */
-void DownloadModule::partListWidgetSlot()
-{
+void DownloadModule::partListWidgetSlot() {
     QList<QTreeWidgetItem*> items = treeWidget->selectedItems();
     for(QList<QTreeWidgetItem*>::iterator i = items.begin(); i!=items.end(); i++) {
         DownloadItem* tmp = dynamic_cast<DownloadItem*>(*i);
         if ( tmp ) tmp->getPartListDialog()->show();
     }
-
 }
 
 
+/*!
+    \fn DownloadModule::targetFolder()
+ */
+void DownloadModule::targetFolder() {
+    
+    TargetFolderDialog tf;
+    tf.incomingLabel->setText(juicer->getIncomingDirectory());
+    if(tf.exec() == QDialog::Accepted) {
+        
+    }
+}

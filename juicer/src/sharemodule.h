@@ -40,7 +40,6 @@ class ShareModule : public ModuleBase
     Q_OBJECT
 
     QHash<QString, ShareFileItem*> sharedFiles;
-    QString tmpDir;
 
 public:
     QLabel*        prioLabel;
@@ -57,16 +56,14 @@ public:
     void insertFile( const QString& id, const QString& hash, const QString& fileName, const QString& size, const QString& priority, const QString& filesystemSeperator );
     void updateSharedFilesList();
 
-    void setTmpDir ( const QString& theValue ) { tmpDir = theValue; }
-    QString getTmpDir() const { return tmpDir; }
-    bool isChanged() const { return changed_; }
-
-    ShareSelectionDialog* shareSelectionDialog;
-    
-    void reset()
-    {
+    bool isChanged() const {
+        return changed_;
+    }
+    void reset() {
         sharedFiles.clear();
     }
+
+    ShareSelectionDialog* shareSelectionDialog;
 
 public slots:
     void commitSlot();

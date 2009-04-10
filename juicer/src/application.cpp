@@ -53,28 +53,6 @@ Application::Application(int & argc, char ** argv) : QApplication( argc, argv ) 
             if(handlerDialog.exec("handler") == QDialog::Accepted) {
                 settings.setValue("shell/open/command/Default",appCmd);
             }
-/*
-            if(OptionsDialog::hasSetting("handler")) {
-                if(OptionsDialog::getSetting("handler", false).toBool()) {
-                    settings.setValue("shell/open/command/Default",appCmd);
-                }
-            } else {
-                bool accepted = false;
-                HandlerDialog handlerDialog(
-                        tr( "ajfsp Protecol Handler" ),
-                        tr("Juicer seems not to be the default application for ajfsp:// links.\nWould you like to change this?"),
-                        QDialogButtonBox::Yes | QDialogButtonBox::No,
-                        QStyle::SP_MessageBoxQuestion);
-                accepted = ( handlerDialog.exec() == QDialog::Accepted );
-                if( accepted ) {
-                    settings.setValue("shell/open/command/Default",appCmd);
-                }
-                if ( handlerDialog.dontAskAgain() ) {
-                    OptionsDialog::setSetting("handler", accepted);
-                } else {
-                    OptionsDialog::removeSetting("handler");
-                }
-            }*/
         }
     #endif
 
@@ -111,6 +89,6 @@ void Application::start() {
     QSplashScreen *splash = new QSplashScreen(QPixmap(":/splash.png"));
     splash->setVisible(OptionsDialog::getSetting( "showSplash", true ).toBool());
     Juicer* juicer = new Juicer(argList, splash);
-    juicer->appPath = appPath;
+    juicer->setAppPath(appPath);
     juicer->setWindowTitle("Juicer");
 }

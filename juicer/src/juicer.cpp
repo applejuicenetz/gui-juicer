@@ -799,3 +799,51 @@ QString Juicer::getFilesystemSeparator( ) const {
 bool Juicer::isCoreLocal() {
     return localCore;
 }
+
+
+/*!
+    \fn Juicer::setIncomingDirectory(const QString& folder)
+ */
+void Juicer::setIncomingDirectory(const QString& folder) {
+    incomingDir = folder;
+}
+
+
+/*!
+    \fn Juicer::setTempDirectory(const QString& folder)
+ */
+void Juicer::setTempDirectory(const QString& folder) {
+    tempDir = folder;
+}
+
+
+/*!
+    \fn Juicer::getIncomingDirectory() const
+ */
+QString Juicer::getIncomingDirectory() const {
+    return incomingDir;
+}
+
+
+/*!
+    \fn Juicer::getTempDirectory() const
+ */
+QString Juicer::getTempDirectory() const {
+    return tempDir;
+}
+
+
+/*!
+    \fn Juicer::setAppPath(const QString& path)
+ */
+void Juicer::setAppPath(const QString& path) {
+    appPath = path;
+}
+
+
+/*!
+    \fn Juicer::getAppPath() const
+ */
+QString Juicer::getAppPath() const {
+    return appPath;
+}

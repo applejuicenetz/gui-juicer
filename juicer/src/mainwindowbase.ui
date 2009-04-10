@@ -130,8 +130,8 @@
         </property>
         <property name="minimumSize" >
          <size>
-          <width>95</width>
-          <height>50</height>
+          <width>107</width>
+          <height>56</height>
          </size>
         </property>
         <property name="windowTitle" >
@@ -502,8 +502,8 @@
         </property>
         <property name="minimumSize" >
          <size>
-          <width>72</width>
-          <height>88</height>
+          <width>78</width>
+          <height>91</height>
          </size>
         </property>
         <property name="features" >
@@ -787,6 +787,7 @@
    <addaction name="actionRename" />
    <addaction name="actionRename_By_Clipboard" />
    <addaction name="actionOpen" />
+   <addaction name="actionTarget_Folder" />
    <addaction name="actionCopy_Link" />
    <addaction name="actionCreate_Link_List" />
    <addaction name="separator" />
@@ -931,7 +932,7 @@
   <action name="actionOpen_Aj_Link_List" >
    <property name="icon" >
     <iconset resource="images.qrc" >
-     <normaloff>:/folder_open.png</normaloff>:/folder_open.png</iconset>
+     <normaloff>:/fileopen.png</normaloff>:/fileopen.png</iconset>
    </property>
    <property name="text" >
     <string>Open Aj Link List</string>
@@ -1324,6 +1325,18 @@
    </property>
    <property name="text" >
     <string>Manual</string>
+   </property>
+  </action>
+  <action name="actionTarget_Folder" >
+   <property name="icon" >
+    <iconset resource="images.qrc" >
+     <normaloff>:/folder_open.png</normaloff>:/folder_open.png</iconset>
+   </property>
+   <property name="text" >
+    <string>Target Folder</string>
+   </property>
+   <property name="toolTip" >
+    <string>Set Target Folder</string>
    </property>
   </action>
  </widget>

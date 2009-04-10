@@ -11,7 +11,8 @@ logindialogbase.ui \
  mainwindowbase.ui \
  shareselectiondialogbase.ui \
  helpdialogbase.ui \
- updatedialogbase.ui
+ updatedialogbase.ui \
+ targetfolderdialogbase.ui
 HEADERS += ftp.h \
            global.h \
            md5class.h \
@@ -50,7 +51,8 @@ HEADERS += ftp.h \
  shareselectiondialog.h \
  helpdialog.h \
  autoupdate.h \
- updatedialog.h
+ updatedialog.h \
+ targetfolderdialog.h
 SOURCES += ftp.cpp \
            main.cpp \
            md5c.c \
@@ -89,7 +91,8 @@ SOURCES += ftp.cpp \
  shareselectiondialog.cpp \
  helpdialog.cpp \
  autoupdate.cpp \
- updatedialog.cpp
+ updatedialog.cpp \
+ targetfolderdialog.cpp
 CONFIG += warn_on \
           qt \
           stl \
@@ -117,6 +120,7 @@ resources/exec.png \
 resources/filesave.png \
 resources/find.png \
 resources/folder_open.png \
+resources/fileopen.png \
 resources/juicer.png \
 resources/launch.png \
 resources/network.png \
@@ -182,6 +186,11 @@ resources/help.png \
  resources/small/undo.png \
  resources/small/view_tree.png \
  resources/small/view_detailed.png \
+ resources/small/desktop.png \
+ resources/small/folder.png \
+ resources/small/floppy.png \
+ resources/small/hdd.png \
+ resources/small/system.png \
  resources/options/de.png \
  resources/options/fonts.png \
  resources/options/gb.png \
@@ -191,12 +200,7 @@ resources/help.png \
  resources/options/player_playlist.png \
  resources/options/superkaramba.png \
  resources/options/undo.png \
- resources/options/viewmag.png \
- resources/small/desktop.png \
- resources/small/folder.png \
- resources/small/floppy.png \
- resources/small/hdd.png \
- resources/small/system.png
+ resources/options/viewmag.png
 
 TRANSLATIONS += juicer_de.ts
 
