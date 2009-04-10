@@ -191,6 +191,7 @@ resources/help.png \
  resources/options/player_playlist.png \
  resources/options/superkaramba.png \
  resources/options/undo.png \
+ resources/options/viewmag.png \
  resources/small/desktop.png \
  resources/small/folder.png \
  resources/small/floppy.png \

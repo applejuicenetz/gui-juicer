@@ -48,6 +48,11 @@ OptionsDialog::OptionsDialog( QWidget* parent ) : QDialog( parent )
     item->setSizeHint(l->size());
     listWidget->setItemWidget(item, l);
 
+    l = new IconWidget(":/options/search.png", tr("Search"), QBoxLayout::TopToBottom, listWidget);
+    item = new QListWidgetItem(listWidget);
+    item->setSizeHint(l->size());
+    listWidget->setItemWidget(item, l);
+
     l = new IconWidget(":/options/launching.png", tr("Launching"), QBoxLayout::TopToBottom, listWidget);
     item = new QListWidgetItem(listWidget);
     item->setSizeHint(l->size());
@@ -198,6 +203,13 @@ void OptionsDialog::setSettings()
 #endif
 
     observeClipboardCheckBox->setChecked(getSetting("observeClipboard", false).toBool());
+
+    videoEdit->setText(video());
+    audioEdit->setText(audio());
+    imageEdit->setText(image());
+    textEdit->setText(text());
+    archiveEdit->setText(archive());
+    cddvdEdit->setText(cddvd());
 }
 
 void OptionsDialog::selectIncomingDir()  {
@@ -332,6 +344,13 @@ void OptionsDialog::writeSettings() {
 #endif
 
     OptionsDialog::setSetting("observeClipboard", observeClipboardCheckBox->isChecked());
+
+    OptionsDialog::setSetting("dataTypes", "video", videoEdit->text());
+    OptionsDialog::setSetting("dataTypes", "audio", audioEdit->text());
+    OptionsDialog::setSetting("dataTypes", "image", imageEdit->text());
+    OptionsDialog::setSetting("dataTypes", "text", textEdit->text());
+    OptionsDialog::setSetting("dataTypes", "archive", archiveEdit->text());
+    OptionsDialog::setSetting("dataTypes", "cddvd", cddvdEdit->text());
 }
 
 
@@ -509,4 +528,28 @@ void OptionsDialog::reset() {
         QSettings lokalSettings;
         lokalSettings.clear();
     }
+}
+
+QString OptionsDialog::video() {
+    return getSetting("dataTypes", "video", "avi mpg mpeg wmv vob asf mov").toString();
+}
+
+QString OptionsDialog::audio() {
+    return getSetting("dataTypes", "audio", "wav mp3 aac ogg").toString();
+}
+
+QString OptionsDialog::text() {
+    return getSetting("dataTypes", "text", "txt rtf doc ppt odt sxw pdf").toString();
+}
+
+QString OptionsDialog::image() {
+    return getSetting("dataTypes", "image", "png jpg jpeg bmp tif itff gif ppm pnm").toString();
+}
+
+QString OptionsDialog::archive() {
+    return getSetting("dataTypes", "archive", "zip rar exe arj gz tar bz2 bzip").toString();
+}
+
+QString OptionsDialog::cddvd() {
+    return getSetting("dataTypes", "cddvd", "iso bin cue mdf mds nrg").toString();
 }

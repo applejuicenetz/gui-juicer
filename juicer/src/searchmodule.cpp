@@ -37,7 +37,20 @@ SearchModule::SearchModule(Juicer* juicer) : ModuleBase(juicer, juicer->searchsT
     connect(searchEdit, SIGNAL(returnPressed()), this, SLOT(searchSlot()));
     juicer->searchToolBar->addAction(tr("search"), this, SLOT(searchSlot()));
 
+    connect(juicer->minSizeCheckBox, SIGNAL(clicked()), this, SLOT(filterResults()));
+    connect(juicer->maxSizeCheckBox, SIGNAL(clicked()), this, SLOT(filterResults()));
+    connect(juicer->videoCheckBox, SIGNAL(clicked()), this, SLOT(filterResults()));
+    connect(juicer->audioCheckBox, SIGNAL(clicked()), this, SLOT(filterResults()));
+    connect(juicer->imageCheckBox, SIGNAL(clicked()), this, SLOT(filterResults()));
+    connect(juicer->archiveCheckBox, SIGNAL(clicked()), this, SLOT(filterResults()));
+    connect(juicer->textCheckBox, SIGNAL(clicked()), this, SLOT(filterResults()));
+    connect(juicer->cddvdCheckBox, SIGNAL(clicked()), this, SLOT(filterResults()));
+    
+    connect(juicer->minSizeSpinBox, SIGNAL(valueChanged(int)), this, SLOT(filterResults()));
+    connect(juicer->maxSizeSpinBox, SIGNAL(valueChanged(int)), this, SLOT(filterResults()));
+
     selectionChanged();
+    filterResults();
 }
 
 SearchModule::~SearchModule()
@@ -81,6 +94,7 @@ void SearchModule::insertSearchEntry(const QString& id, const QString& searchId,
                     searchEntryItem->setFilename( filename );
                 }
             }
+            searchEntryItem->setFilter(filter);
             searchItem->hits++;
             searchItem->setText(SearchItem::COUNT_COL, QString::number(searchItem->hits));
             searchItem->entriesCount++;
@@ -192,4 +206,64 @@ SearchEntryItem* SearchModule::findSearchEntry(const QString& id) {
         return searchEntries[id];
     }
     return NULL;
+}
+
+
+/*!
+    \fn SearchModule::filterResults()
+ */
+void SearchModule::filterResults() {
+    filter = getFilter();
+    QHash<QString, SearchEntryItem*>::const_iterator i;
+    for(i = searchEntries.constBegin(); i != searchEntries.constEnd(); i++) {
+        (*i)->setFilter(filter);
+    }
+}
+
+
+/*!
+    \fn SearchModule::listToPattern(QString& pattern, const QString& list)
+ */
+void SearchModule::listToPattern(QString& pattern, const QString& list) {
+    QStringList list2 = list.split(" ");
+    for(int i=0; i<list2.size(); i++) {
+        if(!pattern.isEmpty()) {
+            pattern += "|";
+        }
+        pattern += "\\." + list2.at(i).trimmed() + "$";
+    }
+}
+
+/*!
+    \fn SearchModule::getFilter()
+ */
+SearchEntryItem::Filter SearchModule::getFilter() {
+    SearchEntryItem::Filter filter;
+    filter.minSize = juicer->minSizeCheckBox->isChecked()?juicer->minSizeSpinBox->value():0.0;
+    filter.maxSize = juicer->maxSizeCheckBox->isChecked()?juicer->maxSizeSpinBox->value():999999.9;
+    filter.minSize *= 1024 * 1024;
+    filter.maxSize *= 1024 * 1024;
+
+    QString pattern;
+    if(juicer->videoCheckBox->isChecked()) {
+        listToPattern(pattern, OptionsDialog::video());
+    }
+    if(juicer->audioCheckBox->isChecked()) {
+        listToPattern(pattern, OptionsDialog::audio());
+    }
+    if(juicer->imageCheckBox->isChecked()) {
+        listToPattern(pattern, OptionsDialog::image());
+    }
+    if(juicer->textCheckBox->isChecked()) {
+        listToPattern(pattern, OptionsDialog::text());
+    }
+    if(juicer->archiveCheckBox->isChecked()) {
+        listToPattern(pattern, OptionsDialog::archive());
+    }
+    if(juicer->cddvdCheckBox->isChecked()) {
+        listToPattern(pattern, OptionsDialog::cddvd());
+    }
+    filter.type.setPattern(pattern);
+    filter.type.setCaseSensitivity(Qt::CaseInsensitive);
+    return filter;
 }

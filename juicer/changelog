@@ -1,0 +1,78 @@
+Version 1.2
+
+- dock widgets for part list and server welcome message
+- auto update functionality for precompiled windows version
+- ajfsp handler under windows
+- online manual viewer added
+- filter for search results
+- question on server reconnect < 30 minutes
+- clipboard observation for ajfsp links
+- button for resetting the complete Juicer configuration to default values
+- typos fixed
+- translations added and fixed (german)
+- change activation status of start/pause button after status change of download
+- loading of shares on startup
+- tighter design (less margin, description in statusbar removed)
+- fixed sorting for items with progress bar in upload widget
+- version in about dialog
+- thinner rows in download and upload tab
+- fixed need for password when connecting to a core running on localhost
+
+Version 1.1
+
+- fixed resizing behavior when returning from tray
+- fixed networkinfo-dialog
+- more informations to upload widget
+- new speed calculation for downloads
+- check for cores not on localhost and warn if necessary
+- added some additional information about users (nickname, downloadblock)
+- fixed bug on closing the GUI with tray icon visible didn't save the status
+- fixed segmentation fault caused by tray icon when quit
+- global setting of power download changed
+- save and restore of the main window states
+- fixed filenames in upload tab
+- fixed some segmentation faults while running the Core at remote machine
+- fixed segmentation fault after connection lost
+- fixed segmentation fault while loading shared files
+- ...
+
+
+German - Deutsch
+----------------
+
+Version 1.2
+
+    * Dock-Widgets für Teileliste und Server-Willkommensnachricht
+    * Auto-Update-Funktionalität für vorkompilierte Windows Version
+    * ajfsp-Handler unter Windows
+    * Anzeige des Online-Benutzerhandbuchs hinzugefügt
+    * Filter für Suchergebnisse
+    * Button um die gesamte Konfiguration von Juicer auf Standardwerte zurückzusetzen
+    * Tippfehler korrigiert
+    * Übersetzungen hinzugefügt und korrigiert (deutsch)
+    * Ändern des Status von Start/Pause-Buttons nach Statuswechsel von Downloads
+    * laden der Freigaben nach dem Start
+    * engeres Desgin (weniger Rand, Bescheibungen in der Statuszeile entfernt)
+    * Sortierung von Elementen mit Fortschirttsanzeige im Upload-Fenster korrigiert
+    * Version im "Über-Dialog"
+    * Schmaler Zeilen im Down- und Upload-Fenster
+    * Zwang für Passwort beim verbinden zu einem Core auf localhost korrigiert
+
+
+Version 1.1
+
+    * Größenverhalten beim zurückkehren vom Tray korrigiert
+    * Networkinfo-Dialog verbessert
+    * mehr informationen im Upload-Fenster
+    * neue Geschwindigkeitsberechnung für Downloads
+    * Überprüfe ob Core nicht auf localhost läuft und warne ggf. an den entspr. Stellen
+    * zusätzliche Informationen über Benutzer (nickname, downloadblock)
+    * Bug beim Schließen der GUI mit Tray-Icon korrigiert
+    * Speicherzugriffsfehler durch Tray-Icon beim Beenden entfernt
+    * globales Setzen des Powerdownloads geändert
+    * speichern und wiederherstellen der Hauptfensterstati
+    * Dateinamen im Upload-Fenster korrigiert
+    * einige Speicherzugriffsfehler bei Core nicht auf localhost entfernt
+    * Speicherzugriffsfehler beim Verbindungsverlust entfernt
+    * Speicherzugriffsfehler beim laden der Freigaben entfernt
+    * ...

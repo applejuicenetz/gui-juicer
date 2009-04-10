@@ -450,8 +450,7 @@ void DownloadModule::maxPowerDownload()
 /*!
     \fn DownloadModule::hidePausedSlot(bool checked)
  */
-void DownloadModule::hidePausedSlot(bool checked)
-{
+void DownloadModule::hidePausedSlot(bool checked) {
     QHash<QString,DownloadItem*>::const_iterator i;
     for(i = downloads.constBegin(); i != downloads.constEnd(); i++) {
         (*i)->setHidden(checked && ((*i)->getStatus() == DOWN_PAUSED));

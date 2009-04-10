@@ -14,8 +14,8 @@
     <projectname>juicer</projectname>
     <projectdirectory>.</projectdirectory>
     <absoluteprojectpath>false</absoluteprojectpath>
-    <description></description>
-    <defaultencoding></defaultencoding>
+    <description/>
+    <defaultencoding/>
   </general>
   <kdevfileview>
     <groups>
@@ -39,12 +39,12 @@
       <includestyle>4</includestyle>
       <designerintegration>ExternalDesigner</designerintegration>
       <qmake>/usr/bin/qmake</qmake>
-      <designer></designer>
+      <designer>/usr/bin/designer</designer>
       <root>/usr/lib/qt4</root>
       <designerpluginpaths/>
     </qt>
     <references>
-      <pcs>automatic_%2Fhome%2Fholg%2Fajqtgui%2Fjuicer</pcs>
+      <pcs>automatic_%2Fhome%2Fremat%2Fsvn%2Fjuicer</pcs>
     </references>
     <codecompletion>
       <automaticCodeCompletion>false</automaticCodeCompletion>
@@ -72,7 +72,7 @@
       <resolveIncludePathsUsingMakeExperimental>false</resolveIncludePathsUsingMakeExperimental>
     </codecompletion>
     <creategettersetter>
-      <prefixGet></prefixGet>
+      <prefixGet/>
       <prefixSet>set</prefixSet>
       <prefixVariable>m_,_</prefixVariable>
       <parameterName>theValue</parameterName>
@@ -84,6 +84,11 @@
       <synchronize>true</synchronize>
       <orientation>Vertical</orientation>
     </splitheadersource>
+    <designerintegration>
+      <qtdesigner>
+        <implementation class="QAjHandlerDialog" path="src/qajhandlerdialogbase.ui" implementationpath="src/qajhandlerdialog.h" />
+      </qtdesigner>
+    </designerintegration>
   </kdevcppsupport>
   <kdevdoctreeview>
     <ignoretocs>
@@ -125,16 +130,16 @@
   </kdevdoctreeview>
   <kdevdebugger>
     <general>
-      <dbgshell></dbgshell>
+      <dbgshell/>
       <breakpoints/>
       <programargs/>
       <gdbpath>/usr/bin/gdb</gdbpath>
       <breakonloadinglibs>true</breakonloadinglibs>
       <separatetty>false</separatetty>
       <floatingtoolbar>false</floatingtoolbar>
-      <configGdbScript></configGdbScript>
-      <runShellScript></runShellScript>
-      <runGdbScript></runGdbScript>
+      <configGdbScript/>
+      <runShellScript/>
+      <runGdbScript/>
       <raiseGDBOnStart>false</raiseGDBOnStart>
     </general>
     <display>
@@ -146,24 +151,27 @@
   </kdevdebugger>
   <kdevtrollproject>
     <run>
-      <mainprogram></mainprogram>
-      <programargs></programargs>
+      <mainprogram>/home/remat/svn/juicer/src/juicer</mainprogram>
+      <programargs/>
       <directoryradio>executable</directoryradio>
       <runarguments>
         <ajqt4gui/>
         <juicer/>
+        <src/>
       </runarguments>
       <cwd>
-        <ajqt4gui>/home/remat/projekte/svn/ajqtgui/juicer</ajqt4gui>
-        <juicer>/home/remat/projekte/svn/ajqtgui/juicer</juicer>
+        <ajqt4gui>/home/remat/svn/juicer</ajqt4gui>
+        <juicer>/home/remat/svn/juicer</juicer>
+        <src>/home/remat/svn/juicer</src>
       </cwd>
       <debugarguments>
         <ajqt4gui/>
         <juicer/>
+        <src/>
       </debugarguments>
-      <globaldebugarguments></globaldebugarguments>
-      <globalcwd></globalcwd>
-      <useglobalprogram>false</useglobalprogram>
+      <globaldebugarguments/>
+      <globalcwd>/home/remat/svn/juicer</globalcwd>
+      <useglobalprogram>true</useglobalprogram>
       <terminal>false</terminal>
       <autocompile>true</autocompile>
       <autoinstall>false</autoinstall>
@@ -175,10 +183,10 @@
     </general>
     <make>
       <abortonerror>true</abortonerror>
-      <runmultiplejobs>false</runmultiplejobs>
-      <numberofjobs>1</numberofjobs>
+      <runmultiplejobs>true</runmultiplejobs>
+      <numberofjobs>2</numberofjobs>
       <dontact>false</dontact>
-      <makebin></makebin>
+      <makebin/>
       <prio>0</prio>
       <envvars/>
     </make>
@@ -190,7 +198,16 @@
       <showVariablesInTree>true</showVariablesInTree>
       <showParseErrors>true</showParseErrors>
     </qmake>
-    <subclassing/>
+    <subclassing>
+      <subclass uifile="src/qajhandlerdialogbase.ui" sourcefile="qajhandlerdialog.cpp" />
+      <subclass uifile="src/qajhandlerdialogbase.ui" sourcefile="qajhandlerdialog.h" />
+      <subclass uifile="src/qajshareselectiondialogbase.ui" sourcefile="qajshareselectiondialog.cpp" />
+      <subclass uifile="src/qajshareselectiondialogbase.ui" sourcefile="qajshareselectiondialog.h" />
+      <subclass uifile="src/helpdialogbase.ui" sourcefile="helpdialog.cpp" />
+      <subclass uifile="src/helpdialogbase.ui" sourcefile="helpdialog.h" />
+      <subclass uifile="src/updatedialogbase.ui" sourcefile="updatedialog.cpp" />
+      <subclass uifile="src/updatedialogbase.ui" sourcefile="updatedialog.h" />
+    </subclassing>
   </kdevtrollproject>
   <workspace>
     <openfiles/>
@@ -208,7 +225,7 @@
     <projectdoc>
       <docsystem>Doxygen-Dokumentation</docsystem>
       <docurl>juicer.tag</docurl>
-      <usermanualurl></usermanualurl>
+      <usermanualurl/>
     </projectdoc>
   </kdevdocumentation>
   <substmap>
@@ -224,7 +241,7 @@
     <QMAKE/>
     <VERSION>0.1</VERSION>
     <YEAR>2007</YEAR>
-    <dest>/home/remat//projekte/svn/ajqtgui/juicer</dest>
+    <dest>/home/remat/svn/juicer</dest>
   </substmap>
   <cppsupportpart>
     <filetemplates>
@@ -236,9 +253,9 @@
     <custom>false</custom>
     <bzip>false</bzip>
     <archname/>
-    <appname>juicer</appname>
-    <version>1.1</version>
-    <release>svn-251</release>
+    <appname>Juicer</appname>
+    <version>1.0</version>
+    <release/>
     <vendor/>
     <licence/>
     <summary/>
@@ -258,7 +275,7 @@
   </dist>
   <ctagspart>
     <customArguments/>
-    <customTagfilePath>/home/holg/projects/juicer/tags</customTagfilePath>
+    <customTagfilePath>/home/remat/svn/juicer/tags</customTagfilePath>
     <activeTagsFiles/>
   </ctagspart>
 </kdevelop>

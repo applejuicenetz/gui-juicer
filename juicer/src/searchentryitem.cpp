@@ -21,34 +21,42 @@
 
 #include "searchitem.h"
 
-SearchEntryItem::SearchEntryItem( const QString& id, SearchItem* search, const QString& checksum, const QString& size, QTreeWidgetItem* parent ) 
-  : Item( parent, id )
-{
+SearchEntryItem::SearchEntryItem(const QString& id, SearchItem* search, const QString& checksum,
+            const QString& size, QTreeWidgetItem* parent) : Item(parent, id) {
     this->search = search;
-    if ( hash_.isEmpty() ) {
+    if(hash_.isEmpty()) {
         hash_ = checksum;
     }
     size_ = size.toDouble();
 }
 
-SearchEntryItem::~SearchEntryItem()
-{
+SearchEntryItem::~SearchEntryItem() {
 }
 
-bool SearchEntryItem::operator<( const QTreeWidgetItem & other ) const
-{
+bool SearchEntryItem::operator<(const QTreeWidgetItem & other) const {
     int sortIndex = treeWidget()->header()->sortIndicatorSection();
     SearchEntryItem* searchItem = (SearchEntryItem*)&other;
-    switch ( sortIndex )
-    {
+    switch(sortIndex) {
     case SearchItem::SIZE_COL:
         return size_ < searchItem->getSize();
     default:
-        return this->text( sortIndex ) < other.text( sortIndex );
+        return this->text(sortIndex) < other.text(sortIndex);
     }
 }
 
-void SearchEntryItem::setFilename( const QString& filename ) {
+void SearchEntryItem::setFilename(const QString& filename) {
     filename_ = filename;
 }
 
+
+/*!
+    \fn SearchEntryItem::setFilter(Filter& filter)
+ */
+void SearchEntryItem::setFilter(Filter& filter) {
+    bool ok = true
+        && (size_ >= filter.minSize)
+        && (size_ <= filter.maxSize)
+        && (!filter.type.isValid() || filter.type.indexIn(filename_) >=0);
+
+    setHidden(!ok);
+}

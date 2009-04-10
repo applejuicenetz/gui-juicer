@@ -87,6 +87,12 @@ public:
     static bool hasSetting(const QString& key);
     static void removeSetting(const QString& group, const QString& key);
     static void removeSetting(const QString& key);
+    static QString video();
+    static QString audio();
+    static QString image();
+    static QString text();
+    static QString archive();
+    static QString cddvd();
 private:
     QFontDatabase fontDatabase;
 

@@ -56,6 +56,7 @@ protected:
     QHash<QString, SearchEntryItem*> searchEntries;
 
     QLineEdit *searchEdit;
+    SearchEntryItem::Filter filter;
 
 private slots:
     void removeSlot();
@@ -63,6 +64,10 @@ private slots:
     void searchSlot();
     void linkSlot();
     void selectionChanged();
+    void filterResults();
+private:
+    SearchEntryItem::Filter getFilter();
+    static void listToPattern(QString& pattern, const QString& list);
 };
 
 #endif

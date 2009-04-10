@@ -36,6 +36,14 @@ public:
     SearchItem* search;
     virtual bool operator<( const QTreeWidgetItem & other ) const;
     void setFilename( const QString& filename );
+
+    class Filter {
+    public:
+        double minSize, maxSize;
+        QRegExp type;
+        
+    };
+    void setFilter(Filter& filter);
 };
 
 #endif
