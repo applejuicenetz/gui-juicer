@@ -27,12 +27,15 @@
 #include "uploaditem.h"
 #include "qconvert.h"
 
+#include <QStandardItemModel>
+
 /**
 @author Matthias Reif
 */
 class UploadModule : public ModuleBase {
     Q_OBJECT
 public:
+    QStandardItemModel* model;
     UploadModule(Juicer* juicer);
 
     ~UploadModule();
@@ -55,6 +58,10 @@ private:
     QHash<QString, QString> uploadDirectStateDescr;
     QHash<QString, UploadItem*> uploads;
     bool hideQueued;
+signals:
+    void hideUploadSignal(UploadItem* item);
+private slots:
+    void hideUpload(UploadItem* item);
 };
 
 #endif

@@ -131,6 +131,7 @@ void Juicer::initToolBars() {
  */
 void Juicer::connectActions() {
     connect(actionConfigure, SIGNAL(triggered()), this, SLOT(showOptions()));
+    connect(actionNet_Info, SIGNAL(triggered()), this, SLOT(getNetworkInfo()));
     connect(actionNet_Info, SIGNAL(triggered()), networkDialog, SLOT(exec()));
     connect(actionOpen_Aj_Link_List, SIGNAL(triggered()), this, SLOT(openAjL()));
     connect(actionAdjust_Columns, SIGNAL(triggered()), this, SLOT( adjustColumns()));
@@ -376,18 +377,8 @@ void Juicer::gotSession() {
     shareModule->reloadSlot();
 }
 
-void Juicer::showNetworkInfo() {
-    networkDialog->exec();
-}
-
 void Juicer::setStatusBarText(const QString& downSpeed, const QString& upSpeed,
         const QString& credits, const QString& downSize, const QString& upSize) {
-//     QString downStreamString = tr("Downstream: %1/s").arg(QConvert::bytes( downSpeed ));
-//     QString upStreamString = tr("Upstream: %1/s").arg(QConvert::bytes( upSpeed ));
-//     QString creditsString = tr("Credits: %1").arg(QConvert::bytesExtra( credits ));
-//     QString downSizeString = tr("Downloaded: %1").arg(QConvert::bytesExtra( downSize ));
-//     QString upSizeString = tr("Uploaded: %1").arg(QConvert::bytesExtra( upSize ));
-
     QString downStreamString = QConvert::bytes(downSpeed) + "/s";
     QString upStreamString = QConvert::bytes(upSpeed) + "/s";
     QString creditsString = QConvert::bytesExtra(credits);
@@ -846,4 +837,12 @@ void Juicer::setAppPath(const QString& path) {
  */
 QString Juicer::getAppPath() const {
     return appPath;
+}
+
+
+/*!
+    \fn Juicer::getNetworkInfo()
+ */
+void Juicer::getNetworkInfo() {
+    xml->get("information");
 }

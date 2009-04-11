@@ -165,7 +165,6 @@ private slots:
     void timerSlot();
     void partListTimerSlot();
     void showOptions();
-    void showNetworkInfo();
     void settingsReady(const AjSettings& settings);
     void xmlError(const QString& reason);
     void gotSession();
@@ -188,6 +187,7 @@ private slots:
     void showManual();
 private slots:
     void clipboardChanged(QClipboard::Mode mode);
+    void getNetworkInfo();
 };
 
 #endif

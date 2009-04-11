@@ -72,9 +72,8 @@ int QXMLModule::get( const QString & request, QString param )
     return httpRequest;
 }
 
-int QXMLModule::set( const QString & request, QString param )
-{
-    return exec( "/function/" + request + "?password=" + passwordMD5 + param );
+int QXMLModule::set(const QString & request, QString param) {
+    return exec("/function/" + request + "?password=" + passwordMD5 + param);
 }
 
 void QXMLModule::requestFinished( int id, bool error )

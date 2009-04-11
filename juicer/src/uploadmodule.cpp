@@ -21,6 +21,7 @@
 #include "uploadmodule.h"
 #include "juicer.h"
 
+
 UploadModule::UploadModule(Juicer* juicer)
   : ModuleBase(juicer, juicer->uploadsTreeWidget, juicer->uploadToolBar)
 {
@@ -34,6 +35,8 @@ UploadModule::UploadModule(Juicer* juicer)
     connect(juicer->actionHide_Queued, SIGNAL(triggered(bool)), this, SLOT(hideQueuedSlot(bool)));
     juicer->actionHide_Queued->setChecked(OptionsDialog::getSetting("upload", "hideQueued", false).toBool());
     hideQueuedSlot(juicer->actionHide_Queued->isChecked());
+    
+    connect(this, SIGNAL(hideUploadSignal(UploadItem*)), this, SLOT(hideUpload(UploadItem*)));
 }
 
 
@@ -55,9 +58,14 @@ bool UploadModule::insertUpload(
     }
 
     uploadItem->update(juicer->osIcons[os], status, uploadStatusDescr[status],
-                       uploadDirectStateDescr[directState], priority, nick, speed, version,
-                       loaded, chunkStart, chunkEnd, chunkPos, lastConnected, newUpload );
-    uploadItem->setHidden(hideQueued && uploadItem->getStatus() == QUEUEING_UPLOAD);
+            uploadDirectStateDescr[directState], priority, nick, speed, version,
+           loaded, chunkStart, chunkEnd, chunkPos, lastConnected, newUpload );
+
+    //treeWidget->setRowHidden(0, treeWidget->indexFromItem(uploadItem), hideQueued &&status == QUEUEING_UPLOAD);
+    //uploadItem->setHidden(hideQueued &&status == QUEUEING_UPLOAD);
+
+    //QTimer::singleShot(100, this, SLOT(s1()));
+    hideUploadSignal(uploadItem);
     return !newUpload;
 }
 
@@ -73,8 +81,7 @@ bool UploadModule::remove( const QString& id )
 }
 
 
-UploadItem* UploadModule::findUpload( const QString& id )
-{
+UploadItem* UploadModule::findUpload(const QString& id) {
     if(uploads.contains(id)) {
         return uploads[id];
     }
@@ -99,15 +106,13 @@ void UploadModule::setFilename( const QString& shareId, const QString& filename 
 /*!
     \fn UploadModule::adjustSizeOfColumns()
  */
-void UploadModule::adjustSizeOfColumns()
-{
-    for(int i = 0; i < treeWidget->columnCount(); i++) {
+void UploadModule::adjustSizeOfColumns() {
+    for(int i=0; i<treeWidget->columnCount(); i++) {
         treeWidget->resizeColumnToContents(i);
     }
 }
 
-void UploadModule::selectionChanged()
-{
+void UploadModule::selectionChanged() {
 }
 
 /*!
@@ -120,4 +125,11 @@ void UploadModule::hideQueuedSlot(bool checked) {
         (*i)->setHidden(hideQueued && ((*i)->getStatus() == QUEUEING_UPLOAD));
     }
     OptionsDialog::setSetting("upload", "hideQueued", hideQueued);
+}
+
+/*!
+    \fn UploadModule::hideUpload(UploadItem* item)
+ */
+void UploadModule::hideUpload(UploadItem* item) {
+    item->setHidden(hideQueued && item->getStatus() == QUEUEING_UPLOAD);
 }

@@ -62,6 +62,7 @@ protected:
     QHash<QString, QString> userStatusDescr;
     QHash<QString, QString> downloadStatusDescr;
     QString tempDir, incomingDir;
+    bool hidePaused;
 
     class DownloadUser {
         public:
@@ -89,8 +90,10 @@ protected slots:
     void hidePausedSlot(bool checked);
     void partListWidgetSlot();
     void targetFolder();
+    void hideDownload(DownloadItem* item);
 signals:
     void downloadsFinished( const QList<DownloadItem*>& downloads );
+    void hideDownloadSignal(DownloadItem* item);
 };
 
 
