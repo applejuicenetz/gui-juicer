@@ -51,7 +51,7 @@ bool Item::setHiddenSave(bool hidden) {
     if(r != hidden) {
         qApp->processEvents();
         setHidden(hidden);
-        qApp->processEvents();
+//         qApp->processEvents();
     }
     return r;
 }

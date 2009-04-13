@@ -27,10 +27,10 @@ UploadItem::UploadItem( const QString& id, const QString& shareId, QTreeWidget *
     status_ = NEW_UPLOAD;
     speed = 0.0;
 
-/*    progressChunk_.setMaximumHeight(18);
+    progressChunk_.setMaximumHeight(18);
     initProgressBar( progressChunk_, CHUNK_COL );
     progressLoaded_.setMaximumHeight(18);
-    initProgressBar( progressLoaded_, LOADED_COL );*/
+    initProgressBar( progressLoaded_, LOADED_COL );
 }
 
 
@@ -82,9 +82,9 @@ void UploadItem::update(const QIcon& osIcon,const QString& status,
     setText(DIRECTSTATE_COL, directState);
     setText(PRIORITY_COL, priority );
 
-//    updateLoadedProgress( loaded );
-//    updateChunkProgress( chunkStart.toInt(), chunkEnd.toInt(), chunkPos.toInt() );
-//    updateLastSeen( lastConnected );
+    updateLoadedProgress( loaded );
+    updateChunkProgress( chunkStart.toInt(), chunkEnd.toInt(), chunkPos.toInt() );
+    updateLastSeen( lastConnected );
 }
 
 void UploadItem::initProgressBar( QProgressBar& progressBar, column col )
