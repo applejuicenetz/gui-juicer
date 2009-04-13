@@ -22,6 +22,7 @@
 
 #include <QObject>
 #include <QTreeWidget>
+#include <QApplication>
 
 /**
 @author Matthias Reif
@@ -53,6 +54,7 @@ public:
     double getSize() const {
         return size_;
     }
+    bool setHiddenSave(bool hidden);
 
 protected:
     QString id_;

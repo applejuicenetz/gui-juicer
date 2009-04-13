@@ -83,8 +83,6 @@ DownloadModule::DownloadModule(Juicer* juicer)
     connect(juicer->actionShow_Part_List_Dock, SIGNAL(triggered(bool)), juicer->partListDock, SLOT(setVisible(bool)));
     connect(juicer->partListDock, SIGNAL(visibilityChanged(bool)), juicer->actionShow_Part_List_Dock, SLOT(setChecked(bool)));
 
-    connect(this, SIGNAL(hideDownloadSignal(DownloadItem*)), this, SLOT(hideDownload(DownloadItem*)));
-
     #ifdef AJQTGUI_MODE_SPECIAL
         juicer->actionMaximal_Power->setVisible(true);
     #else
@@ -126,7 +124,7 @@ void DownloadModule::insertDownload( const QString& id,
             selectionChanged();
         }
     }
-    hideDownloadSignal(downloadItem);
+    
 }
 
 
@@ -442,11 +440,13 @@ void DownloadModule::maxPowerDownload()
     \fn DownloadModule::hidePausedSlot(bool checked)
  */
 void DownloadModule::hidePausedSlot(bool checked) {
+    treeWidget->setUpdatesEnabled(false);
     QHash<QString,DownloadItem*>::const_iterator i;
     for(i = downloads.constBegin(); i != downloads.constEnd(); i++) {
-        (*i)->setHidden(checked && ((*i)->getStatus() == DOWN_PAUSED));
+        (*i)->setHiddenSave(checked && ((*i)->getStatus() == DOWN_PAUSED));
     }
     hidePaused = checked;
+    treeWidget->setUpdatesEnabled(true);
 }
 
 /*!
@@ -635,12 +635,4 @@ void DownloadModule::targetFolder() {
     if(tf.exec() == QDialog::Accepted) {
         
     }
-}
-
-
-/*!
-    \fn DownloadModule::hideDownload(DownloadItem* item)
- */
-void DownloadModule::hideDownload(DownloadItem* item) {
-    item->setHidden(hidePaused && item->getStatus() == DOWN_PAUSED);
 }

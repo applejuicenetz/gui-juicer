@@ -27,15 +27,14 @@ UploadItem::UploadItem( const QString& id, const QString& shareId, QTreeWidget *
     status_ = NEW_UPLOAD;
     speed = 0.0;
 
-    progressChunk_.setMaximumHeight(18);
+/*    progressChunk_.setMaximumHeight(18);
     initProgressBar( progressChunk_, CHUNK_COL );
     progressLoaded_.setMaximumHeight(18);
-    initProgressBar( progressLoaded_, LOADED_COL );
+    initProgressBar( progressLoaded_, LOADED_COL );*/
 }
 
 
-UploadItem::~UploadItem()
-{
+UploadItem::~UploadItem() {
 }
 
 
@@ -83,9 +82,9 @@ void UploadItem::update(const QIcon& osIcon,const QString& status,
     setText(DIRECTSTATE_COL, directState);
     setText(PRIORITY_COL, priority );
 
-    updateLoadedProgress( loaded );
-    updateChunkProgress( chunkStart.toInt(), chunkEnd.toInt(), chunkPos.toInt() );
-    updateLastSeen( lastConnected );
+//    updateLoadedProgress( loaded );
+//    updateChunkProgress( chunkStart.toInt(), chunkEnd.toInt(), chunkPos.toInt() );
+//    updateLastSeen( lastConnected );
 }
 
 void UploadItem::initProgressBar( QProgressBar& progressBar, column col )
@@ -107,20 +106,28 @@ void UploadItem::updateChunkProgress( int uploadFrom, int uploadTo, int uploadCu
         progressChunk_.hide();
         return;
     }
-    if ( false == progressChunk_.isVisible() ) progressChunk_.setVisible( true );
-    if ( uploadFrom  != progressChunk_.minimum() ) progressChunk_.setMinimum( uploadFrom );
-    if ( uploadTo    != progressChunk_.maximum() ) progressChunk_.setMaximum( uploadTo );
+    if ( false == progressChunk_.isVisible() && !isHidden()) {
+        progressChunk_.setVisible( true );
+    }
+    if ( uploadFrom  != progressChunk_.minimum() ) {
+        progressChunk_.setMinimum( uploadFrom );
+    }
+    if ( uploadTo    != progressChunk_.maximum() ) {
+        progressChunk_.setMaximum( uploadTo );
+    }
     progressChunk_.setValue( uploadCurrent );
 }
 
 void UploadItem::updateLoadedProgress( const QString& loaded )
 {
-  if ( loaded.toInt() == -1 ) {
-      progressLoaded_.hide();
-      return;
-  }
-  if ( false == progressLoaded_.isVisible() ) progressLoaded_.setVisible( true );
-  progressLoaded_.setValue( loaded.toDouble() * 100 );
+    if ( loaded.toInt() == -1 ) {
+        progressLoaded_.hide();
+        return;
+    }
+    if ( false == progressLoaded_.isVisible() && !isHidden()) {
+        progressLoaded_.setVisible( true );
+    }
+    progressLoaded_.setValue( loaded.toDouble() * 100 );
 }
 
 void UploadItem::updateLastSeen( const QString& lastConnected )
@@ -157,6 +164,3 @@ int UploadItem::progressPercentualValue( progressBars p ) const
     if ( v < s )  return 0;
     return ( ((v-s) *100)/(e-s) );
 }
-
-
-

@@ -88,6 +88,12 @@ void QXMLModule::requestFinished( int id, bool error )
 
         if (root.tagName() == "applejuice")
         {
+            juicer->downloads->setUpdatesEnabled(false);
+            juicer->uploads->setUpdatesEnabled(false);
+            juicer->search->setUpdatesEnabled(false);
+            juicer->server->setUpdatesEnabled(false);
+            juicer->shares->setUpdatesEnabled(false);
+
             for (n = root.firstChild(); !n.isNull(); n = n.nextSibling())
             {
                 QDomElement e = n.toElement();
@@ -189,8 +195,13 @@ void QXMLModule::requestFinished( int id, bool error )
                     }
                 }
             }
+            juicer->uploads->setUpdatesEnabled(true);
+            juicer->search->setUpdatesEnabled(true);
+            juicer->server->setUpdatesEnabled(true);
+            juicer->shares->setUpdatesEnabled(true);
             processUsers();
             handlePartList(id);
+            juicer->downloads->setUpdatesEnabled(true);
             modifiedDone();
         }
         else if ( root.tagName() == "settings" )

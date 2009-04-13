@@ -90,10 +90,8 @@ protected slots:
     void hidePausedSlot(bool checked);
     void partListWidgetSlot();
     void targetFolder();
-    void hideDownload(DownloadItem* item);
 signals:
     void downloadsFinished( const QList<DownloadItem*>& downloads );
-    void hideDownloadSignal(DownloadItem* item);
 };
 
 

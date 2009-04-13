@@ -72,7 +72,6 @@ public:
     }
 
     int progressPercentualValue( progressBars p ) const;
-
 private:
     void initProgressBar( QProgressBar& progressBar, column col );
     void updateChunkProgress( int uploadFrom, int uploadTo, int uploadCurrent );

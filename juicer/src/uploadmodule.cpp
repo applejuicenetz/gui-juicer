@@ -35,8 +35,6 @@ UploadModule::UploadModule(Juicer* juicer)
     connect(juicer->actionHide_Queued, SIGNAL(triggered(bool)), this, SLOT(hideQueuedSlot(bool)));
     juicer->actionHide_Queued->setChecked(OptionsDialog::getSetting("upload", "hideQueued", false).toBool());
     hideQueuedSlot(juicer->actionHide_Queued->isChecked());
-    
-    connect(this, SIGNAL(hideUploadSignal(UploadItem*)), this, SLOT(hideUpload(UploadItem*)));
 }
 
 
@@ -57,15 +55,13 @@ bool UploadModule::insertUpload(
         uploads[ id ] = uploadItem;
     }
 
+    bool hide = (hideQueued && (status == QUEUEING_UPLOAD));
+
+    uploadItem->setHiddenSave(false);
     uploadItem->update(juicer->osIcons[os], status, uploadStatusDescr[status],
             uploadDirectStateDescr[directState], priority, nick, speed, version,
-           loaded, chunkStart, chunkEnd, chunkPos, lastConnected, newUpload );
-
-    //treeWidget->setRowHidden(0, treeWidget->indexFromItem(uploadItem), hideQueued &&status == QUEUEING_UPLOAD);
-    //uploadItem->setHidden(hideQueued &&status == QUEUEING_UPLOAD);
-
-    //QTimer::singleShot(100, this, SLOT(s1()));
-    hideUploadSignal(uploadItem);
+            loaded, chunkStart, chunkEnd, chunkPos, lastConnected, newUpload);
+    uploadItem->setHiddenSave(hide);
     return !newUpload;
 }
 
@@ -73,8 +69,10 @@ bool UploadModule::remove( const QString& id )
 {
     QTreeWidgetItem *item = findUpload(id);
     if(item != NULL) {
+        treeWidget->setUpdatesEnabled(false);  // we need this for hidden items
         uploads.remove(id);
         delete item;
+        treeWidget->setUpdatesEnabled(true);
         return true;
     }
     return false;
@@ -92,12 +90,13 @@ UploadItem* UploadModule::findUpload(const QString& id) {
 /*!
     \fn UploadModule::setFilename(QString shareId, QString filename)
  */
-void UploadModule::setFilename( const QString& shareId, const QString& filename )
-{
+void UploadModule::setFilename(const QString& shareId, const QString& filename) {
     QHash<QString, UploadItem*>::const_iterator item;
     for(item = uploads.constBegin(); item != uploads.constEnd(); item++) {
         if((*item)->getShareID() == shareId) {
+            bool r = (*item)->setHiddenSave(false);
             (*item)->setText(UploadItem::FILENAME_COL, filename);
+            (*item)->setHiddenSave(r);
         }
     }
 }
@@ -119,17 +118,12 @@ void UploadModule::selectionChanged() {
     \fn UploadModule::hideQueuedSlot(bool checked)
  */
 void UploadModule::hideQueuedSlot(bool checked) {
+    treeWidget->setUpdatesEnabled(false);
     hideQueued = checked;
     QHash<QString,UploadItem*>::const_iterator i;
     for(i = uploads.constBegin(); i != uploads.constEnd(); i++) {
-        (*i)->setHidden(hideQueued && ((*i)->getStatus() == QUEUEING_UPLOAD));
+        (*i)->setHiddenSave(hideQueued && ((*i)->getStatus() == QUEUEING_UPLOAD));
     }
     OptionsDialog::setSetting("upload", "hideQueued", hideQueued);
-}
-
-/*!
-    \fn UploadModule::hideUpload(UploadItem* item)
- */
-void UploadModule::hideUpload(UploadItem* item) {
-    item->setHidden(hideQueued && item->getStatus() == QUEUEING_UPLOAD);
+    treeWidget->setUpdatesEnabled(true);
 }

@@ -58,10 +58,6 @@ private:
     QHash<QString, QString> uploadDirectStateDescr;
     QHash<QString, UploadItem*> uploads;
     bool hideQueued;
-signals:
-    void hideUploadSignal(UploadItem* item);
-private slots:
-    void hideUpload(UploadItem* item);
 };
 
 #endif
