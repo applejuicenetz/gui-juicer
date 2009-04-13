@@ -90,6 +90,8 @@ DownloadModule::DownloadModule(Juicer* juicer)
         juicer->actionMaximal_Power->setVisible(((mode != NULL)) && (strcmp(mode, "SPECIAL") == 0 ));
     #endif
 
+    juicer->actionHide_Paused->setChecked(OptionsDialog::getSetting("download", "hidePaused", false).toBool());
+    hidePausedSlot(juicer->actionHide_Paused->isChecked());
     selectionChanged();
 }
 
@@ -124,7 +126,7 @@ void DownloadModule::insertDownload( const QString& id,
             selectionChanged();
         }
     }
-    
+    downloadItem->setHiddenSave(hidePaused && (status == DOWN_PAUSED));
 }
 
 
@@ -440,13 +442,15 @@ void DownloadModule::maxPowerDownload()
     \fn DownloadModule::hidePausedSlot(bool checked)
  */
 void DownloadModule::hidePausedSlot(bool checked) {
+    bool b = treeWidget->updatesEnabled();
     treeWidget->setUpdatesEnabled(false);
     QHash<QString,DownloadItem*>::const_iterator i;
     for(i = downloads.constBegin(); i != downloads.constEnd(); i++) {
         (*i)->setHiddenSave(checked && ((*i)->getStatus() == DOWN_PAUSED));
     }
     hidePaused = checked;
-    treeWidget->setUpdatesEnabled(true);
+    treeWidget->setUpdatesEnabled(b);
+    OptionsDialog::setSetting("download", "hidePaused", hidePaused);
 }
 
 /*!

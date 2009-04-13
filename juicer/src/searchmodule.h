@@ -32,7 +32,7 @@
 #include "searchentryitem.h"
 #include "qconvert.h"
 
-#define MAX_SEARCH_ENTRIES 100000
+#define MAX_SEARCH_ENTRIES 10000
 
 /**
 @author Matthias Reif

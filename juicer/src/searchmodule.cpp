@@ -214,10 +214,12 @@ SearchEntryItem* SearchModule::findSearchEntry(const QString& id) {
  */
 void SearchModule::filterResults() {
     filter = getFilter();
+    treeWidget->setUpdatesEnabled(false);
     QHash<QString, SearchEntryItem*>::const_iterator i;
     for(i = searchEntries.constBegin(); i != searchEntries.constEnd(); i++) {
         (*i)->setFilter(filter);
     }
+    treeWidget->setUpdatesEnabled(true);
 }
 
 

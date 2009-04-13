@@ -22,16 +22,14 @@
 
 #include "juicer.h"
 
-QXMLModule::QXMLModule( Juicer* juicer, QObject *parent ) : QHttp( parent )
-{
+QXMLModule::QXMLModule(Juicer* juicer, QObject *parent) : QHttp(parent) {
     this->juicer = juicer;
     timeStamp = "0";
     QObject::connect(this, SIGNAL(requestFinished( int , bool )), this, SLOT(requestFinished(int, bool )));
     QObject::connect(this, SIGNAL(responseHeaderReceived( const QHttpResponseHeader&)), this, SLOT(responseHeaderReceived( const QHttpResponseHeader&)));
 }
 
-QXMLModule::~QXMLModule()
-{
+QXMLModule::~QXMLModule() {
 }
 
 int QXMLModule::exec(const QString & request, int nErrors) {
@@ -49,26 +47,19 @@ int QXMLModule::make(Type type, const QString & request, QString param) {
     }
 }
 
-int QXMLModule::get( const QString & request, QString param )
-{
-    if(request == "modified")
-    {
+int QXMLModule::get(const QString & request, QString param) {
+    if(request == "modified") {
         param += "&session=" + session + "&timestamp=" + timeStamp;
         param += "&filter=down;uploads;user;server;search;informations;ids";
     }
-
     int httpRequest = exec("/xml/" + request + ".xml?password=" + passwordMD5 + param);
-
-    if(request == "downloadpartlist")
-    {
+    if(request == "downloadpartlist") {
         if(!param.contains("simple")) {
             partListRequests[ httpRequest ] = param.split( "=" )[1];
-        }
-        else {
+        } else {
             partListSimpleRequests[ httpRequest ] = param.split( "=" )[1];
         }
     }
-
     return httpRequest;
 }
 
@@ -76,56 +67,35 @@ int QXMLModule::set(const QString & request, QString param) {
     return exec("/function/" + request + "?password=" + passwordMD5 + param);
 }
 
-void QXMLModule::requestFinished( int id, bool error )
-{
-    if ( ! error )
-    {
+void QXMLModule::requestFinished(int id, bool error) {
+    if(!error) {
         QTime now = QTime::currentTime();
         doc.setContent(readAll());
-
         QDomElement root = doc.documentElement();
         QDomNode n;
-
-        if (root.tagName() == "applejuice")
-        {
+        if(root.tagName() == "applejuice") {
             juicer->downloads->setUpdatesEnabled(false);
             juicer->uploads->setUpdatesEnabled(false);
             juicer->search->setUpdatesEnabled(false);
             juicer->server->setUpdatesEnabled(false);
             juicer->shares->setUpdatesEnabled(false);
-
-            for (n = root.firstChild(); !n.isNull(); n = n.nextSibling())
-            {
+            for(n = root.firstChild(); !n.isNull(); n = n.nextSibling()) {
                 QDomElement e = n.toElement();
-                if (!e.isNull())
-                {
-                    if ( e.tagName() == "session" )
-                    {
+                if(!e.isNull()) {
+                    if(e.tagName() == "session") {
                         session = e.attribute("id");
                         gotSession();
-                    }
-                    else if ( e.tagName() == "time" )
-                    {
+                    } else if(e.tagName() == "time") {
                         timeStamp = e.text();
-                    }
-                    else if ( e.tagName() == "ids" )
-                    {
+                    } else if(e.tagName() == "ids") {
                         handleIds(n);
-                    }
-                    else if ( e.tagName() == "share" )
-                    {
+                    } else if(e.tagName() == "share") {
                         handleShare(e);
-                    }
-                    else if ( e.tagName() == "removed" )
-                    {
+                    } else if(e.tagName() == "removed") {
                         handleRemoved(e);
-                    }
-                    else if ( e.tagName() == "generalinformation" )
-                    {
+                    } else if(e.tagName() == "generalinformation") {
                         handleGeneralInformation(n);
-                    }
-                    else if ( e.tagName() == "information" )
-                    {
+                    } else if(e.tagName() == "information") {
                         juicer->setStatusBarText(
                             e.attribute("downloadspeed"),
                             e.attribute("uploadspeed"),
@@ -133,64 +103,38 @@ void QXMLModule::requestFinished( int id, bool error )
                             e.attribute("sessiondownload"),
                             e.attribute("sessionupload")
                         );
-                    }
-                    else if ( e.tagName() == "networkinfo" )
-                    {
+                    } else if(e.tagName() == "networkinfo") {
                         handleNetworkInfo( e );
-                    }
-                    else if ( e.tagName() == "upload" )
-                    {
+                    } else if(e.tagName() == "upload") {
                         handleUpload( e );
-                    }
-                    else if ( e.tagName() == "download" )
-                    {
+                    } else if(e.tagName() == "download") {
                         handleDownload( e );
-                    }
-                    else if ( e.tagName() == "user" )
-                    {
+                    } else if(e.tagName() == "user") {
                         handleUser( e, now );
-                    }
-                    else if ( e.tagName() == "server" )
-                    {
+                    } else if(e.tagName() == "server") {
                         handleServer( e );
-                    }
-                    else if ( e.tagName() == "search" )
-                    {
+                    } else if(e.tagName() == "search") {
                          handleSearch( e );
-                    }
-                    else if ( e.tagName() == "searchentry" )
-                    {
+                    } else if(e.tagName() == "searchentry") {
                          handleSearchEntry( e );
-                    }
-                    else if ( e.tagName() == "part" )
-                    {
+                    } else if(e.tagName() == "part") {
                         handlePart( e );
-                    }
-                    else if ( e.tagName() == "fileinformation" )
-                    {
+                    } else if(e.tagName() == "fileinformation") {
                         partsSize = e.attribute("filesize").toULongLong();
-                    }
-                    else if ( e.tagName() == "shares" )
-                    {
+                    } else if(e.tagName() == "shares") {
                         handleShares( e );
-                    }
-                    else if ( e.tagName() == "dir" )
-                    {
-                        if ( juicer->shareModule->shareSelectionDialog != NULL ) {
+                    } else if(e.tagName() == "dir") {
+                        if(juicer->shareModule->shareSelectionDialog != NULL) {
                             juicer->shareModule->shareSelectionDialog->insertDirectory(
                                   e.attribute("name"),
                                   e.attribute("path"),
                                   e.attribute("type").toInt() );
                         }
-                    }
-                    else if ( e.tagName() == "filesystem" )
-                    {
-                        if ( juicer->shareModule->shareSelectionDialog != NULL ) {
+                    } else if(e.tagName() == "filesystem") {
+                        if(juicer->shareModule->shareSelectionDialog != NULL ) {
                             juicer->shareModule->shareSelectionDialog->insertSeperator(e.attribute("seperator"));
                         }
-                    }
-                    else
-                    {
+                    } else {
                         fprintf(stderr, "unhandled element: %s\n", e.tagName().toLatin1().data());
                     }
                 }
@@ -203,9 +147,7 @@ void QXMLModule::requestFinished( int id, bool error )
             handlePartList(id);
             juicer->downloads->setUpdatesEnabled(true);
             modifiedDone();
-        }
-        else if ( root.tagName() == "settings" )
-        {
+        } else if(root.tagName() == "settings") {
             handleSettings(root);
         }
 // this does not work. documentation false?
@@ -216,7 +158,7 @@ void QXMLModule::requestFinished( int id, bool error )
 
 /*    } else if(errors[id] < 1) {
         exec("requests[id]", errors[id] + 1);*/
-    } else if (QHttp::error() != QHttp::Aborted) {
+    } else if(QHttp::error() != QHttp::Aborted) {
         // -- use a timer (it does NOT work calling it directly) --
         QTimer::singleShot(0, this, SLOT(networkErrorSlot()));
     }
@@ -226,8 +168,7 @@ void QXMLModule::requestFinished( int id, bool error )
 /*!
     \fn QXMLModule::networkErrorSlot()
  */
-void QXMLModule::networkErrorSlot()
-{
+void QXMLModule::networkErrorSlot() {
     abort();
     QXMLModule::error(errorString());
 }
@@ -235,33 +176,28 @@ void QXMLModule::networkErrorSlot()
 /*!
     \fn QXMLModule::httpErrorSlot()
  */
-void QXMLModule::httpErrorSlot()
-{
+void QXMLModule::httpErrorSlot() {
     abort();
     QXMLModule::error("Either wrong password or connection lost.");
 }
 
-void QXMLModule::responseHeaderReceived ( const QHttpResponseHeader & resp )
-{
-    if( resp.statusCode() != 200 )
-    {
+void QXMLModule::responseHeaderReceived (const QHttpResponseHeader & resp) {
+    if(resp.statusCode() != 200) {
         // -- use a timer (it does NOT work calling it directly) --
         QTimer::singleShot(0, this, SLOT(httpErrorSlot()));
     }
 }
 
-void QXMLModule::setPassword( const QString & password )
-{
-    CMD5 md5( password.toAscii().data() );
+void QXMLModule::setPassword(const QString & password) {
+    CMD5 md5(password.toAscii().data());
     passwordMD5 = md5.getMD5Digest();
 }
 
 
 /*!
-    \fn QXMLModule::handleSettings( QDomElement& e )
+    \fn QXMLModule::handleSettings(QDomElement& e)
  */
-void QXMLModule::handleSettings( QDomElement& e )
-{
+void QXMLModule::handleSettings(QDomElement& e) {
     AjSettings settings;
     settings.nick         = e.firstChildElement("nick").text();
     settings.tcpPort      = e.firstChildElement("port").text();
@@ -283,8 +219,7 @@ void QXMLModule::handleSettings( QDomElement& e )
     juicer->sharesTreeWidget->clear();
     QDomElement shareE;
     for(shareE=e.firstChildElement("share").firstChildElement("directory");
-        !shareE.isNull(); shareE = shareE.nextSiblingElement("directory"))
-    {
+        !shareE.isNull(); shareE = shareE.nextSiblingElement("directory")) {
         juicer->shareModule->insertShare(
             shareE.attribute("name"), shareE.attribute("sharemode"));
     }
@@ -294,8 +229,7 @@ void QXMLModule::handleSettings( QDomElement& e )
 /*!
     \fn QXMLModule::handleShare( QDomElement& e )
  */
-void QXMLModule::handleShare( QDomElement& e )
-{
+void QXMLModule::handleShare( QDomElement& e ) {
     juicer->setUploadFilename( e.attribute("id"), e.attribute("filename") );
 
 }
