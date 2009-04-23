@@ -115,7 +115,7 @@ void DownloadModule::insertDownload( const QString& id,
         downloadItem = new DownloadItem( id, treeWidget );
         downloads[id] = downloadItem;
         if(juicer->actionMaximal_Power->isVisible()) {
-            xml->set("setpowerdownload", "&Powerdownload="+QConvert::power(50)+"&id="+id);
+            xml->set("setpowerdownload", "&Powerdownload="+Convert::power(50)+"&id="+id);
         }
         downloadItem->update(hash, fileName, status, size, ready, power, tempNumber);
         updateView(true);
@@ -252,9 +252,9 @@ DownloadModule::DownloadUser DownloadModule::findParent(const QString& id)
 }
 
 /*!
-    \fn DownloadModule::processSelected(QXMLModule::Type type, const QString& request, const QString& para)
+    \fn DownloadModule::processSelected(XMLModule::Type type, const QString& request, const QString& para)
  */
-void DownloadModule::processSelected(QXMLModule::Type type, const QString& request, const QString& para)
+void DownloadModule::processSelected(XMLModule::Type type, const QString& request, const QString& para)
 {
     QList<QTreeWidgetItem*> items = treeWidget->selectedItems();
     for(QList<QTreeWidgetItem*>::iterator i = items.begin(); i!=items.end(); i++) {
@@ -267,7 +267,7 @@ void DownloadModule::processSelected(QXMLModule::Type type, const QString& reque
  */
 void DownloadModule::getSelected(const QString& request, const QString& para)
 {
-    processSelected(QXMLModule::GET, request, para);
+    processSelected(XMLModule::GET, request, para);
 }
 
 /*!
@@ -275,7 +275,7 @@ void DownloadModule::getSelected(const QString& request, const QString& para)
  */
 void DownloadModule::setSelected(const QString& request, const QString& para)
 {
-    processSelected(QXMLModule::SET, request, para);
+    processSelected(XMLModule::SET, request, para);
 }
 
 void DownloadModule::cancelSlot()
@@ -407,7 +407,7 @@ void DownloadModule::linkSlot()
 void DownloadModule::setMultiPowerDownload()
 {
     float value = powerCheck->isChecked() ? powerSpin->value() : 1.0;
-    setSelected("setpowerdownload", "&Powerdownload=" + QConvert::power(value));
+    setSelected("setpowerdownload", "&Powerdownload=" + Convert::power(value));
 }
 
 /*!
@@ -416,7 +416,7 @@ void DownloadModule::setMultiPowerDownload()
 void DownloadModule::applyPowerDownload() {
     if( treeWidget->selectedItems().size() > 1) {
         float value = powerCheck->isChecked() ? powerSpin->value() : 1.0;
-        setSelected("setpowerdownload", "&Powerdownload=" + QConvert::power(value));
+        setSelected("setpowerdownload", "&Powerdownload=" + Convert::power(value));
     }
 }
 
@@ -424,7 +424,7 @@ void DownloadModule::applyPowerDownload() {
     \fn DownloadModule::applyPowerDownload(const QString& id, double value)
  */
 void DownloadModule::applyPowerDownload(const QString& id, double value) {
-    xml->set("setpowerdownload", "&Powerdownload="+QConvert::power( value )+"&id="+id);
+    xml->set("setpowerdownload", "&Powerdownload="+Convert::power( value )+"&id="+id);
 }
 
 /*!
@@ -434,7 +434,7 @@ void DownloadModule::maxPowerDownload()
 {
     QList<QString> ids = downloads.keys();
     for(QList<QString>::iterator i = ids.begin(); i != ids.end(); i++) {
-        xml->set("setpowerdownload", "&Powerdownload="+QConvert::power( 50 )+"&id="+(*i));
+        xml->set("setpowerdownload", "&Powerdownload="+Convert::power( 50 )+"&id="+(*i));
     }
 }
 

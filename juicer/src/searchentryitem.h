@@ -40,7 +40,7 @@ public:
     class Filter {
     public:
         double minSize, maxSize;
-        QRegExp type;
+        QRegExp type, custom;
         
     };
     void setFilter(Filter& filter);

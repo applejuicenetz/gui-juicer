@@ -11,7 +11,6 @@
 //
 #include "modulebase.h"
 #include "juicer.h"
-#include "qxmlmodule.h"
 
 ModuleBase::ModuleBase(Juicer* juicer, QTreeWidget* treeWidget, QToolBar* toolbar) : QObject(juicer) {
     this->juicer = juicer;
@@ -122,7 +121,7 @@ void ModuleBase::linkListSlot() {
             ajListFile.close();
         }
         if(error) {
-            QString error = QConvert::getFileErrorString(ajListFile.error());
+            QString error = Convert::getFileErrorString(ajListFile.error());
             QMessageBox::critical(juicer, tr("Error while saving link list."), tr("The error message was:\n\n") + error);
         }
     }

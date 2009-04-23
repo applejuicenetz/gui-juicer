@@ -24,7 +24,7 @@
 #include <QList>
 
 #include "item.h"
-#include "qconvert.h"
+#include "convert.h"
 #include "optionsdialog.h"
 #include "downloaditem.h"
 

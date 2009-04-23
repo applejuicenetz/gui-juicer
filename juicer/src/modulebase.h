@@ -19,9 +19,10 @@
 #include <QToolBar>
 #include <QMainWindow>
 
+#include "convert.h"
 
 class Juicer;
-class QXMLModule;
+class XMLModule;
 
 /**
     @author Matthias Reif <matthias.reif@informatik.tu-chemnitz.de>
@@ -39,7 +40,7 @@ protected:
     QTreeWidget* treeWidget;
     QToolBar* toolbar;
 
-    QXMLModule* xml;
+    XMLModule* xml;
 public slots:
     void adjustSizeOfColumns();
 protected slots:

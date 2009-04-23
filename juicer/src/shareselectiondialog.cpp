@@ -13,7 +13,7 @@
 
 #include "shareselectiondialog.h"
 
-ShareSelectionDialog::ShareSelectionDialog(QXMLModule* xml, QWidget* parent, Qt::WFlags fl)
+ShareSelectionDialog::ShareSelectionDialog(XMLModule* xml, QWidget* parent, Qt::WFlags fl)
 : QDialog( parent, fl ), Ui::Dialog() {
     setupUi(this);
     this->xml = xml;

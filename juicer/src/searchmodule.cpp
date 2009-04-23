@@ -85,7 +85,7 @@ void SearchModule::insertSearchEntry(const QString& id, const QString& searchId,
             SearchEntryItem *searchEntryItem = new SearchEntryItem(id, searchItem, checksum, size, searchItem);
             searchItem->entries[ id ] = searchEntryItem;
             searchEntries[ id ] = searchEntryItem;
-            searchEntryItem->setText( SearchItem::SIZE_COL, QConvert::bytes(size) );
+            searchEntryItem->setText( SearchItem::SIZE_COL, Convert::bytes(size) );
             QStringListIterator it(filenames);
             while(it.hasNext()) {
                 QString filename = it.next();
@@ -265,6 +265,7 @@ SearchEntryItem::Filter SearchModule::getFilter() {
     if(juicer->cddvdCheckBox->isChecked()) {
         listToPattern(pattern, OptionsDialog::cddvd());
     }
+    listToPattern(pattern, juicer->fileTypeEdit->text());
     filter.type.setPattern(pattern);
     filter.type.setCaseSensitivity(Qt::CaseInsensitive);
     return filter;

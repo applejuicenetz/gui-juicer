@@ -17,20 +17,20 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
-#include "qconvert.h"
+#include "convert.h"
 
-QConvert::QConvert(QObject *parent) : QObject( parent )
+Convert::Convert(QObject *parent) : QObject( parent )
 {}
 
-QConvert::~QConvert()
+Convert::~Convert()
 {}
 
-QString QConvert::bytes( const QString& x )
+QString Convert::bytes( const QString& x )
 {
     return bytes( x.toDouble() );
 }
 
-QString QConvert::bytes( long int x )
+QString Convert::bytes( long int x )
 {
     if ( x >= ONE_GIG )
         return QString::number( x / ( ONE_GIG ) ) + " Gb";
@@ -42,7 +42,7 @@ QString QConvert::bytes( long int x )
         return QString::number(x) + " b";
 }
 
-QString QConvert::bytes( double x, int precision )
+QString Convert::bytes( double x, int precision )
 {
     double absX = x>0.0?x:-x;
 
@@ -56,7 +56,7 @@ QString QConvert::bytes( double x, int precision )
         return QString::number(x) + " b";
 }
 
-QString QConvert::bytes( qulonglong x )
+QString Convert::bytes( qulonglong x )
 {
     if ( x >= ONE_GIG )
         return QString::number( (x / ( ONE_GIG )) ) + " Gb";
@@ -68,7 +68,7 @@ QString QConvert::bytes( qulonglong x )
         return QString::number(x) + " b";
 }
 
-QString QConvert::bytes( qulonglong x, int precision )
+QString Convert::bytes( qulonglong x, int precision )
 {
     if ( x >= ONE_GIG )
         return QString::number( (x / (float)( ONE_GIG )), 'f', precision ) + " Gb";
@@ -81,13 +81,13 @@ QString QConvert::bytes( qulonglong x, int precision )
 }
 
 
-QString QConvert::bytes( const QString& x, const QString& y )
+QString Convert::bytes( const QString& x, const QString& y )
 {
     double x1 = x.toDouble() - y.toDouble();
-    return QConvert::bytes( x1, 2 );
+    return Convert::bytes( x1, 2 );
 }
 
-QString QConvert::bytesLong( const QString& x )
+QString Convert::bytesLong( const QString& x )
 {
     // x in Mbyte
     double x1 = x.section(',',0,0).toDouble();
@@ -99,7 +99,7 @@ QString QConvert::bytesLong( const QString& x )
         return x + " Mbyte";
 }
 
-QString QConvert::bytesExtra( const QString& x )
+QString Convert::bytesExtra( const QString& x )
 {
     bool negative = (x[0] == '-');
     qlonglong x1 = qAbs(x.toLongLong());
@@ -134,7 +134,7 @@ QString QConvert::bytesExtra( const QString& x )
     return QString::number( r , 'f', 2 ) + unit;
 }
 
-QString QConvert::num( long int num )
+QString Convert::num( long int num )
 {
     if ( num < 10 )
         return QString("0" + QString::number( num ) );
@@ -142,25 +142,25 @@ QString QConvert::num( long int num )
         return QString::number( num );
 }
 
-float QConvert::powerValue( const QString& x )
+float Convert::powerValue( const QString& x )
 {
     float x1 = x.toFloat();
     return (x1 + 10) / 10.0;
 }
 
-QString QConvert::power( const QString& x )
+QString Convert::power( const QString& x )
 {
     float x1 = x.toFloat();
     x1 = (x1 + 10) / 10.0;
     return "1:"+QString::number(x1, 'f', 1);
 }
 
-QString QConvert::power( float power )
+QString Convert::power( float power )
 {
     return QString::number( power*10 - 10,'f',0 );
 }
 
-QString QConvert::time( long int seconds )
+QString Convert::time( long int seconds )
 {
     int days, hours, minutes;
     days = hours = minutes = 0;
@@ -191,9 +191,9 @@ QString QConvert::time( long int seconds )
 
 
 /*!
-    \fn QConvert::getFileErrorString(QFile::FileError error)
+    \fn Convert::getFileErrorString(QFile::FileError error)
  */
-QString QConvert::getFileErrorString(QFile::FileError error)
+QString Convert::getFileErrorString(QFile::FileError error)
 {
     switch ( error ) {
         case QFile::ReadError: return tr("An error occurred when reading from the file.");

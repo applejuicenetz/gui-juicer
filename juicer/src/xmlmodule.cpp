@@ -18,28 +18,28 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include "qxmlmodule.h"
+#include "xmlmodule.h"
 
 #include "juicer.h"
 
-QXMLModule::QXMLModule(Juicer* juicer, QObject *parent) : QHttp(parent) {
+XMLModule::XMLModule(Juicer* juicer, QObject *parent) : QHttp(parent) {
     this->juicer = juicer;
     timeStamp = "0";
     QObject::connect(this, SIGNAL(requestFinished( int , bool )), this, SLOT(requestFinished(int, bool )));
     QObject::connect(this, SIGNAL(responseHeaderReceived( const QHttpResponseHeader&)), this, SLOT(responseHeaderReceived( const QHttpResponseHeader&)));
 }
 
-QXMLModule::~QXMLModule() {
+XMLModule::~XMLModule() {
 }
 
-int QXMLModule::exec(const QString & request, int nErrors) {
+int XMLModule::exec(const QString & request, int nErrors) {
     int id = QHttp::get(request);
     requests[id] = request;
     errors[id] = nErrors;
     return id;
 }
 
-int QXMLModule::make(Type type, const QString & request, QString param) {
+int XMLModule::make(Type type, const QString & request, QString param) {
     if(type == GET) {
         return get(request, param);
     } else {
@@ -47,7 +47,7 @@ int QXMLModule::make(Type type, const QString & request, QString param) {
     }
 }
 
-int QXMLModule::get(const QString & request, QString param) {
+int XMLModule::get(const QString & request, QString param) {
     if(request == "modified") {
         param += "&session=" + session + "&timestamp=" + timeStamp;
         param += "&filter=down;uploads;user;server;search;informations;ids";
@@ -63,11 +63,11 @@ int QXMLModule::get(const QString & request, QString param) {
     return httpRequest;
 }
 
-int QXMLModule::set(const QString & request, QString param) {
+int XMLModule::set(const QString & request, QString param) {
     return exec("/function/" + request + "?password=" + passwordMD5 + param);
 }
 
-void QXMLModule::requestFinished(int id, bool error) {
+void XMLModule::requestFinished(int id, bool error) {
     if(!error) {
         QTime now = QTime::currentTime();
         doc.setContent(readAll());
@@ -166,38 +166,38 @@ void QXMLModule::requestFinished(int id, bool error) {
 
 
 /*!
-    \fn QXMLModule::networkErrorSlot()
+    \fn XMLModule::networkErrorSlot()
  */
-void QXMLModule::networkErrorSlot() {
+void XMLModule::networkErrorSlot() {
     abort();
-    QXMLModule::error(errorString());
+    XMLModule::error(errorString());
 }
 
 /*!
-    \fn QXMLModule::httpErrorSlot()
+    \fn XMLModule::httpErrorSlot()
  */
-void QXMLModule::httpErrorSlot() {
+void XMLModule::httpErrorSlot() {
     abort();
-    QXMLModule::error("Either wrong password or connection lost.");
+    XMLModule::error("Either wrong password or connection lost.");
 }
 
-void QXMLModule::responseHeaderReceived (const QHttpResponseHeader & resp) {
+void XMLModule::responseHeaderReceived (const QHttpResponseHeader & resp) {
     if(resp.statusCode() != 200) {
         // -- use a timer (it does NOT work calling it directly) --
         QTimer::singleShot(0, this, SLOT(httpErrorSlot()));
     }
 }
 
-void QXMLModule::setPassword(const QString & password) {
+void XMLModule::setPassword(const QString & password) {
     CMD5 md5(password.toAscii().data());
     passwordMD5 = md5.getMD5Digest();
 }
 
 
 /*!
-    \fn QXMLModule::handleSettings(QDomElement& e)
+    \fn XMLModule::handleSettings(QDomElement& e)
  */
-void QXMLModule::handleSettings(QDomElement& e) {
+void XMLModule::handleSettings(QDomElement& e) {
     AjSettings settings;
     settings.nick         = e.firstChildElement("nick").text();
     settings.tcpPort      = e.firstChildElement("port").text();
@@ -227,18 +227,18 @@ void QXMLModule::handleSettings(QDomElement& e) {
 
 
 /*!
-    \fn QXMLModule::handleShare( QDomElement& e )
+    \fn XMLModule::handleShare( QDomElement& e )
  */
-void QXMLModule::handleShare( QDomElement& e ) {
+void XMLModule::handleShare( QDomElement& e ) {
     juicer->setUploadFilename( e.attribute("id"), e.attribute("filename") );
 
 }
 
 
 /*!
-    \fn QXMLModule::handleShares( QDomElement& e )
+    \fn XMLModule::handleShares( QDomElement& e )
  */
-void QXMLModule::handleShares( QDomElement& e )
+void XMLModule::handleShares( QDomElement& e )
 {
     QDomNode n;
     {
@@ -262,9 +262,9 @@ void QXMLModule::handleShares( QDomElement& e )
 
 
 /*!
-    \fn QXMLModule::handleIds( QDomNode& node )
+    \fn XMLModule::handleIds( QDomNode& node )
  */
-void QXMLModule::handleIds( QDomNode& node )
+void XMLModule::handleIds( QDomNode& node )
 {
     node = node;
     // TODO
@@ -295,14 +295,14 @@ void QXMLModule::handleIds( QDomNode& node )
 
 
 /*!
-    \fn QXMLModule::handleNetworkInfo( QDomElement& e )
+    \fn XMLModule::handleNetworkInfo( QDomElement& e )
  */
-void QXMLModule::handleNetworkInfo( QDomElement& e )
+void XMLModule::handleNetworkInfo( QDomElement& e )
 {
     juicer->networkDialog->setValues(
         e.attribute("users"),
         e.attribute("files"),
-        QConvert::bytesLong( e.attribute("filesize")),
+        Convert::bytesLong( e.attribute("filesize")),
         e.attribute("ip"),
         e.attribute("firewalled")=="true"?tr("yes"):tr("no"));
     juicer->serverModule->connectedWith( e.attribute("connectedwithserverid") );
@@ -313,9 +313,9 @@ void QXMLModule::handleNetworkInfo( QDomElement& e )
 
 
 /*!
-    \fn QXMLModule::handleUpload( QDomElement& e )
+    \fn XMLModule::handleUpload( QDomElement& e )
  */
-void QXMLModule::handleUpload( QDomElement& e )
+void XMLModule::handleUpload( QDomElement& e )
 {
     if( ! juicer->uploadModule->insertUpload(
             e.attribute("id"),
@@ -340,9 +340,9 @@ void QXMLModule::handleUpload( QDomElement& e )
 
 
 /*!
-    \fn QXMLModule::handleUser( QDomElement& e, QTime& time )
+    \fn XMLModule::handleUser( QDomElement& e, QTime& time )
  */
-void QXMLModule::handleUser( QDomElement& e, QTime& time )
+void XMLModule::handleUser( QDomElement& e, QTime& time )
 {
     // -- try to insert users after down- and uploads --
     // -- store them in a lists and process them when the end of the xml was reached --
@@ -350,7 +350,7 @@ void QXMLModule::handleUser( QDomElement& e, QTime& time )
     userTimes.append(time);
 }
 
-void QXMLModule::processUsers() {
+void XMLModule::processUsers() {
     while(!users.empty()) {
         QDomElement e = users.takeFirst();
         QTime time = userTimes.takeFirst();
@@ -373,9 +373,9 @@ void QXMLModule::processUsers() {
 }
 
 /*!
-    \fn QXMLModule::handleDownload( QDomElement& e )
+    \fn XMLModule::handleDownload( QDomElement& e )
  */
-void QXMLModule::handleDownload( QDomElement& e )
+void XMLModule::handleDownload( QDomElement& e )
 {
     juicer->downloadModule->insertDownload(
         e.attribute("id"),
@@ -390,9 +390,9 @@ void QXMLModule::handleDownload( QDomElement& e )
 
 
 /*!
-    \fn QXMLModule::handleServer( QDomElement& e )
+    \fn XMLModule::handleServer( QDomElement& e )
  */
-void QXMLModule::handleServer( QDomElement& e )
+void XMLModule::handleServer( QDomElement& e )
 {
     juicer->serverModule->insertServer(
         e.attribute("id"),
@@ -405,9 +405,9 @@ void QXMLModule::handleServer( QDomElement& e )
 
 
 /*!
-    \fn QXMLModule::handleSearch( QDomElement& e )
+    \fn XMLModule::handleSearch( QDomElement& e )
  */
-void QXMLModule::handleSearch( QDomElement& e )
+void XMLModule::handleSearch( QDomElement& e )
 {
     juicer->searchModule->insertSearch(
         e.attribute("id"),
@@ -418,9 +418,9 @@ void QXMLModule::handleSearch( QDomElement& e )
 
 
 /*!
-    \fn QXMLModule::handleSearchEntry( QDomElement& e )
+    \fn XMLModule::handleSearchEntry( QDomElement& e )
  */
-void QXMLModule::handleSearchEntry( QDomElement& e )
+void XMLModule::handleSearchEntry( QDomElement& e )
 {
     QStringList filenames;
     QDomElement fileE;
@@ -437,9 +437,9 @@ void QXMLModule::handleSearchEntry( QDomElement& e )
 
 
 /*!
-    \fn QXMLModule::handleGeneralInformation( QDomNode& node )
+    \fn XMLModule::handleGeneralInformation( QDomNode& node )
  */
-void QXMLModule::handleGeneralInformation( QDomNode& node )
+void XMLModule::handleGeneralInformation( QDomNode& node )
 {
     juicer->setFilesystemSeparator(
         node.firstChildElement("filesystem").attribute("seperator"));
@@ -448,9 +448,9 @@ void QXMLModule::handleGeneralInformation( QDomNode& node )
 
 
 /*!
-    \fn QXMLModule::handleRemoved( QDomElement& e )
+    \fn XMLModule::handleRemoved( QDomElement& e )
  */
-void QXMLModule::handleRemoved( QDomElement& e )
+void XMLModule::handleRemoved( QDomElement& e )
 {
     QDomElement objectE;
     for(objectE = e.firstChildElement("object");
@@ -465,9 +465,9 @@ void QXMLModule::handleRemoved( QDomElement& e )
 }
 
 /*!
-    \fn QXMLModule::handlePart( QDomElement& e )
+    \fn XMLModule::handlePart( QDomElement& e )
  */
-void QXMLModule::handlePart( QDomElement& e )
+void XMLModule::handlePart( QDomElement& e )
 {
     PartsWidget::Part part;
     part.type = e.attribute("type").toInt();
@@ -477,9 +477,9 @@ void QXMLModule::handlePart( QDomElement& e )
 
 
 /*!
-    \fn QXMLModule::handlePartList( int id )
+    \fn XMLModule::handlePartList( int id )
  */
-void QXMLModule::handlePartList( int id )
+void XMLModule::handlePartList( int id )
 {
     if ( !partList.empty() )
     {
@@ -500,15 +500,15 @@ void QXMLModule::handlePartList( int id )
     }
 }
 
-void QXMLModule::sendToTray(const QString & message1, const QString & message2 ) {
+void XMLModule::sendToTray(const QString & message1, const QString & message2 ) {
     juicer->sendToTray( message1, message2 );
 }
 
 
 /*!
-    \fn QXMLModule::printAllAttributes(QDomElement& e)
+    \fn XMLModule::printAllAttributes(QDomElement& e)
  */
-void QXMLModule::printAllAttributes(QDomElement& e)
+void XMLModule::printAllAttributes(QDomElement& e)
 {
     QDomNamedNodeMap a = e.attributes();
     printf("%d\n", a.length());

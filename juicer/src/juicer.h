@@ -58,11 +58,11 @@
 #include "sharemodule.h"
 #include "incomingmodule.h"
 
-#include "qxmlmodule.h"
+#include "xmlmodule.h"
 #include "optionsdialog.h"
 #include "logindialog.h"
 #include "networkdialog.h"
-#include "qconvert.h"
+#include "convert.h"
 
 #include "application.h"
 
@@ -86,7 +86,7 @@ public:
     ~Juicer();
 
     void setStatusBarText( const QString& downSpeed, const QString& upSpeed, const QString& credits, const QString& downSize, const QString& upSize );
-    QXMLModule *xml;
+    XMLModule *xml;
     DownloadModule* downloadModule;
     UploadModule *uploadModule;
     NetworkDialog *networkDialog;

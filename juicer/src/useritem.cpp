@@ -46,7 +46,7 @@ void UserItem::setSpeed( const QString& newSpeedString, const QTime& /*time*/ )
 {
     speed = newSpeedString.toInt();
     if ( status_ == ACTIVE_SOURCE )
-        setText( DownloadItem::SPEED_COL, QConvert::bytes(newSpeedString) + "/s" );
+        setText( DownloadItem::SPEED_COL, Convert::bytes(newSpeedString) + "/s" );
     else
         setText( DownloadItem::SPEED_COL, "" );
 }
@@ -75,7 +75,7 @@ void UserItem::update( const QString& fileName,
     } else {
         setText( DownloadItem::STATUS_COL,  statusString );
     }
-    setText( DownloadItem::POWER_COL,  QConvert::power( power ) );
+    setText( DownloadItem::POWER_COL,  Convert::power( power ) );
     setText( DownloadItem::SOURCES_COL,  nickname );
     if ( !fileNameSet && !fileName.isEmpty() )
     {
@@ -90,9 +90,9 @@ void UserItem::update( const QString& fileName,
         double dFrom = downloadfrom.toULongLong();
         double dTo = downloadto.toULongLong();
         double dPosition = actualdownloadposition.toULongLong();
-        setText(DownloadItem::SIZE_COL, QConvert::bytes(dTo - dFrom + 1.0, 2));
-        setText(DownloadItem::REMAIN_SIZE_COL, QConvert::bytes(dTo - dPosition + 1.0, 2));
-        setText(DownloadItem::FINISHED_SIZE_COL, QConvert::bytes(dPosition - dFrom, 2));
+        setText(DownloadItem::SIZE_COL, Convert::bytes(dTo - dFrom + 1.0, 2));
+        setText(DownloadItem::REMAIN_SIZE_COL, Convert::bytes(dTo - dPosition + 1.0, 2));
+        setText(DownloadItem::FINISHED_SIZE_COL, Convert::bytes(dPosition - dFrom, 2));
     } else {
         setText(DownloadItem::SIZE_COL, "");
         setText(DownloadItem::REMAIN_SIZE_COL, "");

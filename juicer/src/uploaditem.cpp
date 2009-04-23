@@ -77,7 +77,7 @@ void UploadItem::update(const QIcon& osIcon,const QString& status,
         setIcon(OS_COL, osIcon);
         setText(VERSION_COL, version);
     }
-    setText(SPEED_COL, QConvert::bytes(speed) + "/s" );
+    setText(SPEED_COL, Convert::bytes(speed) + "/s" );
     setText(STATUS_COL, statusDescr);
     setText(DIRECTSTATE_COL, directState);
     setText(PRIORITY_COL, priority );

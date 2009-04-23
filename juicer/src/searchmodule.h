@@ -30,7 +30,6 @@
 #include "modulebase.h"
 #include "searchitem.h"
 #include "searchentryitem.h"
-#include "qconvert.h"
 
 #define MAX_SEARCH_ENTRIES 10000
 

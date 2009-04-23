@@ -211,12 +211,12 @@ bool DownloadItem::update( const QString& hash,
     }
 
     if ( this->text( SIZE_COL ).isEmpty() ) {
-        this->setText( SIZE_COL, " " + QConvert::bytes( size_ ) + " " );
+        this->setText( SIZE_COL, " " + Convert::bytes( size_ ) + " " );
     }
     this->setText( FILENAME_COL, fileName );
     partListDialog->setFilename( fileName );
 
-    float p = QConvert::powerValue( power );
+    float p = Convert::powerValue( power );
     if( p > 1.0 ) {
         this->powerSpin->spin->setValue( p );
     }
@@ -257,8 +257,8 @@ bool DownloadItem::updateView(const QHash<QString, QString>& downloadStatusDescr
     percent = (int)(finished * 100.0);
     progressBar->setValue(percent);
 
-    setText( FINISHED_SIZE_COL, " " + QConvert::bytes( ready ) + " " );
-    setText( REMAIN_SIZE_COL, " " + QConvert::bytes( remainingSize ) + " " );
+    setText( FINISHED_SIZE_COL, " " + Convert::bytes( ready ) + " " );
+    setText( REMAIN_SIZE_COL, " " + Convert::bytes( remainingSize ) + " " );
 
 
     speed = 0.0;
@@ -269,11 +269,11 @@ bool DownloadItem::updateView(const QHash<QString, QString>& downloadStatusDescr
         }
     }
 
-    setText( SPEED_COL, " " + QConvert::bytes( speed, 1 ) + "/s ");
+    setText( SPEED_COL, " " + Convert::bytes( speed, 1 ) + "/s ");
 
     if( speed > 0 ) {
         remainingSec = (long int)(remainingSize / speed);
-        setText( REMAIN_TIME_COL, " " + QConvert::time( remainingSec ) + " " );
+        setText( REMAIN_TIME_COL, " " + Convert::time( remainingSec ) + " " );
     } else {
         remainingSec = LONG_MAX;
         setText( REMAIN_TIME_COL, QString( " n.a. " ) );

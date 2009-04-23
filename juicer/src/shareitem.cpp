@@ -53,5 +53,5 @@ void ShareItem::update()
     for(int i=0; i<sharedFiles.size(); i++) {
         sum += sharedFiles.at(i)->getSize();
     }
-    setText(ShareItem::SIZE_COL, QConvert::bytes(sum) + " (" + QString::number(sharedFiles.size()) + ")");
+    setText(ShareItem::SIZE_COL, Convert::bytes(sum) + " (" + QString::number(sharedFiles.size()) + ")");
 }

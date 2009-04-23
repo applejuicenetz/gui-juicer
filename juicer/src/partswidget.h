@@ -24,7 +24,7 @@
 #include <QPainter>
 #include <QLinkedList>
 
-#include "qconvert.h"
+#include "convert.h"
 
 /**
 @author Matthias Reif

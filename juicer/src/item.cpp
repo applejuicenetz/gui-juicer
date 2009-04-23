@@ -37,7 +37,7 @@ Item::Item( QTreeWidgetItem *parent, const QString& id )
 
 
 Item::~Item() {
-    setHiddenSave(false);
+     setHiddenSave(false);
 }
 
 
@@ -51,7 +51,7 @@ bool Item::setHiddenSave(bool hidden) {
     if(r != hidden) {
         qApp->processEvents();
         setHidden(hidden);
-//         qApp->processEvents();
+        qApp->processEvents();
     }
     return r;
 }

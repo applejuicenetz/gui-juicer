@@ -25,7 +25,6 @@
 #include <QFileInfo>
 #include "modulebase.h"
 #include "uploaditem.h"
-#include "qconvert.h"
 
 #include <QStandardItemModel>
 

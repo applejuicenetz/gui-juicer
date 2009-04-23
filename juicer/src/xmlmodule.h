@@ -31,9 +31,7 @@
 
 #include "optionsdialog.h"
 #include "partswidget.h"
-
 #include "md5class.h"
-#include "qconvert.h"
 #include "item.h"
 
 /**
@@ -43,13 +41,13 @@
 class Juicer;
 class QXMLHandler;
 
-class QXMLModule : public QHttp
+class XMLModule : public QHttp
 {
     Q_OBJECT
 public:
-    QXMLModule(Juicer *juicer, QObject *parent = 0);
+    XMLModule(Juicer *juicer, QObject *parent = 0);
 
-    ~QXMLModule();
+    ~XMLModule();
 
     void resetHttp();
 

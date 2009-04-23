@@ -57,7 +57,7 @@ Juicer::Juicer( const QStringList& argList, QSplashScreen *splash )
     osIcons[FREEBSD] = QIcon(":/small/freebsd.png");
     osIcons[NETWARE] = QIcon(":/small/netware.png");
 
-    xml = new QXMLModule(this);
+    xml = new XMLModule(this);
     downloadModule = new DownloadModule(this);
     uploadModule = new UploadModule(this);
     searchModule = new SearchModule(this);
@@ -379,11 +379,11 @@ void Juicer::gotSession() {
 
 void Juicer::setStatusBarText(const QString& downSpeed, const QString& upSpeed,
         const QString& credits, const QString& downSize, const QString& upSize) {
-    QString downStreamString = QConvert::bytes(downSpeed) + "/s";
-    QString upStreamString = QConvert::bytes(upSpeed) + "/s";
-    QString creditsString = QConvert::bytesExtra(credits);
-    QString downSizeString = QConvert::bytesExtra(downSize);
-    QString upSizeString = QConvert::bytesExtra(upSize);
+    QString downStreamString = Convert::bytes(downSpeed) + "/s";
+    QString upStreamString = Convert::bytes(upSpeed) + "/s";
+    QString creditsString = Convert::bytesExtra(credits);
+    QString downSizeString = Convert::bytesExtra(downSize);
+    QString upSizeString = Convert::bytesExtra(upSize);
 
     downSpeedLabel->setText(downStreamString);
     upSpeedLabel->setText(upStreamString);

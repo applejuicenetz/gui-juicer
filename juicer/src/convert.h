@@ -29,13 +29,13 @@
 /**
 @author Matthias Reif
 */
-class QConvert : public QObject
+class Convert : public QObject
 {
     Q_OBJECT
 public:
-    QConvert(QObject *parent = 0);
+    Convert(QObject *parent = 0);
 
-    ~QConvert();
+    ~Convert();
 
     static QString num( long int num );
     static QString bytes( const QString& x );

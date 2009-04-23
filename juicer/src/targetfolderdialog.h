@@ -27,7 +27,6 @@ public:
 protected slots:
     virtual void reject();
     virtual void accept();
-
 };
 
 #endif

@@ -17,11 +17,11 @@
 #include <QInputDialog>
 #include <QClipboard>
 
-#include "qxmlmodule.h"
+#include "xmlmodule.h"
 #include "modulebase.h"
 #include "downloaditem.h"
 #include "useritem.h"
-#include "qconvert.h"
+#include "convert.h"
 #include "ftp.h"
 #include "optionsdialog.h"
 #include "targetfolderdialog.h"
@@ -50,7 +50,7 @@ public slots:
     void updateView(bool force = false);
     void partListSlot();
 protected:
-    void processSelected(QXMLModule::Type type, const QString& request, const QString& para = "");
+    void processSelected(XMLModule::Type type, const QString& request, const QString& para = "");
     void getSelected(const QString& request, const QString& para = "");
     void setSelected(const QString& request, const QString& para = "");
 

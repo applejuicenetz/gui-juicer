@@ -16,7 +16,6 @@
 #include <QDialog>
 #include <QTimer>
 #include "ui_partlistdialogbase.h"
-#include "qconvert.h"
 #include "partswidget.h"
 
 class PartListDialog : public QDialog, private Ui::partListDialog

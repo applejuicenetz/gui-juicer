@@ -6,7 +6,7 @@
     <x>0</x>
     <y>0</y>
     <width>1288</width>
-    <height>688</height>
+    <height>650</height>
    </rect>
   </property>
   <property name="windowTitle" >
@@ -255,28 +255,19 @@
         <iconset resource="images.qrc" >
          <normaloff>:/small/searching.png</normaloff>:/small/searching.png</iconset>
        </attribute>
-       <layout class="QHBoxLayout" name="horizontalLayout" >
-        <property name="margin" >
-         <number>0</number>
-        </property>
+       <layout class="QHBoxLayout" name="horizontalLayout_2" >
         <item>
-         <widget class="QGroupBox" name="groupBox" >
-          <property name="title" >
-           <string>Filter Results</string>
-          </property>
-          <layout class="QVBoxLayout" name="verticalLayout_4" >
-           <item>
-            <layout class="QFormLayout" name="formLayout" >
-             <property name="fieldGrowthPolicy" >
-              <enum>QFormLayout::ExpandingFieldsGrow</enum>
-             </property>
-             <property name="labelAlignment" >
-              <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
-             </property>
+         <layout class="QVBoxLayout" name="verticalLayout_8" >
+          <item>
+           <widget class="QGroupBox" name="groupBox_4" >
+            <property name="title" >
+             <string>Size</string>
+            </property>
+            <layout class="QGridLayout" name="gridLayout_2" >
              <item row="0" column="0" >
               <widget class="QCheckBox" name="minSizeCheckBox" >
                <property name="text" >
-                <string>minimal size:</string>
+                <string>minimal:</string>
                </property>
               </widget>
              </item>
@@ -305,7 +296,7 @@
              <item row="1" column="0" >
               <widget class="QCheckBox" name="maxSizeCheckBox" >
                <property name="text" >
-                <string>maximal size:</string>
+                <string>maximal:</string>
                </property>
               </widget>
              </item>
@@ -335,76 +326,124 @@
               </widget>
              </item>
             </layout>
-           </item>
-           <item>
-            <widget class="QGroupBox" name="groupBox_2" >
-             <property name="title" >
-              <string>File Type</string>
-             </property>
-             <layout class="QGridLayout" name="gridLayout" >
-              <item row="2" column="0" >
-               <widget class="QCheckBox" name="audioCheckBox" >
-                <property name="text" >
-                 <string>Audio</string>
-                </property>
-               </widget>
-              </item>
-              <item row="3" column="0" >
-               <widget class="QCheckBox" name="imageCheckBox" >
-                <property name="text" >
-                 <string>Image</string>
-                </property>
-               </widget>
-              </item>
-              <item row="3" column="1" >
-               <widget class="QCheckBox" name="cddvdCheckBox" >
-                <property name="text" >
-                 <string>CD/DVD</string>
-                </property>
-               </widget>
-              </item>
-              <item row="0" column="1" >
-               <widget class="QCheckBox" name="textCheckBox" >
-                <property name="text" >
-                 <string>Text</string>
-                </property>
-               </widget>
-              </item>
-              <item row="2" column="1" >
-               <widget class="QCheckBox" name="archiveCheckBox" >
-                <property name="text" >
-                 <string>Archive</string>
-                </property>
-               </widget>
-              </item>
-              <item row="0" column="0" >
-               <widget class="QCheckBox" name="videoCheckBox" >
-                <property name="text" >
-                 <string>Video</string>
-                </property>
-               </widget>
-              </item>
-             </layout>
-            </widget>
-           </item>
-           <item>
-            <spacer name="verticalSpacer" >
-             <property name="orientation" >
-              <enum>Qt::Vertical</enum>
-             </property>
-             <property name="sizeHint" stdset="0" >
-              <size>
-               <width>20</width>
-               <height>40</height>
-              </size>
-             </property>
-            </spacer>
-           </item>
-          </layout>
-         </widget>
+           </widget>
+          </item>
+          <item>
+           <widget class="QGroupBox" name="groupBox_2" >
+            <property name="sizePolicy" >
+             <sizepolicy vsizetype="Preferred" hsizetype="Minimum" >
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="title" >
+             <string>File Type</string>
+            </property>
+            <layout class="QVBoxLayout" name="verticalLayout_4" >
+             <item>
+              <layout class="QGridLayout" name="gridLayout" >
+               <item row="0" column="0" >
+                <widget class="QCheckBox" name="videoCheckBox" >
+                 <property name="text" >
+                  <string>Video</string>
+                 </property>
+                </widget>
+               </item>
+               <item row="0" column="1" >
+                <widget class="QCheckBox" name="textCheckBox" >
+                 <property name="text" >
+                  <string>Text</string>
+                 </property>
+                </widget>
+               </item>
+               <item row="1" column="0" >
+                <widget class="QCheckBox" name="audioCheckBox" >
+                 <property name="text" >
+                  <string>Audio</string>
+                 </property>
+                </widget>
+               </item>
+               <item row="1" column="1" >
+                <widget class="QCheckBox" name="archiveCheckBox" >
+                 <property name="text" >
+                  <string>Archive</string>
+                 </property>
+                </widget>
+               </item>
+               <item row="2" column="0" >
+                <widget class="QCheckBox" name="imageCheckBox" >
+                 <property name="text" >
+                  <string>Image</string>
+                 </property>
+                </widget>
+               </item>
+               <item row="2" column="1" >
+                <widget class="QCheckBox" name="cddvdCheckBox" >
+                 <property name="text" >
+                  <string>CD/DVD</string>
+                 </property>
+                </widget>
+               </item>
+              </layout>
+             </item>
+             <item>
+              <layout class="QHBoxLayout" name="horizontalLayout" >
+               <item>
+                <widget class="QLineEdit" name="fileTypeEdit" >
+                 <property name="sizePolicy" >
+                  <sizepolicy vsizetype="Fixed" hsizetype="Minimum" >
+                   <horstretch>0</horstretch>
+                   <verstretch>0</verstretch>
+                  </sizepolicy>
+                 </property>
+                 <property name="minimumSize" >
+                  <size>
+                   <width>0</width>
+                   <height>0</height>
+                  </size>
+                 </property>
+                 <property name="baseSize" >
+                  <size>
+                   <width>0</width>
+                   <height>0</height>
+                  </size>
+                 </property>
+                </widget>
+               </item>
+              </layout>
+             </item>
+             <item>
+              <spacer name="verticalSpacer" >
+               <property name="orientation" >
+                <enum>Qt::Vertical</enum>
+               </property>
+               <property name="sizeHint" stdset="0" >
+                <size>
+                 <width>20</width>
+                 <height>40</height>
+                </size>
+               </property>
+              </spacer>
+             </item>
+            </layout>
+           </widget>
+          </item>
+         </layout>
         </item>
         <item>
          <widget class="QTreeWidget" name="searchsTreeWidget" >
+          <property name="sizePolicy" >
+           <sizepolicy vsizetype="Expanding" hsizetype="Expanding" >
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="sizeIncrement" >
+           <size>
+            <width>0</width>
+            <height>0</height>
+           </size>
+          </property>
           <property name="selectionMode" >
            <enum>QAbstractItemView::ExtendedSelection</enum>
           </property>
@@ -502,8 +541,8 @@
         </property>
         <property name="minimumSize" >
          <size>
-          <width>84</width>
-          <height>94</height>
+          <width>96</width>
+          <height>100</height>
          </size>
         </property>
         <property name="features" >

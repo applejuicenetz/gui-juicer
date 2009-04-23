@@ -57,6 +57,5 @@ void SearchEntryItem::setFilter(Filter& filter) {
         && (size_ >= filter.minSize)
         && (size_ <= filter.maxSize)
         && (!filter.type.isValid() || filter.type.indexIn(filename_) >=0);
-
     setHidden(!ok);
 }

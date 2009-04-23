@@ -38,7 +38,7 @@ void PartsWidget::paintEvent( QPaintEvent* )
     if ( partList.empty() ) {
         return;
     }
-    int BLOCK_ROWS = QConvert::max(1,height() / 30);
+    int BLOCK_ROWS = Convert::max(1,height() / 30);
 
     blockHeight = this->height() / BLOCK_ROWS;
     numPixels = this->width() * BLOCK_ROWS;

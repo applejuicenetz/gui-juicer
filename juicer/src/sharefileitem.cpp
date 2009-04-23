@@ -44,7 +44,7 @@ void ShareFileItem::update( const QString& hash,
     size_ = size.toDouble();
 
     setText( ShareItem::PATH_COL, filename_.split(filesystemSeperator).last() );
-    setText( ShareItem::SIZE_COL, QConvert::bytesExtra(size) );
+    setText( ShareItem::SIZE_COL, Convert::bytesExtra(size) );
     setText( ShareItem::PRIORITY_COL, priority );
 
     ShareItem* parentItem = dynamic_cast<ShareItem*>(QTreeWidgetItem::parent());

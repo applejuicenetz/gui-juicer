@@ -29,6 +29,3 @@ void TargetFolderDialog::reject() {
 void TargetFolderDialog::accept() {
     QDialog::accept();
 }
-
-
-

@@ -27,17 +27,13 @@
 #include <QPixmap>
 #include <QPainter>
 #include <QHash>
-
 #include <QHeaderView>
 #include <QLinkedList>
 #include <QProgressBar>
 
 #include "useritem.h"
-
 #include "item.h"
-
-#include "qconvert.h"
-
+#include "convert.h"
 #include "partlistdialog.h"
 #include "powerspin.h"
 

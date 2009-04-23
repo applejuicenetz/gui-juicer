@@ -28,8 +28,6 @@ HEADERS += ftp.h \
            socket.h \
            uploaditem.h \
            useritem.h \
-           qconvert.h \
-           qxmlmodule.h \
            juicer.h \
            networkdialog.h \
            searchentryitem.h \
@@ -52,7 +50,9 @@ HEADERS += ftp.h \
  helpdialog.h \
  autoupdate.h \
  updatedialog.h \
- targetfolderdialog.h
+ targetfolderdialog.h \
+ xmlmodule.h \
+ convert.h
 SOURCES += ftp.cpp \
            main.cpp \
            md5c.c \
@@ -68,8 +68,6 @@ SOURCES += ftp.cpp \
            socket.cpp \
            uploaditem.cpp \
            useritem.cpp \
-           qconvert.cpp \
-           qxmlmodule.cpp \
            juicer.cpp \
            networkdialog.cpp \
            searchentryitem.cpp \
@@ -92,7 +90,9 @@ SOURCES += ftp.cpp \
  helpdialog.cpp \
  autoupdate.cpp \
  updatedialog.cpp \
- targetfolderdialog.cpp
+ targetfolderdialog.cpp \
+ xmlmodule.cpp \
+ convert.cpp
 CONFIG += warn_on \
           qt \
           stl \

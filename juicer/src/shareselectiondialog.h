@@ -16,7 +16,7 @@
 #include <QDialog>
 #include <QHash>
 #include <QTreeWidgetItem>
-#include "qxmlmodule.h"
+#include "xmlmodule.h"
 #include "ui_shareselectiondialogbase.h"
 
 class ShareSelectionDialog : public QDialog, protected Ui::Dialog
@@ -24,7 +24,7 @@ class ShareSelectionDialog : public QDialog, protected Ui::Dialog
   Q_OBJECT
 
 public:
-    ShareSelectionDialog(QXMLModule* xml, QWidget* parent = 0, Qt::WFlags fl = 0 );
+    ShareSelectionDialog(XMLModule* xml, QWidget* parent = 0, Qt::WFlags fl = 0 );
     ~ShareSelectionDialog();
 
     void insertDirectory(const QString& dir, const QString& path, int type );
@@ -34,7 +34,7 @@ public:
     enum {WORKSTATION=1, DRIVE=2, DISKDRIVE=3, FOLDER=4, DESKTOP=5};
 
 protected:
-    QXMLModule* xml;
+    XMLModule* xml;
     QString filesystemSeperator;
     QTreeWidgetItem* expandedItem;
     QHash<int, QIcon> shareIcons;

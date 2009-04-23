@@ -76,7 +76,7 @@ void PartListDialog::setFilename( const QString& filename )
  */
 void PartListDialog::paintedSlot()
 {
-    sizeLabel->setText( QConvert::bytes(paintWidget->size) );
+    sizeLabel->setText( Convert::bytes(paintWidget->size) );
     readyLabel->setText( QString::number( paintWidget->ready, 'f', 2 ) + "%" );
     availableLabel->setText( QString::number( paintWidget->available, 'f', 2 ) + "%" );
     rareLabel->setText( QString::number( paintWidget->lessSources, 'f', 2 ) + "%" );
