@@ -2,37 +2,90 @@
 <title></title>
 <body>
 <h1>Juicer User Manual</h1>
+<h3><font color=#FF0000>under construction</font></h3>
 
 <h2 id="mainwindow">The Main Window</h2>
 <p>
 <IMG src="images/mainwindow.png" align="center" border="0">
 </p>
 <p>
-<ul>
 <li>1 - Menu Bar: general and specific menus for the modules</li>
-<li>2 - General Tool Bar: tool bar wit general, module independent actions</li>
+<li>2 - General Tool Bar: tool bar wit general, module independent actions<br>
+	<blockquote>
+	<table>
+	<TR><TD><IMG src="images/juicer/configure.png" width="22" height="22" align="left" border="0"></TD><TD>opens the options dialog where you can configure Juicer as well as the appleJuice core</TD></TR>
+	<TR><TD><IMG src="images/juicer/network.png" width="22" height="22" align="left" border="0"></TD><TD>show information of the appleJuice network</TD></TR>
+	<TR><TD><IMG src="images/juicer/fileopen.png" width="22" height="22" align="left" border="0"></TD><TD>opens a link list file and adds all links in it</TD></TR>
+	<TR><TD><IMG src="images/juicer/show_table_column.png" width="22" height="22" align="left" border="0"></TD><TD>adjusts the width of all columns of the currently visible tree view</TD></TR>
+	<TR><TD><IMG src="images/juicer/wizard.png" width="22" height="22" align="left" border="0"></TD><TD>adds all links that are currently in the clipboard</TD></TR>
+	<TR><TD><IMG src="images/juicer/button_ok.png" width="22" height="22" align="left" border="0"></TD><TD>adds the link of the input field</TD></TR>
+	</table>
+	</blockquote>
+</li>
 <li>3 - Module Tool Bar: tool bar with actions of the selected module, changes if another module was selected</li>
-<li>4 - Tab Bar: module selection</li>
+<li>4 - Tab Bar: module selection<br>
+	<blockquote>
+	Juicer consists of several modules whereas the data of each is shown in its very own tab in the main window (5). There are six different modules:
+	<table>
+	<TR><TD><IMG src="images/juicer/small/down.png" width="16" height="16" align="left" border="0"></TD><TD><a href="#downloads">Downloads</a>: all downloads</TD></TR>
+	<TR><TD><IMG src="images/juicer/small/up.png" width="16" height="16" align="left" border="0"></TD><TD><a href="#uploads">Uploads</a>: all uploads</TD></TR>
+	<TR><TD><IMG src="images/juicer/small/viewmag.png" width="16" height="16" align="left" border="0"></TD><TD><a href="#search">Search</a>: searching for files</TD></TR>
+	<TR><TD><IMG src="images/juicer/small/server.png" width="16" height="16" align="left" border="0"></TD><TD><a href="#server">Server</a>: available servers</TD></TR>
+	<TR><TD><IMG src="images/juicer/small/folder_open.png" width="16" height="16" align="left" border="0"></TD><TD><a href="#shares">Shares</a>: shared folders and files</TD></TR>
+	<TR><TD><IMG src="images/juicer/small/network_local.png" width="16" height="16" align="left" border="0"></TD><TD><a href="#incmoing">Incoming</a>: management of downloaded files</TD></TR>
+	</table>
+	</blockquote>
+</li>
 <li>5 - Tab Widget: module content</li>
 <li>6 - Dock Widget: shows some extra information like the part list of a download; you can move, release, and hide it</li>
-<li>7 - Status Bar: general status information</li>
+<li>7 - Status Bar: general status information<br>
+	<blockquote>
+	<table>
+	<TR><TD><IMG src="images/juicer/small/connect_established.png" width="16" height="16" align="left" border="0"></TD><TD>since when the core is connected to a server</TD></TR>
+	<TR><TD><IMG src="images/juicer/small/help.png" width="16" height="16" align="left" border="0"></TD><TD>the version of the core</TD></TR>
+	<TR><TD><IMG src="images/juicer/small/arrow_down.png" width="16" height="16" align="left" border="0"></TD><TD>speed of all downloads</TD></TR>
+	<TR><TD><IMG src="images/juicer/small/arrow_up.png" width="16" height="16" align="left" border="0"></TD><TD>speed of all uploads</TD></TR>
+	<TR><TD><IMG src="images/juicer/small/basket_put.png" width="16" height="16" align="left" border="0"></TD><TD>amount of data downloaded since the core is running</TD></TR>
+	<TR><TD><IMG src="images/juicer/small/basket_remove.png" width="16" height="16" align="left" border="0"></TD><TD>amount of data uploaded since the core is running</TD></TR>
+	<TR><TD><IMG src="images/juicer/small/coins.png" width="16" height="16" align="left" border="0"></TD><TD>amount of credits available</TD></TR>
+	</table>
+	</blockquote>
+</li>
 </ul>
 </p>
 
-<h2 id="modules">Modules</h2>
-Juicer consists of several modules whereas the data of each is shown in its very own tab in the main window. There are six different modules:
-<ul>
-<li>Downlaods - current downloads</li>
-<li>Uplaods - current uploads</li>
-<li>Search - searches for files and their results</li>
-<li>Server - information about servers</li>
-<li>Shares - shared directories and files</li>
-<li>Incoming - management of downloaded files</li>
-</ul>
-Each of these modules will be described in the following.
-
 <h3 id="downloads">Downloads</h3>
-The Downloads module is obviously the most important part of Juicer and therefor provides the most amount of information.
+The Downloads module is obviously the most important part of Juicer and therefor provides the most amount of information. Every download is shown by one line in the tree view that can be expanded by clikcing on the little plus sign or by double clicking the row in order to show the users where you are downloading from or may download from. They are sorted by status:
+
+<ol>
+<li>"active": meaning you are currently getting data from it</li>
+<li>"queueing": you are in the queue of an user and you may download from it if you wait or increase your power download</li>
+<li>"other": you are not acutally connected to these users by different reasons</li>
+</ol>
+
+You can manipulate downloads by selecting them and clicking on a button in the toolbar or in the context menu.
+<blockquote>
+<table>
+<TR><TD><IMG src="images/juicer/player_pause.png" width="22" height="22" align="left" border="0"></TD><TD>pauses the selected download(s)</TD></TR>
+<TR><TD><IMG src="images/juicer/player_play.png" width="22" height="22" align="left" border="0"></TD><TD>starts the selected download(s)</TD></TR>
+<TR><TD><IMG src="images/juicer/stop.png" width="22" height="22" align="left" border="0"></TD><TD>cancels the selected download(s)</TD></TR>
+<TR><TD><IMG src="images/juicer/partlist.png" width="22" height="22" align="left" border="0"></TD><TD>shows the part list of the selected download(s) in a separate window</TD></TR>
+<TR><TD><IMG src="images/juicer/edit.png" width="22" height="22" align="left" border="0"></TD><TD>changes the file name on the selected download(s)</TD></TR>
+<TR><TD><IMG src="images/juicer/editpaste.png" width="22" height="22" align="left" border="0"></TD><TD>changes the filename(s) of the selected download(s) by the content of the clipboard; this operation preserves file suffixes and adds "_1", "_2", ... in front of the file suffix if multiple downloads are selected</TD></TR>
+<TR><TD><IMG src="images/juicer/exec.png" width="22" height="22" align="left" border="0"></TD><TD>opens the selected download(s) with the application defined in the configuration</TD></TR>
+<TR><TD><IMG src="images/juicer/folder_open.png" width="22" height="22" align="left" border="0"></TD><TD>changes the target folder of the selected download(s)</TD></TR>
+<TR><TD><IMG src="images/juicer/text_block.png" width="22" height="22" align="left" border="0"></TD><TD>copies the ajfsp link(s) of the selected download(s) into the clipboard</TD></TR>
+<TR><TD><IMG src="images/juicer/toggle_log.png" width="22" height="22" align="left" border="0"></TD><TD>creates a link list of ajfsp links of the selected download(s) and writes them to a file</TD></TR>
+</table>
+</blockquote>
+Additionally there are operation that infect downloads or the download view in general:
+<blockquote>
+<table>
+<TR><TD><IMG src="images/juicer/emptytrash.png" width="22" height="22" align="left" border="0"></TD><TD>removes finished and canceld downloads from the list</TD></TR>
+<TR><TD><IMG src="images/juicer/pause_fade.png" width="22" height="22" align="left" border="0"></TD><TD>hides (NOT removes) puased downloads</TD></TR>
+<TR><TD><IMG src="images/juicer/partlist2.png" width="22" height="22" align="left" border="0"></TD><TD>enables/disabled the dock widget with the part list</TD></TR>
+</table>
+</blockquote>
 
 <h3 id="uploads">Uploads</h3>
 
