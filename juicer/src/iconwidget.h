@@ -31,7 +31,7 @@ class IconWidget : public QWidget
 {
 Q_OBJECT
 public:
-    IconWidget(QString icon, QString text, QBoxLayout::Direction dir, QWidget *parent = 0, int spacing = -1, int margin = 9);
+    IconWidget(const QString& icon, const QString& text, const QString& toolTip, QBoxLayout::Direction dir, QWidget *parent = 0, int spacing = -1, int margin = 9);
 
     ~IconWidget();
     void setText( const QString& text );

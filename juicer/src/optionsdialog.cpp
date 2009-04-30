@@ -21,66 +21,53 @@
 #include "optionsdialog.h"
 #include "application.h"
 
-
-OptionsDialog::OptionsDialog( QWidget* parent ) : QDialog( parent )
-{
-    setupUi( this );
+OptionsDialog::OptionsDialog(QWidget* parent) : QDialog(parent) {
+    setupUi(this);
 #ifndef Q_WS_WIN
     handlerGroupBox->setHidden(true);
 #endif
-    IconWidget* l = new IconWidget(":/options/core.png", tr("Core"), QBoxLayout::TopToBottom, listWidget);
+    IconWidget* l = new IconWidget(":/options/core.png", tr("Core"), tr("Core Settings"), QBoxLayout::TopToBottom, listWidget);
     QListWidgetItem* item = new QListWidgetItem(listWidget);
     item->setSizeHint(l->size());
     listWidget->setItemWidget(item, l);
 
-    l = new IconWidget(":/options/limits.png", tr("Limits"), QBoxLayout::TopToBottom, listWidget);
+    l = new IconWidget(":/options/limits.png", tr("Limits"), tr("Limitations"), QBoxLayout::TopToBottom, listWidget);
     item = new QListWidgetItem(listWidget);
     item->setSizeHint(l->size());
     listWidget->setItemWidget(item, l);
 
-    l = new IconWidget(":/options/appearance.png", tr("Appearance"), QBoxLayout::TopToBottom, listWidget);
+    l = new IconWidget(":/options/appearance.png", tr("Appearance"), tr("Appearance of the GUI"), QBoxLayout::TopToBottom, listWidget);
     item = new QListWidgetItem(listWidget);
     item->setSizeHint(l->size());
     listWidget->setItemWidget(item, l);
 
-    l = new IconWidget(":/options/behaviour.png", tr("Behaviour"), QBoxLayout::TopToBottom, listWidget);
+    l = new IconWidget(":/options/behaviour.png", tr("Behaviour"), tr("Behaviour of the GUI"), QBoxLayout::TopToBottom, listWidget);
     item = new QListWidgetItem(listWidget);
     item->setSizeHint(l->size());
     listWidget->setItemWidget(item, l);
 
-    l = new IconWidget(":/options/search.png", tr("Search"), QBoxLayout::TopToBottom, listWidget);
+    l = new IconWidget(":/options/search.png", tr("Search"), tr("Search Settings"), QBoxLayout::TopToBottom, listWidget);
     item = new QListWidgetItem(listWidget);
     item->setSizeHint(l->size());
     listWidget->setItemWidget(item, l);
 
-    l = new IconWidget(":/options/launching.png", tr("Launching"), QBoxLayout::TopToBottom, listWidget);
+    l = new IconWidget(":/options/launching.png", tr("Launching"), tr("Opening of Files"), QBoxLayout::TopToBottom, listWidget);
     item = new QListWidgetItem(listWidget);
     item->setSizeHint(l->size());
     listWidget->setItemWidget(item, l);
 
-    l = new IconWidget(":/options/ftp.png", tr("FTP"), QBoxLayout::TopToBottom, listWidget);
+    l = new IconWidget(":/options/ftp.png", tr("FTP"), tr("FTP Settings"), QBoxLayout::TopToBottom, listWidget);
     item = new QListWidgetItem(listWidget);
     item->setSizeHint(l->size());
     listWidget->setItemWidget(item, l);
 
-    l = new IconWidget(":/options/reset.png", tr("Reset"), QBoxLayout::TopToBottom, listWidget);
+    l = new IconWidget(":/options/reset.png", tr("Reset"), tr("Configuration Reset"), QBoxLayout::TopToBottom, listWidget);
     item = new QListWidgetItem(listWidget);
     item->setSizeHint(l->size());
     listWidget->setItemWidget(item, l);
-
 
     languageComboBox->addItem(QIcon(":/options/de.png"), "deutsch", "de");
     languageComboBox->addItem(QIcon(":/options/gb.png"), "english", "en");
-
-    connect( incomingButton, SIGNAL( clicked() ), this, SLOT( selectIncomingDir() ) );
-    connect( tempButton, SIGNAL( clicked() ), this, SLOT( selectTempDir() ) );
-
-    connect( launcherButton, SIGNAL( clicked() ), this, SLOT( selectLauncher() ) );
-
-    connect( incomingSpecificButton, SIGNAL( clicked() ), this, SLOT( selectIncomingDirSpecific() ) );
-    connect( tempSpecificButton, SIGNAL( clicked() ), this, SLOT( selectTempDirSpecific() ) );
-
-    connect( specificRadio, SIGNAL( toggled( bool ) ), this, SLOT( specificRadioToggled( bool ) ) );
 
     launchCombo->addItem( DEFAULT_LAUNCHER );
     if(DEFAULT_LAUNCHER == KDE_LAUNCHER)
@@ -88,86 +75,73 @@ OptionsDialog::OptionsDialog( QWidget* parent ) : QDialog( parent )
 
     specificRadioToggled( false );
 
+    connect( incomingButton, SIGNAL( clicked() ), this, SLOT( selectIncomingDir() ) );
+    connect( tempButton, SIGNAL( clicked() ), this, SLOT( selectTempDir() ) );
+    connect( launcherButton, SIGNAL( clicked() ), this, SLOT( selectLauncher() ) );
+    connect( incomingSpecificButton, SIGNAL( clicked() ), this, SLOT( selectIncomingDirSpecific() ) );
+    connect( tempSpecificButton, SIGNAL( clicked() ), this, SLOT( selectTempDirSpecific() ) );
+    connect( specificRadio, SIGNAL( toggled( bool ) ), this, SLOT( specificRadioToggled( bool ) ) );
     connect( listWidget, SIGNAL( currentRowChanged( int ) ), stackedWidget , SLOT(setCurrentIndex( int ) ) );
     connect( jumpFtpButton, SIGNAL( clicked() ), this , SLOT(jumpToFtpSlot() ) );
-
     connect( fontComboBox, SIGNAL( currentFontChanged( const QFont& ) ), this, SLOT( setFontSizes( const QFont& ) ) );
-
     connect( this, SIGNAL( accepted() ), this, SLOT( acceptedSlot() ) );
-
     connect(handlerPushButton, SIGNAL(clicked()), this, SLOT(setAjfspHandler()));
     connect(resetPushButton, SIGNAL(clicked()), this, SLOT(reset()));
 
     listWidget->setCurrentRow( 0 );
 }
 
-OptionsDialog::~OptionsDialog()
-{}
+OptionsDialog::~OptionsDialog() {
+}
 
-AjSettings OptionsDialog::getAjSettings()
-{
+AjSettings OptionsDialog::getAjSettings() {
     AjSettings settings;
     settings.nick = nickEdit->text();
     settings.xmlPort = xmlEdit->text();
     settings.incomingDir = incomingEdit->text();
     settings.tempDir = tempEdit->text();
-
     settings.autoconnect = autoConnect->isChecked()?"true":"false";
-
     settings.maxDown = QString::number( downSpin->value() );
     settings.maxUp = QString::number( upSpin->value() );
     settings.maxSlot = QString::number( slotSpin->value() );
     settings.maxSources = QString::number( sourcesSpin->value() );
     settings.maxCon = QString::number( connectionsSpin->value() );
     settings.maxNewCon = QString::number( newSpin->value() );
-
     settings.tcpPort = tcpEdit->text();
-
     return settings;
 }
 
-void OptionsDialog::setAjSettings( const AjSettings& settings )
-{
+void OptionsDialog::setAjSettings(const AjSettings& settings) {
     nickEdit->setText( settings.nick );
     xmlEdit->setText( settings.xmlPort );
     incomingEdit->setText( settings.incomingDir );
     tempEdit->setText( settings.tempDir );
-
     autoConnect->setChecked( ( settings.autoconnect.toLower() == "true" ) );
-
     downSpin->setValue( settings.maxDown.toInt() / 1024 );
     upSpin->setValue( settings.maxUp.toInt() / 1024 );
     slotSpin->setValue( settings.maxSlot.toInt() );
     sourcesSpin->setValue( settings.maxSources.toInt() );
     connectionsSpin->setValue( settings.maxCon.toInt() );
     newSpin->setValue( settings.maxNewCon.toInt() );
-
     tcpEdit->setText( settings.tcpPort );
 }
 
-void OptionsDialog::setSettings()
-{
+void OptionsDialog::setSettings() {
     passwordEdit->setText( getSetting( "password", "" ).toString() );
     coreEdit->setText( getSetting( "coreAddress", "localhost" ).toString() );
-
     refreshSpin->setValue( getSetting( "refresh", 3 ).toInt() );
-
     savePassword->setChecked( getSetting( "savePassword", false ).toBool() );
     showSplash->setChecked( getSetting( "showSplash", true ).toBool() );
     trayCheckBox->setChecked( getSetting( "useTray", false ).toBool() );
     altRowsCheckBox->setChecked( getSetting( "altRows", false ).toBool() );
-
     serverEdit->setText( getSetting( "serverURL", "http://www.applejuicenet.de/18.0.html" ).toString() );
-
     launchCombo->setEditText( getSetting( "launcher", launchCombo->itemText(0)).toString() );
-
     int location = getSetting( "location", AjSettings::SAME ).toInt();
     sameComputerRadio->setChecked( location == AjSettings::SAME );
     specificRadio->setChecked( location == AjSettings::SPECIFIC );
     ftpRadio->setChecked( location == AjSettings::FTP );
     incomingSpecificEdit->setText( getSetting("incomingDirSpecific", "/" ).toString() );
     tempSpecificEdit->setText( getSetting( "tempDirSpecific", "/" ).toString() );
-
     ftpServerEdit->setText( getSetting( "ftp", "server", "localhost" ).toString() );
     ftpPortEdit->setText( getSetting( "ftp", "port", "21" ).toString() );
     ftpUserEdit->setText( getSetting( "ftp", "user", "anonymous" ).toString() );
@@ -176,22 +150,17 @@ void OptionsDialog::setSettings()
     ftpTmpDirEdit->setText( getSetting( "ftp", "tmpDir", "/" ).toString() );
     ftpActiveRadioButton->setChecked( getSetting( "ftp", "mode", QFtp::Active ) == QFtp::Active );
     ftpPassiveRadioButton->setChecked( getSetting( "ftp", "mode", QFtp::Active ) == QFtp::Passive );
-
     ftpMbSpinBox->setValue( getSetting( "ftp", "mb", "10" ).toInt() );
     bool ftpFull = getSetting( "ftp", "full", false ).toBool();
     ftpFullRadioButton->setChecked( ftpFull );
     ftpMbRadioButton->setChecked( !ftpFull );
-
     fetchServersCheckBox->setChecked( getSetting( "fetchServersOnStartup", false ).toBool() );
-
     languageComboBox->setCurrentIndex(languageComboBox->findData(getSetting( "language", "en" ).toString().split("_")[0]));
-
     QStringList statusbarComponents = getSetting( "statusbarComponents", getDefaultStatusbarComponents() ).toStringList();
     statusbarList->clearSelection();
     for(int i=0; i<statusbarComponents.size(); i++) {
         statusbarList->item( statusbarComponents[i].toInt() )->setSelected( true );
     }
-
     QFont font = getSetting( "font", QApplication::font() ).value<QFont>();
     QApplication::setFont( font );
     fontComboBox->setCurrentFont( font );
@@ -201,9 +170,7 @@ void OptionsDialog::setSettings()
     handlerDefaultCheckBox->setChecked(OptionsDialog::hasSetting("handler") && OptionsDialog::getSetting("handler", false).toBool());
     handlerDefaultCheckBox->setEnabled(handlerCheckCheckBox->isChecked());
 #endif
-
     observeClipboardCheckBox->setChecked(getSetting("observeClipboard", false).toBool());
-
     videoEdit->setText(video());
     audioEdit->setText(audio());
     imageEdit->setText(image());

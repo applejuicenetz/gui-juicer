@@ -37,7 +37,7 @@ Item::Item( QTreeWidgetItem *parent, const QString& id )
 
 
 Item::~Item() {
-     setHiddenSave(false);
+    setHiddenSave(false);
 }
 
 

@@ -19,7 +19,7 @@
  ***************************************************************************/
 #include "iconwidget.h"
 
-IconWidget::IconWidget(QString icon, QString text, QBoxLayout::Direction dir, QWidget *parent, int spacing, int margin) : QWidget( parent )
+IconWidget::IconWidget(const QString& icon, const QString& text, const QString& toolTip, QBoxLayout::Direction dir, QWidget *parent, int spacing, int margin) : QWidget( parent )
 {
     iconLabel = new QLabel(this);
     iconLabel->setPixmap(QPixmap(icon));
@@ -32,8 +32,8 @@ IconWidget::IconWidget(QString icon, QString text, QBoxLayout::Direction dir, QW
     layout->addWidget(iconLabel, 0, Qt::AlignHCenter);
     layout->addWidget(textLabel, 0, Qt::AlignHCenter);
 
+    this->setToolTip(toolTip);
     this->setLayout(layout);
-
     this->adjustSize();
 }
 

@@ -586,13 +586,15 @@ QStringList Juicer::getExec() {
 void Juicer::initStatusBar() {
     static bool first = true;
     if(first) {
-        downSpeedLabel = new IconWidget(":/small/downstream.png", "0", QBoxLayout::LeftToRight, this, 2, 2);
-        upSpeedLabel = new IconWidget(":/small/upstream.png", "0", QBoxLayout::LeftToRight, this, 2, 2);
-        creditsLabel = new IconWidget(":/small/credits.png", "0", QBoxLayout::LeftToRight, this, 2, 2);
-        downSizeLabel = new IconWidget(":/small/downloaded.png", "0", QBoxLayout::LeftToRight, this, 2, 2);
-        upSizeLabel = new IconWidget(":/small/uploaded.png", "0", QBoxLayout::LeftToRight, this, 2, 2);
-        coreVersionLabel = new IconWidget(":/small/version.png", "0", QBoxLayout::LeftToRight, this, 2, 2);
-        connectedLabel = new IconWidget(":/small/connected.png", "0", QBoxLayout::LeftToRight, this, 2, 2);
+        downSpeedLabel = new IconWidget(":/small/downstream.png", "0", "Downstream", QBoxLayout::LeftToRight, this, 2, 2);
+        upSpeedLabel = new IconWidget(":/small/upstream.png", "0", "Upstream", QBoxLayout::LeftToRight, this, 2, 2);
+        creditsLabel = new IconWidget(":/small/credits.png", "0", "Credits", QBoxLayout::LeftToRight, this, 2, 2);
+        downSizeLabel = new IconWidget(":/small/downloaded.png", "0", "Downloaded", QBoxLayout::LeftToRight, this, 2, 2);
+        upSizeLabel = new IconWidget(":/small/uploaded.png", "0", "Uploaded", QBoxLayout::LeftToRight, this, 2, 2);
+        coreVersionLabel = new IconWidget(":/small/version.png", "0", "Core Version", QBoxLayout::LeftToRight, this, 2, 2);
+        connectedLabel = new IconWidget(":/small/connected.png", "0", "Connected Since", QBoxLayout::LeftToRight, this, 2, 2);
+        warnFirewallLabel = new QLabel(this);
+        statusBar()->addPermanentWidget(warnFirewallLabel);
         statusBar()->addPermanentWidget(connectedLabel);
         statusBar()->addPermanentWidget(coreVersionLabel);
         statusBar()->addPermanentWidget(downSpeedLabel);
@@ -845,4 +847,17 @@ QString Juicer::getAppPath() const {
  */
 void Juicer::getNetworkInfo() {
     xml->get("information");
+}
+
+
+/*!
+    \fn Juicer::setFirewalled(bool firewalled)
+ */
+void Juicer::setFirewalled(bool firewalled) {
+    if(firewalled) {
+        warnFirewallLabel->setPixmap(QPixmap(":/warning.png"));
+        warnFirewallLabel->setToolTip("you are behind a firewall");
+    } else {
+        warnFirewallLabel->clear();
+    }
 }

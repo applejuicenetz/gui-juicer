@@ -24,33 +24,21 @@
 #include <QTimer>
 #include <QMessageBox>
 #include <QDateTime>
-#include <QLineEdit>
-#include <QToolButton>
-#include <QSettings>
-#include <QInputDialog>
-#include <QCheckBox>
 #include <QClipboard>
 #include <QCloseEvent>
-#include <QLabel>
-#include <QMenu>
-#include <QMenuBar>
-#include <QKeySequence>
-#include <QStatusBar>
-#include <QToolBar>
-#include <QToolButton>
-#include <QFileDialog>
 #include <QUrl>
 #include <QDir>
-#include <QTabWidget>
 #include <QFile>
 #include <QFileDialog>
 #include <QTextStream>
 #include <QNetworkInterface>
 #include <QHostInfo>
 #include <QSystemTrayIcon>
+#include <QSplashScreen>
 
 #include "ui_mainwindowbase.h"
 
+#include "application.h"
 #include "downloadmodule.h"
 #include "uploadmodule.h"
 #include "searchmodule.h"
@@ -63,13 +51,10 @@
 #include "logindialog.h"
 #include "networkdialog.h"
 #include "convert.h"
-
-#include "application.h"
-
+#include "serversocket.h"
 #include "iconwidget.h"
 
 #include "helpdialog.h"
-#include "autoupdate.h"
 
 static const QString WINDOWS = "1";
 static const QString LINUX = "2";
@@ -119,6 +104,7 @@ public:
     void setIncomingDirectory(const QString& folder);
     QString getAppPath() const;
     void setAppPath(const QString& path);
+    void setFirewalled(bool  firewalled);
 
 protected:
     void initToolBars();
@@ -146,6 +132,7 @@ protected:
     QLineEdit *ajAddressEdit;
     QToolButton *ajAddressButton;
 
+    QLabel *warnFirewallLabel;
     IconWidget *downSpeedLabel, *upSpeedLabel, *creditsLabel, *downSizeLabel, *upSizeLabel, *coreVersionLabel, *connectedLabel;
 
     bool started, connected, localCore;

@@ -141,6 +141,7 @@ resources/vcs_remove.png \
 resources/vcs_update.png \
 resources/wizard.png \
 resources/help.png \
+resources/warning.png \
  resources/small/arrow_down.png \
  resources/small/arrow_up.png \
  resources/small/basket_put.png \

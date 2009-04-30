@@ -299,15 +299,18 @@ void XMLModule::handleIds( QDomNode& node )
  */
 void XMLModule::handleNetworkInfo( QDomElement& e )
 {
+    bool firewalled = e.attribute("firewalled")=="true";
     juicer->networkDialog->setValues(
         e.attribute("users"),
         e.attribute("files"),
         Convert::bytesLong( e.attribute("filesize")),
         e.attribute("ip"),
-        e.attribute("firewalled")=="true"?tr("yes"):tr("no"));
+        firewalled?tr("yes"):tr("no")
+        );
     juicer->serverModule->connectedWith( e.attribute("connectedwithserverid") );
     juicer->serverModule->connectingTo( e.attribute("tryconnecttoserver") );
     juicer->connectedSince( e.attribute("connectedsince") );
+    juicer->setFirewalled(firewalled);
     juicer->welcomeEdit->setHtml( e.firstChildElement("welcomemessage").text().trimmed() );
 }
 
