@@ -10,22 +10,23 @@
 //
 //
 
-
 #include "targetfolderdialog.h"
 
-TargetFolderDialog::TargetFolderDialog(QWidget* parent, Qt::WFlags fl)
-: QDialog( parent, fl ), Ui::targetFolderDialogBase() {
-    setupUi(this);
-    
+TargetFolderDialog::TargetFolderDialog( const QString& incomingDir,
+                                        XMLModule * const xml,
+                                        QWidget * parent,
+                                        Qt::WFlags fl )
+  : DirSelectionBase( xml, parent, fl )
+{
+    leNewFolder->setHidden( false );
+    labelNewFolder->setHidden( false );
+
+    textLabel->setText( tr("Select a folder below ") + incomingDir );
+
+    requestSubdirsFromDir( incomingDir );
 }
 
-TargetFolderDialog::~TargetFolderDialog() {
+TargetFolderDialog::~TargetFolderDialog()
+{
 }
 
-void TargetFolderDialog::reject() {
-    QDialog::reject();
-}
-
-void TargetFolderDialog::accept() {
-    QDialog::accept();
-}

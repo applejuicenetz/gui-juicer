@@ -26,7 +26,6 @@ ShareModule::ShareModule(Juicer* juicer)
   : ModuleBase(juicer, juicer->sharesTreeWidget, juicer->shareToolBar)
   , prio_(1)
 {
-    this->shareSelectionDialog = new ShareSelectionDialog(juicer->xml, juicer);
     this->filesystemSeparator = filesystemSeparator;
     changed_ = false;
 
@@ -61,13 +60,16 @@ void ShareModule::insertShare( const QString& path, const QString& shareMode) {
     new ShareItem(treeWidget, path, (shareMode == "subdirectory"));
 }
 
-void ShareModule::insertSlot() {
-    xml->get("directory");
-    if(shareSelectionDialog->exec() == QDialog::Accepted) {
-        QString path =  shareSelectionDialog->selectedPath();
-        if(!path.isEmpty()) {
+void ShareModule::insertSlot()
+{
+    ShareSelectionDialog dialog( juicer->xml, juicer );
+    if( dialog.exec() == QDialog::Accepted ) {
+        QString path =  dialog.getPath();
+        if( ! path.isEmpty() ) {
             QString mode = "directory";
-            if(QMessageBox::question( juicer, "question", tr("Share subdirectories?"), QMessageBox::Yes|QMessageBox::No) == QMessageBox::Yes) {
+            if(QMessageBox::question( juicer, "question", tr("Share subdirectories?"),
+                                      QMessageBox::Yes|QMessageBox::No) == QMessageBox::Yes )
+            {
                 mode = "subdirectory";
             }
             insertShare(path, mode);

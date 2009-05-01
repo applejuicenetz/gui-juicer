@@ -162,7 +162,8 @@ void DownloadItem::updateUser( const QString& id,
         users[ id ] = userItem;
     }
     QString oldStatus = userItem->getStatus();
-    userItem->update( fileName, nickname, speed, status, power, queuePos, statusString, osIcon, downloadfrom, downloadto, actualdownloadposition, time );
+    userItem->update( fileName, nickname, speed, status, power, queuePos, statusString, osIcon,
+                      downloadfrom, downloadto, actualdownloadposition, time );
     moveItem( userItem, oldStatus );
 }
 
@@ -172,7 +173,8 @@ bool DownloadItem::update( const QString& hash,
                               const QString& size,
                               const QString& ready,
                               const QString& power,
-                              const QString& tempNumber )
+                              const QString& tempNumber,
+                              const QString& targetDir )
 {
     bool newStatus = false;
     if ( status != status_ ) {
@@ -215,6 +217,8 @@ bool DownloadItem::update( const QString& hash,
     }
     this->setText( FILENAME_COL, fileName );
     partListDialog->setFilename( fileName );
+
+    this->setText( TARGET_DIR_COL, targetDir );
 
     float p = Convert::powerValue( power );
     if( p > 1.0 ) {

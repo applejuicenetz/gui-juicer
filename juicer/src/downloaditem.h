@@ -57,12 +57,29 @@ public:
     DownloadItem( const QString& id, QTreeWidget *parent = 0 );
     ~DownloadItem();
 
-    enum {FILENAME_COL, SOURCES_COL, SPEED_COL, STATUS_COL, FINISHED_COL, POWER_COL,
-          SIZE_COL, FINISHED_SIZE_COL, REMAIN_SIZE_COL, REMAIN_TIME_COL, MISSING_COL};
+    enum { FILENAME_COL       = 0,
+           SOURCES_COL        = 1,
+           SPEED_COL          = 2,
+           STATUS_COL         = 3,
+           FINISHED_COL       = 4,
+           POWER_COL          = 5,
+           SIZE_COL           = 6,
+           FINISHED_SIZE_COL  = 7,
+           REMAIN_SIZE_COL    = 8,
+           REMAIN_TIME_COL    = 9,
+           MISSING_COL        = 10,
+           TARGET_DIR_COL     = 11
+         };
 
     void moveItem( UserItem *userItem, const QString& oldStatus );
-    bool update( const QString& hash, const QString& fileName, const QString& status, const QString& size, const QString& ready, const QString& power, const QString& tempNumber );
-    void updateUser( const QString& id, const QString& fileName, const QString& nickname, const QString& speed, const QString& status, const QString& power, const QString& queuePos, const QString& statusString, QIcon& osIcon, const QString& downloadfrom, const QString& downloadto, const QString& actualdownloadposition, const QTime& time );
+    bool update( const QString& hash, const QString& fileName, const QString& status,
+                 const QString& size, const QString& ready, const QString& power,
+                 const QString& tempNumber, const QString& targetDir );
+    void updateUser( const QString& id, const QString& fileName, const QString& nickname,
+                     const QString& speed, const QString& status, const QString& power,
+                     const QString& queuePos, const QString& statusString, QIcon& osIcon,
+                     const QString& downloadfrom, const QString& downloadto,
+                     const QString& actualdownloadposition, const QTime& time );
 
     UserItem* findUser( const QString& id );
     void removeUser( const QString& id );
@@ -106,8 +123,11 @@ public:
     int getPercent() const {
         return percent;
     }
-    QString getTempNumber() {
+    QString getTempNumber() const {
         return tempNumber;
+    }
+    QString getTargetDir() const {
+        return text( TARGET_DIR_COL );
     }
     // Powerdownload for this Item
     bool powerDownloadActive() const {

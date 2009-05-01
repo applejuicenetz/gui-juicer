@@ -13,20 +13,16 @@
 #ifndef TARGETFOLDERDIALOG_H
 #define TARGETFOLDERDIALOG_H
 
-#include <QDialog>
-#include "ui_targetfolderdialogbase.h"
+#include "dirselectionbase.h"
 
-class TargetFolderDialog : public QDialog, public Ui::targetFolderDialogBase
+class TargetFolderDialog : public DirSelectionBase
 {
-  Q_OBJECT
-
 public:
-    TargetFolderDialog(QWidget* parent = 0, Qt::WFlags fl = 0 );
+    TargetFolderDialog( const QString& incomingDir,
+                        XMLModule * const xml,
+                        QWidget* parent = 0,
+                        Qt::WFlags fl = 0 );
     ~TargetFolderDialog();
-
-protected slots:
-    virtual void reject();
-    virtual void accept();
 };
 
 #endif

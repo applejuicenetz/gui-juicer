@@ -9,7 +9,6 @@ logindialogbase.ui \
  handlerdialogbase.ui \
  partlistdialogbase.ui \
  mainwindowbase.ui \
- shareselectiondialogbase.ui \
  helpdialogbase.ui \
  updatedialogbase.ui \
  targetfolderdialogbase.ui
@@ -52,13 +51,12 @@ HEADERS += ftp.h \
  updatedialog.h \
  targetfolderdialog.h \
  xmlmodule.h \
- convert.h
-SOURCES += ftp.cpp \
-           main.cpp \
+ convert.h \
+ dirselectionbase.h
+SOURCES += main.cpp \
            md5c.c \
            md5class.cpp \
            application.cpp \
-           downloaditem.cpp \
            item.cpp \
            optionsdialog.cpp \
            partswidget.cpp \
@@ -79,7 +77,6 @@ SOURCES += ftp.cpp \
            powerspin.cpp \
  handlerdialog.cpp \
  partlistdialog.cpp \
- downloadmodule.cpp \
  uploadmodule.cpp \
  searchmodule.cpp \
  modulebase.cpp \
@@ -92,7 +89,11 @@ SOURCES += ftp.cpp \
  updatedialog.cpp \
  targetfolderdialog.cpp \
  xmlmodule.cpp \
- convert.cpp
+ convert.cpp \
+ dirselectionbase.cpp \
+ downloaditem.cpp \
+ downloadmodule.cpp \
+ ftp.cpp
 CONFIG += warn_on \
           qt \
           stl \

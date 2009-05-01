@@ -123,19 +123,12 @@ void XMLModule::requestFinished(int id, bool error) {
                         partsSize = e.attribute("filesize").toULongLong();
                     } else if(e.tagName() == "shares") {
                         handleShares( e );
-                    } else if(e.tagName() == "dir") {
-                        if(juicer->shareModule->shareSelectionDialog != NULL) {
-                            juicer->shareModule->shareSelectionDialog->insertDirectory(
-                                  e.attribute("name"),
-                                  e.attribute("path"),
-                                  e.attribute("type").toInt() );
-                        }
-                    } else if(e.tagName() == "filesystem") {
-                        if(juicer->shareModule->shareSelectionDialog != NULL ) {
-                            juicer->shareModule->shareSelectionDialog->insertSeperator(e.attribute("seperator"));
-                        }
                     } else {
-                        fprintf(stderr, "unhandled element: %s\n", e.tagName().toLatin1().data());
+                        if ( ! (e.tagName() == "dir") &&
+                             ! (e.tagName() == "filesystem") )
+                        {
+                            fprintf(stderr, "unhandled element: %s\n", e.tagName().toLatin1().data());
+                        }
                     }
                 }
             }
@@ -388,7 +381,8 @@ void XMLModule::handleDownload( QDomElement& e )
         e.attribute("size"),
         e.attribute("ready"),
         e.attribute("powerdownload"),
-        e.attribute("temporaryfilenumber"));
+        e.attribute("temporaryfilenumber"),
+        e.attribute("targetdirectory"));
 }
 
 

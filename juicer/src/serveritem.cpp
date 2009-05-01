@@ -47,7 +47,9 @@ bool ServerItem::operator<( const QTreeWidgetItem & other ) const {
 /*!
     \fn ServerItem::update(const QString& name, const QString& host, const QString& port, const QString& lastseen, const QString& tests, const QString& time)
  */
-void ServerItem::update(const QString& name, const QString& host, const QString& port, const QString& lastseen, const QString& tests, const QString& time) {
+// <2DO> lastseeen not used
+void ServerItem::update( const QString& name, const QString& host, const QString& port,
+                         const QString& /*lastseen*/, const QString& tests, const QString& time) {
     setText(NAME_COL, name);
     setText(HOST_COL, host);
     setText(PORT_COL, port);

@@ -5,40 +5,55 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>298</width>
-    <height>303</height>
+    <width>500</width>
+    <height>300</height>
    </rect>
+  </property>
+  <property name="minimumSize" >
+   <size>
+    <width>500</width>
+    <height>300</height>
+   </size>
   </property>
   <property name="windowTitle" >
    <string>Dialog</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout" >
    <item>
-    <widget class="QLabel" name="label_3" >
+    <widget class="QLabel" name="textLabel" >
      <property name="text" >
-      <string>Select a folder inside the incoming folder:</string>
+      <string>Select a folder</string>
      </property>
     </widget>
    </item>
    <item>
-    <widget class="QLabel" name="incomingLabel" >
+    <widget class="QTreeWidget" name="treeWidget" >
+     <property name="sortingEnabled" >
+      <bool>true</bool>
+     </property>
+     <property name="headerHidden" >
+      <bool>true</bool>
+     </property>
+     <column>
+      <property name="text" >
+       <string>1</string>
+      </property>
+     </column>
+    </widget>
+   </item>
+   <item>
+    <widget class="QLabel" name="labelNewFolder" >
      <property name="text" >
-      <string>/incoming/</string>
+      <string>Or create new folder:</string>
      </property>
     </widget>
    </item>
    <item>
-    <widget class="QListWidget" name="listWidget" />
-   </item>
-   <item>
-    <widget class="QLabel" name="label_2" >
-     <property name="text" >
-      <string>Or create a new Folder in the incoming folder:</string>
+    <widget class="QLineEdit" name="leNewFolder" >
+     <property name="enabled" >
+      <bool>true</bool>
      </property>
     </widget>
-   </item>
-   <item>
-    <widget class="QLineEdit" name="lineEdit" />
    </item>
    <item>
     <widget class="QDialogButtonBox" name="buttonBox" >
@@ -83,22 +98,6 @@
     <hint type="destinationlabel" >
      <x>286</x>
      <y>274</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>lineEdit</sender>
-   <signal>textChanged(QString)</signal>
-   <receiver>listWidget</receiver>
-   <slot>clearSelection()</slot>
-   <hints>
-    <hint type="sourcelabel" >
-     <x>148</x>
-     <y>255</y>
-    </hint>
-    <hint type="destinationlabel" >
-     <x>148</x>
-     <y>131</y>
     </hint>
    </hints>
   </connection>

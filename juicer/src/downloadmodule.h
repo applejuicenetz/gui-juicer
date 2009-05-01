@@ -32,11 +32,15 @@ class DownloadModule : public ModuleBase {
 public:
     DownloadModule(Juicer* juicer);
     ~DownloadModule();
-    void insertDownload(const QString& id, const QString& hash, const QString& fileName, const QString& status,
-                        const QString& size, const QString& ready, const QString& power, const QString& tempNumber);
-    void insertUser(const QString& downloadId, const QString& id, const QString& fileName, const QString& nickname, const QString& speed,
-                        const QString& status, const QString& power, const QString& queuePos, const QString& os,
-                        const QString& downloadfrom, const QString& downloadto, const QString& actualdownloadposition, QTime& time);
+    void insertDownload(const QString& id, const QString& hash, const QString& fileName,
+                        const QString& status, const QString& size, const QString& ready,
+                        const QString& power, const QString& tempNumber,
+                        const QString& targetDir);
+    void insertUser(  const QString& downloadId, const QString& id, const QString& fileName,
+                      const QString& nickname, const QString& speed, const QString& status,
+                      const QString& power, const QString& queuePos, const QString& os,
+                      const QString& downloadfrom, const QString& downloadto,
+                      const QString& actualdownloadposition, QTime& time);
     bool remove(const QString& id);
     bool removeDownload(const QString& id);
     DownloadItem* findDownload(const QString& id);
@@ -45,12 +49,14 @@ public:
     QString getNextIdRoundRobin();
     void setDirs(const QString& tmpDir, const QString& inDir);
     QString findDownloadByTempNum(const QString& tempFile);
-    void setPartList(const QString& id, qulonglong size, QLinkedList<PartsWidget::Part>& partList);
+    void setPartList( const QString& id, qulonglong size,
+                      QLinkedList<PartsWidget::Part>& partList);
 public slots:
     void updateView(bool force = false);
     void partListSlot();
 protected:
-    void processSelected(XMLModule::Type type, const QString& request, const QString& para = "");
+    void processSelected( XMLModule::Type type, const QString& request,
+                          const QString& para = "");
     void getSelected(const QString& request, const QString& para = "");
     void setSelected(const QString& request, const QString& para = "");
 

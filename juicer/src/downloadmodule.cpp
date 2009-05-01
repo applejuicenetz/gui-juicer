@@ -80,8 +80,10 @@ DownloadModule::DownloadModule(Juicer* juicer)
 
     connect(treeWidget, SIGNAL(itemSelectionChanged()), this, SLOT(partListSlot()));
 
-    connect(juicer->actionShow_Part_List_Dock, SIGNAL(triggered(bool)), juicer->partListDock, SLOT(setVisible(bool)));
-    connect(juicer->partListDock, SIGNAL(visibilityChanged(bool)), juicer->actionShow_Part_List_Dock, SLOT(setChecked(bool)));
+    connect( juicer->actionShow_Part_List_Dock, SIGNAL(triggered(bool)),
+             juicer->partListDock, SLOT(setVisible(bool)));
+    connect( juicer->partListDock, SIGNAL(visibilityChanged(bool)),
+             juicer->actionShow_Part_List_Dock, SLOT(setChecked(bool)));
 
     #ifdef AJQTGUI_MODE_SPECIAL
         juicer->actionMaximal_Power->setVisible(true);
@@ -102,13 +104,14 @@ DownloadModule::~DownloadModule() {
     \fn DownloadModule::insertDownload(const QString& id, const QString& hash, const QString& fileName, const QString& status, const QString& size, const QString& ready, const QString& power, const QString& tempNumber)
  */
 void DownloadModule::insertDownload( const QString& id,
-                                        const QString& hash,
-                                        const QString& fileName,
-                                        const QString& status,
-                                        const QString& size,
-                                        const QString& ready,
-                                        const QString& power,
-                                        const QString& tempNumber) 
+                                     const QString& hash,
+                                     const QString& fileName,
+                                     const QString& status,
+                                     const QString& size,
+                                     const QString& ready,
+                                     const QString& power,
+                                     const QString& tempNumber,
+                                     const QString& targetDir )
 {
     DownloadItem *downloadItem = findDownload( id );
     if(downloadItem == NULL) {
@@ -117,11 +120,12 @@ void DownloadModule::insertDownload( const QString& id,
         if(juicer->actionMaximal_Power->isVisible()) {
             xml->set("setpowerdownload", "&Powerdownload="+Convert::power(50)+"&id="+id);
         }
-        downloadItem->update(hash, fileName, status, size, ready, power, tempNumber);
+        downloadItem->update(hash, fileName, status, size, ready, power, tempNumber, targetDir);
         updateView(true);
-        connect(downloadItem->powerSpin, SIGNAL(powerChanged(QString, double)), this, SLOT(applyPowerDownload(const QString &, double)));
+        connect( downloadItem->powerSpin, SIGNAL(powerChanged(QString, double)),
+                 this, SLOT(applyPowerDownload(const QString &, double)));
     } else {
-        if(downloadItem->update(hash, fileName, status, size, ready, power, tempNumber)) {
+        if(downloadItem->update(hash, fileName, status, size, ready, power, tempNumber, targetDir)) {
             // -- if status changed => reset tool buttons --
             selectionChanged();
         }
@@ -149,11 +153,12 @@ void DownloadModule::insertUser( const QString& downloadId,
 {
     DownloadItem *downloadItem = findDownload(downloadId);
     if(downloadItem == NULL) {  // -- this shouldn't happen, just in case... --
-        insertDownload(downloadId, "", "", "", "", "", "", "");
+        insertDownload(downloadId, "", "", "", "", "", "", "", "");
         downloadItem = findDownload(downloadId);
     }
-    downloadItem->updateUser(id, fileName, nickname, speed, status, power, queuePos,
-         userStatusDescr[status], juicer->osIcons[os], downloadfrom, downloadto, actualdownloadposition, time);
+    downloadItem->updateUser( id, fileName, nickname, speed, status, power, queuePos,
+                              userStatusDescr[status], juicer->osIcons[os], downloadfrom,
+                              downloadto, actualdownloadposition, time);
 }
 
 /*!
@@ -632,11 +637,12 @@ void DownloadModule::partListWidgetSlot() {
 /*!
     \fn DownloadModule::targetFolder()
  */
-void DownloadModule::targetFolder() {
-    
-    TargetFolderDialog tf;
-    tf.incomingLabel->setText(juicer->getIncomingDirectory());
-    if(tf.exec() == QDialog::Accepted) {
-        
+void DownloadModule::targetFolder()
+{
+    TargetFolderDialog tf( juicer->getIncomingDirectory(), xml );
+    if( tf.exec() == QDialog::Accepted ) {
+        QString path = tf.getPath();  // ever below incoming!
+        qDebug( path.toAscii().data() );
+        setSelected( "settargetdir", "&dir=" + path );
     }
 }

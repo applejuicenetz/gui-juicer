@@ -63,8 +63,6 @@ public:
         sharedFiles.clear();
     }
 
-    ShareSelectionDialog* shareSelectionDialog;
-
 public slots:
     void commitSlot();
     void selectionChanged();
