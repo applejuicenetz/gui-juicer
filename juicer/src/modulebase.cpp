@@ -33,7 +33,9 @@ ModuleBase::~ModuleBase() {
  */
 void ModuleBase::adjustSizeOfColumns() {
     for(int i = 0; i < treeWidget->columnCount(); i++) {
-        treeWidget->resizeColumnToContents(i);
+        if(!treeWidget->isColumnHidden(i)) {
+            treeWidget->resizeColumnToContents(i);
+        }
     }
 }
 
@@ -59,6 +61,10 @@ void ModuleBase::sortItemsInitially(QString settingsGroup)
         treeWidget->header()->resizeSection(i, sizes.at(i).toInt());
     }
 
+    QList<QVariant> hidden = lokalSettings.value("columnHidden").toList();
+    for(int i=0; i<hidden.size(); i++) {
+        treeWidget->setColumnHidden(i, hidden.at(i).toBool());
+    }
     lokalSettings.endGroup();
 }
 
@@ -72,13 +78,16 @@ void ModuleBase::saveSortOrder(QString settingsGroup)
     lokalSettings.setValue("sortColumn", treeWidget->sortColumn());
     lokalSettings.setValue("sortOrder", treeWidget->header()->sortIndicatorOrder());
 
-    QList<QVariant> positions, sizes;
-    for(int i=0; i<treeWidget->header()->length(); i++) {
+    QList<QVariant> positions, sizes, hidden;
+    for(int i=0; i<treeWidget->header()->count(); i++) {
         positions.append(treeWidget->header()->logicalIndex(i));
         sizes.append(treeWidget->header()->sectionSize(i));
+        hidden.append(treeWidget->isColumnHidden(i));
     }
+
     lokalSettings.setValue("columnPositions", positions);
     lokalSettings.setValue("columnSizes", sizes);
+    lokalSettings.setValue("columnHidden", hidden);
     lokalSettings.endGroup();
 }
 

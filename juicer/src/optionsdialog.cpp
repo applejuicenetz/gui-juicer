@@ -20,9 +20,11 @@
 
 #include "optionsdialog.h"
 #include "application.h"
+#include "juicer.h"
 
-OptionsDialog::OptionsDialog(QWidget* parent) : QDialog(parent) {
+OptionsDialog::OptionsDialog(Juicer* juicer) : QDialog(juicer) {
     setupUi(this);
+    this->juicer = juicer;
 #ifndef Q_WS_WIN
     handlerGroupBox->setHidden(true);
 #endif
@@ -156,11 +158,30 @@ void OptionsDialog::setSettings() {
     ftpMbRadioButton->setChecked( !ftpFull );
     fetchServersCheckBox->setChecked( getSetting( "fetchServersOnStartup", false ).toBool() );
     languageComboBox->setCurrentIndex(languageComboBox->findData(getSetting( "language", "en" ).toString().split("_")[0]));
-    QStringList statusbarComponents = getSetting( "statusbarComponents", getDefaultStatusbarComponents() ).toStringList();
-    statusbarList->clearSelection();
-    for(int i=0; i<statusbarComponents.size(); i++) {
-        statusbarList->item( statusbarComponents[i].toInt() )->setSelected( true );
+
+    // -- lists for optionaly showing columns/labales --
+    statusbarList->clear();
+    QList<QVariant> statusbarShow = getStatusbarShows(juicer->statusBarWidgets.size());
+    for(int i=0; i<juicer->statusBarWidgets.size(); i++) {
+        statusbarList->addItem(juicer->statusBarWidgets.at(i)->toolTip());
+        statusbarList->item(statusbarList->count()-1)->setCheckState(
+            statusbarShow.at(i).toBool()?Qt::Checked:Qt::Unchecked);
     }
+    downloadTabList->clear();
+    QTreeWidgetItem* h = juicer->downloadsTreeWidget->headerItem();
+    for(int i=0; i<h->columnCount(); i++) {
+        downloadTabList->addItem(h->text(i));
+        downloadTabList->item(downloadTabList->count()-1)->setCheckState(
+            juicer->downloadsTreeWidget->isColumnHidden(i)?Qt::Unchecked:Qt::Checked);
+    }
+    uploadTabList->clear();
+    h = juicer->uploadsTreeWidget->headerItem();
+    for(int i=0; i<h->columnCount(); i++) {
+        uploadTabList->addItem(h->text(i));
+        uploadTabList->item(uploadTabList->count()-1)->setCheckState(
+            juicer->uploadsTreeWidget->isColumnHidden(i)?Qt::Unchecked:Qt::Checked);
+    }
+
     QFont font = getSetting( "font", QApplication::font() ).value<QFont>();
     QApplication::setFont( font );
     fontComboBox->setCurrentFont( font );
@@ -232,18 +253,6 @@ void OptionsDialog::specificRadioToggled(bool checked) {
 
 
 /*!
-    \fn OptionsDialog::getDefaultStatusbarComponents()
- */
-QStringList OptionsDialog::getDefaultStatusbarComponents() {
-    QStringList x;
-    for(int i=0; i<statusbarList->count(); i++) {
-        x << QString::number(i);
-    }
-    return x;
-}
-
-
-/*!
     \fn OptionsDialog::jumpToFtpSlot()
  */
 void OptionsDialog::jumpToFtpSlot() {
@@ -294,12 +303,12 @@ void OptionsDialog::writeSettings() {
     setSetting( "fetchServersOnStartup",  fetchServersCheckBox->isChecked() );
     setSetting( "language",  languageComboBox->itemData(languageComboBox->currentIndex()) );
 
-    QStringList statusbarComponents;
-    QList<QListWidgetItem *> items = statusbarList->selectedItems();
-    for(int i=0; i<items.size(); i++) {
-        statusbarComponents << QString::number(statusbarList->row(items[i]));
+    QList<QVariant> statusbarComponents;
+    for(int i=0; i<statusbarList->count(); i++) {
+        statusbarComponents.append(statusbarList->item(i)->checkState() == Qt::Checked);
     }
     setSetting( "statusbarComponents",  statusbarComponents );
+
     setSetting( "font", getFont() );
 
 #ifdef Q_WS_WIN
@@ -519,4 +528,20 @@ QString OptionsDialog::archive() {
 
 QString OptionsDialog::cddvd() {
     return getSetting("dataTypes", "cddvd", "iso bin cue mdf mds nrg").toString();
+}
+
+
+/*!
+    \fn OptionsDialog::getStatusbarShows()
+ */
+QList<QVariant> OptionsDialog::getStatusbarShows(int n) {
+    QList<QVariant> show = getSetting("statusbarComponents", QList<QVariant>()).toList();
+    // -- if option is incompatible (e.g. through update) show all --
+    if(show.size() != n) {
+        show.clear();
+        for(int i=0; i<n; i++) {
+            show.append(true);
+        }
+    }
+    return show;
 }

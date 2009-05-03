@@ -80,6 +80,7 @@ public:
     ShareModule *shareModule;
     IncomingModule *incomingModule;
     QHash<QString, QIcon> osIcons;
+    QList<IconWidget*> statusBarWidgets;   /// hide-able statusbar widgets
 
     void setFilesystemSeparator(const QString& separator);
     // returns filesystemseperator of the remote filesystem where the Core runs
@@ -109,6 +110,7 @@ public:
 protected:
     void initToolBars();
     void connectActions();
+    IconWidget* addToStatusBar(IconWidget* widget);
     void initStatusBar();
     void initTrayIcon();
     void closeEvent( QCloseEvent* );

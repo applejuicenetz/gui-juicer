@@ -59,13 +59,14 @@ class AjSettings {
     QString maxDown, maxUp, maxCon, maxSlot, maxSources, maxNewCon;
 };
 
+class Juicer;
 
 class OptionsDialog : public QDialog, public Ui::OptionsDialogBase
 {
     Q_OBJECT
 
 public:
-    OptionsDialog( QWidget* parent = 0 );
+    OptionsDialog( Juicer* juicer );
     ~OptionsDialog();
 
     AjSettings getAjSettings();
@@ -93,9 +94,10 @@ public:
     static QString text();
     static QString archive();
     static QString cddvd();
+    static QList<QVariant> getStatusbarShows(int n);
 private:
     QFontDatabase fontDatabase;
-
+    Juicer* juicer;
 protected slots:
     void selectIncomingDir();
     void selectTempDir();

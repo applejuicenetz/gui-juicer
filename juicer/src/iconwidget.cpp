@@ -19,8 +19,7 @@
  ***************************************************************************/
 #include "iconwidget.h"
 
-IconWidget::IconWidget(const QString& icon, const QString& text, const QString& toolTip, QBoxLayout::Direction dir, QWidget *parent, int spacing, int margin) : QWidget( parent )
-{
+IconWidget::IconWidget(const QString& icon, const QString& text, const QString& toolTip, QBoxLayout::Direction dir, QWidget *parent, int spacing, int margin) : QWidget(parent) {
     iconLabel = new QLabel(this);
     iconLabel->setPixmap(QPixmap(icon));
     textLabel = new QLabel(text, this);
@@ -38,15 +37,13 @@ IconWidget::IconWidget(const QString& icon, const QString& text, const QString& 
 }
 
 
-IconWidget::~IconWidget()
-{
+IconWidget::~IconWidget() {
 }
 
 
 /*!
-    \fn IconWidget::setText( const QString& text )
+    \fn IconWidget::setText(const QString& text)
  */
-void IconWidget::setText( const QString& text )
-{
-    textLabel->setText( text );
+void IconWidget::setText(const QString& text) {
+    textLabel->setText(text);
 }

@@ -332,6 +332,25 @@ void Juicer::showOptions()
         incomingModule->updateAlternatingRowColors();
         initStatusBar();
 
+        for(int i=0; i<optionsDialog->downloadTabList->count(); i++) {
+            bool hidden = downloadsTreeWidget->isColumnHidden(i);
+            bool hide = optionsDialog->downloadTabList->item(i)->checkState()==Qt::Unchecked;
+            downloadsTreeWidget->setColumnHidden(i, hide);
+            if(hidden && !hide) {
+                qApp->processEvents();
+                downloadsTreeWidget->resizeColumnToContents(i);
+            }
+        }
+        for(int i=0; i<optionsDialog->uploadTabList->count(); i++) {
+            bool hidden = uploadsTreeWidget->isColumnHidden(i);
+            bool hide = optionsDialog->uploadTabList->item(i)->checkState()==Qt::Unchecked;
+            uploadsTreeWidget->setColumnHidden(i, hide);
+            if(hidden && !hide) {
+                qApp->processEvents();
+                uploadsTreeWidget->resizeColumnToContents(i);
+            }
+        }
+
         timer->stop();
         timer->setSingleShot(false);
         timer->start(OptionsDialog::getSetting("refresh", 3).toInt() * 1000);
@@ -581,38 +600,35 @@ QStringList Juicer::getExec() {
 
 
 /*!
+    \fn Juicer::addToStatusBar(IconWidget* widget)
+ */
+IconWidget* Juicer::addToStatusBar(IconWidget* widget) {
+    statusBar()->addPermanentWidget(widget);
+    statusBarWidgets.append(widget);
+    return widget;
+}
+
+/*!
     \fn Juicer::initStatusBar()
  */
 void Juicer::initStatusBar() {
     static bool first = true;
     if(first) {
-        downSpeedLabel = new IconWidget(":/small/downstream.png", "0", "Downstream", QBoxLayout::LeftToRight, this, 2, 2);
-        upSpeedLabel = new IconWidget(":/small/upstream.png", "0", "Upstream", QBoxLayout::LeftToRight, this, 2, 2);
-        creditsLabel = new IconWidget(":/small/credits.png", "0", "Credits", QBoxLayout::LeftToRight, this, 2, 2);
-        downSizeLabel = new IconWidget(":/small/downloaded.png", "0", "Downloaded", QBoxLayout::LeftToRight, this, 2, 2);
-        upSizeLabel = new IconWidget(":/small/uploaded.png", "0", "Uploaded", QBoxLayout::LeftToRight, this, 2, 2);
-        coreVersionLabel = new IconWidget(":/small/version.png", "0", "Core Version", QBoxLayout::LeftToRight, this, 2, 2);
-        connectedLabel = new IconWidget(":/small/connected.png", "0", "Connected Since", QBoxLayout::LeftToRight, this, 2, 2);
         warnFirewallLabel = new QLabel(this);
         statusBar()->addPermanentWidget(warnFirewallLabel);
-        statusBar()->addPermanentWidget(connectedLabel);
-        statusBar()->addPermanentWidget(coreVersionLabel);
-        statusBar()->addPermanentWidget(downSpeedLabel);
-        statusBar()->addPermanentWidget(upSpeedLabel);
-        statusBar()->addPermanentWidget(downSizeLabel);
-        statusBar()->addPermanentWidget(upSizeLabel);
-        statusBar()->addPermanentWidget(creditsLabel);
+        connectedLabel = addToStatusBar(new IconWidget(":/small/connected.png", "0", "Connected Since", QBoxLayout::LeftToRight, this, 2, 2));
+        coreVersionLabel = addToStatusBar(new IconWidget(":/small/version.png", "0", "Core Version", QBoxLayout::LeftToRight, this, 2, 2));
+        downSpeedLabel = addToStatusBar(new IconWidget(":/small/downstream.png", "0", "Downstream", QBoxLayout::LeftToRight, this, 2, 2));
+        upSpeedLabel = addToStatusBar(new IconWidget(":/small/upstream.png", "0", "Upstream", QBoxLayout::LeftToRight, this, 2, 2));
+        downSizeLabel = addToStatusBar(new IconWidget(":/small/downloaded.png", "0", "Downloaded", QBoxLayout::LeftToRight, this, 2, 2));
+        upSizeLabel = addToStatusBar(new IconWidget(":/small/uploaded.png", "0", "Uploaded", QBoxLayout::LeftToRight, this, 2, 2));
+        creditsLabel = addToStatusBar(new IconWidget(":/small/credits.png", "0", "Credits", QBoxLayout::LeftToRight, this, 2, 2));
         first = false;
     }
-    QStringList show = OptionsDialog::getSetting( "statusbarComponents", optionsDialog->getDefaultStatusbarComponents() ).toStringList();
-    connectedLabel->setVisible(show.contains(CONNECTED_SINCE));
-    coreVersionLabel->setVisible(show.contains(CORE_VERSION));
-    downSpeedLabel->setVisible(show.contains(DOWNSTREAM));
-    upSpeedLabel->setVisible(show.contains(UPSTREAM));
-    downSizeLabel->setVisible(show.contains(DOWNLOADED));
-    upSizeLabel->setVisible(show.contains(UPLOADED));
-    creditsLabel->setVisible(show.contains(CREDITS));
-
+    QList<QVariant> show = OptionsDialog::getStatusbarShows(statusBarWidgets.size());
+    for(int i=0; i<statusBarWidgets.size(); i++) {
+        statusBarWidgets.at(i)->setVisible(show.at(i).toBool());
+    }
 }
 
 
@@ -856,7 +872,6 @@ void Juicer::getNetworkInfo() {
 void Juicer::setFirewalled(bool firewalled) {
     if(firewalled) {
         warnFirewallLabel->setPixmap(QPixmap(":/warning.png"));
-        warnFirewallLabel->setToolTip("you are behind a firewall");
     } else {
         warnFirewallLabel->clear();
     }

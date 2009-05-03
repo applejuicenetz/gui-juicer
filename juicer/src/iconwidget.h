@@ -25,17 +25,17 @@
 #include <QBoxLayout>
 
 /**
-	@author Matthias Reif <matthias.reif@informatik.tu-chemnitz.de>
+    @author Matthias Reif <matthias.reif@informatik.tu-chemnitz.de>
 */
 class IconWidget : public QWidget
 {
 Q_OBJECT
 public:
     IconWidget(const QString& icon, const QString& text, const QString& toolTip, QBoxLayout::Direction dir, QWidget *parent = 0, int spacing = -1, int margin = 9);
-
     ~IconWidget();
-    void setText( const QString& text );
-
+    void setText(const QString& text);
+    void setIcon(const QString& icon);
+    void clear();
 private:
     QLabel *iconLabel, *textLabel;
 };
