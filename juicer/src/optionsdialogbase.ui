@@ -742,41 +742,6 @@
                 <property name="selectionMode">
                  <enum>QAbstractItemView::NoSelection</enum>
                 </property>
-                <item>
-                 <property name="text">
-                  <string>connected since</string>
-                 </property>
-                </item>
-                <item>
-                 <property name="text">
-                  <string>core version</string>
-                 </property>
-                </item>
-                <item>
-                 <property name="text">
-                  <string>downstream</string>
-                 </property>
-                </item>
-                <item>
-                 <property name="text">
-                  <string>upstream</string>
-                 </property>
-                </item>
-                <item>
-                 <property name="text">
-                  <string>downloaded</string>
-                 </property>
-                </item>
-                <item>
-                 <property name="text">
-                  <string>uploaded</string>
-                 </property>
-                </item>
-                <item>
-                 <property name="text">
-                  <string>credits</string>
-                 </property>
-                </item>
                </widget>
               </item>
              </layout>
