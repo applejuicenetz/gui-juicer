@@ -40,13 +40,13 @@
     <file alias="configure.png">resources/small/configure.png</file>
     <file alias="connect.png">resources/small/connect_creating.png</file>
     <file alias="connected.png">resources/small/connect_established.png</file>
-    <file alias="down.png">resources/small/down.png</file>
+    <file alias="downloads.png">resources/small/downloads.png</file>
     <file alias="shares.png">resources/small/folder_open.png</file>
     <file alias="ftp.png">resources/small/network_local.png</file>
     <file alias="network.png">resources/small/network.png</file>
     <file alias="server.png">resources/small/server.png</file>
     <file alias="filter.png">resources/small/trashcan_empty.png</file>
-    <file alias="up.png">resources/small/up.png</file>
+    <file alias="uploads.png">resources/small/uploads.png</file>
     <file alias="searching.png">resources/small/viewmag.png</file>
     <file alias="exit.png">resources/small/exit.png</file>
     <file alias="close.png">resources/small/fileclose.png</file>

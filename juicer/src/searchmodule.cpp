@@ -45,7 +45,8 @@ SearchModule::SearchModule(Juicer* juicer) : ModuleBase(juicer, juicer->searchsT
     connect(juicer->archiveCheckBox, SIGNAL(clicked()), this, SLOT(filterResults()));
     connect(juicer->textCheckBox, SIGNAL(clicked()), this, SLOT(filterResults()));
     connect(juicer->cddvdCheckBox, SIGNAL(clicked()), this, SLOT(filterResults()));
-    
+    connect(juicer->fileTypeEdit, SIGNAL(textChanged(const QString &)), this, SLOT(filterResults()));
+
     connect(juicer->minSizeSpinBox, SIGNAL(valueChanged(int)), this, SLOT(filterResults()));
     connect(juicer->maxSizeSpinBox, SIGNAL(valueChanged(int)), this, SLOT(filterResults()));
 
@@ -265,7 +266,9 @@ SearchEntryItem::Filter SearchModule::getFilter() {
     if(juicer->cddvdCheckBox->isChecked()) {
         listToPattern(pattern, OptionsDialog::cddvd());
     }
-    listToPattern(pattern, juicer->fileTypeEdit->text());
+    if(!juicer->fileTypeEdit->text().isEmpty()) {
+        listToPattern(pattern, juicer->fileTypeEdit->text());
+    }
     filter.type.setPattern(pattern);
     filter.type.setCaseSensitivity(Qt::CaseInsensitive);
     return filter;

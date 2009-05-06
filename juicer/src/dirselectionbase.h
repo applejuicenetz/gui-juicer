@@ -43,6 +43,7 @@ protected:
     QString filesystemSeperator_;
     QTreeWidgetItem* expandedItem_;
     QHash<int, QIcon> shareIcons_;
+    QList<int> xmlIds;
 
     virtual ~DirSelectionBase();
 

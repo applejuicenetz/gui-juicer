@@ -152,7 +152,7 @@ resources/warning.png \
  resources/small/configure.png \
  resources/small/connect_creating.png \
  resources/small/connect_established.png \
- resources/small/down.png \
+ resources/small/downloads.png \
  resources/small/editpaste.png \
  resources/small/edit.png \
  resources/small/exec.png \
@@ -178,7 +178,7 @@ resources/warning.png \
  resources/small/toggle_log.png \
  resources/small/trashcan_empty.png \
  resources/small/tux.png \
- resources/small/up.png \
+ resources/small/uploads.png \
  resources/small/vcs_add.png \
  resources/small/vcs_commit.png \
  resources/small/vcs_remove.png \

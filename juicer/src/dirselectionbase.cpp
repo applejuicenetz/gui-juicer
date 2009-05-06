@@ -79,32 +79,35 @@ QString DirSelectionBase::getPath() const
 void DirSelectionBase::requestSubdirsFromDir( const QString& dir /*= QString::Null()*/ )
 {
     if ( ! dir.isNull() ) {
-        xml_->get( "directory", "&directory=" + dir );
+        xmlIds << xml_->get( "directory", "&directory=" + dir );
     }
     else {
-        xml_->get( "directory" );
+        xmlIds << xml_->get( "directory" );
     }
 }
 
-void DirSelectionBase::requestFinished( int /*id*/, bool error )
+void DirSelectionBase::requestFinished( int id, bool error )
 {
-    if( ! error ) {
-        QDomElement root = xml_->getContent().documentElement();
-        if( root.tagName() == "applejuice" ) {
-            for( QDomNode n = root.firstChild(); ! n.isNull(); n = n.nextSibling() ) {
-                QDomElement e = n.toElement();
-                if( ! e.isNull() ) {
-                    if( e.tagName() == "dir" ) {
-                        insertDirectory(
-                              e.attribute("name"),
-                              e.attribute("path"),
-                              e.attribute("type").toInt() );
-                    } else if( e.tagName() == "filesystem" ) {
-                        insertSeperator( e.attribute("seperator") );
+    if(xmlIds.contains(id)) {
+        if( ! error ) {
+            QDomElement root = xml_->getContent().documentElement();
+            if( root.tagName() == "applejuice" ) {
+                for( QDomNode n = root.firstChild(); ! n.isNull(); n = n.nextSibling() ) {
+                    QDomElement e = n.toElement();
+                    if( ! e.isNull() ) {
+                        if( e.tagName() == "dir" ) {
+                            insertDirectory(
+                                  e.attribute("name"),
+                                  e.attribute("path"),
+                                  e.attribute("type").toInt() );
+                        } else if( e.tagName() == "filesystem" ) {
+                            insertSeperator( e.attribute("seperator") );
+                        }
                     }
                 }
             }
         }
+        xmlIds.removeOne(id);
     }
 }
 
@@ -145,7 +148,7 @@ void DirSelectionBase::updateSubDirectoriesSlot( QTreeWidgetItem * item )
 {
     if( item->childCount() == 0 ) {
         expandedItem_ = item;
-        xml_->get( "directory", "&directory=" + getTreePath(item) );
+        xmlIds << xml_->get( "directory", "&directory=" + getTreePath(item) );
     }
 }
 
