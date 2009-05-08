@@ -207,7 +207,9 @@ target.path = /usr/local/bin
 
 TARGETDEPS += ../quazip/libquazip.a
 
-INCLUDEPATH += ../quazip
+
 
 LIBS += ../quazip/libquazip.a
+INCLUDEPATH += ../quazip \
+  ../quazip/zlib/
 
