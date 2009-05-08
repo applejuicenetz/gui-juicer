@@ -639,7 +639,10 @@ void DownloadModule::partListWidgetSlot() {
  */
 void DownloadModule::targetFolder()
 {
-    TargetFolderDialog tf( juicer->getIncomingDirectory(), xml );
+    DirSelectionDialog tf( tr("Select a folder below ") + juicer->getIncomingDirectory(),
+            juicer->getIncomingDirectory(), false, xml, juicer );
+    tf.leNewFolder->setHidden( false );
+    tf.labelNewFolder->setHidden( false );
     if( tf.exec() == QDialog::Accepted ) {
         QString path = tf.getPath();  // ever below incoming!
         qDebug( path.toAscii().data() );

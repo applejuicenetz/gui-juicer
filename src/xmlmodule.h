@@ -68,8 +68,7 @@ public:
     QString getRecentTime() { return timeStamp; }
     static void printAllAttributes(QDomElement& e);
 
-    const QDomDocument& getContent() const
-    {
+    const QDomDocument& getContent() const {
         return doc;
     }
 

@@ -62,7 +62,8 @@ void ShareModule::insertShare( const QString& path, const QString& shareMode) {
 
 void ShareModule::insertSlot()
 {
-    ShareSelectionDialog dialog( juicer->xml, juicer );
+    DirSelectionDialog dialog(tr("Select a directory you want to share:"),
+            QString::Null(), true, juicer->xml, juicer);
     if( dialog.exec() == QDialog::Accepted ) {
         QString path =  dialog.getPath();
         if( ! path.isEmpty() ) {

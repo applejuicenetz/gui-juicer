@@ -30,7 +30,7 @@
 #include "modulebase.h"
 #include "shareitem.h"
 #include "sharefileitem.h"
-#include "shareselectiondialog.h"
+#include "dirselectiondialog.h"
 
 /**
 @author Matthias Reif

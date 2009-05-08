@@ -11,7 +11,7 @@ logindialogbase.ui \
  mainwindowbase.ui \
  helpdialogbase.ui \
  updatedialogbase.ui \
- targetfolderdialogbase.ui
+ dirselectiondialogbase.ui
 HEADERS += ftp.h \
            global.h \
            md5class.h \
@@ -45,14 +45,12 @@ HEADERS += ftp.h \
  servermodule.h \
  sharemodule.h \
  incomingmodule.h \
- shareselectiondialog.h \
  helpdialog.h \
  autoupdate.h \
  updatedialog.h \
- targetfolderdialog.h \
  xmlmodule.h \
  convert.h \
- dirselectionbase.h
+ dirselectiondialog.h
 SOURCES += main.cpp \
            md5c.c \
            md5class.cpp \
@@ -83,14 +81,12 @@ SOURCES += main.cpp \
  servermodule.cpp \
  sharemodule.cpp \
  incomingmodule.cpp \
- shareselectiondialog.cpp \
  helpdialog.cpp \
  autoupdate.cpp \
  updatedialog.cpp \
- targetfolderdialog.cpp \
  xmlmodule.cpp \
  convert.cpp \
- dirselectionbase.cpp \
+ dirselectiondialog.cpp \
  downloaditem.cpp \
  downloadmodule.cpp \
  ftp.cpp

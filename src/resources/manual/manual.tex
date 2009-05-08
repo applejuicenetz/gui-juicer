@@ -3,17 +3,17 @@
 \usepackage[pdftex]{graphicx}
 \usepackage{html}
 
-\title{Juicer - User Manual\\\includegraphics{../juicer-new.png}}
+\title{Juicer - User Manual\\\includegraphics{../juicer-big.png}\\\small{under construction}}
 
 \begin{document}
 
 \maketitle
 
+\chapter{The Main Window}
 
-\section{The Main Window}
+The main window of Juicer can be separated into different areas, that will be described in the following:
 
 \includegraphics[width=1.0\textwidth]{./images/mainwindow.png}
-
 
 \begin{enumerate}
  \item Menu Bar: general and specific menus for the modules
@@ -54,7 +54,7 @@
 %  \item \includegraphics{../.png} 
 
 
-\subsection{Downloads}
+\section{Downloads}
 \label{sec:downloads}
 The Downloads module is obviously the most important part of Juicer and therefor provides the most amount of information.
 Every download is shown by one line in the tree view that can be expanded by clikcing on the little plus sign or by double clicking
@@ -66,41 +66,79 @@ the row in order to show the users where you are downloading from or may downloa
 \end{enumerate}
 You can manipulate downloads by selecting them and clicking on a button in the toolbar or in the context menu.
 \begin{itemize}
- \item \includegraphics[width=22px]{../.png} pauses the selected download(s)
- \item \includegraphics[width=22px]{../.png} starts the selected download(s)
- \item \includegraphics[width=22px]{../.png} cancels the selected download(s)
- \item \includegraphics[width=22px]{../.png} shows the part list of the selected download(s) in a separate window
- \item \includegraphics[width=22px]{../.png} changes the file name on the selected download(s)
- \item \includegraphics[width=22px]{../.png} changes the filename(s) of the selected download(s) by the content of the clipboard; this operation preserves file suffixes and adds "_1", "_2", ... in front of the file suffix if multiple downloads are selected
- \item \includegraphics[width=22px]{../.png} opens the selected download(s) with the application defined in the configuration
- \item \includegraphics[width=22px]{../.png} changes the target folder of the selected download(s)
- \item \includegraphics[width=22px]{../.png} copies the ajfsp link(s) of the selected download(s) into the clipboard
- \item \includegraphics[width=22px]{../.png} creates a link list of ajfsp links of the selected download(s) and writes them to a file
+ \item \includegraphics[width=22px]{../player_pause.png} pauses the selected download(s)
+ \item \includegraphics[width=22px]{../player_play.png} starts the selected download(s)
+ \item \includegraphics[width=22px]{../stop.png} cancels the selected download(s)
+ \item \includegraphics[width=22px]{../partlist.png} shows the part list of the selected download(s) in a separate window
+ \item \includegraphics[width=22px]{../edit.png} changes the file name on the selected download(s)
+ \item \includegraphics[width=22px]{../editpaste.png} changes the filename(s) of the selected download(s) by the content of the clipboard; this operation preserves file suffixes and adds "\_1", "\_2", ... in front of the file suffix if multiple downloads are selected
+ \item \includegraphics[width=22px]{../exec.png} opens the selected download(s) with the application defined in the configuration
+ \item \includegraphics[width=22px]{../folder_open.png} changes the target folder of the selected download(s)
+ \item \includegraphics[width=22px]{../text_block.png} copies the ajfsp link(s) of the selected download(s) into the clipboard
+ \item \includegraphics[width=22px]{../toggle_log.png} creates a link list of ajfsp links of the selected download(s) and writes them to a file
 \end{itemize}
 
 Additionally there are operation that infect downloads or the download view in general:
 \begin{itemize}
- \item \includegraphics[width=22px]{../.png} removes finished and canceld downloads from the list
- \item \includegraphics[width=22px]{../.png} hides (NOT removes) puased downloads
- \item \includegraphics[width=22px]{../.png} enables/disabled the dock widget with the part list
+ \item \includegraphics[width=22px]{../emptytrash.png} removes finished and canceld downloads from the list
+ \item \includegraphics[width=22px]{../pause_fade.png} hides (NOT removes) paused downloads
+ \item \includegraphics[width=22px]{../partlist2.png} enables/disables the dock widget with the part list
 \end{itemize}
 
-\subsection{Uploads}
+\section{Uploads}
 \label{sec:uploads}
 
-\subsection{Search}
+\section{Search}
 \label{sec:search}
 
-\subsection{Server}
+\section{Server}
 \label{sec:server}
 
-\subsection{Shares}
+\section{Shares}
 \label{sec:shares}
 
-\subsection{Incoming}
+\section{Incoming}
 \label{sec:incoming}
 
-\section{The Configuration}
+
+\chapter{The Configuration Window}
+\label{sec:configuration}
+
+\section{Core}
+\label{sec:conf_core}
+\includegraphics[width=1.0\textwidth]{./images/configure_core.png}
+
+\section{Limits}
+\label{sec:conf_limits}
+\includegraphics[width=1.0\textwidth]{./images/configure_limits.png}
+
+\section{Appearance}
+\label{sec:conf_appearance}
+\includegraphics[width=1.0\textwidth]{./images/configure_appearance.png}
+
+\section{Behaviour}
+\label{sec:conf_behaviuor}
+\includegraphics[width=1.0\textwidth]{./images/configure_behaviour.png}
+
+\section{Search}
+\label{sec:conf_search}
+\includegraphics[width=1.0\textwidth]{./images/configure_search.png}
+
+\section{Launching}
+\label{sec:conf_launching}
+\includegraphics[width=1.0\textwidth]{./images/configure_launching.png}
+
+\section{FTP}
+\label{sec:conf_ftp}
+\includegraphics[width=1.0\textwidth]{./images/configure_ftp.png}
+
+\section{Reset}
+\label{sec:conf_reset}
+\includegraphics[width=1.0\textwidth]{./images/configure_reset.png}
+
+
+\chapter{FAQ}
+\label{sec:faq}
 
 
 \end{document}

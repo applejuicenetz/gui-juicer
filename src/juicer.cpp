@@ -876,3 +876,4 @@ void Juicer::setFirewalled(bool firewalled) {
         warnFirewallLabel->clear();
     }
 }
+

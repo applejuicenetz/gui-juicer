@@ -13,15 +13,18 @@
 
 #include "xmlmodule.h"
 
-#include "dirselectionbase.h"
+#include "dirselectiondialog.h"
 
-DirSelectionBase::DirSelectionBase( XMLModule * const xml, QWidget* parent, Qt::WFlags fl )
+QList<DirSelectionDialog::Dir> DirSelectionDialog::rootDir = QList<DirSelectionDialog::Dir>();
+
+DirSelectionDialog::DirSelectionDialog(const QString& label, const QString& startDir, bool hideNew, XMLModule * const xml, QWidget* parent, Qt::WFlags fl )
   : QDialog( parent, fl )
   , Ui::targetFolderDialogBase()
   , xml_( xml )
   , expandedItem_( 0 )
 {
     setupUi( this );
+    textLabel->setText(label);
 
     shareIcons_[WORKSTATION] = QIcon(":/small/system.png");
     shareIcons_[DRIVE]       = QIcon(":/small/hdd.png");
@@ -31,28 +34,27 @@ DirSelectionBase::DirSelectionBase( XMLModule * const xml, QWidget* parent, Qt::
 
     treeWidget->sortItems( 0, Qt::AscendingOrder );
 
-    leNewFolder->setHidden( true );
-    labelNewFolder->setHidden( true );
+    leNewFolder->setHidden(hideNew);
+    labelNewFolder->setHidden(hideNew);
 
     connect( treeWidget, SIGNAL(itemExpanded(QTreeWidgetItem*)),
              this, SLOT(updateSubDirectoriesSlot(QTreeWidgetItem*)) );
     connect( xml_,  SIGNAL(requestFinished(int,bool)),
              this, SLOT(requestFinished(int,bool)) );
+
+    requestSubdirsFromDir(startDir);
 }
 
 
-DirSelectionBase::~DirSelectionBase()
-{
-    disconnect( xml_,  SIGNAL(requestFinished(int,bool)),
-                this, SLOT(requestFinished(int,bool)) );
+DirSelectionDialog::~DirSelectionDialog() {
 }
 
-void DirSelectionBase::reject()
+void DirSelectionDialog::reject()
 {
     QDialog::reject();
 }
 
-void DirSelectionBase::accept()
+void DirSelectionDialog::accept()
 {
     QString newFolder = leNewFolder->displayText();
     QString path      = getSelectedPath();
@@ -65,7 +67,7 @@ void DirSelectionBase::accept()
     }
 }
 
-QString DirSelectionBase::getPath() const
+QString DirSelectionDialog::getPath() const
 {
     QString newFolder = leNewFolder->displayText();
     QString path      = getSelectedPath();
@@ -76,17 +78,23 @@ QString DirSelectionBase::getPath() const
     return path;
 }
 
-void DirSelectionBase::requestSubdirsFromDir( const QString& dir /*= QString::Null()*/ )
-{
-    if ( ! dir.isNull() ) {
-        xmlIds << xml_->get( "directory", "&directory=" + dir );
-    }
-    else {
-        xmlIds << xml_->get( "directory" );
+void DirSelectionDialog::requestSubdirsFromDir(const QString& dir /* = QString::Null() */) {
+    if(!dir.isNull()){
+        xmlIds << xml_->get("directory", "&directory=" + dir);
+    } else {
+        if(rootDir.isEmpty()) {
+            rootDirRequestId = xml_->get("directory");
+            xmlIds << rootDirRequestId;
+        } else {
+            rootDirRequestId = -1;
+            for(int i=0; i<rootDir.size(); i++) {
+                insertDirectory(rootDir.at(i).name, rootDir.at(i).path, rootDir.at(i).type);
+            }
+        }
     }
 }
 
-void DirSelectionBase::requestFinished( int id, bool error )
+void DirSelectionDialog::requestFinished( int id, bool error )
 {
     if(xmlIds.contains(id)) {
         if( ! error ) {
@@ -96,10 +104,13 @@ void DirSelectionBase::requestFinished( int id, bool error )
                     QDomElement e = n.toElement();
                     if( ! e.isNull() ) {
                         if( e.tagName() == "dir" ) {
+                            if(id == rootDirRequestId) {
+                                DirSelectionDialog::rootDir << Dir(e.attribute("name"), e.attribute("path"), e.attribute("type"));
+                            }
                             insertDirectory(
-                                  e.attribute("name"),
-                                  e.attribute("path"),
-                                  e.attribute("type").toInt() );
+                                e.attribute("name"),
+                                e.attribute("path"),
+                                (DirType)e.attribute("type").toInt());
                         } else if( e.tagName() == "filesystem" ) {
                             insertSeperator( e.attribute("seperator") );
                         }
@@ -112,7 +123,7 @@ void DirSelectionBase::requestFinished( int id, bool error )
 }
 
 // <2DO> path needed anymore?
-void DirSelectionBase::insertDirectory( const QString& dir, const QString& /*path*/, int type )
+void DirSelectionDialog::insertDirectory( const QString& dir, const QString& /*path*/, DirType type )
 {
     if( type != DISKDRIVE ) {
         QTreeWidgetItem * item = NULL;
@@ -135,16 +146,16 @@ void DirSelectionBase::insertDirectory( const QString& dir, const QString& /*pat
     }
 }
 
-void DirSelectionBase::insertSeperator( const QString& seperator )
+void DirSelectionDialog::insertSeperator( const QString& seperator )
 {
     filesystemSeperator_ = seperator;
 }
 
 
 /*!
-    \fn DirSelectionBase::updateSubDirectoriesSlot(QTreeWidgetItem* item)
+    \fn DirSelectionDialog::updateSubDirectoriesSlot(QTreeWidgetItem* item)
  */
-void DirSelectionBase::updateSubDirectoriesSlot( QTreeWidgetItem * item )
+void DirSelectionDialog::updateSubDirectoriesSlot( QTreeWidgetItem * item )
 {
     if( item->childCount() == 0 ) {
         expandedItem_ = item;
@@ -154,9 +165,9 @@ void DirSelectionBase::updateSubDirectoriesSlot( QTreeWidgetItem * item )
 
 
 /*!
-    \fn DirSelectionBase::getPath(QTreeWidgetItem* item)
+    \fn DirSelectionDialog::getPath(QTreeWidgetItem* item)
  */
-QString DirSelectionBase::getTreePath( QTreeWidgetItem * const item ) const
+QString DirSelectionDialog::getTreePath( QTreeWidgetItem * const item ) const
 {
     if ( ! item ) return "";
     QString path = item->text( 0 );
@@ -169,9 +180,9 @@ QString DirSelectionBase::getTreePath( QTreeWidgetItem * const item ) const
 
 
 /*!
-    \fn DirSelectionBase::selectedPath()
+    \fn DirSelectionDialog::selectedPath()
  */
-QString DirSelectionBase::getSelectedPath() const
+QString DirSelectionDialog::getSelectedPath() const
 {
     QList<QTreeWidgetItem *> selectedItems = treeWidget->selectedItems();
     if( ! selectedItems.empty() ) {

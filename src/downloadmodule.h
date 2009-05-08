@@ -24,7 +24,7 @@
 #include "convert.h"
 #include "ftp.h"
 #include "optionsdialog.h"
-#include "targetfolderdialog.h"
+#include "dirselectiondialog.h"
 
 class DownloadModule : public ModuleBase {
   Q_OBJECT
