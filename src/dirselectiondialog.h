@@ -17,13 +17,13 @@
 */
 
 #include <QDialog>
+#include "ui_dirselectiondialogbase.h"
 #include <QFileIconProvider>
-#include "ui_targetfolderdialogbase.h"
 
 class QString;
 class XMLModule;
 
-class DirSelectionDialog : public QDialog, public Ui::targetFolderDialogBase
+class DirSelectionDialog : public QDialog, public Ui::DirSelectionDialogBase
 {
     Q_OBJECT
 

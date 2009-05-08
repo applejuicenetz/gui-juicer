@@ -3,7 +3,7 @@ CONFIG += qt warn_on \
  staticlib
 QT -= gui
 DEPENDPATH += .
-INCLUDEPATH += .
+INCLUDEPATH += . ./zlib
 
 # Input
 HEADERS += crypt.h \

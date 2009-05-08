@@ -19,7 +19,7 @@ QList<DirSelectionDialog::Dir> DirSelectionDialog::rootDir = QList<DirSelectionD
 
 DirSelectionDialog::DirSelectionDialog(const QString& label, const QString& startDir, bool hideNew, XMLModule * const xml, QWidget* parent, Qt::WFlags fl )
   : QDialog( parent, fl )
-  , Ui::targetFolderDialogBase()
+  , Ui::DirSelectionDialogBase()
   , xml_( xml )
   , expandedItem_( 0 )
 {
