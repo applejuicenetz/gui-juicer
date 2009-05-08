@@ -184,11 +184,6 @@ resources/warning.png \
  resources/small/undo.png \
  resources/small/view_tree.png \
  resources/small/view_detailed.png \
- resources/small/desktop.png \
- resources/small/folder.png \
- resources/small/floppy.png \
- resources/small/hdd.png \
- resources/small/system.png \
  resources/options/de.png \
  resources/options/fonts.png \
  resources/options/gb.png \

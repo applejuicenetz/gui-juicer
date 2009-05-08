@@ -17,6 +17,7 @@
 */
 
 #include <QDialog>
+#include <QFileIconProvider>
 #include "ui_targetfolderdialogbase.h"
 
 class QString;

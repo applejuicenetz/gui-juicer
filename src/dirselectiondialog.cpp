@@ -26,11 +26,12 @@ DirSelectionDialog::DirSelectionDialog(const QString& label, const QString& star
     setupUi( this );
     textLabel->setText(label);
 
-    shareIcons_[WORKSTATION] = QIcon(":/small/system.png");
-    shareIcons_[DRIVE]       = QIcon(":/small/hdd.png");
-    shareIcons_[DISKDRIVE]   = QIcon(":/small/floppy.png");
-    shareIcons_[FOLDER]      = QIcon(":/small/folder.png");
-    shareIcons_[DESKTOP]     = QIcon(":/small/desktop.png");
+    QFileIconProvider fileIconProvider;
+    shareIcons_[WORKSTATION] = fileIconProvider.icon(QFileIconProvider::Computer);
+    shareIcons_[DRIVE]       = fileIconProvider.icon(QFileIconProvider::Drive);
+    shareIcons_[DISKDRIVE]   = fileIconProvider.icon(QFileIconProvider::Drive);
+    shareIcons_[FOLDER]      = fileIconProvider.icon(QFileIconProvider::Folder);
+    shareIcons_[DESKTOP]     = fileIconProvider.icon(QFileIconProvider::Desktop);
 
     treeWidget->sortItems( 0, Qt::AscendingOrder );
 
