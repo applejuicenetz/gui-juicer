@@ -31,7 +31,6 @@ documentation and/or software.
 #define _MD5CONTEXT_H
 
 #include "global.h"
-#include "stdint.h"
 #include <QtGlobal>
 
 typedef struct {
