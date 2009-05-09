@@ -46,3 +46,5 @@ SOURCES += ioapi.c \
            zlib/uncompr.c \
            zlib/zutil.c
 
+DESTDIR = ./
+
