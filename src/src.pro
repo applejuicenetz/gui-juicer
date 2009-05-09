@@ -9,7 +9,6 @@ logindialogbase.ui \
  handlerdialogbase.ui \
  partlistdialogbase.ui \
  mainwindowbase.ui \
- helpdialogbase.ui \
  updatedialogbase.ui \
  dirselectiondialogbase.ui
 HEADERS += ftp.h \
@@ -45,7 +44,6 @@ HEADERS += ftp.h \
  servermodule.h \
  sharemodule.h \
  incomingmodule.h \
- helpdialog.h \
  autoupdate.h \
  updatedialog.h \
  xmlmodule.h \
@@ -81,7 +79,6 @@ SOURCES += main.cpp \
  servermodule.cpp \
  sharemodule.cpp \
  incomingmodule.cpp \
- helpdialog.cpp \
  autoupdate.cpp \
  updatedialog.cpp \
  xmlmodule.cpp \
@@ -93,11 +90,9 @@ SOURCES += main.cpp \
 CONFIG += warn_on \
           qt \
           stl \
- debug \
- assistant
+ debug
 TEMPLATE = app
-QT += core gui network xml \
- webkit
+QT += core gui network xml
 
 RESOURCES += images.qrc \
 translations.qrc

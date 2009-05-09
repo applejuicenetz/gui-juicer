@@ -736,8 +736,7 @@ void Juicer::hostLookedUp(const QHostInfo &host) {
     \fn Juicer::showManual()
  */
 void Juicer::showManual() {
-    HelpDialog h;
-    h.exec();
+     QDesktopServices::openUrl(QUrl("http://applejuicer.net/manual"));
 }
 
 

@@ -35,6 +35,7 @@
 #include <QHostInfo>
 #include <QSystemTrayIcon>
 #include <QSplashScreen>
+ #include <QDesktopServices>
 
 #include "ui_mainwindowbase.h"
 
@@ -53,8 +54,6 @@
 #include "convert.h"
 #include "serversocket.h"
 #include "iconwidget.h"
-
-#include "helpdialog.h"
 
 static const QString WINDOWS = "1";
 static const QString LINUX = "2";
