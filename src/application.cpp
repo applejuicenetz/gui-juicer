@@ -34,8 +34,8 @@ Application::Application(int & argc, char ** argv) : QApplication( argc, argv ) 
 
     // -- check if juicer is default application for ajfsp links --
     #ifdef Q_WS_WIN
+         au = new AutoUpdate(appFileInfo.absolutePath());
 //         -- disabled because insufficiently tested --
-//         au = new AutoUpdate(appFileInfo.absolutePath());
 //         au->check();
 
         QString appCmd = appPath.replace("/","\\");

@@ -200,11 +200,12 @@ INSTALLS += target
 
 target.path = /usr/local/bin
 
-TARGETDEPS += ../quazip/libquazip.a
+unix:TARGETDEPS += ../quazip/libquazip.a
+win32:TARGETDEPS += ../quazip/quazip.lib
 
+unix:LIBS += ../quazip/libquazip.a
+win32:LIBS += ../quazip/quazip.lib
 
-
-LIBS += ../quazip/libquazip.a
 INCLUDEPATH += ../quazip \
   ../quazip/zlib/
 

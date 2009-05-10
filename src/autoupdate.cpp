@@ -60,7 +60,6 @@ void AutoUpdate::requestFinished(int id, bool error) {
         updateDialog->textEdit->append("extract update archive...");
         QDir outDir(QDir::tempPath() + QDir::separator() + "juicer_update" + QDateTime::currentDateTime().toString());
         for(int i=0; i<3 && !outDir.exists(); i++) {
-            sleep(1);
             outDir.setPath(QDir::tempPath() + QDir::separator() + "juicer_update" + QDateTime::currentDateTime().toString());
         }
         if(outDir.exists()) {
