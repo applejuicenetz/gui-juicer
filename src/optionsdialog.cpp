@@ -503,6 +503,7 @@ void OptionsDialog::reset() {
     if(QMessageBox::question(this, tr("Reset"), tr("Are you sure to reset Juicer?"), QMessageBox::Yes | QMessageBox::No) == QMessageBox::Yes) {
         QSettings lokalSettings;
         lokalSettings.clear();
+        setSettings();
     }
 }
 

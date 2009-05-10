@@ -201,8 +201,12 @@ bool DownloadItem::update( const QString& hash,
     if ( hash_.isEmpty() ) {
         hash_ = hash;
     }
-    if ( filename_.isEmpty() ) {
+
+    this->setText( FILENAME_COL, fileName );
+    partListDialog->setFilename( fileName );
+    if ( filename_.isEmpty() && !fileName.isEmpty() ) {
         filename_ = fileName;
+        this->setFileIcon(FILENAME_COL);
     }
     if ( status_ == DOWN_FINISHED ) {
         this->ready = size_;
@@ -215,8 +219,6 @@ bool DownloadItem::update( const QString& hash,
     if ( this->text( SIZE_COL ).isEmpty() ) {
         this->setText( SIZE_COL, " " + Convert::bytes( size_ ) + " " );
     }
-    this->setText( FILENAME_COL, fileName );
-    partListDialog->setFilename( fileName );
 
     this->setText( TARGET_DIR_COL, targetDir );
 

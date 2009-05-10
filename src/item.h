@@ -24,6 +24,8 @@
 #include <QTreeWidget>
 #include <QApplication>
 
+#include "convert.h"
+
 /**
 @author Matthias Reif
 */
@@ -55,6 +57,7 @@ public:
         return size_;
     }
     bool setHiddenSave(bool hidden);
+    void setFileIcon(int column);
 
 protected:
     QString id_;

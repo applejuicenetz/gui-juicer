@@ -295,6 +295,7 @@ void IncomingModule::reload()
                 item->setText(IncomingItem::FILENAME_COL, list[i].fileName());
                 item->setText(IncomingItem::SIZE_COL, Convert::bytes((double)list[i].size(), 2));
                 item->setText(IncomingItem::DATE_COL, list[i].lastModified().toLocalTime().toString( Qt::LocalDate ) );
+                item->setFileIcon(IncomingItem::FILENAME_COL);
                 treeWidget->addTopLevelItem( item );
             }
         }
@@ -355,6 +356,7 @@ void IncomingModule::insert( QUrlInfo info )
         item->setText( IncomingItem::FILENAME_COL, info.name() );
         item->setText( IncomingItem::SIZE_COL, Convert::bytes( (double)info.size(), 2 ) );
         item->setText( IncomingItem::DATE_COL, info.lastModified().toLocalTime().toString() );
+        item->setFileIcon(IncomingItem::FILENAME_COL);
         adjustSizeOfColumns();
     }
 }

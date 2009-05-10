@@ -93,6 +93,7 @@ void SearchModule::insertSearchEntry(const QString& id, const QString& searchId,
                 if(searchEntryItem->text( SearchItem::TEXT_COL ) == "") {
                     searchEntryItem->setText( SearchItem::TEXT_COL, filename);
                     searchEntryItem->setFilename( filename );
+                    searchEntryItem->setFileIcon(SearchItem::TEXT_COL);
                 }
             }
             searchEntryItem->setFilter(filter);

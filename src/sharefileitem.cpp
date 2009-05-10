@@ -31,21 +31,23 @@ void ShareFileItem::update( const QString& hash,
                                const QString& priority,
                                const QString& filesystemSeperator )
 {
-    if ( hash_.isEmpty() ) {
+    setText( ShareItem::PATH_COL, fileName.split(filesystemSeperator).last() );
+    setText( ShareItem::SIZE_COL, Convert::bytesExtra(size) );
+    setText( ShareItem::PRIORITY_COL, priority );
+
+    if ( hash_.isEmpty() && !hash.isEmpty()) {
         hash_ = hash;
     }
-    if ( filename_.isEmpty() ) {
+    if ( filename_.isEmpty() && !fileName.isEmpty() ) {
         filename_ = fileName;
+        setFileIcon(ShareItem::PATH_COL);
     }
-    if ( this->filesystemSeperator.isEmpty() ) {
+    if ( this->filesystemSeperator.isEmpty() && !filesystemSeperator.isEmpty()) {
         this->filesystemSeperator = filesystemSeperator;
     }
 
     size_ = size.toDouble();
 
-    setText( ShareItem::PATH_COL, filename_.split(filesystemSeperator).last() );
-    setText( ShareItem::SIZE_COL, Convert::bytesExtra(size) );
-    setText( ShareItem::PRIORITY_COL, priority );
 
     ShareItem* parentItem = dynamic_cast<ShareItem*>(QTreeWidgetItem::parent());
     if ( parentItem != NULL ) parentItem->update();

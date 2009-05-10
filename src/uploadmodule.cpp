@@ -90,6 +90,7 @@ void UploadModule::setFilename(const QString& shareId, const QString& filename) 
         if((*item)->getShareID() == shareId) {
             bool r = (*item)->setHiddenSave(false);
             (*item)->setText(UploadItem::FILENAME_COL, filename);
+            (*item)->setFileIcon(UploadItem::FILENAME_COL);
             (*item)->setHiddenSave(r);
         }
     }

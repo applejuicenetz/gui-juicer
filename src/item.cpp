@@ -55,3 +55,8 @@ bool Item::setHiddenSave(bool hidden) {
     }
     return r;
 }
+
+void Item::setFileIcon(int column) {
+    setIcon(column, QIcon(Convert::getFileIcon(text(column))));
+}
+

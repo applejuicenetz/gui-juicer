@@ -25,6 +25,7 @@
 #include <QObject>
 #include <QString>
 #include <QFile>
+#include <QPixmap>
 
 /**
 @author Matthias Reif
@@ -60,20 +61,26 @@ public:
     static const int ONE_MEG = 1048576;
     static const int ONE_KILO = 1024;
 
-    template<class T>
-    static const T& min(const T& a, const T& b) {
+    template<class X1> static const X1& min(const X1& a, const X1& b) {
         if(a < b) {
             return a;
         }
         return b;
     }
-    template<class T>
-    static const T& max(const T& a, const T& b) {
+    template<class X>
+    static const X& max(const X& a, const X& b) {
         if(a > b) {
             return a;
         }
         return b;
     }
+
+    static QPixmap getFileIcon(const QString &path);
+    #ifdef Q_WS_WIN
+    static QPixmap convertHIconToPixmap(const HICON icon);
+    static QImage qt_fromWinHBITMAP(HDC hdc, HBITMAP bitmap, int w, int h);
+    #endif
+
 };
 
 #endif
