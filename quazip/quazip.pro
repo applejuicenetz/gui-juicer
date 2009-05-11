@@ -2,8 +2,6 @@ TEMPLATE = lib
 CONFIG += qt warn_on \
  staticlib
 QT -= gui
-#DEPENDPATH += .
-#INCLUDEPATH += . ./zlib
 
 # Input
 HEADERS += crypt.h \
@@ -16,17 +14,6 @@ HEADERS += crypt.h \
            zip.h \
            zlib.h \
            zconf.h
-#           zlib/crc32.h \
-#           zlib/deflate.h \
-#           zlib/inffast.h \
-#           zlib/inffixed.h \
-#           zlib/inflate.h \
-#           zlib/inftrees.h \
-#           zlib/trees.h \
-#           zlib/zconf.h \
-#           zlib/zconf.in.h \
-#           zlib/zlib.h \
-#           zlib/zutil.h
 
 SOURCES += ioapi.c \
            quazip.cpp \
@@ -34,18 +21,6 @@ SOURCES += ioapi.c \
            quazipnewinfo.cpp \
            unzip.c \
            zip.c
-#           zlib/compress.c \
-#           zlib/adler32.c \
-#           zlib/crc32.c \
-#           zlib/deflate.c \
-#           zlib/gzio.c \
-#           zlib/infback.c \
-#           zlib/inffast.c \
-#           zlib/inflate.c \
-#           zlib/inftrees.c \
-#           zlib/minigzip.c \
-#           zlib/trees.c \
-#           zlib/uncompr.c \
-#           zlib/zutil.c
 
-DESTDIR = ./
+DESTDIR = .
+
