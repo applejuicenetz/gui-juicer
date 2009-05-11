@@ -193,7 +193,8 @@ resources/warning.png \
  resources/options/player_playlist.png \
  resources/options/superkaramba.png \
  resources/options/undo.png \
- resources/options/viewmag.png
+ resources/options/viewmag.png \
+ LICENSE
 
 TRANSLATIONS += juicer_de.ts
 
