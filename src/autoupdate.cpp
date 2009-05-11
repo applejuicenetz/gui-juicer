@@ -10,19 +10,20 @@
 //
 //
 #include "autoupdate.h"
+#include <QDebug>
 
 AutoUpdate::AutoUpdate(const QString& appPath, QWidget *parent) : QObject(parent) {
     this->appPath = appPath;
-    updatePossible = true;
+#ifdef Q_OS_WIN32
+    updateFilename = "update-windows.zip";
+#endif
+#ifdef Q_OS_MAC
+    updateFilename = "update-mac.zip";
+#endif
 #ifdef Q_OS_LINUX
     updateFilename = "update-linux.zip";
-#elif Q_OS_MAC
-    updateFilename = "update-mac.zip";
-#elif Q_OS_WIN32
-    updateFilename = "update-windows.zip";
-#else
-    updatePossible = false;
 #endif
+    updatePossible = !updateFilename.isEmpty();
 
     // -- disabled because insufficiently tested --
     updatePossible = false;
