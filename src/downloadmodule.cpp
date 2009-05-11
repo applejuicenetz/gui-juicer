@@ -60,7 +60,6 @@ DownloadModule::DownloadModule(Juicer* juicer)
 
     connect(treeWidget, SIGNAL(itemSelectionChanged()), this, SLOT(selectionChanged()));
     connect(powerCheck, SIGNAL(clicked(bool)), this, SLOT(applyPowerDownload()));
-    connect(powerSpin,  SIGNAL(valueChanged(const QString&)), this, SLOT(applyPowerDownload()));
     connect(powerSpin,  SIGNAL(valueChanged(double)), this, SLOT(applyPowerDownload()));
     connect(powerButton, SIGNAL(clicked()), this, SLOT(setMultiPowerDownload()));
     connect(juicer->actionPause, SIGNAL(triggered()), this, SLOT(pauseSlot()));
@@ -178,7 +177,6 @@ void DownloadModule::updateView(bool force) {
         downloadsFinished(finished);
     }
     powerSpin->setEnabled(powerCheck->isChecked());
-    powerButtonAction->setVisible(!treeWidget->selectedItems().isEmpty());
 }
 
 /*!
@@ -419,7 +417,7 @@ void DownloadModule::setMultiPowerDownload()
     \fn DownloadModule::applyPowerDownload()
  */
 void DownloadModule::applyPowerDownload() {
-    if( treeWidget->selectedItems().size() > 1) {
+    if( treeWidget->selectedItems().size() == 1) {
         float value = powerCheck->isChecked() ? powerSpin->value() : 1.0;
         setSelected("setpowerdownload", "&Powerdownload=" + Convert::power(value));
     }
@@ -467,10 +465,21 @@ void DownloadModule::selectionChanged()
     bool oneActive = false;
     QList<QTreeWidgetItem *> selectedItems = treeWidget->selectedItems();
     bool oneSelected = !selectedItems.empty();
+    bool multipleSelected = selectedItems.size() > 1;
 
-    if ( oneSelected == false ) {
+    if ( oneSelected ) {
+        powerButtonAction->setVisible( multipleSelected );
+        // -- always use values of first selected download --
+        DownloadItem* downloadItem = dynamic_cast<DownloadItem*>(selectedItems.at(0));
+        bool pwdl = downloadItem->powerDownloadActive();
+        powerCheck->setChecked(pwdl);
+        if ( pwdl ) {
+            powerSpin->setValue( downloadItem->powerDownloadValue() );
+        } else {
+            powerSpin->setValue( 1.0 );
+        }
+    } else {
         powerButtonAction->setVisible( false );
-        //powerCheck->setCheckState( Qt::Unchecked );
         powerCheck->setChecked(false);
         powerSpin->setValue( 1.0 );
     }
@@ -491,23 +500,8 @@ void DownloadModule::selectionChanged()
         if(onePaused && oneActive) {
             break;
         }
-
-        if ( selectedItems.count() == 1 ) {  // just one selected
-            powerButtonAction->setVisible( false );
-            bool pwdl = downloadItem->powerDownloadActive();
-            //powerCheck->setCheckState( pwdl ? Qt::Checked : Qt::Unchecked );
-            powerCheck->setChecked(pwdl);
-            if ( pwdl ) {
-                powerSpin->setValue( downloadItem->powerDownloadValue() );
-            } else {
-                powerSpin->setValue( 1.0 );
-            }
-        } else {
-            powerButtonAction->setVisible( true );
-            powerCheck->setCheckState( Qt::Unchecked );
-            powerSpin->setValue( 1.0 );
-        }
     }
+
     juicer->actionPause->setEnabled(oneActive);
     juicer->actionResume->setEnabled(onePaused);
     juicer->actionCancel->setEnabled(oneSelected);
@@ -645,7 +639,7 @@ void DownloadModule::targetFolder()
     tf.labelNewFolder->setHidden( false );
     if( tf.exec() == QDialog::Accepted ) {
         QString path = tf.getPath();  // ever below incoming!
-        qDebug( path.toAscii().data() );
+        qDebug() << path;
         setSelected( "settargetdir", "&dir=" + path );
     }
 }
