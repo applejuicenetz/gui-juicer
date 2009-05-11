@@ -14,7 +14,6 @@
 #include "ioapi.h"
 
 
-
 /* I've found an old Unix (a SunOS 4.1.3_U1) without all SEEK_* defined.... */
 
 #ifndef SEEK_CUR
@@ -70,8 +69,6 @@ voidpf ZCALLBACK fopen_file_func (opaque, filename, mode)
    const char* filename;
    int mode;
 {
-    //(void) opaque; /* avoid "unused parameter" warning */
-    voidpf dummy = opaque; /* just to make some compilers happy */
     FILE* file;// = NULL;
     const char* mode_fopen = NULL;
     if ((mode & ZLIB_FILEFUNC_MODE_READWRITEFILTER)==ZLIB_FILEFUNC_MODE_READ)
@@ -95,11 +92,7 @@ uLong ZCALLBACK fread_file_func (opaque, stream, buf, size)
    void* buf;
    uLong size;
 {
-    //(void) opaque; /* avoid "unused parameter" warning */
-    voidpf dummy = opaque; /* just to make some compilers happy */
-    uLong ret;
-    ret = (uLong)fread(buf, 1, (size_t)size, (FILE *)stream);
-    return ret;
+    return (uLong)fread(buf, 1, (size_t)size, (FILE *)stream);
 }
 
 
@@ -109,22 +102,14 @@ uLong ZCALLBACK fwrite_file_func (opaque, stream, buf, size)
    const void* buf;
    uLong size;
 {
-    //(void) opaque; /* avoid "unused parameter" warning */
-    voidpf dummy = opaque; /* just to make some compilers happy */
-    uLong ret;
-    ret = (uLong)fwrite(buf, 1, (size_t)size, (FILE *)stream);
-    return ret;
+    return (uLong)fwrite(buf, 1, (size_t)size, (FILE *)stream);
 }
 
 long ZCALLBACK ftell_file_func (opaque, stream)
    voidpf opaque;
    voidpf stream;
 {
-    //(void) opaque; /* avoid "unused parameter" warning */
-    voidpf dummy = opaque; /* just to make some compilers happy */
-    long ret;
-    ret = ftell((FILE *)stream);
-    return ret;
+    return ftell((FILE *)stream);
 }
 
 long ZCALLBACK fseek_file_func (opaque, stream, offset, origin)
@@ -133,10 +118,7 @@ long ZCALLBACK fseek_file_func (opaque, stream, offset, origin)
    uLong offset;
    int origin;
 {
-    //(void) opaque; /* avoid "unused parameter" warning */
-    voidpf dummy = opaque; /* just to make some compilers happy */
     int fseek_origin=0;
-    long ret;
     switch (origin)
     {
     case ZLIB_FILEFUNC_SEEK_CUR :
@@ -150,31 +132,22 @@ long ZCALLBACK fseek_file_func (opaque, stream, offset, origin)
         break;
     default: return -1;
     }
-    ret = 0;
     fseek((FILE *)stream, offset, fseek_origin);
-    return ret;
+    return 0;
 }
 
 int ZCALLBACK fclose_file_func (opaque, stream)
    voidpf opaque;
    voidpf stream;
 {
-    //(void) opaque; /* avoid "unused parameter" warning */
-    voidpf dummy = opaque; /* just to make some compilers happy */
-    int ret;
-    ret = fclose((FILE *)stream);
-    return ret;
+    return fclose((FILE *)stream);
 }
 
 int ZCALLBACK ferror_file_func (opaque, stream)
    voidpf opaque;
    voidpf stream;
 {
-    //(void) opaque; /* avoid "unused parameter" warning */
-    voidpf dummy = opaque; /* just to make some compilers happy */
-    int ret;
-    ret = ferror((FILE *)stream);
-    return ret;
+    return ferror((FILE *)stream);
 }
 
 void fill_fopen_filefunc (pzlib_filefunc_def)
