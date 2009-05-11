@@ -71,6 +71,7 @@ voidpf ZCALLBACK fopen_file_func (opaque, filename, mode)
    int mode;
 {
     //(void) opaque; /* avoid "unused parameter" warning */
+    voidpf dummy = opaque; /* just to make some compilers happy */
     FILE* file;// = NULL;
     const char* mode_fopen = NULL;
     if ((mode & ZLIB_FILEFUNC_MODE_READWRITEFILTER)==ZLIB_FILEFUNC_MODE_READ)
@@ -95,6 +96,7 @@ uLong ZCALLBACK fread_file_func (opaque, stream, buf, size)
    uLong size;
 {
     //(void) opaque; /* avoid "unused parameter" warning */
+    voidpf dummy = opaque; /* just to make some compilers happy */
     uLong ret;
     ret = (uLong)fread(buf, 1, (size_t)size, (FILE *)stream);
     return ret;
@@ -108,6 +110,7 @@ uLong ZCALLBACK fwrite_file_func (opaque, stream, buf, size)
    uLong size;
 {
     //(void) opaque; /* avoid "unused parameter" warning */
+    voidpf dummy = opaque; /* just to make some compilers happy */
     uLong ret;
     ret = (uLong)fwrite(buf, 1, (size_t)size, (FILE *)stream);
     return ret;
@@ -118,6 +121,7 @@ long ZCALLBACK ftell_file_func (opaque, stream)
    voidpf stream;
 {
     //(void) opaque; /* avoid "unused parameter" warning */
+    voidpf dummy = opaque; /* just to make some compilers happy */
     long ret;
     ret = ftell((FILE *)stream);
     return ret;
@@ -130,6 +134,7 @@ long ZCALLBACK fseek_file_func (opaque, stream, offset, origin)
    int origin;
 {
     //(void) opaque; /* avoid "unused parameter" warning */
+    voidpf dummy = opaque; /* just to make some compilers happy */
     int fseek_origin=0;
     long ret;
     switch (origin)
@@ -155,6 +160,7 @@ int ZCALLBACK fclose_file_func (opaque, stream)
    voidpf stream;
 {
     //(void) opaque; /* avoid "unused parameter" warning */
+    voidpf dummy = opaque; /* just to make some compilers happy */
     int ret;
     ret = fclose((FILE *)stream);
     return ret;
@@ -165,6 +171,7 @@ int ZCALLBACK ferror_file_func (opaque, stream)
    voidpf stream;
 {
     //(void) opaque; /* avoid "unused parameter" warning */
+    voidpf dummy = opaque; /* just to make some compilers happy */
     int ret;
     ret = ferror((FILE *)stream);
     return ret;

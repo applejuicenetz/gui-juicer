@@ -32,7 +32,7 @@ PowerSpin::PowerSpin(const QString& id, QWidget *parent) : QWidget(parent)
     layout->addWidget(check);
 
     spin = new QDoubleSpinBox();
-    spin->setFrame(false);
+    spin->setFrame(true);
     spin->setRange(2.2, 50.0);
     spin->setSingleStep(0.1);
     spin->setDecimals(1);
