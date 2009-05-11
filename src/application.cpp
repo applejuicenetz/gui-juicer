@@ -32,12 +32,11 @@ Application::Application(int & argc, char ** argv) : QApplication( argc, argv ) 
     QFileInfo appFileInfo(argv[0]);
     appPath = appFileInfo.absoluteFilePath();    // contains path and filename
 
+    autoUpdate = new AutoUpdate(appFileInfo.absolutePath());
+    autoUpdate->check();
+
     // -- check if juicer is default application for ajfsp links --
     #ifdef Q_WS_WIN
-         au = new AutoUpdate(appFileInfo.absolutePath());
-//         -- disabled because insufficiently tested --
-//         au->check();
-
         QString appCmd = appPath.replace("/","\\");
         appCmd = "\"" + appCmd + "\" \"%1\"";
         QSettings settings("HKEY_CLASSES_ROOT\\ajfsp", QSettings::NativeFormat);
@@ -74,6 +73,7 @@ Application::Application(int & argc, char ** argv) : QApplication( argc, argv ) 
 
 
 Application::~Application() {
+    delete autoUpdate;
 }
 
 int Application::exec() {

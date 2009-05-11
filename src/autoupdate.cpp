@@ -13,12 +13,29 @@
 
 AutoUpdate::AutoUpdate(const QString& appPath, QWidget *parent) : QObject(parent) {
     this->appPath = appPath;
-    updateDialog = new UpdateDialog(parent);
-    checkId = getId = -1;
-    compileTime = QDateTime::fromString(QString(__DATE__) + " " + QString(__TIME__), "MMM dd yyyy hh:mm:ss");
-    connect(&http, SIGNAL(requestFinished(int, bool)), this, SLOT(requestFinished(int, bool)));
-    connect(&http, SIGNAL(dataReadProgress(int, int)), this, SLOT(dataReadProgress(int, int)));
-    http.setHost("applejuicer.net");
+    updatePossible = true;
+#ifdef Q_OS_LINUX
+    updateFilename = "update-linux.zip";
+#elif Q_OS_MAC
+    updateFilename = "update-mac.zip";
+#elif Q_OS_WIN32
+    updateFilename = "update-windows.zip";
+#else
+    updatePossible = false;
+#endif
+
+    // -- disabled because insufficiently tested --
+    updatePossible = false;
+    // --------------------------------------------
+
+    if(updatePossible) {
+        updateDialog = new UpdateDialog(parent);
+        checkId = getId = -1;
+        compileTime = QDateTime::fromString(QString(__DATE__) + " " + QString(__TIME__), "MMM dd yyyy hh:mm:ss");
+        connect(&http, SIGNAL(requestFinished(int, bool)), this, SLOT(requestFinished(int, bool)));
+        connect(&http, SIGNAL(dataReadProgress(int, int)), this, SLOT(dataReadProgress(int, int)));
+        http.setHost("applejuicer.net");
+    }
 }
 
 
@@ -30,7 +47,9 @@ AutoUpdate::~AutoUpdate() {
     \fn AutoUpdate::check()
  */
 void AutoUpdate::check() {
-    checkId = http.get("/release_time");
+    if(updatePossible) {
+        checkId = http.get("/release_time");
+    }
 }
 
 
@@ -53,7 +72,7 @@ void AutoUpdate::requestFinished(int id, bool error) {
             updateDialog->show();
             updateDialog->textEdit->append("download update archive...");
 
-            getId = http.get("/update.zip", &file);
+            getId = http.get("/"+updateFilename, &file);
         }
     // -- got update file, unzip it --
     } else if(id == getId) {
@@ -102,9 +121,7 @@ void AutoUpdate::requestFinished(int id, bool error) {
             QFile::copy(newFile, origFile);
             updateDialog->textEdit->append(newFile + " => " + origFile);
         }
-
         updateDialog->textEdit->append("done");
-        
     }
 }
 

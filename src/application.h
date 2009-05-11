@@ -46,7 +46,7 @@ public:
 public slots:
     void start();
 private:
-    AutoUpdate* au;
+    AutoUpdate* autoUpdate;
     Socket *socket;
     QStringList argList;
 };

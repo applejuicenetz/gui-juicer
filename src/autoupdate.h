@@ -47,6 +47,8 @@ private:
     UpdateDialog* updateDialog;
     QTemporaryFile file;
     QString appPath;
+    QString updateFilename;
+    bool updatePossible;
 private slots:
     void requestFinished(int id, bool error);
     void dataReadProgress(int done, int total);

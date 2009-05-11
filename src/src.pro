@@ -3,6 +3,10 @@
 # Unterordner relativ zum Projektordner: ./src
 # Das Target ist eine Anwendung:  ../bin/ajqt4gui
 
+
+include(quazip/quazip.pri)
+INCLUDEPATH += quazip
+
 FORMS += optionsdialogbase.ui  \
 networkdialogbase.ui \
 logindialogbase.ui \
@@ -44,11 +48,11 @@ HEADERS += ftp.h \
  servermodule.h \
  sharemodule.h \
  incomingmodule.h \
- autoupdate.h \
  updatedialog.h \
  xmlmodule.h \
  convert.h \
- dirselectiondialog.h
+ dirselectiondialog.h \
+ autoupdate.h
 SOURCES += main.cpp \
            md5c.c \
            md5class.cpp \
@@ -79,14 +83,15 @@ SOURCES += main.cpp \
  servermodule.cpp \
  sharemodule.cpp \
  incomingmodule.cpp \
- autoupdate.cpp \
  updatedialog.cpp \
  xmlmodule.cpp \
  convert.cpp \
  dirselectiondialog.cpp \
  downloaditem.cpp \
  downloadmodule.cpp \
- ftp.cpp
+ ftp.cpp \
+ autoupdate.cpp
+
 CONFIG += warn_on \
           qt \
           stl \
@@ -200,12 +205,4 @@ INSTALLS += target
 
 target.path = /usr/local/bin
 
-unix:TARGETDEPS += ../quazip/libquazip.a
-win32:TARGETDEPS += ../quazip/quazip.lib
-
-unix:LIBS += ../quazip/libquazip.a
-win32:LIBS += ../quazip/quazip.lib
-
-INCLUDEPATH += ../quazip \
-  ../quazip/zlib/
 
