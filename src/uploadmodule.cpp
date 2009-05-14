@@ -21,8 +21,8 @@
 #include "juicer.h"
 
 
-UploadModule::UploadModule(Juicer* juicer)
-  : ModuleBase(juicer, juicer->uploadsTreeWidget, juicer->uploadToolBar)
+UploadModule::UploadModule(Juicer* juicer, QWidget* tabWidget)
+  : ModuleBase(juicer, juicer->uploadsTreeWidget, juicer->uploadToolBar, tabWidget)
 {
     uploadStatusDescr["1"] = "active";
     uploadStatusDescr["2"] = "queueing";
@@ -34,6 +34,7 @@ UploadModule::UploadModule(Juicer* juicer)
     connect(juicer->actionHide_Queued, SIGNAL(triggered(bool)), this, SLOT(hideQueuedSlot(bool)));
     juicer->actionHide_Queued->setChecked(OptionsDialog::getSetting("upload", "hideQueued", false).toBool());
     hideQueuedSlot(juicer->actionHide_Queued->isChecked());
+    adjustTabText();
 }
 
 
@@ -53,9 +54,11 @@ bool UploadModule::insertUpload(
         uploadItem = new UploadItem(id, shareId, treeWidget);
         uploads[ id ] = uploadItem;
     }
-    uploadItem->update(juicer->osIcons[os], status, uploadStatusDescr[status],
+    if(uploadItem->update(juicer->osIcons[os], status, uploadStatusDescr[status],
             uploadDirectStateDescr[directState], priority, nick, speed, version,
-            loaded, chunkStart, chunkEnd, chunkPos, lastConnected, newUpload);
+            loaded, chunkStart, chunkEnd, chunkPos, lastConnected, newUpload)) {
+        adjustTabText();
+    }
     uploadItem->setHiddenSave(hideQueued && (status == QUEUEING_UPLOAD));
     return !newUpload;
 }
@@ -121,4 +124,20 @@ void UploadModule::hideQueuedSlot(bool checked) {
     }
     treeWidget->setUpdatesEnabled(b);
     OptionsDialog::setSetting("upload", "hideQueued", hideQueued);
+}
+
+
+/*!
+    \fn UploadModule::adjustTabText()
+ */
+void UploadModule::adjustTabText() {
+    int active = 0;
+    QHash<QString,UploadItem*>::const_iterator i;
+    for(i = uploads.constBegin(); i != uploads.constEnd(); i++) {
+        UploadItem* uploadItem = dynamic_cast<UploadItem*>(*i);
+        if(uploadItem->getStatus() == ACTIVE_UPLOAD) {
+            active++;
+        }
+    }
+    juicer->ajTab->setTabText(tabIndex, tabText + " " + QString::number(active) + "/" + QString::number(uploads.size()));
 }

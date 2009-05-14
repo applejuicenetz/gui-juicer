@@ -64,14 +64,14 @@ bool UploadItem::operator<( const QTreeWidgetItem & other ) const
         const QString& loaded, const QString& chunkStart,
         const QString& chunkEnd, const QString& chunkPos, bool newUpload)
  */
-void UploadItem::update(const QIcon& osIcon,const QString& status,
+bool UploadItem::update(const QIcon& osIcon,const QString& status,
         const QString& statusDescr, const QString& directState,
         const QString& priority, const QString& nick, const QString& speed,
         const QString& version, const QString& loaded, const QString& chunkStart,
         const QString& chunkEnd, const QString& chunkPos, const QString& lastConnected, bool newUpload)
 {
     this->speed = speed.toDouble();
-    setStatus( status );
+    bool newStatus = setStatus( status );
     if( newUpload ) {
         setText(NICK_COL, nick);
         setIcon(OS_COL, osIcon);
@@ -85,6 +85,7 @@ void UploadItem::update(const QIcon& osIcon,const QString& status,
     updateLoadedProgress( loaded );
     updateChunkProgress( chunkStart.toInt(), chunkEnd.toInt(), chunkPos.toInt() );
     updateLastSeen( lastConnected );
+    return newStatus;
 }
 
 void UploadItem::initProgressBar( QProgressBar& progressBar, column col )

@@ -342,3 +342,31 @@ QPixmap Convert::getFileIcon( const QString &path )	{
     return QPixmap();
 }
 #endif
+
+
+/*!
+    \fn Convert::compareVersion(const QString& v1, const QString& v2)
+ */
+int Convert::compareVersion(const QString& v1, const QString& v2) {
+    QRegExp removeZeros("\\.0*$");
+    QStringList v1s = QString(v1).remove(removeZeros).split(".");
+    QStringList v2s = QString(v2).remove(removeZeros).split(".");
+    for(int i=0; i<min(v1s.size(), v2s.size()); i++) {
+//         qDebug() << v1s.at(i).toInt();
+//         qDebug() << v2s.at(i).toInt();
+
+        if(v1s.at(i).toInt() > v2s.at(i).toInt()) {
+            return 1;
+        } else if (v1s.at(i).toInt() < v2s.at(i).toInt()) {
+            return -1;
+        }
+    }
+    if(v1s.size() > v2s.size()) {
+        return 1;
+    } else if(v1s.size() < v2s.size()) {
+        return -1;
+    } else {
+        return 0;
+    }
+}
+

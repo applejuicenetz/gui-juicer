@@ -32,10 +32,12 @@
 #include <QUrl>
 #include <QTemporaryFile>
 #include <QMessageBox>
+#include <QtXml>
 
 #include "quazip.h"
 #include "quazipfile.h"
 #include "updatedialog.h"
+#include "convert.h"
 
 /**
     @author Matthias Reif <matthias.reif@informatik.tu-chemnitz.de>
@@ -48,14 +50,14 @@ public:
 
     ~AutoUpdate();
     void check();
+    bool readXML(QString& version, QString& file);
 private:
-    QDateTime compileTime, releaseTime;
     QHttp http;
     int checkId, getId;
     UpdateDialog* updateDialog;
     QTemporaryFile file;
     QString appPath;
-    QString updateFilename;
+    QString os, updateFolder, updateXML;
     bool updatePossible;
 private slots:
     void requestFinished(int id, bool error);

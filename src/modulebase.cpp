@@ -20,13 +20,15 @@
 #include "modulebase.h"
 #include "juicer.h"
 
-ModuleBase::ModuleBase(Juicer* juicer, QTreeWidget* treeWidget, QToolBar* toolbar) : QObject(juicer) {
+ModuleBase::ModuleBase(Juicer* juicer, QTreeWidget* treeWidget, QToolBar* toolbar, QWidget* tabWidget) : QObject(juicer) {
     this->juicer = juicer;
     this->xml = juicer->xml;
     this->treeWidget = treeWidget;
     this->toolbar = toolbar;
     this->treeWidget->insertActions(NULL, toolbar->actions());
     this->treeWidget->setContextMenuPolicy(Qt::ActionsContextMenu);
+    this->tabIndex = juicer->ajTab->indexOf(tabWidget);
+    this->tabText = juicer->ajTab->tabText(tabIndex);
     updateAlternatingRowColors();
     connect(treeWidget, SIGNAL(itemSelectionChanged()), this, SLOT(selectionChanged()));
 }

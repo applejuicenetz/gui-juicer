@@ -35,7 +35,7 @@ class UploadModule : public ModuleBase {
     Q_OBJECT
 public:
     QStandardItemModel* model;
-    UploadModule(Juicer* juicer);
+    UploadModule(Juicer* juicer, QWidget* tabWidget);
 
     ~UploadModule();
 
@@ -53,6 +53,7 @@ public slots:
     void hideQueuedSlot( bool checked );
 private:
     UploadItem* findUpload( const QString& id );
+    void adjustTabText();
     QHash<QString, QString> uploadStatusDescr;
     QHash<QString, QString> uploadDirectStateDescr;
     QHash<QString, UploadItem*> uploads;

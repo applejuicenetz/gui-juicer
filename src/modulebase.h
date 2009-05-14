@@ -38,7 +38,7 @@ class XMLModule;
 class ModuleBase : public QObject {
 Q_OBJECT
 public:
-    ModuleBase(Juicer* juicer, QTreeWidget* treeWidget, QToolBar* toolbar);
+    ModuleBase(Juicer* juicer, QTreeWidget* treeWidget, QToolBar* toolbar, QWidget* tabWidget = NULL);
     ~ModuleBase();
     void sortItemsInitially(QString settingsGroup);
     void saveSortOrder(QString settingsGroup);
@@ -47,7 +47,8 @@ protected:
     Juicer* juicer;
     QTreeWidget* treeWidget;
     QToolBar* toolbar;
-
+    QString tabText;
+    int tabIndex;
     XMLModule* xml;
 public slots:
     void adjustSizeOfColumns();

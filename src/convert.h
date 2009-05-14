@@ -76,6 +76,7 @@ public:
     }
 
     static QPixmap getFileIcon(const QString &path);
+    static int compareVersion(const QString& v1, const QString& v2);
     #ifdef Q_WS_WIN
     static QPixmap convertHIconToPixmap(const HICON icon);
     static QImage qt_fromWinHBITMAP(HDC hdc, HBITMAP bitmap, int w, int h);

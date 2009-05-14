@@ -21,6 +21,12 @@
 
 #include "handlerdialog.h"
 
+
+#include "convert.h"
+bool less(const QString &s1, const QString &s2) {
+    return Convert::compareVersion(s1, s2) == -1;
+}
+
 Application::Application(int & argc, char ** argv) : QApplication( argc, argv ) {
     QCoreApplication::setOrganizationName("progeln.de");
     QCoreApplication::setOrganizationDomain("progeln.de");

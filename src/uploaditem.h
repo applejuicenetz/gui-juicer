@@ -60,14 +60,13 @@ public:
                 };
 
     virtual bool operator<( const QTreeWidgetItem & other ) const;
-    void update(const QIcon& osIcon, const QString& status, const QString& statusDescr,
+    bool update(const QIcon& osIcon, const QString& status, const QString& statusDescr,
                 const QString& directState, const QString& priority, const QString& nick,
                 const QString& speed, const QString& version, const QString& loaded,
                 const QString& chunkStart, const QString& chunkEnd, const QString& chunkPos,
                 const QString& lastConnected, bool newUpload);
 
-    QString getShareID() const
-    {
+    QString getShareID() const {
         return shareId;
     }
 

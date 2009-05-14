@@ -23,24 +23,24 @@
 AutoUpdate::AutoUpdate(const QString& appPath, QWidget *parent) : QObject(parent) {
     this->appPath = appPath;
 #ifdef Q_OS_WIN32
-    updateFilename = "update-windows.zip";
+    os = "windows";
 #endif
 #ifdef Q_OS_MAC
-    updateFilename = "update-mac.zip";
+    os = "mac";
 #endif
 #ifdef Q_OS_LINUX
-    updateFilename = "update-linux.zip";
+    os = "linux";
 #endif
-    updatePossible = !updateFilename.isEmpty();
-
+    updatePossible = !os.isEmpty();
+    updateFolder = "/update/";
+    updateXML = "update.xml";
     // -- disabled because insufficiently tested --
-    updatePossible = false;
+      updatePossible = false;
     // --------------------------------------------
 
     if(updatePossible) {
         updateDialog = new UpdateDialog(parent);
         checkId = getId = -1;
-        compileTime = QDateTime::fromString(QString(__DATE__) + " " + QString(__TIME__), "MMM dd yyyy hh:mm:ss");
         connect(&http, SIGNAL(requestFinished(int, bool)), this, SLOT(requestFinished(int, bool)));
         connect(&http, SIGNAL(dataReadProgress(int, int)), this, SLOT(dataReadProgress(int, int)));
         http.setHost("applejuicer.net");
@@ -49,6 +49,7 @@ AutoUpdate::AutoUpdate(const QString& appPath, QWidget *parent) : QObject(parent
 
 
 AutoUpdate::~AutoUpdate() {
+    http.abort();
 }
 
 
@@ -57,7 +58,7 @@ AutoUpdate::~AutoUpdate() {
  */
 void AutoUpdate::check() {
     if(updatePossible) {
-        checkId = http.get("/release_time");
+        checkId = http.get(updateFolder + updateXML);
     }
 }
 
@@ -72,16 +73,19 @@ void AutoUpdate::requestFinished(int id, bool error) {
     }
     // -- got file with release time, check if newer and request update file if necessary --
     if(id == checkId) {
-        ulong releaseTime = QString(http.readAll()).toULong();
-        if(releaseTime < compileTime.toTime_t()) {
-            printf("newer version available\n");
+        QString updateVersion, updateFile;
+        if(readXML(updateVersion, updateFile)) {
+            qDebug() << "current version: " << qApp->applicationVersion();
+            qDebug() << "update version:  " << updateVersion;
 
-            updateDialog->progressBar->setValue(0);
-            updateDialog->textEdit->clear();
-            updateDialog->show();
-            updateDialog->textEdit->append("download update archive...");
-
-            getId = http.get("/"+updateFilename, &file);
+            if(Convert::compareVersion(updateVersion, qApp->applicationVersion()) > 0) {
+                qDebug() << "new!";
+                updateDialog->progressBar->setValue(0);
+                updateDialog->textEdit->clear();
+                updateDialog->show();
+                updateDialog->textEdit->append("download update archive...");
+                getId = http.get(updateFile, &file);
+            }
         }
     // -- got update file, unzip it --
     } else if(id == getId) {
@@ -131,6 +135,7 @@ void AutoUpdate::requestFinished(int id, bool error) {
             updateDialog->textEdit->append(newFile + " => " + origFile);
         }
         updateDialog->textEdit->append("done");
+        updateDialog->textEdit->append("Please restart Juicer in order to finish the update process.");
     }
 }
 
@@ -141,4 +146,26 @@ void AutoUpdate::requestFinished(int id, bool error) {
 void AutoUpdate::dataReadProgress(int done, int total) {
     updateDialog->progressBar->setMaximum(total);
     updateDialog->progressBar->setValue(done);
+}
+
+
+/*!
+    \fn AutoUpdate::readXML(QString& version, QString& file)
+ */
+bool AutoUpdate::readXML(QString& version, QString& file) {
+    QDomDocument doc;
+    doc.setContent(http.readAll());
+    QDomElement root = doc.documentElement();
+    QDomNode n;
+    if(root.tagName() == "update") {
+        for(n = root.firstChild(); !n.isNull(); n = n.nextSibling()) {
+            QDomElement e = n.toElement();
+            if(!e.isNull() && e.tagName() == "package" && e.attribute("os") == os) {
+                version = e.attribute("version");
+                file = updateFolder + e.attribute("file");
+                return true;
+            }
+        }
+    }
+    return false;
 }

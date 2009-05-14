@@ -41,9 +41,7 @@ public:
     QString getStatus() const {
         return status_;
     }
-    void setStatus( const QString& newStatus )  {
-        status_ = newStatus;
-    }
+    bool setStatus(const QString& newStatus);
     QString getId() const {
         return id_;
     }

@@ -176,8 +176,8 @@ bool DownloadItem::update( const QString& hash,
                               const QString& tempNumber,
                               const QString& targetDir )
 {
-    bool newStatus = false;
-    if ( status != status_ ) {
+    bool newStatus = setStatus(status);
+    if ( newStatus ) {
         if ( status == DOWN_PAUSED ) {
             this->setTextColor( FILENAME_COL, Qt::darkGray );
         } else if ( status == DOWN_FINISHED ) {
@@ -188,8 +188,6 @@ bool DownloadItem::update( const QString& hash,
         } else {
             this->setTextColor( FILENAME_COL, Qt::black );
         }
-        status_ = status;
-        newStatus = true;
     }
 
     this->tempNumber = tempNumber;

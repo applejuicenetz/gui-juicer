@@ -57,8 +57,8 @@ Juicer::Juicer( const QStringList& argList, QSplashScreen *splash )
     osIcons[NETWARE] = QIcon(":/small/netware.png");
 
     xml = new XMLModule(this);
-    downloadModule = new DownloadModule(this);
-    uploadModule = new UploadModule(this);
+    downloadModule = new DownloadModule(this, downloads);
+    uploadModule = new UploadModule(this, uploads);
     searchModule = new SearchModule(this);
     serverModule = new ServerModule(this);
     shareModule = new ShareModule(this);

@@ -37,7 +37,7 @@ class DownloadModule : public ModuleBase {
   Q_OBJECT
 
 public:
-    DownloadModule(Juicer* juicer);
+    DownloadModule(Juicer* juicer, QWidget* tabWidget);
     ~DownloadModule();
     void insertDownload(const QString& id, const QString& hash, const QString& fileName,
                         const QString& status, const QString& size, const QString& ready,
@@ -84,6 +84,7 @@ protected:
         UserItem* user;
     };
     DownloadModule::DownloadUser findParent(const QString& id);
+    void adjustTabText();
 
 protected slots:
     void cancelSlot();

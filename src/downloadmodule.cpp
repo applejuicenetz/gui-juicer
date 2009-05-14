@@ -20,8 +20,8 @@
 #include "downloadmodule.h"
 #include "juicer.h"
 
-DownloadModule::DownloadModule(Juicer* juicer) 
-  : ModuleBase(juicer, juicer->downloadsTreeWidget, juicer->downloadToolBar)
+DownloadModule::DownloadModule(Juicer* juicer, QWidget* tabWidget)
+  : ModuleBase(juicer, juicer->downloadsTreeWidget, juicer->downloadToolBar, tabWidget)
 {
     userStatusDescr["1"] = QObject::tr("unasked");
     userStatusDescr["2"] = QObject::tr("try to connect");
@@ -100,6 +100,7 @@ DownloadModule::DownloadModule(Juicer* juicer)
     juicer->actionHide_Paused->setChecked(OptionsDialog::getSetting("download", "hidePaused", false).toBool());
     hidePausedSlot(juicer->actionHide_Paused->isChecked());
     selectionChanged();
+    adjustTabText();
 }
 
 DownloadModule::~DownloadModule() {
@@ -129,10 +130,12 @@ void DownloadModule::insertDownload( const QString& id,
         updateView(true);
         connect( downloadItem->powerSpin, SIGNAL(powerChanged(QString, double)),
                  this, SLOT(applyPowerDownload(const QString &, double)));
+        adjustTabText();
     } else {
         if(downloadItem->update(hash, fileName, status, size, ready, power, tempNumber, targetDir)) {
             // -- if status changed => reset tool buttons --
             selectionChanged();
+            adjustTabText();
         }
     }
     downloadItem->setHiddenSave(hidePaused && (status == DOWN_PAUSED));
@@ -648,4 +651,20 @@ void DownloadModule::targetFolder()
         qDebug() << path;
         setSelected( "settargetdir", "&dir=" + path );
     }
+}
+
+
+/*!
+    \fn DownloadModule::adjustTabText()
+ */
+void DownloadModule::adjustTabText() {
+    int loading = 0;
+    QHash<QString,DownloadItem*>::const_iterator i;
+    for(i = downloads.constBegin(); i != downloads.constEnd(); i++) {
+        DownloadItem* downloadItem = dynamic_cast<DownloadItem*>(*i);
+        if(downloadItem->getStatus() == DOWN_LOADING) {
+            loading++;
+        }
+    }
+    juicer->ajTab->setTabText(tabIndex, tabText + " " + QString::number(loading) + "/" + QString::number(downloads.size()));
 }

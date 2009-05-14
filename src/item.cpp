@@ -60,3 +60,10 @@ void Item::setFileIcon(int column) {
     setIcon(column, QIcon(Convert::getFileIcon(text(column))));
 }
 
+bool Item::setStatus(const QString& status) {
+    bool newStatus = status_ != status;
+    if(newStatus) {
+        status_ = status;
+    }
+    return newStatus;
+}
