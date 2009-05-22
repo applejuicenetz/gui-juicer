@@ -247,7 +247,7 @@ bool DownloadItem::updateView(const QHash<QString, QString>& downloadStatusDescr
             setTextColor( FILENAME_COL, Qt::darkBlue );
             setText( STATUS_COL, downloadStatusDescr.value( "-1", "unknown" ) );
             status_ = DOWN_LOADING;
-        } else if ( getActiveSources() <= 0 ) {
+        } else {
             setTextColor( FILENAME_COL, Qt::black );
             setText( STATUS_COL, downloadStatusDescr.value( status_, "unknown" ) );
             status_ = DOWN_SEARCHING;

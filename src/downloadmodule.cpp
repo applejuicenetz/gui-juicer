@@ -130,12 +130,10 @@ void DownloadModule::insertDownload( const QString& id,
         updateView(true);
         connect( downloadItem->powerSpin, SIGNAL(powerChanged(QString, double)),
                  this, SLOT(applyPowerDownload(const QString &, double)));
-        adjustTabText();
     } else {
         if(downloadItem->update(hash, fileName, status, size, ready, power, tempNumber, targetDir)) {
             // -- if status changed => reset tool buttons --
             selectionChanged();
-            adjustTabText();
         }
     }
     downloadItem->setHiddenSave(hidePaused && (status == DOWN_PAUSED));
@@ -186,6 +184,7 @@ void DownloadModule::updateView(bool force) {
         downloadsFinished(finished);
     }
     powerSpin->setEnabled(powerCheck->isChecked());
+    adjustTabText();
 }
 
 /*!

@@ -29,7 +29,6 @@
 #include "serversocket.h"
 #include "socket.h"
 #include "juicer.h"
-#include "autoupdate.h"
 
 /**
 @author Matthias Reif
@@ -42,11 +41,10 @@ public:
     ~Application();
     int exec();
     static const int APP_PORT = 21456;
-    QString appPath;
+    QFileInfo appFileInfo;
 public slots:
     void start();
 private:
-    AutoUpdate* autoUpdate;
     Socket *socket;
     QStringList argList;
 };

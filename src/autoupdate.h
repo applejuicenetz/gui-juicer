@@ -33,6 +33,7 @@
 #include <QTemporaryFile>
 #include <QMessageBox>
 #include <QtXml>
+#include <QPushButton>
 
 #include "quazip.h"
 #include "quazipfile.h"
@@ -47,7 +48,6 @@ class AutoUpdate : public QObject
 Q_OBJECT
 public:
     AutoUpdate(const QString& appPath, QWidget *parent = 0);
-
     ~AutoUpdate();
     void check();
     bool readXML(QString& version, QString& file);

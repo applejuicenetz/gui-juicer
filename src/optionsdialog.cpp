@@ -491,7 +491,7 @@ void OptionsDialog::removeSetting(const QString& group, const QString& key) {
     \fn OptionsDialog::setAjfspHandler()
  */
 void OptionsDialog::setAjfspHandler() {
-    printf("%s\n", ((Application*)qApp)->appPath.toLatin1().data());
+//    printf("%s\n", ((Application*)qApp)->appPath.toLatin1().data());
 }
 
 

@@ -53,6 +53,7 @@
 #include "convert.h"
 #include "serversocket.h"
 #include "iconwidget.h"
+#include "autoupdate.h"
 
 static const QString WINDOWS = "1";
 static const QString LINUX = "2";
@@ -65,7 +66,7 @@ class Juicer: public QMainWindow, public Ui::MainWindowBase
 {
     Q_OBJECT
 public:
-    Juicer( const QStringList& argList, QSplashScreen *splash );
+    Juicer(const QStringList& argList, QSplashScreen *splash, const QFileInfo& appFileInfo);
     ~Juicer();
 
     void setStatusBarText( const QString& downSpeed, const QString& upSpeed, const QString& credits, const QString& downSize, const QString& upSize );
@@ -102,8 +103,8 @@ public:
     void setTempDirectory(const QString& folder);
     void setIncomingDirectory(const QString& folder);
     QString getAppPath() const;
-    void setAppPath(const QString& path);
     void setFirewalled(bool  firewalled);
+    void autoUpdate();
 
 protected:
     void initToolBars();
@@ -118,7 +119,8 @@ protected:
 
     QSystemTrayIcon* tray;
     QString password;
-    QString appPath, incomingDir, tempDir, filesystemSeparator;
+    QString incomingDir, tempDir, filesystemSeparator;
+    QFileInfo appFileInfo;
 
     QTimer *timer;
     QTimer *partListTimer;

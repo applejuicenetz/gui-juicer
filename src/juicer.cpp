@@ -20,7 +20,7 @@
 #include "juicer.h"
 #include "handlerdialog.h"
 
-Juicer::Juicer( const QStringList& argList, QSplashScreen *splash )
+Juicer::Juicer( const QStringList& argList, QSplashScreen *splash, const QFileInfo& appFileInfo)
     : QMainWindow()
     , xml(0)
     , downloadModule(0)
@@ -43,6 +43,7 @@ Juicer::Juicer( const QStringList& argList, QSplashScreen *splash )
     server->addDockWidget(Qt::RightDockWidgetArea, welcomeDock);
 
     this->splash = splash;
+    this->appFileInfo = appFileInfo;
 
     firstModifiedMax = 2;// + argList.size();
 
@@ -235,6 +236,7 @@ bool Juicer::login(const QString& message, bool error) {
     } else if(started) {
         optionsDialog->setSettings();
         this->show();
+        this->autoUpdate();
     } else {
         login("empty password", true);
     }
@@ -510,6 +512,7 @@ void Juicer::firstModified() {
             searchModule->sortItemsInitially("SearchWidget");
             processQueuedLinks();
             this->show();
+            this->autoUpdate();
             started = true;
             optionsDialog->setSettings();
             // -- close splash screen if used --
@@ -839,20 +842,11 @@ QString Juicer::getTempDirectory() const {
     return tempDir;
 }
 
-
-/*!
-    \fn Juicer::setAppPath(const QString& path)
- */
-void Juicer::setAppPath(const QString& path) {
-    appPath = path;
-}
-
-
 /*!
     \fn Juicer::getAppPath() const
  */
 QString Juicer::getAppPath() const {
-    return appPath;
+    return appFileInfo.absoluteFilePath();
 }
 
 
@@ -875,3 +869,12 @@ void Juicer::setFirewalled(bool firewalled) {
     }
 }
 
+
+
+/*!
+    \fn Juicer::autoUpdate()
+ */
+void Juicer::autoUpdate() {
+    AutoUpdate* autoUpdate = new AutoUpdate(appFileInfo.absolutePath(), this);
+    autoUpdate->check();
+}

@@ -35,7 +35,7 @@ AutoUpdate::AutoUpdate(const QString& appPath, QWidget *parent) : QObject(parent
     updateFolder = "/update/";
     updateXML = "update.xml";
     // -- disabled because insufficiently tested --
-      updatePossible = false;
+    updatePossible = false;
     // --------------------------------------------
 
     if(updatePossible) {
@@ -130,12 +130,14 @@ void AutoUpdate::requestFinished(int id, bool error) {
             QString bakFile = origFile + ".bak";
             if(QFile::exists(origFile)) {
                 QFile::rename(origFile, bakFile);
+                QFile::setPermissions(newFile, QFile::permissions(bakFile));
             }
             QFile::copy(newFile, origFile);
             updateDialog->textEdit->append(newFile + " => " + origFile);
         }
         updateDialog->textEdit->append("done");
         updateDialog->textEdit->append("Please restart Juicer in order to finish the update process.");
+        updateDialog->buttonBox->button(QDialogButtonBox::Cancel)->setText("done");
     }
 }
 

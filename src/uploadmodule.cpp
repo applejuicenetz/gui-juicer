@@ -69,6 +69,7 @@ bool UploadModule::remove( const QString& id )
     if(item != NULL) {
         uploads.remove(id);
         delete item;
+        adjustTabText();
         return true;
     }
     return false;
