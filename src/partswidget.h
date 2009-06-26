@@ -39,6 +39,11 @@ public:
 
     class Part {
         public:
+        Part() {}
+        Part(const QString& from, const QString& type) {
+            this->type = type.toInt();
+            this->fromPosition = from.toULongLong();
+        }
         qulonglong fromPosition;
         int type;
     };

@@ -522,7 +522,7 @@ void DownloadModule::selectionChanged()
     juicer->actionTarget_Folder->setEnabled(oneSelected);
 
     // clear part list widget if none or more than one item is selected
-    if( selectedItems.count() != 1 ) {
+    if(multipleSelected) {
         juicer->partsWidget->clear();
     }
 }

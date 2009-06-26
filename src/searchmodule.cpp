@@ -20,7 +20,7 @@
 #include "searchmodule.h"
 #include "juicer.h"
 
-SearchModule::SearchModule(Juicer* juicer) : ModuleBase(juicer, juicer->searchsTreeWidget, juicer->searchToolBar) {
+SearchModule::SearchModule(Juicer* juicer) : ModuleBase(juicer, juicer->searchTreeWidget, juicer->searchToolBar) {
     connect(treeWidget, SIGNAL(itemDoubleClicked(QTreeWidgetItem *, int)), this, SLOT(downloadSlot()));
 
     connect(juicer->actionDownload, SIGNAL(triggered()), this, SLOT(downloadSlot()));

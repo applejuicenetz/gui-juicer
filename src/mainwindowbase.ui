@@ -437,7 +437,7 @@
          </layout>
         </item>
         <item>
-         <widget class="QTreeWidget" name="searchsTreeWidget">
+         <widget class="QTreeWidget" name="searchTreeWidget">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
             <horstretch>0</horstretch>

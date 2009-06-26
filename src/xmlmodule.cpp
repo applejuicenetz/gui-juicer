@@ -73,11 +73,11 @@ void XMLModule::requestFinished(int id, bool error) {
         QDomElement root = doc.documentElement();
         QDomNode n;
         if(root.tagName() == "applejuice") {
-            juicer->downloads->setUpdatesEnabled(false);
-            juicer->uploads->setUpdatesEnabled(false);
-            juicer->search->setUpdatesEnabled(false);
-            juicer->server->setUpdatesEnabled(false);
-            juicer->shares->setUpdatesEnabled(false);
+/*            juicer->downloadsTreeWidget->setUpdatesEnabled(false);
+            juicer->uploadsTreeWidget->setUpdatesEnabled(false);
+            juicer->searchTreeWidget->setUpdatesEnabled(false);
+            juicer->serverTreeWidget->setUpdatesEnabled(false);
+            juicer->sharesTreeWidget->setUpdatesEnabled(false);*/
             for(n = root.firstChild(); !n.isNull(); n = n.nextSibling()) {
                 QDomElement e = n.toElement();
                 if(!e.isNull()) {
@@ -131,13 +131,13 @@ void XMLModule::requestFinished(int id, bool error) {
                     }
                 }
             }
-            juicer->uploads->setUpdatesEnabled(true);
-            juicer->search->setUpdatesEnabled(true);
-            juicer->server->setUpdatesEnabled(true);
-            juicer->shares->setUpdatesEnabled(true);
+//             juicer->uploadsTreeWidget->setUpdatesEnabled(true);
+//             juicer->searchTreeWidget->setUpdatesEnabled(true);
+//             juicer->serverTreeWidget->setUpdatesEnabled(true);
+//             juicer->sharesTreeWidget->setUpdatesEnabled(true);
             processUsers();
             handlePartList(id);
-            juicer->downloads->setUpdatesEnabled(true);
+//             juicer->downloadsTreeWidget->setUpdatesEnabled(true);
             modifiedDone();
         } else if(root.tagName() == "settings") {
             handleSettings(root);
@@ -346,6 +346,7 @@ void XMLModule::handleUser( QDomElement& e, QTime& time )
 }
 
 void XMLModule::processUsers() {
+    juicer->downloadsTreeWidget->setUpdatesEnabled(false);
     while(!users.empty()) {
         QDomElement e = users.takeFirst();
         QTime time = userTimes.takeFirst();
@@ -364,6 +365,7 @@ void XMLModule::processUsers() {
             e.attribute("actualdownloadposition"),
             time);
     }
+    juicer->downloadsTreeWidget->setUpdatesEnabled(true);
 // version
 }
 
@@ -461,14 +463,10 @@ void XMLModule::handleRemoved( QDomElement& e )
 }
 
 /*!
-    \fn XMLModule::handlePart( QDomElement& e )
+    \fn XMLModule::handlePart(QDomElement& e)
  */
-void XMLModule::handlePart( QDomElement& e )
-{
-    PartsWidget::Part part;
-    part.type = e.attribute("type").toInt();
-    part.fromPosition = e.attribute("fromposition").toULongLong();
-    partList.push_back(part);
+void XMLModule::handlePart(QDomElement& e) {
+    partList.push_back(PartsWidget::Part(e.attribute("fromposition"), e.attribute("type")));
 }
 
 
@@ -491,13 +489,14 @@ void XMLModule::handlePartList( int id )
             {
                 item->setParts( partsSize, partList );
             }
+            partListSimpleRequests.remove( id );
         }
         partList.clear();
     }
 }
 
-void XMLModule::sendToTray(const QString & message1, const QString & message2 ) {
-    juicer->sendToTray( message1, message2 );
+void XMLModule::sendToTray(const QString & message1, const QString & message2) {
+    juicer->sendToTray(message1, message2);
 }
 
 

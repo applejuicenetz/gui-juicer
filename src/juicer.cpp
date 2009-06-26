@@ -310,7 +310,6 @@ void Juicer::partListTimerSlot() {
         QString id = downloadModule->getNextIdRoundRobin();
         if (!id.isEmpty()) {
             xml->get( "downloadpartlist", "&simple&id=" + id);
-            downloadsTreeWidget->doItemsLayout();
         }
     }
 }
@@ -393,7 +392,7 @@ void Juicer::gotSession() {
     timer->setSingleShot(false);
     timer->start(lokalSettings.value("refresh", 3).toInt() * 1000);
     partListTimer->setSingleShot(false);
-    partListTimer->start(3000);
+    partListTimer->start(5000);
     shareModule->reloadSlot();
 }
 
