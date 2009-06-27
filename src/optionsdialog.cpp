@@ -181,7 +181,14 @@ void OptionsDialog::setSettings() {
             juicer->uploadsTreeWidget->isColumnHidden(i)?Qt::Unchecked:Qt::Checked);
     }
 
-    QFont font = getSetting( "font", QApplication::font() ).value<QFont>();
+    QFont font;
+    QVariant v = getSetting( "font", QApplication::font() );
+    if ( v.isValid() && ! v.toString().isEmpty() ) {
+        font = v.value<QFont>();
+    }
+    else {
+      font = QFont( "Arial", 9, QFont::Normal );
+    }
     QApplication::setFont( font );
     fontComboBox->setCurrentFont( font );
     setFontSizes(font);
