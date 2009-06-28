@@ -1767,7 +1767,7 @@ auf Standardwerte zurücksetzen.</translation>
     <message>
         <location filename="downloadmodule.cpp" line="49"/>
         <source>canceled</source>
-        <translation type="unfinished">abgrebrochen</translation>
+        <translation type="unfinished">abgebrochen</translation>
     </message>
 </context>
 <context>
