@@ -34,6 +34,7 @@ static const QString NEW_UPLOAD       = "-1";
 */
 class UploadItem : public Item
 {
+Q_OBJECT
     QProgressBar progressChunk_, progressLoaded_;
     QString shareId;
     double speed;

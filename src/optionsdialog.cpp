@@ -197,7 +197,9 @@ void OptionsDialog::setSettings() {
     handlerDefaultCheckBox->setChecked(OptionsDialog::hasSetting("handler") && OptionsDialog::getSetting("handler", false).toBool());
     handlerDefaultCheckBox->setEnabled(handlerCheckCheckBox->isChecked());
 #endif
+    checkUpdatesCheckBox->setChecked(getSetting("checkUpdates", true).toBool());
     observeClipboardCheckBox->setChecked(getSetting("observeClipboard", false).toBool());
+    quitGUIAfterCoreExitCheckBox->setChecked(getSetting("quitGUIAfterCoreExit", true).toBool());
     videoEdit->setText(video());
     audioEdit->setText(audio());
     imageEdit->setText(image());
@@ -325,7 +327,9 @@ void OptionsDialog::writeSettings() {
     }
 #endif
 
+    OptionsDialog::setSetting("checkUpdates", checkUpdatesCheckBox->isChecked());
     OptionsDialog::setSetting("observeClipboard", observeClipboardCheckBox->isChecked());
+    OptionsDialog::setSetting("quitGUIAfterCoreExit", quitGUIAfterCoreExitCheckBox->isChecked());
 
     OptionsDialog::setSetting("dataTypes", "video", videoEdit->text());
     OptionsDialog::setSetting("dataTypes", "audio", audioEdit->text());

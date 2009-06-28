@@ -58,6 +58,9 @@ public:
     QString findDownloadByTempNum(const QString& tempFile);
     void setPartList( const QString& id, qulonglong size,
                       QLinkedList<PartsWidget::Part>& partList);
+
+    QTimer *partListTimer;
+
 public slots:
     void updateView(bool force = false);
     void partListSlot();

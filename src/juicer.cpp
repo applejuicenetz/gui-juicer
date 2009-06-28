@@ -30,6 +30,7 @@ Juicer::Juicer( const QStringList& argList, QSplashScreen *splash, const QFileIn
     , serverModule(0)
     , shareModule(0)
     , incomingModule(0)
+    , exitId(-1)
     , started(false)
     , connected(false)
     , localCore(false)
@@ -80,6 +81,9 @@ Juicer::Juicer( const QStringList& argList, QSplashScreen *splash, const QFileIn
     downloads->restoreState(OptionsDialog::getSetting("DownloadsMain").toByteArray());
     server->restoreState(OptionsDialog::getSetting("ServerMain").toByteArray());
 
+    autoUpdater = new AutoUpdate(appFileInfo.absolutePath(), this);
+
+    connect(xml, SIGNAL(requestFinished(int , bool)), this, SLOT(requestFinished(int, bool)));
     connect( xml, SIGNAL( settingsReady( const AjSettings& ) ), this, SLOT( settingsReady( const AjSettings& ) ) );
     connect( xml, SIGNAL( error(const QString& ) ), this, SLOT( xmlError(const QString& ) ) );
     connect( xml, SIGNAL( gotSession() ), this, SLOT( gotSession() ) );
@@ -87,10 +91,7 @@ Juicer::Juicer( const QStringList& argList, QSplashScreen *splash, const QFileIn
     connect( xml, SIGNAL( modifiedDone( ) ), this, SLOT( firstModified() ) );
 
     timer = new QTimer( this );
-    partListTimer = new QTimer( this );
     connect( timer, SIGNAL( timeout() ), this, SLOT( timerSlot() ) );
-    connect( partListTimer, SIGNAL( timeout() ), this, SLOT( partListTimerSlot() ) );
-    connect( partListTimer, SIGNAL( timeout() ), downloadModule, SLOT( partListSlot() ) );
 
     connect( ajTab, SIGNAL( currentChanged( int ) ), this, SLOT( tabChanged( int ) ) );
 
@@ -236,7 +237,9 @@ bool Juicer::login(const QString& message, bool error) {
     } else if(started) {
         optionsDialog->setSettings();
         this->show();
-        this->autoUpdate();
+        if(OptionsDialog::getSetting("checkUpdates", true).toBool()) {
+            this->autoUpdate();
+        }
     } else {
         login("empty password", true);
     }
@@ -284,7 +287,7 @@ QString Juicer::showLoginDialog(const QString& message) {
 void Juicer::xmlError(const QString& reason) {
     connected = false;
     timer->stop();
-    partListTimer->stop();
+    downloadModule->partListTimer->stop();
     if(shareModule != NULL) {
         shareModule->reset();
     }
@@ -298,19 +301,6 @@ void Juicer::xmlError(const QString& reason) {
 void Juicer::timerSlot() {
     if(connected) {
         xml->get( "modified" );
-    }
-}
-
-/*!
-    \fn Juicer::partListTimerSlot()
-    requests the part list of the 'next' download
- */
-void Juicer::partListTimerSlot() {
-    if(connected) {
-        QString id = downloadModule->getNextIdRoundRobin();
-        if (!id.isEmpty()) {
-            xml->get( "downloadpartlist", "&simple&id=" + id);
-        }
     }
 }
 
@@ -391,8 +381,8 @@ void Juicer::gotSession() {
     timerSlot();
     timer->setSingleShot(false);
     timer->start(lokalSettings.value("refresh", 3).toInt() * 1000);
-    partListTimer->setSingleShot(false);
-    partListTimer->start(5000);
+    downloadModule->partListTimer->setSingleShot(false);
+    downloadModule->partListTimer->start(5000);
     shareModule->reloadSlot();
 }
 
@@ -473,11 +463,9 @@ void Juicer::tabChanged( int index ) {
     prevTab = tab;
 }
 
-void Juicer::exitCore()
-{
-    if ( QMessageBox::question( this, tr("Confirm"), tr("Do you realy want to exit the core?\nAll your credits will be lost!"), QMessageBox::No, QMessageBox::Yes) == QMessageBox::Yes)
-    {
-        xml->set( "exitcore" );
+void Juicer::exitCore() {
+    if(QMessageBox::question(this, tr("Confirm"), tr("Do you realy want to exit the core?\nAll your credits will be lost!"), QMessageBox::No, QMessageBox::Yes) == QMessageBox::Yes) {
+        exitId = xml->set("exitcore");
     }
 }
 
@@ -511,7 +499,9 @@ void Juicer::firstModified() {
             searchModule->sortItemsInitially("SearchWidget");
             processQueuedLinks();
             this->show();
-            this->autoUpdate();
+            if(OptionsDialog::getSetting("checkUpdates", true).toBool()) {
+                this->autoUpdate();
+            }
             started = true;
             optionsDialog->setSettings();
             // -- close splash screen if used --
@@ -869,11 +859,19 @@ void Juicer::setFirewalled(bool firewalled) {
 }
 
 
-
 /*!
     \fn Juicer::autoUpdate()
  */
 void Juicer::autoUpdate() {
-    AutoUpdate* autoUpdate = new AutoUpdate(appFileInfo.absolutePath(), this);
-    autoUpdate->check();
+    autoUpdater->check();
+}
+
+
+/*!
+    \fn Juicer::requestFinished(int id, bool error)
+ */
+void Juicer::requestFinished(int id, bool error) {
+    if(!error && id == exitId && OptionsDialog::getSetting("quitGUIAfterCoreExit", true).toBool()) {
+        this->quit();
+    }
 }

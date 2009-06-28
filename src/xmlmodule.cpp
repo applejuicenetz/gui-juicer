@@ -471,25 +471,19 @@ void XMLModule::handlePart(QDomElement& e) {
 
 
 /*!
-    \fn XMLModule::handlePartList( int id )
+    \fn XMLModule::handlePartList(int id)
  */
-void XMLModule::handlePartList( int id )
-{
-    if ( !partList.empty() )
-    {
-        if( partListRequests.contains( id ) )
-        {
+void XMLModule::handlePartList(int id) {
+    if(!partList.empty()) {
+        if(partListRequests.contains(id)) {
             juicer->downloadModule->setPartList(partListRequests[id], partsSize, partList);
-            partListRequests.remove( id );
-        }
-        else if( partListSimpleRequests.contains( id ) )
-        {
-            DownloadItem* item = juicer->downloadModule->findDownload( partListSimpleRequests[id] );
-            if ( item != NULL )
-            {
-                item->setParts( partsSize, partList );
+            partListRequests.remove(id);
+        } else if( partListSimpleRequests.contains(id)) {
+            DownloadItem* item = juicer->downloadModule->findDownload(partListSimpleRequests[id]);
+            if(item != NULL) {
+                item->setParts(partsSize, partList);
             }
-            partListSimpleRequests.remove( id );
+            partListSimpleRequests.remove(id);
         }
         partList.clear();
     }

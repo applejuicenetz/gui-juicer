@@ -123,7 +123,7 @@ protected:
     QFileInfo appFileInfo;
 
     QTimer *timer;
-    QTimer *partListTimer;
+    int exitId;
 
     QWidget *prevTab;
     OptionsDialog *optionsDialog;
@@ -144,6 +144,7 @@ protected:
     int firstModifiedCnt, firstModifiedMax;
     QSplashScreen *splash;
     QStringList clipboardTexts;
+    AutoUpdate* autoUpdater;
 
 private slots:
     bool login(const QString& message = "<h3>Login</h3>", bool error = false);
@@ -152,7 +153,6 @@ private slots:
     void about();
     void aboutQt();
     void timerSlot();
-    void partListTimerSlot();
     void showOptions();
     void settingsReady(const AjSettings& settings);
     void xmlError(const QString& reason);
@@ -174,9 +174,10 @@ private slots:
     void downloadsFinished(const QList<DownloadItem*>& list);
     void hostLookedUp(const QHostInfo& host);
     void showManual();
-private slots:
     void clipboardChanged(QClipboard::Mode mode);
     void getNetworkInfo();
+public slots:
+    void requestFinished(int id, bool error);
 };
 
 #endif

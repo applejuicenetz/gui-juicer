@@ -63,6 +63,8 @@ DownloadModule::DownloadModule(Juicer* juicer, QWidget* tabWidget)
 
     QPushButton *powerButton = new QPushButton( tr("SET") , juicer->downloadToolBar );
     powerButtonAction = juicer->downloadToolBar->addWidget( powerButton );
+    partListTimer = new QTimer( this );
+    connect(partListTimer, SIGNAL(timeout()), this, SLOT(partListSlot()));
 
     connect(treeWidget, SIGNAL(itemSelectionChanged()), this, SLOT(selectionChanged()));
     connect(powerCheck, SIGNAL(clicked(bool)), this, SLOT(applyPowerDownload()));
@@ -312,12 +314,14 @@ void DownloadModule::pauseSlot()
     setSelected("pausedownload");
 }
 
-void DownloadModule::partListSlot()
-{
-    if ( treeWidget->selectedItems().count() != 1 ) { // part list widget flickers if more than one item is selected
-        return;
+void DownloadModule::partListSlot() {
+    QString id = getNextIdRoundRobin();
+    if(!id.isEmpty()) {
+        xml->get( "downloadpartlist", "&simple&id=" + id);
     }
-    getSelected("downloadpartlist");
+    if(treeWidget->selectedItems().count() == 1) { // part list widget flickers if more than one item is selected
+        getSelected("downloadpartlist");
+    }
 }
 
 void DownloadModule::renameSlot()

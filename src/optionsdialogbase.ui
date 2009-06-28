@@ -65,7 +65,7 @@
       <enum>QFrame::NoFrame</enum>
      </property>
      <property name="currentIndex">
-      <number>0</number>
+      <number>3</number>
      </property>
      <widget class="QWidget" name="Core">
       <layout class="QVBoxLayout" name="verticalLayout">
@@ -852,9 +852,23 @@
         </layout>
        </item>
        <item>
+        <widget class="QCheckBox" name="checkUpdatesCheckBox">
+         <property name="text">
+          <string>automatically check for updates</string>
+         </property>
+        </widget>
+       </item>
+       <item>
         <widget class="QCheckBox" name="observeClipboardCheckBox">
          <property name="text">
           <string>automatically add links from the clipboard</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QCheckBox" name="quitGUIAfterCoreExitCheckBox">
+         <property name="text">
+          <string>quit Juicer after exiting the Core</string>
          </property>
         </widget>
        </item>
