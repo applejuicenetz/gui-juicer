@@ -318,45 +318,14 @@ PartListDialog* DownloadItem::getPartListDialog()
 
 
 /*!
-    \fn DownloadItem::setParts( Q_ULLONG size, QLinkedList<PartsWidget::Part>& partList )
+    \fn DownloadItem::setParts(QLinkedList<PartsWidget::Part>& partList )
  */
-void DownloadItem::setParts( qulonglong size, QLinkedList<PartsWidget::Part>& partList ) 
+void DownloadItem::setParts(PartsWidget::PartList& partList ) 
 {
     if ( partListDialog->isVisible() ) {
-        partListDialog->update( size, partList );
+        partListDialog->update(partList);
     }
-    PartsWidget::Part closePart;
-    closePart.type = -10;
-    closePart.fromPosition = size;
-    partList.push_back( closePart );
-
-    qulonglong bytesReady, bytesAvailable, bytesMissing;
-    qulonglong partSize;
-    bytesReady = bytesAvailable = bytesMissing = 0;
-
-    PartsWidget::Part fromPart, toPart;
-    QLinkedListIterator<PartsWidget::Part> it(partList);
-    toPart = it.next();
-
-    while ( it.hasNext() ) {
-        fromPart = toPart;
-        toPart = it.next();
-
-        partSize = toPart.fromPosition - fromPart.fromPosition;
-
-        switch ( fromPart.type ) {
-        case -1:
-            bytesReady += partSize;
-            break;
-        case 0:
-            bytesMissing += partSize;
-            break;
-        default:
-            bytesAvailable += partSize;
-            break;
-        }
-    }
-    missing = (double)bytesMissing / (double)size * 100.0;
+    missing = partList.getMissing();
     if ( missing < 1.0 && missing > 0.0 ) {
         setText( MISSING_COL, QString::number( missing, 'f', 1 ) + "%" );
     } else {

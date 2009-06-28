@@ -119,7 +119,7 @@ void XMLModule::requestFinished(int id, bool error) {
                     } else if(e.tagName() == "part") {
                         handlePart( e );
                     } else if(e.tagName() == "fileinformation") {
-                        partsSize = e.attribute("filesize").toULongLong();
+                        partList.setSize(e.attribute("filesize").toULongLong());
                     } else if(e.tagName() == "shares") {
                         handleShares( e );
                     } else {
@@ -475,13 +475,14 @@ void XMLModule::handlePart(QDomElement& e) {
  */
 void XMLModule::handlePartList(int id) {
     if(!partList.empty()) {
+        partList.close();
         if(partListRequests.contains(id)) {
-            juicer->downloadModule->setPartList(partListRequests[id], partsSize, partList);
+            juicer->downloadModule->setPartList(partListRequests[id], partList);
             partListRequests.remove(id);
         } else if( partListSimpleRequests.contains(id)) {
             DownloadItem* item = juicer->downloadModule->findDownload(partListSimpleRequests[id]);
             if(item != NULL) {
-                item->setParts(partsSize, partList);
+                item->setParts(partList);
             }
             partListSimpleRequests.remove(id);
         }

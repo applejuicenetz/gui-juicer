@@ -23,6 +23,7 @@
 #include <QWidget>
 #include <QPainter>
 #include <QLinkedList>
+#include <QDebug>
 
 #include "convert.h"
 
@@ -48,23 +49,58 @@ public:
         int type;
     };
 
-    void update( qulonglong size, QLinkedList<Part>& partList );
+    class PartList : public QList<Part> {
+        qulonglong bytesMissing, size;
+        double missing;
+        public:
+        PartList() {
+            clear();
+        }
+        void clear() {
+            size = 1;    // -- avoid division by zero, but should not happen --
+            bytesMissing = 0;
+            missing = 0.0;
+            QList<Part>::clear();
+        }
+        void setSize(qulonglong size) {
+            this->size = size;
+        }
+        qulonglong getSize() {
+            return this->size;
+        }
+        void close() {
+            if(!empty() && last().type == 0) {
+                bytesMissing += size - last().fromPosition;
+            }
+            missing = (double)bytesMissing / (double)size * 100.0;
+        }
+        double getMissing() {
+            return missing;
+        }
+        void push_back(const Part& part) {
+            if(!empty() && last().type == 0) {
+                bytesMissing += part.fromPosition - last().fromPosition;
+            }
+            QList<Part>::push_back(part);
+        }
+    };
+
+    void update(PartList& partList );
     void clear();
     
     double ready;
     double available;
     double lessSources;
     double missing;
-    qulonglong size;
 
     static const int READY_COLOR = 0x00DC00;
     static const int MISSING_COLOR = 0xF00000;
     static const int AVAILABLE_COLOR = 0x0000DC;
     static const int RARE_COLOR =  0xDCDC00;
+    PartList partList;
 
 protected:
     void paintEvent( QPaintEvent* );
-    QLinkedList<Part> partList;
     int blockHeight;
     int numPixels;
     float pixelPerByte;

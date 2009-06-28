@@ -94,7 +94,7 @@ public:
     bool updateView(const QHash<QString, QString>& downloadStatusDescr);
     void deleteUsers();
     PartListDialog* getPartListDialog();
-    void setParts( qulonglong size, QLinkedList<PartsWidget::Part>& partList );
+    void setParts(PartsWidget::PartList& partList );
     void showWidget( const QPoint &p );
 
     QHash<QString, UserItem*> users;

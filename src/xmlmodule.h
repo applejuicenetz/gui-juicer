@@ -79,8 +79,7 @@ protected:
 
     QDomDocument doc;
 
-    QLinkedList<PartsWidget::Part> partList;
-    qulonglong partsSize;
+    PartsWidget::PartList partList;
     QHash<int, QString> requests;
     QHash<int, int> errors;
     QHash<int, QString> partListRequests;

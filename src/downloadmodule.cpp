@@ -613,16 +613,16 @@ void DownloadModule::storeDownloadFtp()
 
 
 /*!
-    \fn DownloadModule::setPartList(const QString& id, qulonglong size, QLinkedList<PartsWidget::Part>& partList)
+    \fn DownloadModule::setPartList(const QString& id, PartsWidget::PartList& partList)
  */
-void DownloadModule::setPartList(const QString& id, qulonglong size, QLinkedList<PartsWidget::Part>& partList) {
+void DownloadModule::setPartList(const QString& id, PartsWidget::PartList& partList) {
     DownloadItem* item = findDownload(id);
     if(item != NULL) {
         if(item->getPartListDialog()->isVisible()) {
-            item->getPartListDialog()->update(size, partList);
+            item->getPartListDialog()->update(partList);
         }
         if(juicer->partsWidget->isVisible() && item->isSelected()) {
-            juicer->partsWidget->update(size, partList);
+            juicer->partsWidget->update(partList);
         }
     }
 }

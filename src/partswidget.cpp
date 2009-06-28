@@ -39,12 +39,13 @@ void PartsWidget::paintEvent( QPaintEvent* )
         return;
     }
     int BLOCK_ROWS = Convert::max(1,height() / 30);
+    double size = partList.getSize();
 
     blockHeight = this->height() / BLOCK_ROWS;
     numPixels = this->width() * BLOCK_ROWS;
-    pixelPerByte = numPixels / (float)size;
+    pixelPerByte = numPixels / size;
     
-    QLinkedListIterator<Part> it ( partList );
+    QListIterator<Part> it ( partList );
     
     QPainter painter ( this );
     
@@ -116,25 +117,24 @@ void PartsWidget::paintEvent( QPaintEvent* )
         }
     }
     painter.end();
-    ready = ( double ) bytesReady / ( double ) size * 100.0;
-    available = ( double ) bytesAvailable / ( double ) size * 100.0;
-    lessSources = ( double ) bytesLessSources / ( double ) size * 100.0;
-    missing = ( double ) bytesMissing / ( double ) size * 100.0;
+    ready = bytesReady / size * 100.0;
+    available = bytesAvailable / size * 100.0;
+    lessSources = bytesLessSources / size * 100.0;
+    missing = bytesMissing / size * 100.0;
     painted();
 }
 
 
 /*!
-    \fn PartsWidget::update( qulonglong size, QLinkedList<Part>& partList )
+    \fn PartsWidget::update(PartList& partList)
  */
-void PartsWidget::update( qulonglong size, QLinkedList<Part>& partList )
+void PartsWidget::update(PartList& partList)
 {
-    this->size = size;
     this->partList = partList;
     PartsWidget::Part closePart;
-    closePart.fromPosition = size ;
+    closePart.fromPosition = partList.getSize();
     closePart.type = -10;
-    this->partList.push_back( closePart );
+    this->partList.push_back(closePart);
     QWidget::update();
 }
 

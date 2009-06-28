@@ -207,3 +207,7 @@ INSTALLS += target
 target.path = /usr/local/bin
 
 
+QMAKE_CXXFLAGS_DEBUG += -O3
+
+QMAKE_CXXFLAGS_RELEASE += -O3
+

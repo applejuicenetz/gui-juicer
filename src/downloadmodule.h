@@ -56,8 +56,7 @@ public:
     QString getNextIdRoundRobin();
     void setDirs(const QString& tmpDir, const QString& inDir);
     QString findDownloadByTempNum(const QString& tempFile);
-    void setPartList( const QString& id, qulonglong size,
-                      QLinkedList<PartsWidget::Part>& partList);
+    void setPartList( const QString& id, PartsWidget::PartList& partList);
 
     QTimer *partListTimer;
 

@@ -13,14 +13,8 @@
 
 #include "partlistdialog.h"
 
-PartListDialog::PartListDialog(QWidget* parent, Qt::WFlags fl) : QDialog( parent, fl ), Ui::partListDialog()
-{
+PartListDialog::PartListDialog(QWidget* parent, Qt::WFlags fl) : QDialog(parent, fl), Ui::partListDialog() {
     setupUi(this);
-/*    QVBoxLayout* l = new QVBoxLayout(frame);
-    paintWidget = new PartsWidget(frame);
-    paintWidget->setSizePolicy(QSizePolicy (QSizePolicy::Expanding, QSizePolicy::Expanding));
-    l->addWidget(paintWidget);
-    frame->setLayout(l);*/
     sizeIcon->setText("");
 
     QPixmap readyPixmap(15, 15);
@@ -42,43 +36,34 @@ PartListDialog::PartListDialog(QWidget* parent, Qt::WFlags fl) : QDialog( parent
     connect(paintWidget, SIGNAL(painted()), this, SLOT(paintedSlot()));
 }
 
-PartListDialog::~PartListDialog()
-{
-}
+PartListDialog::~PartListDialog() {}
 
 /*!
-    \fn PartListDialog::update( Q_ULLONG size, QLinkedList<PartsWidget::Part>& partList )
+    \fn PartListDialog::update(PartsWidget::PartList& partList)
  */
-void PartListDialog::update( qulonglong size, QLinkedList<PartsWidget::Part>& partList )
-{
-    if ( !isVisible() )
-    {
+void PartListDialog::update(PartsWidget::PartList& partList) {
+    if(!isVisible()) {
         move( QCursor::pos() - QPoint( width()/2, height()/2 ) );
         show();
     }
-
-//     if ( ! timer->isActive() )
-//         timer->start( 5000 );
-    paintWidget->update( size, partList );
+    paintWidget->update(partList);
 }
 
 /*!
-    \fn PartListDialog::setFilename( const QString& filename )
+    \fn PartListDialog::setFilename(const QString& filename)
  */
-void PartListDialog::setFilename( const QString& filename )
-{
-    setWindowTitle( "Juicer - " + filename );
+void PartListDialog::setFilename(const QString& filename) {
+    setWindowTitle("Juicer - " + filename);
 }
 
 
 /*!
     \fn PartListDialog::paintedSlot()
  */
-void PartListDialog::paintedSlot()
-{
-    sizeLabel->setText( Convert::bytes(paintWidget->size) );
-    readyLabel->setText( QString::number( paintWidget->ready, 'f', 2 ) + "%" );
-    availableLabel->setText( QString::number( paintWidget->available, 'f', 2 ) + "%" );
-    rareLabel->setText( QString::number( paintWidget->lessSources, 'f', 2 ) + "%" );
-    missingLabel->setText( QString::number( paintWidget->missing, 'f', 2 ) + "%" );
+void PartListDialog::paintedSlot() {
+    sizeLabel->setText(Convert::bytes(paintWidget->partList.getSize()));
+    readyLabel->setText(QString::number( paintWidget->ready, 'f', 2 ) + "%");
+    availableLabel->setText(QString::number( paintWidget->available, 'f', 2 ) + "%");
+    rareLabel->setText(QString::number( paintWidget->lessSources, 'f', 2 ) + "%");
+    missingLabel->setText(QString::number( paintWidget->missing, 'f', 2 ) + "%");
 }
