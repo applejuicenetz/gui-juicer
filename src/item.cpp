@@ -45,9 +45,7 @@ Item::~Item() {
     \fn Item::setHiddenSave(bool hidden)
  */
 bool Item::setHiddenSave(bool hidden) {
-//     qApp->processEvents();
     bool r = isHidden();
-//     qApp->processEvents();
     if(r != hidden) {
         qApp->processEvents();
         setHidden(hidden);

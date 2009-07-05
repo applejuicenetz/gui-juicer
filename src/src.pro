@@ -184,6 +184,7 @@ resources/warning.png \
  resources/small/undo.png \
  resources/small/view_tree.png \
  resources/small/view_detailed.png \
+ resources/small/update.png \
  resources/options/de.png \
  resources/options/fonts.png \
  resources/options/gb.png \

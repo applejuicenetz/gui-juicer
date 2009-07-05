@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>522</width>
+    <width>551</width>
     <height>495</height>
    </rect>
   </property>
@@ -65,7 +65,7 @@
       <enum>QFrame::NoFrame</enum>
      </property>
      <property name="currentIndex">
-      <number>3</number>
+      <number>0</number>
      </property>
      <widget class="QWidget" name="Core">
       <layout class="QVBoxLayout" name="verticalLayout">
@@ -854,7 +854,8 @@
        <item>
         <widget class="QCheckBox" name="checkUpdatesCheckBox">
          <property name="text">
-          <string>automatically check for updates</string>
+          <string>automatically check for updates
+(not all platforms are supported)</string>
          </property>
         </widget>
        </item>

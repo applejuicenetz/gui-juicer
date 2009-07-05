@@ -482,7 +482,7 @@ void XMLModule::handlePartList(int id) {
         } else if( partListSimpleRequests.contains(id)) {
             DownloadItem* item = juicer->downloadModule->findDownload(partListSimpleRequests[id]);
             if(item != NULL) {
-                item->setParts(partList);
+                item->setMissing(partList.getMissing());
             }
             partListSimpleRequests.remove(id);
         }

@@ -20,7 +20,7 @@
 #include "juicer.h"
 #include "handlerdialog.h"
 
-Juicer::Juicer( const QStringList& argList, QSplashScreen *splash, const QFileInfo& appFileInfo)
+Juicer::Juicer(const QStringList& argList, QSplashScreen *splash, const QFileInfo& appFileInfo)
     : QMainWindow()
     , xml(0)
     , downloadModule(0)
@@ -35,7 +35,7 @@ Juicer::Juicer( const QStringList& argList, QSplashScreen *splash, const QFileIn
     , connected(false)
     , localCore(false)
 {
-    setupUi( this );
+    setupUi(this);
 
     downloads->setCentralWidget(downloadsTreeWidget);
     downloads->addDockWidget(Qt::RightDockWidgetArea, partListDock);
@@ -48,8 +48,8 @@ Juicer::Juicer( const QStringList& argList, QSplashScreen *splash, const QFileIn
 
     firstModifiedMax = 2;// + argList.size();
 
-    linkServer = new ServerSocket( Application::APP_PORT );
-    connect( linkServer, SIGNAL( lineReady(const QString& ) ), this, SLOT( processLink(const QString& ) ) );
+    linkServer = new ServerSocket(Application::APP_PORT);
+    connect(linkServer, SIGNAL(lineReady(const QString&)), this, SLOT(processLink(const QString&)));
 
     osIcons[LINUX] = QIcon(":/small/linux.png");
     osIcons[WINDOWS] = QIcon(":/small/windows.png");
@@ -68,8 +68,9 @@ Juicer::Juicer( const QStringList& argList, QSplashScreen *splash, const QFileIn
 
     prevTab = downloads;
 
-    networkDialog = new NetworkDialog( this );
-    optionsDialog = new OptionsDialog( this );
+    networkDialog = new NetworkDialog(this);
+    optionsDialog = new OptionsDialog(this);
+    autoUpdater = new AutoUpdate(appFileInfo.absolutePath(), this);
 
     initToolBars();
     connectActions();
@@ -81,28 +82,26 @@ Juicer::Juicer( const QStringList& argList, QSplashScreen *splash, const QFileIn
     downloads->restoreState(OptionsDialog::getSetting("DownloadsMain").toByteArray());
     server->restoreState(OptionsDialog::getSetting("ServerMain").toByteArray());
 
-    autoUpdater = new AutoUpdate(appFileInfo.absolutePath(), this);
-
     connect(xml, SIGNAL(requestFinished(int , bool)), this, SLOT(requestFinished(int, bool)));
-    connect( xml, SIGNAL( settingsReady( const AjSettings& ) ), this, SLOT( settingsReady( const AjSettings& ) ) );
-    connect( xml, SIGNAL( error(const QString& ) ), this, SLOT( xmlError(const QString& ) ) );
-    connect( xml, SIGNAL( gotSession() ), this, SLOT( gotSession() ) );
-    connect( xml, SIGNAL( modifiedDone( ) ), downloadModule, SLOT( updateView( ) ) );
-    connect( xml, SIGNAL( modifiedDone( ) ), this, SLOT( firstModified() ) );
+    connect(xml, SIGNAL(settingsReady(const AjSettings&)), this, SLOT(settingsReady(const AjSettings&)));
+    connect(xml, SIGNAL(error(const QString&)), this, SLOT(xmlError(const QString&)));
+    connect(xml, SIGNAL(gotSession()), this, SLOT(gotSession()));
+    connect(xml, SIGNAL(modifiedDone()), downloadModule, SLOT(updateView()));
+    connect(xml, SIGNAL(modifiedDone()), this, SLOT(firstModified()));
 
-    timer = new QTimer( this );
-    connect( timer, SIGNAL( timeout() ), this, SLOT( timerSlot() ) );
+    timer = new QTimer(this);
+    connect(timer, SIGNAL(timeout()), this, SLOT(timerSlot()));
 
-    connect( ajTab, SIGNAL( currentChanged( int ) ), this, SLOT( tabChanged( int ) ) );
+    connect(ajTab, SIGNAL(currentChanged(int)), this, SLOT(tabChanged(int)));
 
-    tabChanged( ajTab->indexOf(downloads) );
+    tabChanged(ajTab->indexOf(downloads));
 
     // -- we need to do this as an event, because we can quit the application only if the application is already in the event loop --
     QTimer::singleShot(0, this, SLOT(login()));
 
-    queueLinks( argList );
+    queueLinks(argList);
     initTrayIcon();
-    connect(downloadModule, SIGNAL( downloadsFinished( const QList<DownloadItem*>&  ) ),this, SLOT( downloadsFinished( const QList<DownloadItem*>& ) ) );
+    connect(downloadModule, SIGNAL(downloadsFinished(const QList<DownloadItem*>& )),this, SLOT(downloadsFinished(const QList<DownloadItem*>&)));
 
     connect(qApp->clipboard(), SIGNAL(changed(QClipboard::Mode)), this, SLOT(clipboardChanged(QClipboard::Mode)));
 }
@@ -135,8 +134,9 @@ void Juicer::connectActions() {
     connect(actionNet_Info, SIGNAL(triggered()), this, SLOT(getNetworkInfo()));
     connect(actionNet_Info, SIGNAL(triggered()), networkDialog, SLOT(exec()));
     connect(actionOpen_Aj_Link_List, SIGNAL(triggered()), this, SLOT(openAjL()));
-    connect(actionAdjust_Columns, SIGNAL(triggered()), this, SLOT( adjustColumns()));
+    connect(actionAdjust_Columns, SIGNAL(triggered()), this, SLOT(adjustColumns()));
     connect(actionProcess_Link_From_Clipboard, SIGNAL(triggered()), this, SLOT(processClipboard()));
+    connect(actionCheck_for_Update, SIGNAL(triggered()), autoUpdater, SLOT(check()));
     connect(actionExit_Core, SIGNAL(triggered()), this, SLOT(exitCore()));
     connect(actionQuit_GUI, SIGNAL(triggered()), this, SLOT(quit()));
     connect(actionManual, SIGNAL(triggered()), this, SLOT(showManual()));
@@ -150,7 +150,7 @@ void Juicer::connectActions() {
  */
 void Juicer::initTrayIcon() {
     tray = new QSystemTrayIcon(QIcon(":/juicer.png"), this);
-    if( OptionsDialog::getSetting("useTray", false).toBool()) {
+    if(OptionsDialog::getSetting("useTray", false).toBool()) {
         tray->setVisible(true);
         tray->setContextMenu(menuAppleJuice);
         connect(tray, SIGNAL(activated(QSystemTrayIcon::ActivationReason)),
@@ -161,7 +161,7 @@ void Juicer::initTrayIcon() {
 }
 
 /*!
-    \fn Juicer::closeEvent( QCloseEvent* ce )
+    \fn Juicer::closeEvent(QCloseEvent* ce)
     handler when closing the app, saves a lot of settings
     @param ce the close event
  */
@@ -255,11 +255,11 @@ QString Juicer::showLoginDialog(const QString& message) {
         splash->close();
     }
     LoginDialog loginDialog(this);
-    loginDialog.setHost( OptionsDialog::getSetting( "coreAddress", "localhost" ).toString() );
-    loginDialog.setPort( OptionsDialog::getSetting("xmlPort", 9851 ).toInt() );
-    loginDialog.setPassword( OptionsDialog::getSetting( "password", "" ).toString() );
-    loginDialog.setSavePassword( OptionsDialog::getSetting( "savePassword", false ).toBool() );
-    loginDialog.setHeader( message );
+    loginDialog.setHost(OptionsDialog::getSetting("coreAddress", "localhost").toString());
+    loginDialog.setPort(OptionsDialog::getSetting("xmlPort", 9851).toInt());
+    loginDialog.setPassword(OptionsDialog::getSetting("password", "").toString());
+    loginDialog.setSavePassword(OptionsDialog::getSetting("savePassword", false).toBool());
+    loginDialog.setHeader(message);
     int result = loginDialog.exec();
     QString ret = "";
     // -- Ignore --
@@ -275,7 +275,7 @@ QString Juicer::showLoginDialog(const QString& message) {
         bool savePassword = loginDialog.getSavePassword();
         lokalSettings.setValue("savePassword", savePassword);
         if(savePassword) {
-            lokalSettings.setValue( "password", ret);
+            lokalSettings.setValue("password", ret);
         }
     // -- Cancel --
     } else {
@@ -300,14 +300,14 @@ void Juicer::xmlError(const QString& reason) {
  */
 void Juicer::timerSlot() {
     if(connected) {
-        xml->get( "modified" );
+        xml->get("modified");
     }
 }
 
 void Juicer::showOptions()
 {
     if(connected) {
-        xml->get( "settings" );
+        xml->get("settings");
     }
     optionsDialog->setConnected(connected);
     if(optionsDialog->exec() == QDialog::Accepted) {
@@ -419,14 +419,14 @@ void Juicer::processLink(const QString& link) {
         if(s[0].toLower() == "ajfsp://file") {
             ShareFileItem* file;
             DownloadItem* download;
-            if((file = shareModule->findFile( size, hash )) != NULL) {
-                QMessageBox::information( this, tr("Information"), tr("The file seems to be already in the share\n\n%1").arg(file->getFilename()));
+            if((file = shareModule->findFile(size, hash)) != NULL) {
+                QMessageBox::information(this, tr("Information"), tr("The file seems to be already in the share\n\n%1").arg(file->getFilename()));
             } else if((download = downloadModule->findDownload(size, hash)) != NULL) {
-                QMessageBox::information( this, tr("Information"),
+                QMessageBox::information(this, tr("Information"),
                     tr("The file seems to be already in the download list\n\n%1").arg(download->text(DownloadItem::FILENAME_COL)));
             }
         }
-        encodedLink = s[0] + "|" + QUrl::toPercentEncoding( name )  + "|" + hash + "|" + size + "/";
+        encodedLink = s[0] + "|" + QUrl::toPercentEncoding(name)  + "|" + hash + "|" + size + "/";
     }
     xml->set("processlink", "&link=" + encodedLink);
 }
@@ -441,8 +441,8 @@ void Juicer::processClipboard() {
 }
 
 
-void Juicer::tabChanged( int index ) {
-    QWidget *tab = ajTab->widget( index );
+void Juicer::tabChanged(int index) {
+    QWidget *tab = ajTab->widget(index);
 
     downloadToolBar->setVisible(tab == downloads);
     uploadToolBar->setVisible(tab == uploads);
@@ -452,7 +452,7 @@ void Juicer::tabChanged( int index ) {
     incomingToolBar->setVisible(tab == incoming);
 
     if((prevTab == shares) && (shareModule->isChanged()) && 
-       (QMessageBox::question( this, tr("Question"), tr("You've changed your shares.\nDo you want to transfer the changes to the core?"), QMessageBox::Yes, QMessageBox::No ) == QMessageBox::Yes)) {
+       (QMessageBox::question(this, tr("Question"), tr("You've changed your shares.\nDo you want to transfer the changes to the core?"), QMessageBox::Yes, QMessageBox::No) == QMessageBox::Yes)) {
         shareModule->commitSlot();
     }
 
@@ -485,7 +485,7 @@ void Juicer::connectedSince(const QString& since) {
 void Juicer::firstModified() {
     if (firstModifiedCnt <= firstModifiedMax) {
         if (firstModifiedCnt == firstModifiedMax) {
-            downloadModule->updateView( true );
+            downloadModule->updateView(true);
             downloadModule->adjustSizeOfColumns();
             uploadModule->adjustSizeOfColumns();
             searchModule->adjustSizeOfColumns();
@@ -494,7 +494,7 @@ void Juicer::firstModified() {
             downloadModule->sortItemsInitially("DownloadWidget");
             uploadModule->sortItemsInitially("UploadWidget");
             serverModule->sortItemsInitially("ServerWidget");
-            shareModule->sortItemsInitially( "ShareWidget");
+            shareModule->sortItemsInitially("ShareWidget");
             incomingModule->sortItemsInitially("IncomingWidget");
             searchModule->sortItemsInitially("SearchWidget");
             processQueuedLinks();
@@ -566,7 +566,7 @@ void Juicer::adjustColumns() {
  */
 QStringList Juicer::getExec() {
     QSettings lokalSettings;
-    QString launcher = lokalSettings.value( "launcher", DEFAULT_LAUNCHER ).toString().simplified();
+    QString launcher = lokalSettings.value("launcher", DEFAULT_LAUNCHER).toString().simplified();
 
     QStringList args;
     if(launcher == KDE_LAUNCHER) {
@@ -645,7 +645,7 @@ void Juicer::trayActivated(QSystemTrayIcon::ActivationReason reason) {
 void Juicer::downloadsFinished(const QList<DownloadItem*>& list) {
     if(QSystemTrayIcon::supportsMessages()) {
         QString msg = "";
-        for(int i=0; i<list.size(); i++ ) {
+        for(int i=0; i<list.size(); i++) {
             msg += list[i]->text(DownloadItem::FILENAME_COL) + "\n";
         }
         tray->showMessage(tr("Download finished"), msg, QSystemTrayIcon::Information, 3000);
@@ -672,8 +672,8 @@ void Juicer::openAjL() {
                 QString line = in.readLine();
                 while(line.compare("100") != 0) {
                     if(in.atEnd()) {
-                        tray->showMessage( tr("No valid AJ list file"), ajListFileName,
-                                          QSystemTrayIcon::Information, 3000 );
+                        tray->showMessage(tr("No valid AJ list file"), ajListFileName,
+                                          QSystemTrayIcon::Information, 3000);
                         break;
                     }
                     line = in.readLine();
@@ -704,7 +704,7 @@ void Juicer::sendToTray(const QString& message1, const QString& message2) {
 
 
 void Juicer::about() {
-    QMessageBox::about( this, tr("Juicer Info"),
+    QMessageBox::about(this, tr("Juicer Info"),
                         qApp->applicationName() + " " + qApp->applicationVersion()
                         + tr("\n\nGUI for appleJuice Filesharing\n\nhttp://applejuicer.net"));
 }
@@ -786,9 +786,9 @@ void Juicer::setFilesystemSeparator(const QString& separator) {
 }
 
 /*!
-    \fn Juicer::getFilesystemSeparator( ) const
+    \fn Juicer::getFilesystemSeparator() const
  */
-QString Juicer::getFilesystemSeparator( ) const {
+QString Juicer::getFilesystemSeparator() const {
     return filesystemSeparator;
 }
 

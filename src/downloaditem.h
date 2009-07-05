@@ -54,7 +54,7 @@ class DownloadItem : public Item
 {
 Q_OBJECT
 public:
-    DownloadItem( const QString& id, QTreeWidget *parent = 0 );
+    DownloadItem(const QString& id, QTreeWidget *parent = 0);
     ~DownloadItem();
 
     enum { FILENAME_COL       = 0,
@@ -71,18 +71,18 @@ public:
            TARGET_DIR_COL     = 11
          };
 
-    void moveItem( UserItem *userItem, const QString& oldStatus );
-    bool update( const QString& hash, const QString& fileName, const QString& status,
+    void moveItem(UserItem *userItem, const QString& oldStatus);
+    bool update(const QString& hash, const QString& fileName, const QString& status,
                  const QString& size, const QString& ready, const QString& power,
-                 const QString& tempNumber, const QString& targetDir );
-    void updateUser( const QString& id, const QString& fileName, const QString& nickname,
+                 const QString& tempNumber, const QString& targetDir);
+    void updateUser(const QString& id, const QString& fileName, const QString& nickname,
                      const QString& speed, const QString& status, const QString& power,
                      const QString& queuePos, const QString& statusString, QIcon& osIcon,
                      const QString& downloadfrom, const QString& downloadto,
-                     const QString& actualdownloadposition, const QTime& time );
+                     const QString& actualdownloadposition, const QTime& time);
 
-    UserItem* findUser( const QString& id );
-    void removeUser( const QString& id );
+    UserItem* findUser(const QString& id);
+    void removeUser(const QString& id);
 
     QString getLinkAJFSP();
 
@@ -94,8 +94,8 @@ public:
     bool updateView(const QHash<QString, QString>& downloadStatusDescr);
     void deleteUsers();
     PartListDialog* getPartListDialog();
-    void setParts(PartsWidget::PartList& partList );
-    void showWidget( const QPoint &p );
+    void setMissing(double missing);
+    void showWidget(const QPoint &p);
 
     QHash<QString, UserItem*> users;
 
@@ -127,7 +127,7 @@ public:
         return tempNumber;
     }
     QString getTargetDir() const {
-        return text( TARGET_DIR_COL );
+        return text(TARGET_DIR_COL);
     }
     // Powerdownload for this Item
     bool powerDownloadActive() const {
@@ -137,7 +137,8 @@ public:
         return powerSpin->spin->value();
     }
 
-    virtual bool operator<( const QTreeWidgetItem & other ) const;
+    virtual bool operator<(const QTreeWidgetItem & other) const;
+
     QProgressBar* progressBar;
     PowerSpin* powerSpin;
 
@@ -145,11 +146,8 @@ public slots:
     void initPowerSpin();
 
 protected:
-    double ready, remainingSize;
-    double speed;
-    double finished;
+    double ready, remainingSize, speed, finished, missing;
     int percent;
-    double missing;
     long int remainingSec;
     /// used for notifications about finished downloads
     bool firstFinished;

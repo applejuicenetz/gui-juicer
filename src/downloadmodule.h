@@ -43,7 +43,7 @@ public:
                         const QString& status, const QString& size, const QString& ready,
                         const QString& power, const QString& tempNumber,
                         const QString& targetDir);
-    void insertUser(  const QString& downloadId, const QString& id, const QString& fileName,
+    void insertUser( const QString& downloadId, const QString& id, const QString& fileName,
                       const QString& nickname, const QString& speed, const QString& status,
                       const QString& power, const QString& queuePos, const QString& os,
                       const QString& downloadfrom, const QString& downloadto,
@@ -56,7 +56,7 @@ public:
     QString getNextIdRoundRobin();
     void setDirs(const QString& tmpDir, const QString& inDir);
     QString findDownloadByTempNum(const QString& tempFile);
-    void setPartList( const QString& id, PartsWidget::PartList& partList);
+    void setPartList(const QString& id, PartsWidget::PartList& partList);
 
     QTimer *partListTimer;
 
@@ -64,7 +64,7 @@ public slots:
     void updateView(bool force = false);
     void partListSlot();
 protected:
-    void processSelected( XMLModule::Type type, const QString& request,
+    void processSelected(XMLModule::Type type, const QString& request,
                           const QString& para = "");
     void getSelected(const QString& request, const QString& para = "");
     void setSelected(const QString& request, const QString& para = "");
@@ -81,7 +81,7 @@ protected:
 
     class DownloadUser {
         public:
-        DownloadUser() {download = NULL; user = NULL; }
+        DownloadUser() {download = NULL; user = NULL;}
         DownloadItem* download;
         UserItem* user;
     };
@@ -107,7 +107,7 @@ protected slots:
     void partListWidgetSlot();
     void targetFolder();
 signals:
-    void downloadsFinished( const QList<DownloadItem*>& downloads );
+    void downloadsFinished(const QList<DownloadItem*>& downloads);
 };
 
 

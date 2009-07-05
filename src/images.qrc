@@ -83,6 +83,7 @@
     <file alias="undo.png">resources/small/undo.png</file>
     <file alias="recursive.png">resources/small/view_tree.png</file>
     <file alias="not_recursive.png">resources/small/view_detailed.png</file>
+    <file alias="update.png">resources/small/update.png</file>
 </qresource>
 
 <qresource prefix="/options">

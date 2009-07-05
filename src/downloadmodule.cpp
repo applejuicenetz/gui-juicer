@@ -624,6 +624,7 @@ void DownloadModule::setPartList(const QString& id, PartsWidget::PartList& partL
         if(juicer->partsWidget->isVisible() && item->isSelected()) {
             juicer->partsWidget->update(partList);
         }
+        item->setMissing(partList.getMissing());
     }
 }
 

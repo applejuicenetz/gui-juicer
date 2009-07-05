@@ -49,8 +49,11 @@ Q_OBJECT
 public:
     AutoUpdate(const QString& appPath, QWidget *parent = 0);
     ~AutoUpdate();
+    bool readXML();
+    void update();
+    void checkVersion();
+public slots:
     void check();
-    bool readXML(QString& version, QString& file);
 private:
     QHttp http;
     int checkId, getId;
@@ -58,10 +61,11 @@ private:
     QTemporaryFile file;
     QString appPath;
     QString os, updateFolder, updateXML;
-    bool updatePossible;
+    QString updateVersion, updateFile;
 private slots:
     void requestFinished(int id, bool error);
     void dataReadProgress(int done, int total);
+    void clicked(QAbstractButton * button);
 };
 
 #endif

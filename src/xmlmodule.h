@@ -46,25 +46,22 @@ class XMLModule : public QHttp
     Q_OBJECT
 public:
     XMLModule(Juicer *juicer, QObject *parent = 0);
-
     ~XMLModule();
 
-    void resetHttp();
-
     enum Type {GET, SET};
-    int exec( const QString & request, int nErrors = 0 );
-    int make( Type type, const QString & request, QString param = "" );
-    int get( const QString & request, QString param = "" );
-    int set( const QString & request, QString param = "" );
+    void resetHttp();
+    int exec(const QString & request, int nErrors = 0);
+    int make(Type type, const QString & request, QString param = "");
+    int get(const QString & request, QString param = "");
+    int set(const QString & request, QString param = "");
 
     QString session;
 
-    void setPassword( const QString & password );
-    void setPasswordMD5( const QString & passwordMD5 )
-    {
+    void setPassword(const QString & password);
+    void setPasswordMD5(const QString & passwordMD5) {
         this->passwordMD5 = passwordMD5;
     }
-    void sendToTray(const QString & message1, const QString & message2 );
+    void sendToTray(const QString & message1, const QString & message2);
     QString getRecentTime() { return timeStamp; }
     static void printAllAttributes(QDomElement& e);
 
@@ -86,29 +83,29 @@ protected:
     QHash<int, QString> partListSimpleRequests;
 
 public slots:
-    void responseHeaderReceived ( const QHttpResponseHeader & resp );
+    void responseHeaderReceived(const QHttpResponseHeader & resp);
     void requestFinished(int id, bool error);
 signals:
-    void settingsReady( const AjSettings& settings );
-    void error(const QString& message );
+    void settingsReady(const AjSettings& settings);
+    void error(const QString& message);
     void gotSession();
     void modifiedDone();
 private:
-    void handleSettings( QDomElement& e );
-    void handleShare( QDomElement& e );
-    void handleShares( QDomElement& e );
-    void handleIds( QDomNode& node );
-    void handleNetworkInfo( QDomElement& e );
-    void handleUpload( QDomElement& e );
-    void handleDownload( QDomElement& e );
-    void handleUser( QDomElement& e, QTime& time );
-    void handleServer( QDomElement& e );
-    void handleSearch( QDomElement& e );
-    void handleSearchEntry( QDomElement& e );
-    void handleGeneralInformation( QDomNode& node );
-    void handleRemoved( QDomElement& e );
-    void handlePart( QDomElement& e );
-    void handlePartList( int id );
+    void handleSettings(QDomElement& e);
+    void handleShare(QDomElement& e);
+    void handleShares(QDomElement& e);
+    void handleIds(QDomNode& node);
+    void handleNetworkInfo(QDomElement& e);
+    void handleUpload(QDomElement& e);
+    void handleDownload(QDomElement& e);
+    void handleUser(QDomElement& e, QTime& time);
+    void handleServer(QDomElement& e);
+    void handleSearch(QDomElement& e);
+    void handleSearchEntry(QDomElement& e);
+    void handleGeneralInformation(QDomNode& node);
+    void handleRemoved(QDomElement& e);
+    void handlePart(QDomElement& e);
+    void handlePartList(int id);
     void processUsers();
     QList<QDomElement> users;
     QList<QTime> userTimes;

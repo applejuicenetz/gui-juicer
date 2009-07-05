@@ -136,20 +136,19 @@ void DownloadItem::removeUser( const QString& id )
     delete item;
 }
 
-void DownloadItem::updateUser( const QString& id,
-                                  const QString& fileName,
-                                  const QString& nickname,
-                                  const QString& speed,
-                                  const QString& status,
-                                  const QString& power,
-                                  const QString& queuePos,
-                                  const QString& statusString,
-                                  QIcon& osIcon,
-                                  const QString& downloadfrom,
-                                  const QString& downloadto,
-                                  const QString& actualdownloadposition,
-                                  const QTime& time )
-{
+void DownloadItem::updateUser(const QString& id,
+                              const QString& fileName,
+                              const QString& nickname,
+                              const QString& speed,
+                              const QString& status,
+                              const QString& power,
+                              const QString& queuePos,
+                              const QString& statusString,
+                              QIcon& osIcon,
+                              const QString& downloadfrom,
+                              const QString& downloadto,
+                              const QString& actualdownloadposition,
+                              const QTime& time) {
     UserItem* userItem = findUser( id );
     if ( userItem == NULL ) {
         if ( status == ACTIVE_SOURCE ) {
@@ -289,9 +288,8 @@ bool DownloadItem::updateView(const QHash<QString, QString>& downloadStatusDescr
 }
 
 
-void DownloadItem::showWidget( const QPoint & p ) 
-{
-    if ( partListDialog == NULL ) {
+void DownloadItem::showWidget(const QPoint & p) {
+    if(partListDialog == NULL) {
         partListDialog = new PartListDialog();
     }
     partListDialog->move( p );
@@ -311,45 +309,30 @@ void DownloadItem::deleteUsers()
 /*!
     \fn DownloadItem::getPartListDialog()
  */
-PartListDialog* DownloadItem::getPartListDialog() 
-{
+PartListDialog* DownloadItem::getPartListDialog() {
     return partListDialog;
 }
 
 
 /*!
-    \fn DownloadItem::setParts(QLinkedList<PartsWidget::Part>& partList )
+    \fn DownloadItem::setMissing(double missing)
  */
-void DownloadItem::setParts(PartsWidget::PartList& partList ) 
-{
-    if ( partListDialog->isVisible() ) {
-        partListDialog->update(partList);
-    }
-    missing = partList.getMissing();
-    if ( missing < 1.0 && missing > 0.0 ) {
-        setText( MISSING_COL, QString::number( missing, 'f', 1 ) + "%" );
-    } else {
-        setText( MISSING_COL, QString::number( missing, 'f', 0 ) + "%" );
-    }
-    if ( missing > 0.0 ) {
-        setTextColor( MISSING_COL, Qt::darkRed );
-    } else {
-        setTextColor( MISSING_COL, Qt::darkGreen );
-    }
+void DownloadItem::setMissing(double missing) {
+    setText(MISSING_COL, QString::number(missing, 'g', 3) + "%");
+    setTextColor(MISSING_COL, missing>0.0?Qt::darkRed:Qt::darkGreen);
 }
 
-bool DownloadItem::operator<( const QTreeWidgetItem & other ) const 
-{
+bool DownloadItem::operator<( const QTreeWidgetItem & other ) const {
     int sortIndex = treeWidget()->header()->sortIndicatorSection();
     DownloadItem* downItem = (DownloadItem*)&other;
-    switch ( sortIndex ) {
+    switch(sortIndex) {
         case FILENAME_COL:
-            return this->text( FILENAME_COL ) < other.text( FILENAME_COL );
+            return this->text(FILENAME_COL) < other.text(FILENAME_COL);
         case SIZE_COL:
             return size_ < downItem->getSize();
         case FINISHED_SIZE_COL:
             if(ready == downItem->getReady()) {
-                return this->text( FILENAME_COL ) < other.text( FILENAME_COL );
+                return this->text(FILENAME_COL) < other.text(FILENAME_COL);
             } else {
                 return ready < downItem->getReady();
             }
@@ -363,17 +346,16 @@ bool DownloadItem::operator<( const QTreeWidgetItem & other ) const
             return this->missing < downItem->getMissing();
         case FINISHED_COL:
             if(this->finished == downItem->getFinished()) {
-                return this->text( FILENAME_COL ) < other.text( FILENAME_COL );
+                return this->text(FILENAME_COL) < other.text(FILENAME_COL);
             } else {
                 return this->finished < downItem->getFinished();
             }
         default:
-            return this->text( sortIndex ) < other.text( sortIndex );
+            return this->text(sortIndex) < other.text(sortIndex);
     }
 }
 
-QString DownloadItem::getLinkAJFSP() 
-{
+QString DownloadItem::getLinkAJFSP() {
     return "ajfsp://file|"
         + text(FILENAME_COL) + "|"
         + hash_ + "|"

@@ -57,7 +57,7 @@ protected slots:
     virtual void selectionChanged() = 0;
 };
 
-
+/// needed because of a Qt Designer issue
 class DockMain : public QMainWindow {
 Q_OBJECT
 public:

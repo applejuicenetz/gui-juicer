@@ -31,20 +31,24 @@ AutoUpdate::AutoUpdate(const QString& appPath, QWidget *parent) : QObject(parent
 #ifdef Q_OS_LINUX
     os = "linux";
 #endif
-    updatePossible = !os.isEmpty();
+    // -- 32 or 64bit? --
+    if(!os.isEmpty()) {
+        if(sizeof(void*) == 4) {
+            os += "-32";
+        } else if(sizeof(void*) == 8) {
+            os += "-64";
+        } else {
+            os = "unsupported";
+        }
+    }
     updateFolder = "/update/";
     updateXML = "update.xml";
-    // -- disabled because insufficiently tested --
-    updatePossible = false;
-    // --------------------------------------------
-
-    if(updatePossible) {
-        updateDialog = new UpdateDialog(parent);
-        checkId = getId = -1;
-        connect(&http, SIGNAL(requestFinished(int, bool)), this, SLOT(requestFinished(int, bool)));
-        connect(&http, SIGNAL(dataReadProgress(int, int)), this, SLOT(dataReadProgress(int, int)));
-        http.setHost("applejuicer.net");
-    }
+    updateDialog = new UpdateDialog(parent);
+    checkId = getId = -1;
+    connect(&http, SIGNAL(requestFinished(int, bool)), this, SLOT(requestFinished(int, bool)));
+    connect(&http, SIGNAL(dataReadProgress(int, int)), this, SLOT(dataReadProgress(int, int)));
+    connect(updateDialog->buttonBox, SIGNAL(clicked(QAbstractButton*)), this, SLOT(clicked(QAbstractButton*)));
+    http.setHost("applejuicer.net");
 }
 
 
@@ -57,9 +61,7 @@ AutoUpdate::~AutoUpdate() {
     \fn AutoUpdate::check()
  */
 void AutoUpdate::check() {
-    if(updatePossible) {
-        checkId = http.get(updateFolder + updateXML);
-    }
+    checkId = http.get(updateFolder + updateXML);
 }
 
 
@@ -67,77 +69,14 @@ void AutoUpdate::check() {
     \fn AutoUpdate::requestFinished(int id, bool error)
  */
 void AutoUpdate::requestFinished(int id, bool error) {
-    if(error) {
-        fprintf(stderr, "AutoUpdate: %s\n", http.errorString().toLatin1().data());
-        return;
-    }
-    // -- got file with release time, check if newer and request update file if necessary --
-    if(id == checkId) {
-        QString updateVersion, updateFile;
-        if(readXML(updateVersion, updateFile)) {
-            qDebug() << "current version: " << qApp->applicationVersion();
-            qDebug() << "update version:  " << updateVersion;
-
-            if(Convert::compareVersion(updateVersion, qApp->applicationVersion()) > 0) {
-                qDebug() << "new!";
-                updateDialog->progressBar->setValue(0);
-                updateDialog->textEdit->clear();
-                updateDialog->show();
-                updateDialog->textEdit->append("download update archive...");
-                getId = http.get(updateFile, &file);
-            }
+    if(!error) {
+        // -- got file with release time, check if newer and request update file if necessary --
+        if(id == checkId) {
+            checkVersion();
+        // -- got update file, unzip it --
+        } else if(id == getId) {
+            update();
         }
-    // -- got update file, unzip it --
-    } else if(id == getId) {
-        updateDialog->textEdit->append("extract update archive...");
-        QDir outDir(QDir::tempPath() + QDir::separator() + "juicer_update" + QDateTime::currentDateTime().toString());
-        for(int i=0; i<3 && !outDir.exists(); i++) {
-            outDir.setPath(QDir::tempPath() + QDir::separator() + "juicer_update" + QDateTime::currentDateTime().toString());
-        }
-        if(outDir.exists()) {
-            updateDialog->textEdit->append("Update failed, could not create a temporary directory.");
-            return;
-        }
-        QString fileName = file.fileName();
-        file.close();
-        QuaZip zip(fileName);
-        zip.open(QuaZip::mdUnzip);
-        updateDialog->progressBar->setMaximum(zip.getEntriesCount());
-        QuaZipFile file(&zip);
-        QList<QFileInfo> files;
-        for(bool more=zip.goToFirstFile(); more; more=zip.goToNextFile()) {
-            files.append(file.getActualFileName());
-            QFileInfo& info = files.last();
-            updateDialog->textEdit->append(info.filePath());
-            if(!outDir.mkpath(info.path())) {
-                updateDialog->textEdit->append("error during extracting archive");
-                return;
-            }
-            file.open(QIODevice::ReadOnly);
-            QFile outFile(outDir.absolutePath()+QDir::separator()+info.filePath());
-            outFile.open(QIODevice::WriteOnly);
-            outFile.write(file.readAll());
-            outFile.close();
-            file.close();
-            updateDialog->progressBar->setValue(files.size());
-        }
-        zip.close();
-        // -- rename old files and copy new files in --
-        updateDialog->textEdit->append("replace old files...");
-        for(int i=0; i<files.size(); i++) {
-            QString origFile = appPath + QDir::separator() + files.at(i).filePath();
-            QString newFile = outDir.absolutePath() + QDir::separator() + files.at(i).filePath();
-            QString bakFile = origFile + ".bak";
-            if(QFile::exists(origFile)) {
-                QFile::rename(origFile, bakFile);
-                QFile::setPermissions(newFile, QFile::permissions(bakFile));
-            }
-            QFile::copy(newFile, origFile);
-            updateDialog->textEdit->append(newFile + " => " + origFile);
-        }
-        updateDialog->textEdit->append("done");
-        updateDialog->textEdit->append("Please restart Juicer in order to finish the update process.");
-        updateDialog->buttonBox->button(QDialogButtonBox::Cancel)->setText("done");
     }
 }
 
@@ -152,9 +91,9 @@ void AutoUpdate::dataReadProgress(int done, int total) {
 
 
 /*!
-    \fn AutoUpdate::readXML(QString& version, QString& file)
+    \fn AutoUpdate::readXML()
  */
-bool AutoUpdate::readXML(QString& version, QString& file) {
+bool AutoUpdate::readXML() {
     QDomDocument doc;
     doc.setContent(http.readAll());
     QDomElement root = doc.documentElement();
@@ -163,11 +102,105 @@ bool AutoUpdate::readXML(QString& version, QString& file) {
         for(n = root.firstChild(); !n.isNull(); n = n.nextSibling()) {
             QDomElement e = n.toElement();
             if(!e.isNull() && e.tagName() == "package" && e.attribute("os") == os) {
-                version = e.attribute("version");
-                file = updateFolder + e.attribute("file");
+                updateVersion = e.attribute("version");
+                updateFile = updateFolder + e.attribute("file");
                 return true;
             }
         }
     }
     return false;
+}
+
+
+/*!
+    \fn AutoUpdate::clicked(QAbstractButton * button)
+ */
+void AutoUpdate::clicked(QAbstractButton * button) {
+    if(button == updateDialog->buttonBox->button(QDialogButtonBox::Yes)) {
+        updateDialog->buttonBox->clear();
+        updateDialog->buttonBox->addButton(QDialogButtonBox::Cancel);
+        updateDialog->progressBar->setEnabled(true);
+        updateDialog->textEdit->append("download update archive...");
+        getId = http.get(updateFile, &file);
+    } else if(button == updateDialog->buttonBox->button(QDialogButtonBox::No)) {
+        updateDialog->hide();
+    } else if(button == updateDialog->buttonBox->button(QDialogButtonBox::Cancel)) {
+        http.abort();
+    }
+}
+
+
+/*!
+    \fn AutoUpdate::update()
+ */
+void AutoUpdate::update() {
+    updateDialog->textEdit->append("extract update archive...");
+    QDir outDir(QDir::tempPath() + QDir::separator() + "juicer_update" + QDateTime::currentDateTime().toString());
+    for(int i=0; i<3 && !outDir.exists(); i++) {
+        outDir.setPath(QDir::tempPath() + QDir::separator() + "juicer_update" + QDateTime::currentDateTime().toString());
+    }
+    if(outDir.exists()) {
+        updateDialog->textEdit->append("Update failed, could not create a temporary directory.");
+        return;
+    }
+    QString fileName = file.fileName();
+    file.close();
+    QuaZip zip(fileName);
+    zip.open(QuaZip::mdUnzip);
+    updateDialog->progressBar->setMaximum(zip.getEntriesCount());
+    QuaZipFile file(&zip);
+    QList<QFileInfo> files;
+    for(bool more=zip.goToFirstFile(); more; more=zip.goToNextFile()) {
+        files.append(file.getActualFileName());
+        QFileInfo& info = files.last();
+        updateDialog->textEdit->append(info.filePath());
+        if(!outDir.mkpath(info.path())) {
+            updateDialog->textEdit->append("error during extracting archive");
+            return;
+        }
+        file.open(QIODevice::ReadOnly);
+        QFile outFile(outDir.absolutePath()+QDir::separator()+info.filePath());
+        outFile.open(QIODevice::WriteOnly);
+        outFile.write(file.readAll());
+        outFile.close();
+        file.close();
+        updateDialog->progressBar->setValue(files.size());
+    }
+    zip.close();
+    // -- rename old files and copy new files in --
+    updateDialog->textEdit->append("replace old files...");
+    for(int i=0; i<files.size(); i++) {
+        QString origFile = appPath + QDir::separator() + files.at(i).filePath();
+        QString newFile = outDir.absolutePath() + QDir::separator() + files.at(i).filePath();
+        QString bakFile = origFile + ".bak";
+        if(QFile::exists(origFile)) {
+            QFile::rename(origFile, bakFile);
+            QFile::setPermissions(newFile, QFile::permissions(bakFile));
+        }
+        QFile::copy(newFile, origFile);
+        updateDialog->textEdit->append(newFile + " => " + origFile);
+    }
+    updateDialog->textEdit->append("done");
+    updateDialog->textEdit->append("Please restart Juicer in order to finish the update process.");
+    updateDialog->buttonBox->button(QDialogButtonBox::Cancel)->setText("done");
+}
+
+
+/*!
+    \fn AutoUpdate::checkVersion()
+ */
+void AutoUpdate::checkVersion() {
+    if(readXML()) {
+        if(Convert::compareVersion(updateVersion, qApp->applicationVersion()) > 0) {
+            updateDialog->buttonBox->clear();
+            updateDialog->buttonBox->addButton(QDialogButtonBox::Yes);
+            updateDialog->buttonBox->addButton(QDialogButtonBox::No);
+            updateDialog->progressBar->setValue(0);
+            updateDialog->progressBar->setEnabled(false);
+            updateDialog->textEdit->clear();
+            updateDialog->textEdit->append("An update for Juicer is available.");
+            updateDialog->textEdit->append("Would you like to update Juicer now?");
+            updateDialog->show();
+        }
+    }
 }
