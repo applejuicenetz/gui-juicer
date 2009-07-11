@@ -361,6 +361,17 @@ QIcon Convert::getFileIcon(const QFileInfo& file) {
     return fileIconProvider.icon(file);
 }
 
+QIcon Convert::getFileIcon(const QUrlInfo& url) {
+    static QFileIconProvider fileIconProvider;
+    if(url.isFile()) {
+        return fileIconProvider.icon(QFileIconProvider::File);
+    } else if(url.isDir()) {
+        return fileIconProvider.icon(QFileIconProvider::Folder);
+    } else {
+        return QIcon();
+    }
+}
+
 QIcon Convert::getFileIcon(const QString &path) {
     return QIcon();
 }

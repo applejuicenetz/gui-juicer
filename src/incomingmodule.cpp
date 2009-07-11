@@ -78,7 +78,7 @@ void IncomingModule::copy() {
         } else if(location == AjSettings::SAME) {
             actDir = this->dir + QDir::separator();
         }
-        QList<QTreeWidgetItem *> selectedItems = treeWidget->selectedItems();
+        QItemList selectedItems = treeWidget->selectedItems();
         for(int i=0; i<selectedItems.size(); i++) {
             QString newDir = QFileDialog::getExistingDirectory(juicer, tr("copy to"), actDir)
                     + QDir::separator();
@@ -102,7 +102,7 @@ void IncomingModule::copy() {
     \fn IncomingModule::removeFtp()
  */
 void IncomingModule::removeFtp() {
-    QList<QTreeWidgetItem *> selectedItems = treeWidget->selectedItems();
+    QItemList selectedItems = treeWidget->selectedItems();
     if(confirmRemove(selectedItems)) {
         QFtp* ftp = new QFtp(this);
         QString server = OptionsDialog::getSetting("ftp", "server", "localhost").toString();
@@ -127,7 +127,7 @@ void IncomingModule::removeFtp() {
     \fn IncomingModule::remove()
  */
 void IncomingModule::remove() {
-    QList<QTreeWidgetItem *> selectedItems = treeWidget->selectedItems();
+    QItemList selectedItems = treeWidget->selectedItems();
     if(confirmRemove(selectedItems)) {
         QString actDir;
         // determine the path
@@ -156,7 +156,7 @@ void IncomingModule::remove() {
  */
 void IncomingModule::storeFtp() {
     QString filename, localDir;
-    QList<QTreeWidgetItem *> selectedItems = treeWidget->selectedItems();
+    QItemList selectedItems = treeWidget->selectedItems();
     QString dir = OptionsDialog::getSetting("ftp", "inDir", "/").toString();
     // TODO: check if the core filesystem separator is a better choice
     if(! dir.endsWith('/')) {
@@ -199,7 +199,7 @@ void IncomingModule::openFtp() {
     } else {
         connect(ftp, SIGNAL(readyRead(QFile*, FTP*)), this, SLOT(ftpReadyRead(QFile*, FTP*)));
     }
-    QList<QTreeWidgetItem *>  selectedItems = treeWidget->selectedItems();
+    QItemList  selectedItems = treeWidget->selectedItems();
     for(int i=0; i<selectedItems.size(); i++) {
         filename = selectedItems.at(i)->text(IncomingItem::FILENAME_COL);
         ftp->add(dir + filename);
@@ -270,7 +270,7 @@ void IncomingModule::open() {
     } else {  // ftp
         return openFtp();
     }
-    QList<QTreeWidgetItem *> selectedItems = treeWidget->selectedItems();
+    QItemList selectedItems = treeWidget->selectedItems();
     for(int i=0; i<selectedItems.size(); i++) {
         args <<  actDir + selectedItems[i]->text(IncomingItem::FILENAME_COL);
         QProcess::startDetached(exec, args);
@@ -310,9 +310,9 @@ void IncomingModule::ftpReadyRead(QFile* dstFile, FTP* ftp) {
 }
 
 /*!
-    \fn IncomingModule::confirmRemove(QList<QTreeWidgetItem *>& items)
+    \fn IncomingModule::confirmRemove(QItemList& items)
  */
-bool IncomingModule::confirmRemove(QList<QTreeWidgetItem *>& items) {
+bool IncomingModule::confirmRemove(QItemList& items) {
     int maxFilesToShow = 10;
     QString list = "<b>"+tr("Delete %n file(s)?", "", items.size()) + "</b><br>";
     for(int i=0; i<items.size() && i<maxFilesToShow; i++) {

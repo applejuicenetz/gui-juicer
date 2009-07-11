@@ -27,8 +27,10 @@
 #include <QString>
 #include <QDateTime>
 #include <QFile>
+#include <QUrlInfo>
 #include <QIcon>
 #include <QFileIconProvider>
+#include <QTreeWidgetItem>
 
 /**
 @author Matthias Reif
@@ -80,6 +82,7 @@ public:
         return b;
     }
     static QIcon getFileIcon(const QFileInfo& file);
+    static QIcon getFileIcon(const QUrlInfo& url);
     static QIcon getFileIcon(const QString &path);
     static int compareVersion(const QString& v1, const QString& v2);
     #ifdef Q_WS_WIN
@@ -88,5 +91,7 @@ public:
     #endif
 
 };
+
+typedef QList<QTreeWidgetItem *> QItemList;
 
 #endif

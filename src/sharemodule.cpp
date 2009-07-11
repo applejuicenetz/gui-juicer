@@ -82,7 +82,7 @@ void ShareModule::insertSlot()
 
 void ShareModule::removeSlot()
 {
-    QList<QTreeWidgetItem *>  selectedItems = treeWidget->selectedItems();
+    QItemList  selectedItems = treeWidget->selectedItems();
     for(int i=0; i<selectedItems.size(); i++ ) {
         //delete it.current();
         selectedItems[i]->setFlags( 0 );
@@ -129,7 +129,7 @@ void ShareModule::commitSlot()
 }
 
 void ShareModule::linkSlot() {
-    QList<QTreeWidgetItem *>  selectedItems = treeWidget->selectedItems();
+    QItemList  selectedItems = treeWidget->selectedItems();
     for(int i=0; i<selectedItems.size(); i++) {
         if(selectedItems[i]->parent() != NULL) {
             ShareFileItem* shareItem = dynamic_cast<ShareFileItem*>(selectedItems[0]);
@@ -205,7 +205,7 @@ void ShareModule::setTmpPriority(int prio)
 
 void ShareModule::setPriority() 
 {
-    QList<QTreeWidgetItem *>  selectedItems = treeWidget->selectedItems();
+    QItemList  selectedItems = treeWidget->selectedItems();
     for(int i=0; i<selectedItems.size(); i++) {
         if(selectedItems[i]->parent() != NULL) {
             ShareFileItem* ajShareItem = dynamic_cast<ShareFileItem*>(selectedItems[i]);
@@ -238,7 +238,7 @@ ShareFileItem* ShareModule::findFile(const QString& size, const QString& hash)
 void ShareModule::selectionChanged() {
     bool shareSelected = false;
     bool fileSelected = false;
-    QList<QTreeWidgetItem *>  selectedItems = treeWidget->selectedItems();
+    QItemList  selectedItems = treeWidget->selectedItems();
     for(int i=0; i<selectedItems.size(); i++ ) {
         if(treeWidget->selectedItems()[i]->parent() == NULL) {
             shareSelected = true;

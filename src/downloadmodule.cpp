@@ -269,8 +269,8 @@ DownloadModule::DownloadUser DownloadModule::findParent(const QString& id)
  */
 void DownloadModule::processSelected(XMLModule::Type type, const QString& request, const QString& para)
 {
-    QList<QTreeWidgetItem*> items = treeWidget->selectedItems();
-    for(QList<QTreeWidgetItem*>::iterator i = items.begin(); i!=items.end(); i++) {
+    QItemList items = treeWidget->selectedItems();
+    for(QItemList::iterator i = items.begin(); i!=items.end(); i++) {
         xml->make(type, request, para + "&id=" + ((Item*)(*i))->getId());
     }
 }
@@ -329,8 +329,8 @@ void DownloadModule::renameSlot()
     QString oldFilename, newFilename;
     bool ok;
 
-    QList<QTreeWidgetItem *> selectedItems = treeWidget->selectedItems();
-    QList<QTreeWidgetItem *>::iterator item;
+    QItemList selectedItems = treeWidget->selectedItems();
+    QItemList::iterator item;
     for(item = selectedItems.begin(); item != selectedItems.end(); item++) {
         oldFilename = (*item)->text(DownloadItem::FILENAME_COL);
         newFilename = QInputDialog::getText(  juicer,
@@ -352,8 +352,8 @@ void DownloadModule::renamePlusSlot()
     QString newFilenameBase = qApp->clipboard()->text( QClipboard::Clipboard );
 
     int i = 0;
-    QList<QTreeWidgetItem *> selectedItems = treeWidget->selectedItems();
-    QList<QTreeWidgetItem *>::iterator item;
+    QItemList selectedItems = treeWidget->selectedItems();
+    QItemList::iterator item;
     for(item = selectedItems.begin(); item != selectedItems.end(); item++) {
         oldFilename = (*item)->text(DownloadItem::FILENAME_COL);
         newFilename = newFilenameBase;
@@ -396,8 +396,8 @@ void DownloadModule::openSlot()
         return;
     }
 
-    QList<QTreeWidgetItem *> selectedItems = treeWidget->selectedItems();
-    QList<QTreeWidgetItem *>::iterator item;
+    QItemList selectedItems = treeWidget->selectedItems();
+    QItemList::iterator item;
     for(item = selectedItems.begin(); item != selectedItems.end(); item++) {
         DownloadItem* ajDownloadItem = (DownloadItem*)(*item);
         if(ajDownloadItem->getStatus() == DOWN_FINISHED) {
@@ -475,7 +475,7 @@ void DownloadModule::selectionChanged()
 {
     bool onePaused = false;
     bool oneActive = false;
-    QList<QTreeWidgetItem *> selectedItems = treeWidget->selectedItems();
+    QItemList selectedItems = treeWidget->selectedItems();
     bool oneSelected = !selectedItems.empty();
     bool multipleSelected = selectedItems.size() > 1;
 
@@ -496,7 +496,7 @@ void DownloadModule::selectionChanged()
         powerSpin->setValue( 1.0 );
     }
 
-    QList<QTreeWidgetItem *>::iterator i;
+    QItemList::iterator i;
     for(i = selectedItems.begin(); i != selectedItems.end(); i++) {
         DownloadItem* downloadItem = dynamic_cast<DownloadItem*>(*i);
         if ( !downloadItem ) {
@@ -584,7 +584,7 @@ void DownloadModule::storeDownloadFtp()
 {
     FTP* ftp = NULL;
     QString filename, localDir;
-    QList<QTreeWidgetItem *>  selectedItems = treeWidget->selectedItems();
+    QItemList  selectedItems = treeWidget->selectedItems();
 
     QString dir = OptionsDialog::getSetting( "ftp", "dir", "/" ).toString();
 
@@ -593,7 +593,7 @@ void DownloadModule::storeDownloadFtp()
     }
     ftp = new FTP(this);
 
-    QList<QTreeWidgetItem *>::iterator item;
+    QItemList::iterator item;
     for(item = selectedItems.begin(); item != selectedItems.end(); item++) {
         filename = (*item)->text(DownloadItem::FILENAME_COL);
         localDir = QFileDialog::getExistingDirectory(juicer, "save \"" + filename + "\" + to");
@@ -633,8 +633,8 @@ void DownloadModule::setPartList(const QString& id, PartsWidget::PartList& partL
     \fn DownloadModule::partListWidgetSlot()
  */
 void DownloadModule::partListWidgetSlot() {
-    QList<QTreeWidgetItem*> items = treeWidget->selectedItems();
-    for(QList<QTreeWidgetItem*>::iterator i = items.begin(); i!=items.end(); i++) {
+    QItemList items = treeWidget->selectedItems();
+    for(QItemList::iterator i = items.begin(); i!=items.end(); i++) {
         DownloadItem* tmp = dynamic_cast<DownloadItem*>(*i);
         if ( tmp ) tmp->getPartListDialog()->show();
     }

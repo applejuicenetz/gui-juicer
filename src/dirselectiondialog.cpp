@@ -193,7 +193,7 @@ QString DirSelectionDialog::getTreePath( QTreeWidgetItem * const item ) const
  */
 QString DirSelectionDialog::getSelectedPath() const
 {
-    QList<QTreeWidgetItem *> selectedItems = treeWidget->selectedItems();
+    QItemList selectedItems = treeWidget->selectedItems();
     if( ! selectedItems.empty() ) {
         return getTreePath( selectedItems.first() );
     } else {

@@ -62,6 +62,10 @@ void Item::setFileIcon(int column, QFileInfo& file) {
     setIcon(column, Convert::getFileIcon(file));
 }
 
+void Item::setFileIcon(int column, QUrlInfo& url) {
+    setIcon(column, Convert::getFileIcon(url));
+}
+
 bool Item::setStatus(const QString& status) {
     bool newStatus = status_ != status;
     if(newStatus) {

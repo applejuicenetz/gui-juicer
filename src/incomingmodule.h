@@ -50,7 +50,7 @@ private:
     void removeFtp();
     void initPopup();
     AjSettings::LOCATION getLocation();
-    bool confirmRemove(QList<QTreeWidgetItem *>& items);
+    bool confirmRemove(QItemList& items);
     QFtp* ftp;
     QLabel* waitLabel;
 
@@ -64,7 +64,7 @@ public slots:
 private:
     class CopyThread : public QThread {
         public:
-        CopyThread(QString oldFilename, QString newFilename) {
+        CopyThread(const QString& oldFilename, const QString& newFilename) {
             this->oldFilename = oldFilename;
             this->newFilename = newFilename;
         }
@@ -77,7 +77,7 @@ private:
     };
 
 private slots:
-    void ftpReadyRead( QFile* dstFile, FTP* ftp );
+    void ftpReadyRead(QFile* dstFile, FTP* ftp);
 };
 
 #endif

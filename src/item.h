@@ -23,6 +23,7 @@
 #include <QObject>
 #include <QTreeWidget>
 #include <QApplication>
+#include <QUrlInfo>
 
 #include "convert.h"
 
@@ -57,6 +58,7 @@ public:
     bool setHiddenSave(bool hidden);
     void setFileIcon(int column);
     void setFileIcon(int column, QFileInfo& file);
+    void setFileIcon(int column, QUrlInfo& url);
 
 protected:
     QString id_;

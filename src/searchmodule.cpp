@@ -147,14 +147,14 @@ void SearchModule::searchSlot() {
 
 
 void SearchModule::removeSlot() {
-    QList<QTreeWidgetItem *>  selectedItems = treeWidget->selectedItems();
+    QItemList  selectedItems = treeWidget->selectedItems();
     for(int i=0; i<selectedItems.size(); i++) {
         xml->set("cancelsearch", "&id=" + ((SearchItem*)selectedItems[i])->getId());
     }
 }
 
 void SearchModule::downloadSlot() {
-    QList<QTreeWidgetItem *>  selectedItems = treeWidget->selectedItems();
+    QItemList  selectedItems = treeWidget->selectedItems();
     for(int i=0; i<selectedItems.size(); i++) {
         SearchEntryItem *searchEntryItem = findSearchEntry(((SearchItem*)selectedItems[i])->getId());
         if( searchEntryItem != NULL ) {
@@ -171,7 +171,7 @@ void SearchModule::downloadSlot() {
 void SearchModule::selectionChanged() {
     bool searchSelected = false;
     bool entrySelected = false;
-    QList<QTreeWidgetItem *>  selectedItems = treeWidget->selectedItems();
+    QItemList  selectedItems = treeWidget->selectedItems();
     for(int i=0; i<selectedItems.size() && (!searchSelected || !entrySelected); i++) {
         searchSelected |= searches.contains(((SearchItem*)selectedItems[i])->getId());
         entrySelected |= searchEntries.contains(((SearchItem*)selectedItems[i])->getId());
@@ -184,7 +184,7 @@ void SearchModule::selectionChanged() {
 
 void SearchModule::linkSlot() {
     QString link;
-    QList<QTreeWidgetItem *>  selectedItems = treeWidget->selectedItems();
+    QItemList  selectedItems = treeWidget->selectedItems();
     SearchEntryItem *searchEntryItem = findSearchEntry(((SearchItem*)selectedItems[0])->getId());
     if(searchEntryItem != NULL) {
         link += "ajfsp://file|";

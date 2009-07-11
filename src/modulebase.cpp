@@ -127,7 +127,7 @@ void ModuleBase::linkListSlot() {
                         QFile::ReadOwner | QFile::WriteOwner |
                         QFile::ReadUser | QFile::WriteUser |
                         QFile::ReadGroup | QFile::ReadOther);
-                QList<QTreeWidgetItem *> selectedItems = treeWidget->selectedItems();
+                QItemList selectedItems = treeWidget->selectedItems();
                 for(int i=0; i<selectedItems.size() && !error; i++) {
                     Item* item = (Item*)selectedItems[i];
                     error =
