@@ -237,11 +237,7 @@ void IncomingModule::reload() {
             QFileInfoList list = dirDir.entryInfoList(QDir::AllEntries | QDir::NoDotAndDotDot);
             for(int i=0; i<list.size(); i++) {
                 QFileInfo& file = list[i];
-                IncomingItem* item = new IncomingItem(file.size(), file.lastModified().toLocalTime(), treeWidget);
-                item->setText(IncomingItem::FILENAME_COL, file.fileName());
-                item->setText(IncomingItem::SIZE_COL, Convert::bytes((double)file.size(), 2));
-                item->setText(IncomingItem::DATE_COL, file.lastModified().toLocalTime().toString(Qt::LocalDate));
-                item->setFileIcon(IncomingItem::FILENAME_COL, file);
+                IncomingItem* item = new IncomingItem(file, treeWidget);
                 treeWidget->addTopLevelItem(item);
             }
         }
@@ -288,11 +284,7 @@ void IncomingModule::open() {
 void IncomingModule::insert(QUrlInfo info) {
     waitLabel->setVisible(false);
     if(info.isFile() || info.isDir()) {
-        IncomingItem *item = new IncomingItem(info.size(), info.lastModified().toLocalTime(), treeWidget);
-        item->setText(IncomingItem::FILENAME_COL, info.name());
-        item->setText(IncomingItem::SIZE_COL, Convert::bytes((double)info.size(), 2));
-        item->setText(IncomingItem::DATE_COL, info.lastModified().toLocalTime().toString());
-        item->setFileIcon(IncomingItem::FILENAME_COL);
+        new IncomingItem(info, treeWidget);
         adjustSizeOfColumns();
     }
 }

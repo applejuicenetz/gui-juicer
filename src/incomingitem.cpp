@@ -19,31 +19,49 @@
 
 #include "incomingitem.h"
 
-IncomingItem::IncomingItem( qint64 size, QDateTime date, QTreeWidget* parent ) : Item( parent )
-{
-    this->size = size;
-    this->date = date;
+IncomingItem::IncomingItem(QFileInfo& fileInfo, QTreeWidget* parent) : Item(parent) {
+    size = fileInfo.size();
+    date = fileInfo.lastModified().toLocalTime();
+    isFile = fileInfo.isFile();
+    setText(IncomingItem::FILENAME_COL, fileInfo.fileName());
+    setText(IncomingItem::SIZE_COL, Convert::bytes((double)size, 2));
+    setText(IncomingItem::DATE_COL, date.toString(Qt::LocalDate));
+    setFileIcon(IncomingItem::FILENAME_COL, fileInfo);
 }
 
-
-IncomingItem::~IncomingItem()
-{
+IncomingItem::IncomingItem(QUrlInfo& urlInfo, QTreeWidget* parent) : Item(parent) {
+    size = urlInfo.size();
+    date = urlInfo.lastModified().toLocalTime();
+    isFile = urlInfo.isFile();
+    setText(IncomingItem::FILENAME_COL, urlInfo.name());
+    setText(IncomingItem::SIZE_COL, Convert::bytes((double)size, 2));
+    setText(IncomingItem::DATE_COL, date.toString(Qt::LocalDate));
+    //setFileIcon(IncomingItem::FILENAME_COL, urlInfo);
 }
 
-bool IncomingItem::operator<( const QTreeWidgetItem & other ) const
-{
+IncomingItem::~IncomingItem() {
+}
+
+bool IncomingItem::operator<(const QTreeWidgetItem & other) const {
     int sortIndex = treeWidget()->header()->sortIndicatorSection();
+    Qt::SortOrder order = treeWidget()->header()->sortIndicatorOrder();
     IncomingItem* incomingItem = (IncomingItem*)&other;
-    switch ( sortIndex )
-    {
+    switch(sortIndex) {
         case SIZE_COL:
             return this->size < incomingItem->size;
             break;
         case DATE_COL:
             return this->date < incomingItem->date;
             break;
+        case FILENAME_COL:
+            if(isFile && !incomingItem->isFile) {
+                return order == Qt::DescendingOrder;
+            } else if(!isFile && incomingItem->isFile) {
+                return order == Qt::AscendingOrder;
+            } else {
+                return this->text(FILENAME_COL) < other.text(FILENAME_COL);
+            }
         default:
-            return this->text( sortIndex ) < other.text( sortIndex );
+            return this->text(sortIndex) < other.text(sortIndex);
     }
 }
-

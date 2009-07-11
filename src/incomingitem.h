@@ -22,6 +22,7 @@
 
 #include <QHeaderView>
 #include <QDateTime>
+#include <QUrlInfo>
 
 #include "item.h"
 
@@ -31,7 +32,8 @@
 class IncomingItem : public Item
 {
 public:
-    IncomingItem( qint64 size, QDateTime date, QTreeWidget* parent );
+    IncomingItem(QFileInfo& fileInfo, QTreeWidget* parent);
+    IncomingItem(QUrlInfo& urlInfo, QTreeWidget* parent);
 
     ~IncomingItem();
 
@@ -39,10 +41,9 @@ public:
 
     enum {FILENAME_COL, SIZE_COL, DATE_COL};
 
-
-private:
     qint64 size;
     QDateTime date;
+    bool isFile;
 };
 
 #endif
