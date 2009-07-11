@@ -156,6 +156,9 @@ void ShareModule::insertFile( const QString& id,
                                  const QString& fileName,
                                  const QString& size,
                                  const QString& priority,
+                                 const QString& lastAsked,
+                                 const QString& askCount,
+                                 const QString& searchCount,
                                  const QString& filesystemSeperator ) 
 {
     ShareFileItem *shareFileItem = findFile(id);
@@ -173,7 +176,7 @@ void ShareModule::insertFile( const QString& id,
             return;
         }
     }
-    shareFileItem->update(hash, fileName, size, priority, filesystemSeperator);
+    shareFileItem->update(hash, fileName, size, priority, lastAsked, askCount, searchCount, filesystemSeperator);
     adjustSizeOfColumns();
 }
 

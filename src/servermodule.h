@@ -50,7 +50,7 @@ private:
     QString connectedWithId, connectingToId;
     QHash<QString, ServerItem*> servers;
     QHttp *serverHttp;
-    QDateTime zeroTime, connectedSince;
+    QDateTime connectedSince;
 
 public slots:
     void connectSlot();

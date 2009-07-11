@@ -38,7 +38,7 @@ public:
     bool isRecursive() { return recursive; }
     void insertSharedFile(ShareFileItem* sharedFile);
     void update();
-    enum {PATH_COL, SIZE_COL, PRIORITY_COL};
+    enum {PATH_COL, SIZE_COL, PRIORITY_COL, LAST_ASKED_COL, ASK_COUNT_COL, SEARCH_COUNT_COL};
 private:
     bool recursive;
     QString path;

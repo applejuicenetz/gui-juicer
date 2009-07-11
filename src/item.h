@@ -56,6 +56,7 @@ public:
     }
     bool setHiddenSave(bool hidden);
     void setFileIcon(int column);
+    void setFileIcon(int column, QFileInfo& file);
 
 protected:
     QString id_;

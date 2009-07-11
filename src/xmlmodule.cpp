@@ -24,8 +24,8 @@
 XMLModule::XMLModule(Juicer* juicer, QObject *parent) : QHttp(parent) {
     this->juicer = juicer;
     timeStamp = "0";
-    QObject::connect(this, SIGNAL(requestFinished( int , bool )), this, SLOT(requestFinished(int, bool )));
-    QObject::connect(this, SIGNAL(responseHeaderReceived( const QHttpResponseHeader&)), this, SLOT(responseHeaderReceived( const QHttpResponseHeader&)));
+    QObject::connect(this, SIGNAL(requestFinished(int , bool)), this, SLOT(requestFinished(int, bool)));
+    QObject::connect(this, SIGNAL(responseHeaderReceived(const QHttpResponseHeader&)), this, SLOT(responseHeaderReceived(const QHttpResponseHeader&)));
 }
 
 XMLModule::~XMLModule() {
@@ -54,9 +54,9 @@ int XMLModule::get(const QString & request, QString param) {
     int httpRequest = exec("/xml/" + request + ".xml?password=" + passwordMD5 + param);
     if(request == "downloadpartlist") {
         if(!param.contains("simple")) {
-            partListRequests[ httpRequest ] = param.split( "=" )[1];
+            partListRequests[ httpRequest ] = param.split("=")[1];
         } else {
-            partListSimpleRequests[ httpRequest ] = param.split( "=" )[1];
+            partListSimpleRequests[ httpRequest ] = param.split("=")[1];
         }
     }
     return httpRequest;
@@ -101,30 +101,30 @@ void XMLModule::requestFinished(int id, bool error) {
                             e.attribute("credits"),
                             e.attribute("sessiondownload"),
                             e.attribute("sessionupload")
-                        );
+                       );
                     } else if(e.tagName() == "networkinfo") {
-                        handleNetworkInfo( e );
+                        handleNetworkInfo(e);
                     } else if(e.tagName() == "upload") {
-                        handleUpload( e );
+                        handleUpload(e);
                     } else if(e.tagName() == "download") {
-                        handleDownload( e );
+                        handleDownload(e);
                     } else if(e.tagName() == "user") {
-                        handleUser( e, now );
+                        handleUser(e, now);
                     } else if(e.tagName() == "server") {
-                        handleServer( e );
+                        handleServer(e);
                     } else if(e.tagName() == "search") {
-                         handleSearch( e );
+                         handleSearch(e);
                     } else if(e.tagName() == "searchentry") {
-                         handleSearchEntry( e );
+                         handleSearchEntry(e);
                     } else if(e.tagName() == "part") {
-                        handlePart( e );
+                        handlePart(e);
                     } else if(e.tagName() == "fileinformation") {
                         partList.setSize(e.attribute("filesize").toULongLong());
                     } else if(e.tagName() == "shares") {
-                        handleShares( e );
+                        handleShares(e);
                     } else {
-                        if ( ! (e.tagName() == "dir") &&
-                             ! (e.tagName() == "filesystem") )
+                        if (! (e.tagName() == "dir") &&
+                             ! (e.tagName() == "filesystem"))
                         {
                             fprintf(stderr, "unhandled element: %s\n", e.tagName().toLatin1().data());
                         }
@@ -143,7 +143,7 @@ void XMLModule::requestFinished(int id, bool error) {
             handleSettings(root);
         }
 // this does not work. documentation false?
-//         else if ( root.tagName() == "shares" )
+//         else if (root.tagName() == "shares")
 //         {
 //             handleShares(root);
 //         }
@@ -209,8 +209,7 @@ void XMLModule::handleSettings(QDomElement& e) {
     juicer->setTempDirectory(settings.tempDir);
 
     juicer->sharesTreeWidget->clear();
-    QDomElement shareE;
-    for(shareE=e.firstChildElement("share").firstChildElement("directory");
+    for(QDomElement shareE=e.firstChildElement("share").firstChildElement("directory");
         !shareE.isNull(); shareE = shareE.nextSiblingElement("directory")) {
         juicer->shareModule->insertShare(
             shareE.attribute("name"), shareE.attribute("sharemode"));
@@ -219,44 +218,40 @@ void XMLModule::handleSettings(QDomElement& e) {
 
 
 /*!
-    \fn XMLModule::handleShare( QDomElement& e )
+    \fn XMLModule::handleShare(QDomElement& e)
  */
-void XMLModule::handleShare( QDomElement& e ) {
-    juicer->setUploadFilename( e.attribute("id"), e.attribute("filename") );
-
+void XMLModule::handleShare(QDomElement& e) {
+    juicer->setUploadFilename(e.attribute("id"), e.attribute("filename"));
 }
 
 
 /*!
-    \fn XMLModule::handleShares( QDomElement& e )
+    \fn XMLModule::handleShares(QDomElement& e)
  */
-void XMLModule::handleShares( QDomElement& e )
-{
-    QDomNode n;
-    {
-        for (n = e.firstChild(); !n.isNull(); n = n.nextSibling())
-        {
-            QDomElement shareE = n.toElement();
-            if (!shareE.isNull() &&
-                !shareE.attribute("filename").contains(juicer->getTempDirectory()))
-            {
-              juicer->shareModule->insertFile(
+void XMLModule::handleShares(QDomElement& e) {
+    for (QDomNode n = e.firstChild(); !n.isNull(); n = n.nextSibling()) {
+        QDomElement shareE = n.toElement();
+        if (!shareE.isNull() &&
+            !shareE.attribute("filename").contains(juicer->getTempDirectory())) {
+            juicer->shareModule->insertFile(
                 shareE.attribute("id"),
                 shareE.attribute("checksum"),
                 shareE.attribute("filename"),
                 shareE.attribute("size"),
                 shareE.attribute("priority"),
-                juicer->getFilesystemSeparator() );
-            }
+                shareE.attribute("lastasked"),
+                shareE.attribute("askcount"),
+                shareE.attribute("searchcount"),
+                juicer->getFilesystemSeparator());
         }
     }
 }
 
 
 /*!
-    \fn XMLModule::handleIds( QDomNode& node )
+    \fn XMLModule::handleIds(QDomNode& node)
  */
-void XMLModule::handleIds( QDomNode& node )
+void XMLModule::handleIds(QDomNode& node)
 {
     node = node;
     // TODO
@@ -287,32 +282,32 @@ void XMLModule::handleIds( QDomNode& node )
 
 
 /*!
-    \fn XMLModule::handleNetworkInfo( QDomElement& e )
+    \fn XMLModule::handleNetworkInfo(QDomElement& e)
  */
-void XMLModule::handleNetworkInfo( QDomElement& e )
+void XMLModule::handleNetworkInfo(QDomElement& e)
 {
     bool firewalled = e.attribute("firewalled")=="true";
     juicer->networkDialog->setValues(
         e.attribute("users"),
         e.attribute("files"),
-        Convert::bytesLong( e.attribute("filesize")),
+        Convert::bytesLong(e.attribute("filesize")),
         e.attribute("ip"),
         firewalled?tr("yes"):tr("no")
-        );
-    juicer->serverModule->connectedWith( e.attribute("connectedwithserverid") );
-    juicer->serverModule->connectingTo( e.attribute("tryconnecttoserver") );
-    juicer->connectedSince( e.attribute("connectedsince") );
+       );
+    juicer->serverModule->connectedWith(e.attribute("connectedwithserverid"));
+    juicer->serverModule->connectingTo(e.attribute("tryconnecttoserver"));
+    juicer->connectedSince(e.attribute("connectedsince"));
     juicer->setFirewalled(firewalled);
-    juicer->welcomeEdit->setHtml( e.firstChildElement("welcomemessage").text().trimmed() );
+    juicer->welcomeEdit->setHtml(e.firstChildElement("welcomemessage").text().trimmed());
 }
 
 
 /*!
-    \fn XMLModule::handleUpload( QDomElement& e )
+    \fn XMLModule::handleUpload(QDomElement& e)
  */
-void XMLModule::handleUpload( QDomElement& e )
+void XMLModule::handleUpload(QDomElement& e)
 {
-    if( ! juicer->uploadModule->insertUpload(
+    if(! juicer->uploadModule->insertUpload(
             e.attribute("id"),
             e.attribute("shareid"),
             e.attribute("version"),
@@ -327,7 +322,7 @@ void XMLModule::handleUpload( QDomElement& e )
             e.attribute("uploadto"),
             e.attribute("actualuploadposition"),
             e.attribute("lastconnection")
-      ) )
+     ))
     {
         this->get("getobject", "&Id="+e.attribute("shareid"));
     }
@@ -335,9 +330,9 @@ void XMLModule::handleUpload( QDomElement& e )
 
 
 /*!
-    \fn XMLModule::handleUser( QDomElement& e, QTime& time )
+    \fn XMLModule::handleUser(QDomElement& e, QTime& time)
  */
-void XMLModule::handleUser( QDomElement& e, QTime& time )
+void XMLModule::handleUser(QDomElement& e, QTime& time)
 {
     // -- try to insert users after down- and uploads --
     // -- store them in a lists and process them when the end of the xml was reached --
@@ -370,9 +365,9 @@ void XMLModule::processUsers() {
 }
 
 /*!
-    \fn XMLModule::handleDownload( QDomElement& e )
+    \fn XMLModule::handleDownload(QDomElement& e)
  */
-void XMLModule::handleDownload( QDomElement& e )
+void XMLModule::handleDownload(QDomElement& e)
 {
     juicer->downloadModule->insertDownload(
         e.attribute("id"),
@@ -388,9 +383,9 @@ void XMLModule::handleDownload( QDomElement& e )
 
 
 /*!
-    \fn XMLModule::handleServer( QDomElement& e )
+    \fn XMLModule::handleServer(QDomElement& e)
  */
-void XMLModule::handleServer( QDomElement& e )
+void XMLModule::handleServer(QDomElement& e)
 {
     juicer->serverModule->insertServer(
         e.attribute("id"),
@@ -403,9 +398,9 @@ void XMLModule::handleServer( QDomElement& e )
 
 
 /*!
-    \fn XMLModule::handleSearch( QDomElement& e )
+    \fn XMLModule::handleSearch(QDomElement& e)
  */
-void XMLModule::handleSearch( QDomElement& e )
+void XMLModule::handleSearch(QDomElement& e)
 {
     juicer->searchModule->insertSearch(
         e.attribute("id"),
@@ -416,9 +411,9 @@ void XMLModule::handleSearch( QDomElement& e )
 
 
 /*!
-    \fn XMLModule::handleSearchEntry( QDomElement& e )
+    \fn XMLModule::handleSearchEntry(QDomElement& e)
  */
-void XMLModule::handleSearchEntry( QDomElement& e )
+void XMLModule::handleSearchEntry(QDomElement& e)
 {
     QStringList filenames;
     QDomElement fileE;
@@ -435,9 +430,9 @@ void XMLModule::handleSearchEntry( QDomElement& e )
 
 
 /*!
-    \fn XMLModule::handleGeneralInformation( QDomNode& node )
+    \fn XMLModule::handleGeneralInformation(QDomNode& node)
  */
-void XMLModule::handleGeneralInformation( QDomNode& node )
+void XMLModule::handleGeneralInformation(QDomNode& node)
 {
     juicer->setFilesystemSeparator(
         node.firstChildElement("filesystem").attribute("seperator"));
@@ -446,19 +441,19 @@ void XMLModule::handleGeneralInformation( QDomNode& node )
 
 
 /*!
-    \fn XMLModule::handleRemoved( QDomElement& e )
+    \fn XMLModule::handleRemoved(QDomElement& e)
  */
-void XMLModule::handleRemoved( QDomElement& e )
+void XMLModule::handleRemoved(QDomElement& e)
 {
     QDomElement objectE;
     for(objectE = e.firstChildElement("object");
         !objectE.isNull(); objectE = objectE.nextSiblingElement("object"))
     {
         QString id = objectE.attribute("id");
-        if ( ! juicer->downloadModule->remove( id ) )
-            if ( ! juicer->uploadModule->remove( id ) )
-                if ( ! juicer->serverModule->remove( id ) )
-                    juicer->searchModule->remove( id );
+        if (! juicer->downloadModule->remove(id))
+            if (! juicer->uploadModule->remove(id))
+                if (! juicer->serverModule->remove(id))
+                    juicer->searchModule->remove(id);
     }
 }
 
@@ -479,7 +474,7 @@ void XMLModule::handlePartList(int id) {
         if(partListRequests.contains(id)) {
             juicer->downloadModule->setPartList(partListRequests[id], partList);
             partListRequests.remove(id);
-        } else if( partListSimpleRequests.contains(id)) {
+        } else if(partListSimpleRequests.contains(id)) {
             DownloadItem* item = juicer->downloadModule->findDownload(partListSimpleRequests[id]);
             if(item != NULL) {
                 item->setMissing(partList.getMissing());
@@ -502,7 +497,7 @@ void XMLModule::printAllAttributes(QDomElement& e)
 {
     QDomNamedNodeMap a = e.attributes();
     printf("%d\n", a.length());
-    for( unsigned int i=0; i<a.length(); i++ ) {
+    for(unsigned int i=0; i<a.length(); i++) {
         QDomNode item = a.item(i);
         printf("%s\t\t%s\n", item.nodeName().toLatin1().data(), item.nodeValue().toLatin1().data());
     }

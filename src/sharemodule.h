@@ -49,11 +49,14 @@ public:
     ShareModule(Juicer* juicer);
     ~ShareModule();
 
-    ShareFileItem* findFile( const QString& id );
-    ShareFileItem* findFile( const QString& size, const QString& hash );
+    ShareFileItem* findFile(const QString& id);
+    ShareFileItem* findFile(const QString& size, const QString& hash);
 
-    void insertShare( const QString& path, const QString& shareMode);
-    void insertFile( const QString& id, const QString& hash, const QString& fileName, const QString& size, const QString& priority, const QString& filesystemSeperator );
+    void insertShare(const QString& path, const QString& shareMode);
+    void insertFile(const QString& id, const QString& hash, const QString& fileName,
+                    const QString& size, const QString& priority, const QString& lastAsked,
+                    const QString& askCount, const QString& searchCount,
+                    const QString& filesystemSeperator);
     void updateSharedFilesList();
 
     bool isChanged() const {

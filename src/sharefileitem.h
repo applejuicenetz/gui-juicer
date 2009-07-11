@@ -38,13 +38,15 @@ public:
     ShareFileItem( const QString& id, ShareItem *parent = 0 );
     virtual ~ShareFileItem();
 
-    void update( const QString& hash, const QString& fileName, const QString& size, const QString& priority, const QString& filesystemSeperator );
+    void update(const QString& hash, const QString& fileName, const QString& size,
+                const QString& priority, const QString& lastAsked, const QString& askCount,
+                const QString& searchCount, const QString& filesystemSeperator );
 
     QString getLinkAJFSP();
 
-//    bool operator<( const QTreeWidgetItem & other ) const;
-
     void updatePrio( int prio );
+    virtual bool operator<(const QTreeWidgetItem & other) const;
+    qulonglong lastAsked;
 
 protected:
     static QString filesystemSeperator;

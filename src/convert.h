@@ -23,9 +23,12 @@
 #include <stdlib.h>
 
 #include <QObject>
+#include <QDebug>
 #include <QString>
+#include <QDateTime>
 #include <QFile>
-#include <QPixmap>
+#include <QIcon>
+#include <QFileIconProvider>
 
 /**
 @author Matthias Reif
@@ -51,6 +54,8 @@ public:
     static float powerValue(const QString& x);
     static QString power(float power);
     static QString time(long int seconds);
+    static QString dateString(const QString& mSeconds);
+    static QDateTime dateTime(const QString& mSeconds);
     static QString getFileErrorString(QFile::FileError error);
 
     static const long ONE_DAY = 86400;
@@ -74,8 +79,8 @@ public:
         }
         return b;
     }
-
-    static QPixmap getFileIcon(const QString &path);
+    static QIcon getFileIcon(const QFileInfo& file);
+    static QIcon getFileIcon(const QString &path);
     static int compareVersion(const QString& v1, const QString& v2);
     #ifdef Q_WS_WIN
     static QPixmap convertHIconToPixmap(const HICON icon);

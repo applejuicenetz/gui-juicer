@@ -217,11 +217,30 @@ int Convert::compareVersion(const QString& v1, const QString& v2) {
 }
 
 
+/*!
+    \fn Convert::dateString(const QString& mSeconds)
+ */
+QString Convert::dateString(const QString& mSeconds) {
+    return Convert::dateTime(mSeconds).toLocalTime().toString(Qt::LocalDate);
+}
+
+/*!
+    \fn Convert::dateTime(const QString& mSeconds)
+ */
+QDateTime Convert::dateTime(const QString& mSeconds) {
+    static QDateTime zeroTime(QDate(1970,1,1), QTime(0,0), Qt::UTC);
+    return zeroTime.addMSecs(mSeconds.toULongLong());
+}
+
 #ifdef Q_WS_WIN
 
 #include <qt_windows.h>
 
-QPixmap	Convert::getFileIcon(const QString &path) {
+QIcon Convert::getFileIcon(const QFileInfo& file) {
+    return Convert::getFileIcon(file.canonicalFilePath());
+}
+
+QIcon Convert::getFileIcon(const QString &path) {
     // performance tuned using:
     //http://www.codeguru.com/Cpp/COM-Tech/shell/article.php/c4511/
 
@@ -233,7 +252,7 @@ QPixmap	Convert::getFileIcon(const QString &path) {
             sizeof(SHFILEINFO),
             SHGFI_USEFILEATTRIBUTES | SHGFI_ICON | SHGFI_LARGEICON);
 
-    return convertHIconToPixmap(file_info.hIcon);
+    return QIcon(convertHIconToPixmap(file_info.hIcon));
 }
 
 
@@ -337,7 +356,12 @@ QImage Convert::qt_fromWinHBITMAP(HDC hdc, HBITMAP bitmap, int w, int h) {
     return image;
 }
 #else
-QPixmap Convert::getFileIcon(const QString &path) {
-    return QPixmap();
+QIcon Convert::getFileIcon(const QFileInfo& file) {
+    static QFileIconProvider fileIconProvider;
+    return fileIconProvider.icon(file);
+}
+
+QIcon Convert::getFileIcon(const QString &path) {
+    return QIcon();
 }
 #endif

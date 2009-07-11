@@ -20,9 +20,7 @@
 #include "servermodule.h"
 #include "juicer.h"
 
-ServerModule::ServerModule(Juicer* juicer) : ModuleBase(juicer, juicer->serverTreeWidget, juicer->serverToolBar)
-{
-    zeroTime = QDateTime( QDate(1970,1,1), QTime(0,0), Qt::UTC );
+ServerModule::ServerModule(Juicer* juicer) : ModuleBase(juicer, juicer->serverTreeWidget, juicer->serverToolBar) {
     connectedSince = QDateTime();
     connectedWithId = "";
     connectingToId = "";
@@ -52,8 +50,7 @@ void ServerModule::insertServer(const QString& id, const QString& name, const QS
         item = new ServerItem( id, treeWidget );
         servers[ id ] = item;
     }
-    QString time = zeroTime.addMSecs(lastseen.toULongLong()).toLocalTime().toString(Qt::LocalDate);
-    item->update(name, host, port, lastseen, tests, time);
+    item->update(name, host, port, lastseen, tests, Convert::dateString(lastseen));
     if(id == connectedWithId) {
         item->setIcon(ServerItem::NAME_COL, QIcon(":/small/connected.png"));
     } else if(id == connectingToId) {
@@ -75,7 +72,7 @@ void ServerModule::connectSlot() {
     QList<QTreeWidgetItem*> items = treeWidget->selectedItems();
     if(!items.empty()) {
         bool doSo = true;
-        QDateTime now = zeroTime.addMSecs(xml->getRecentTime().toULongLong());
+        QDateTime now = Convert::dateTime(xml->getRecentTime());
         if(connectedSince.isValid() && now.isValid()) {
             int minutes = connectedSince.secsTo(now) / 60 + 1;
             if(minutes < 30) {
@@ -171,7 +168,7 @@ void ServerModule::selectionChanged() {
  */
 QDateTime& ServerModule::setConnectedSince(const QString& time) {
     if(time != "0") {
-        connectedSince = zeroTime.addMSecs(time.toULongLong());
+        connectedSince = Convert::dateTime(time);
     } else {
         connectedSince = QDateTime();
     }

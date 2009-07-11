@@ -23,7 +23,7 @@
 QString ShareFileItem::filesystemSeperator = "";
 
 ShareFileItem::ShareFileItem(const QString& id, ShareItem *parent) 
-  : Item( /*dynamic_cast<QTreeWidgetItem*>*/parent, id)
+  : Item(/*dynamic_cast<QTreeWidgetItem*>*/parent, id)
 {
 }
 
@@ -33,56 +33,66 @@ ShareFileItem::~ShareFileItem()
 }
 
 
-void ShareFileItem::update( const QString& hash,
-                               const QString& fileName,
-                               const QString& size,
-                               const QString& priority,
-                               const QString& filesystemSeperator )
+void ShareFileItem::update(const QString& hash,
+                           const QString& fileName,
+                           const QString& size,
+                           const QString& priority,
+                           const QString& lastAsked,
+                           const QString& askCount,
+                           const QString& searchCount,
+                           const QString& filesystemSeperator)
 {
-    setText( ShareItem::PATH_COL, fileName.split(filesystemSeperator).last() );
-    setText( ShareItem::SIZE_COL, Convert::bytesExtra(size) );
-    setText( ShareItem::PRIORITY_COL, priority );
+    setText(ShareItem::PATH_COL, fileName.split(filesystemSeperator).last());
+    setText(ShareItem::SIZE_COL, Convert::bytesExtra(size));
+    setText(ShareItem::PRIORITY_COL, priority);
+    setText(ShareItem::LAST_ASKED_COL, Convert::dateString(lastAsked));
+    setText(ShareItem::ASK_COUNT_COL, askCount);
+    setText(ShareItem::SEARCH_COUNT_COL, searchCount);
 
-    if ( hash_.isEmpty() && !hash.isEmpty()) {
+    if (hash_.isEmpty() && !hash.isEmpty()) {
         hash_ = hash;
     }
-    if ( filename_.isEmpty() && !fileName.isEmpty() ) {
+    if (filename_.isEmpty() && !fileName.isEmpty()) {
         filename_ = fileName;
         setFileIcon(ShareItem::PATH_COL);
     }
-    if ( this->filesystemSeperator.isEmpty() && !filesystemSeperator.isEmpty()) {
+    if (this->filesystemSeperator.isEmpty() && !filesystemSeperator.isEmpty()) {
         this->filesystemSeperator = filesystemSeperator;
     }
 
     size_ = size.toDouble();
-
+    this->lastAsked = lastAsked.toULongLong();
 
     ShareItem* parentItem = dynamic_cast<ShareItem*>(QTreeWidgetItem::parent());
-    if ( parentItem != NULL ) parentItem->update();
+    if (parentItem != NULL) parentItem->update();
 }
 
-void ShareFileItem::updatePrio( int prio )
+void ShareFileItem::updatePrio(int prio)
 {
-    setText( ShareItem::PRIORITY_COL, QString::number(prio) );
+    setText(ShareItem::PRIORITY_COL, QString::number(prio));
 }
 
-/*
-bool ShareFileItem::operator<( const QTreeWidgetItem & other ) const
-{
+
+bool ShareFileItem::operator<(const QTreeWidgetItem & other) const {
     int sortIndex = treeWidget()->header()->sortIndicatorSection();
-    ShareFileItem* shareFileItem = dynamic_cast<ShareFileItem*>(&other);
-    if ( shareFileItem == NULL ) return false;
-    switch ( sortIndex )
+    const ShareFileItem* shareFileItem = dynamic_cast<const ShareFileItem*>(&other);
+    if (shareFileItem == NULL) return false;
+    switch (sortIndex)
     {
     case ShareItem::PATH_COL:
-        return text( ShareItem::PATH_COL ) < other.text( ShareItem::PATH_COL );
+        return text(ShareItem::PATH_COL) < other.text(ShareItem::PATH_COL);
     case ShareItem::SIZE_COL:
         return size_ < shareFileItem->getSize();
+    case ShareItem::LAST_ASKED_COL:
+        return lastAsked < shareFileItem->lastAsked;
+    case ShareItem::ASK_COUNT_COL:
+        return text(ShareItem::ASK_COUNT_COL).toInt() < other.text(ShareItem::ASK_COUNT_COL).toInt();
+    case ShareItem::SEARCH_COUNT_COL:
+        return text(ShareItem::SEARCH_COUNT_COL).toInt() < other.text(ShareItem::SEARCH_COUNT_COL).toInt();
     default:
-        return text( sortIndex ) < other.text( sortIndex );
+        return text(sortIndex) < other.text(sortIndex);
     }
 }
-*/
 
 QString ShareFileItem::getLinkAJFSP() {
     QString ajfspLink;
@@ -91,7 +101,7 @@ QString ShareFileItem::getLinkAJFSP() {
     ajfspLink.append("|");
     ajfspLink.append(hash_);
     ajfspLink.append("|");
-    ajfspLink.append(QString::number( (unsigned long int)size_ ));
+    ajfspLink.append(QString::number((unsigned long int)size_));
     ajfspLink.append("/");
     return ajfspLink;
 }

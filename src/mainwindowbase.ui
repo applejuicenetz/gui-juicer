@@ -136,8 +136,8 @@
         </property>
         <property name="minimumSize">
          <size>
-          <width>89</width>
-          <height>47</height>
+          <width>95</width>
+          <height>50</height>
          </size>
         </property>
         <property name="windowTitle">
@@ -547,8 +547,8 @@
         </property>
         <property name="minimumSize">
          <size>
-          <width>72</width>
-          <height>88</height>
+          <width>78</width>
+          <height>91</height>
          </size>
         </property>
         <property name="features">
@@ -611,6 +611,21 @@
             <string>Priority</string>
            </property>
           </column>
+          <column>
+           <property name="text">
+            <string>Last Requested</string>
+           </property>
+          </column>
+          <column>
+           <property name="text">
+            <string>Requets</string>
+           </property>
+          </column>
+          <column>
+           <property name="text">
+            <string>Searches</string>
+           </property>
+          </column>
          </widget>
         </item>
        </layout>
@@ -631,6 +646,12 @@
          <widget class="QTreeWidget" name="incomingTreeWidget">
           <property name="selectionMode">
            <enum>QAbstractItemView::ExtendedSelection</enum>
+          </property>
+          <property name="iconSize">
+           <size>
+            <width>16</width>
+            <height>16</height>
+           </size>
           </property>
           <property name="sortingEnabled">
            <bool>true</bool>

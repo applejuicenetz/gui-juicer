@@ -55,7 +55,11 @@ bool Item::setHiddenSave(bool hidden) {
 }
 
 void Item::setFileIcon(int column) {
-    setIcon(column, QIcon(Convert::getFileIcon(text(column))));
+    setIcon(column, Convert::getFileIcon(text(column)));
+}
+
+void Item::setFileIcon(int column, QFileInfo& file) {
+    setIcon(column, Convert::getFileIcon(file));
 }
 
 bool Item::setStatus(const QString& status) {
