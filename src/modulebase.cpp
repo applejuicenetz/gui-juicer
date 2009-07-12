@@ -50,9 +50,9 @@ void ModuleBase::adjustSizeOfColumns() {
 }
 
 /*!
-    \fn ModuleBase::sortItemsInitially(QString settingsGroup)
+    \fn ModuleBase::sortItemsInitially(const QString& settingsGroup)
  */
-void ModuleBase::sortItemsInitially(QString settingsGroup)
+void ModuleBase::sortItemsInitially(const QString& settingsGroup)
 {
     QSettings lokalSettings;
     lokalSettings.beginGroup(settingsGroup);
@@ -79,9 +79,9 @@ void ModuleBase::sortItemsInitially(QString settingsGroup)
 }
 
 /*!
-    \fn ModuleBase::saveSortOrder(QString settingsGroup)
+    \fn ModuleBase::saveSortOrder(const QString& settingsGroup)
  */
-void ModuleBase::saveSortOrder(QString settingsGroup)
+void ModuleBase::saveSortOrder(const QString& settingsGroup)
 {
     QSettings lokalSettings;
     lokalSettings.beginGroup(settingsGroup);

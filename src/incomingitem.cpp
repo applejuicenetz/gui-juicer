@@ -36,7 +36,7 @@ IncomingItem::IncomingItem(QUrlInfo& urlInfo, QTreeWidget* parent) : Item(parent
     setText(IncomingItem::FILENAME_COL, urlInfo.name());
     setText(IncomingItem::SIZE_COL, Convert::bytes((double)size, 2));
     setText(IncomingItem::DATE_COL, date.toString(Qt::LocalDate));
-    //setFileIcon(IncomingItem::FILENAME_COL, urlInfo);
+    setFileIcon(IncomingItem::FILENAME_COL, urlInfo);
 }
 
 IncomingItem::~IncomingItem() {
@@ -46,6 +46,10 @@ bool IncomingItem::operator<(const QTreeWidgetItem & other) const {
     int sortIndex = treeWidget()->header()->sortIndicatorSection();
     Qt::SortOrder order = treeWidget()->header()->sortIndicatorOrder();
     IncomingItem* incomingItem = (IncomingItem*)&other;
+    // -- directories first --
+    if(isFile ^ incomingItem->isFile) {
+        return order == Qt::DescendingOrder && isFile;
+    }
     switch(sortIndex) {
         case SIZE_COL:
             return this->size < incomingItem->size;
@@ -53,14 +57,6 @@ bool IncomingItem::operator<(const QTreeWidgetItem & other) const {
         case DATE_COL:
             return this->date < incomingItem->date;
             break;
-        case FILENAME_COL:
-            if(isFile && !incomingItem->isFile) {
-                return order == Qt::DescendingOrder;
-            } else if(!isFile && incomingItem->isFile) {
-                return order == Qt::AscendingOrder;
-            } else {
-                return this->text(FILENAME_COL) < other.text(FILENAME_COL);
-            }
         default:
             return this->text(sortIndex) < other.text(sortIndex);
     }

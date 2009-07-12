@@ -185,6 +185,9 @@ void XMLModule::setPassword(const QString & password) {
     passwordMD5 = md5.getMD5Digest();
 }
 
+void XMLModule::setPasswordMD5(const QString & passwordMD5) {
+    this->passwordMD5 = passwordMD5;
+}
 
 /*!
     \fn XMLModule::handleSettings(QDomElement& e)

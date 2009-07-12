@@ -85,7 +85,7 @@ UploadItem* UploadModule::findUpload(const QString& id) {
 
 
 /*!
-    \fn UploadModule::setFilename(QString shareId, QString filename)
+    \fn UploadModule::setFilename(const QString& shareId, const QString& filename)
  */
 void UploadModule::setFilename(const QString& shareId, const QString& filename) {
     QHash<QString, UploadItem*>::const_iterator item;

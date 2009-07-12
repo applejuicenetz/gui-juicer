@@ -54,25 +54,19 @@ public:
     int make(Type type, const QString & request, QString param = "");
     int get(const QString & request, QString param = "");
     int set(const QString & request, QString param = "");
-
-    QString session;
-
     void setPassword(const QString & password);
-    void setPasswordMD5(const QString & passwordMD5) {
-        this->passwordMD5 = passwordMD5;
-    }
+    void setPasswordMD5(const QString & passwordMD5);
     void sendToTray(const QString & message1, const QString & message2);
-    QString getRecentTime() { return timeStamp; }
     static void printAllAttributes(QDomElement& e);
 
-    const QDomDocument& getContent() const {
-        return doc;
-    }
+    QString getRecentTime() const { return timeStamp; }
+    const QDomDocument& getContent() const { return doc; }
 
 protected:
     Juicer *juicer;
     QString timeStamp;
     QString passwordMD5;
+    QString session;
 
     QDomDocument doc;
 
@@ -82,9 +76,6 @@ protected:
     QHash<int, QString> partListRequests;
     QHash<int, QString> partListSimpleRequests;
 
-public slots:
-    void responseHeaderReceived(const QHttpResponseHeader & resp);
-    void requestFinished(int id, bool error);
 signals:
     void settingsReady(const AjSettings& settings);
     void error(const QString& message);
@@ -110,6 +101,8 @@ private:
     QList<QDomElement> users;
     QList<QTime> userTimes;
 private slots:
+    void responseHeaderReceived(const QHttpResponseHeader & resp);
+    void requestFinished(int id, bool error);
     void networkErrorSlot();
     void httpErrorSlot();
 };

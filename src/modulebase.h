@@ -40,8 +40,8 @@ Q_OBJECT
 public:
     ModuleBase(Juicer* juicer, QTreeWidget* treeWidget, QToolBar* toolbar, QWidget* tabWidget = NULL);
     ~ModuleBase();
-    void sortItemsInitially(QString settingsGroup);
-    void saveSortOrder(QString settingsGroup);
+    void sortItemsInitially(const QString& settingsGroup);
+    void saveSortOrder(const QString& settingsGroup);
     void updateAlternatingRowColors();
 protected:
     Juicer* juicer;

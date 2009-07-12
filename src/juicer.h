@@ -34,7 +34,7 @@
 #include <QHostInfo>
 #include <QSystemTrayIcon>
 #include <QSplashScreen>
- #include <QDesktopServices>
+#include <QDesktopServices>
 
 #include "ui_mainwindowbase.h"
 
@@ -69,7 +69,6 @@ public:
     Juicer(const QStringList& argList, QSplashScreen *splash, const QFileInfo& appFileInfo);
     ~Juicer();
 
-    void setStatusBarText( const QString& downSpeed, const QString& upSpeed, const QString& credits, const QString& downSize, const QString& upSize );
     XMLModule *xml;
     DownloadModule* downloadModule;
     UploadModule *uploadModule;
@@ -81,19 +80,17 @@ public:
     QHash<QString, QIcon> osIcons;
     QList<IconWidget*> statusBarWidgets;   /// hide-able statusbar widgets
 
+    void setStatusBarText(const QString& downSpeed, const QString& upSpeed, const QString& credits, const QString& downSize, const QString& upSize);
     void setFilesystemSeparator(const QString& separator);
     // returns filesystemseperator of the remote filesystem where the Core runs
-    QString getFilesystemSeparator( ) const;
+    QString getFilesystemSeparator() const;
     bool isCoreLocal();
-    void setCoreVersion( const QString& version );
-    void connectedSince( const QString& since );
-    void queueLinks( const QStringList& links );
-    void setUploadFilename( const QString& shareId, const QString& filename );
-
-    void sendToTray(  const QString& message1, const QString& message2  );
-
-    bool isLocalhost( const QString& host );
-
+    void setCoreVersion(const QString& version);
+    void connectedSince(const QString& since);
+    void queueLinks(const QStringList& links);
+    void setUploadFilename(const QString& shareId, const QString& filename);
+    void sendToTray( const QString& message1, const QString& message2 );
+    bool isLocalhost(const QString& host);
     static QStringList getExec();
     void setClipboard(const QString& text);
     static QStringList getAjfspLinks(const QString& text, const QString& type = "[^|]*");
@@ -112,7 +109,7 @@ protected:
     IconWidget* addToStatusBar(IconWidget* widget);
     void initStatusBar();
     void initTrayIcon();
-    void closeEvent( QCloseEvent* );
+    void closeEvent(QCloseEvent*);
     void processQueuedLinks();
     void saveGUIState();
     QString showLoginDialog(const QString& message = "");
@@ -121,26 +118,18 @@ protected:
     QString password;
     QString incomingDir, tempDir, filesystemSeparator;
     QFileInfo appFileInfo;
-
     QTimer *timer;
     int exitId;
-
     QWidget *prevTab;
     OptionsDialog *optionsDialog;
-
     ServerSocket *linkServer;
-
     QLabel *ajAddressLabel;
     QLineEdit *ajAddressEdit;
     QToolButton *ajAddressButton;
-
     QLabel *warnFirewallLabel;
     IconWidget *downSpeedLabel, *upSpeedLabel, *creditsLabel, *downSizeLabel, *upSizeLabel, *coreVersionLabel, *connectedLabel;
-
     bool started, connected, localCore;
-
     QStringList queuedLinks;
-
     int firstModifiedCnt, firstModifiedMax;
     QSplashScreen *splash;
     QStringList clipboardTexts;
@@ -149,7 +138,6 @@ protected:
 private slots:
     bool login(const QString& message = "<h3>Login</h3>", bool error = false);
     void openAjL();
-
     void about();
     void aboutQt();
     void timerSlot();
@@ -157,18 +145,13 @@ private slots:
     void settingsReady(const AjSettings& settings);
     void xmlError(const QString& reason);
     void gotSession();
-
     void processLink(const QString& link);
     void processLink();
     void processClipboard();
-
     void tabChanged(int index);
-
     void quit();
     void exitCore();
-
     void firstModified();
-
     void adjustColumns();
     void trayActivated(QSystemTrayIcon::ActivationReason reason);
     void downloadsFinished(const QList<DownloadItem*>& list);
