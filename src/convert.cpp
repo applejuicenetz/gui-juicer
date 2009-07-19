@@ -240,6 +240,10 @@ QIcon Convert::getFileIcon(const QFileInfo& file) {
     return Convert::getFileIcon(file.canonicalFilePath());
 }
 
+QIcon Convert::getFileIcon(const QUrlInfo& url) {
+    return Convert::getFileIcon(url.name());
+}
+
 QIcon Convert::getFileIcon(const QString &path) {
     // performance tuned using:
     //http://www.codeguru.com/Cpp/COM-Tech/shell/article.php/c4511/
