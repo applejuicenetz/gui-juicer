@@ -31,7 +31,7 @@ Application::Application(int & argc, char ** argv) : QApplication( argc, argv ) 
     QCoreApplication::setOrganizationName("progeln.de");
     QCoreApplication::setOrganizationDomain("progeln.de");
     QCoreApplication::setApplicationName("Juicer");
-    QCoreApplication::setApplicationVersion("1.1.2");
+    QCoreApplication::setApplicationVersion("1.2");
     setQuitOnLastWindowClosed( false );
     socket = NULL;
 
