@@ -237,28 +237,27 @@ QDateTime Convert::dateTime(const QString& mSeconds) {
 #include <qt_windows.h>
 
 QIcon Convert::getFileIcon(const QFileInfo& file) {
-    return Convert::getFileIcon(file.canonicalFilePath());
+	return Convert::getFileIcon(file.canonicalFilePath(), file.exists());
 }
 
 QIcon Convert::getFileIcon(const QUrlInfo& url) {
     return Convert::getFileIcon(url.name());
 }
 
-QIcon Convert::getFileIcon(const QString &path) {
+QIcon Convert::getFileIcon(const QString &path, bool exists) {
     // performance tuned using:
     //http://www.codeguru.com/Cpp/COM-Tech/shell/article.php/c4511/
-
+	QString path2(path);
+	path2.replace('/','\\');  // -- necessary, I don't exactly know why... --
+	UINT flags = SHGFI_ICON | SHGFI_LARGEICON;
+	if(!exists) {
+		flags |= SHGFI_USEFILEATTRIBUTES;
+	}
     SHFILEINFO file_info;
-    ::SHGetFileInfo(
-            (wchar_t*)path.utf16(),
-            FILE_ATTRIBUTE_NORMAL,
-            &file_info,
-            sizeof(SHFILEINFO),
-            SHGFI_USEFILEATTRIBUTES | SHGFI_ICON | SHGFI_LARGEICON);
-
+    ::SHGetFileInfo((wchar_t*)path2.utf16(),FILE_ATTRIBUTE_NORMAL,
+            &file_info, sizeof(SHFILEINFO), flags);
     return QIcon(convertHIconToPixmap(file_info.hIcon));
 }
-
 
 QPixmap Convert::convertHIconToPixmap(const HICON icon) {
     bool foundAlpha = false;

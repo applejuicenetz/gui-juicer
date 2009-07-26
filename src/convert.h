@@ -83,7 +83,7 @@ public:
     }
     static QIcon getFileIcon(const QFileInfo& file);
     static QIcon getFileIcon(const QUrlInfo& url);
-    static QIcon getFileIcon(const QString &path);
+    static QIcon getFileIcon(const QString &path, bool exists=false);
     static int compareVersion(const QString& v1, const QString& v2);
     #ifdef Q_WS_WIN
     static QPixmap convertHIconToPixmap(const HICON icon);
