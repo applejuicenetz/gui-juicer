@@ -86,7 +86,6 @@ OptionsDialog::OptionsDialog(Juicer* juicer) : QDialog(juicer) {
     connect( jumpFtpButton, SIGNAL( clicked() ), this , SLOT(jumpToFtpSlot() ) );
     connect( fontComboBox, SIGNAL( currentFontChanged( const QFont& ) ), this, SLOT( setFontSizes( const QFont& ) ) );
     connect( this, SIGNAL( accepted() ), this, SLOT( acceptedSlot() ) );
-    connect(handlerPushButton, SIGNAL(clicked()), this, SLOT(setAjfspHandler()));
     connect(resetPushButton, SIGNAL(clicked()), this, SLOT(reset()));
 
     listWidget->setCurrentRow( 0 );
@@ -496,15 +495,6 @@ void OptionsDialog::removeSetting(const QString& group, const QString& key) {
     lokalSettings.remove(key);
     lokalSettings.endGroup();
 }
-
-
-/*!
-    \fn OptionsDialog::setAjfspHandler()
- */
-void OptionsDialog::setAjfspHandler() {
-//    printf("%s\n", ((Application*)qApp)->appPath.toLatin1().data());
-}
-
 
 /*!
     \fn OptionsDialog::reset()

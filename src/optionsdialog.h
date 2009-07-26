@@ -107,7 +107,6 @@ protected slots:
     void jumpToFtpSlot();
     void acceptedSlot();
     void setFontSizes( const QFont& font );
-    void setAjfspHandler();
     void reset();
 };
 

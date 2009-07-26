@@ -79,6 +79,7 @@ public:
     IncomingModule *incomingModule;
     QHash<QString, QIcon> osIcons;
     QList<IconWidget*> statusBarWidgets;   /// hide-able statusbar widgets
+    OptionsDialog *optionsDialog;
 
     void setStatusBarText(const QString& downSpeed, const QString& upSpeed, const QString& credits, const QString& downSize, const QString& upSize);
     void setFilesystemSeparator(const QString& separator);
@@ -121,7 +122,6 @@ protected:
     QTimer *timer;
     int exitId;
     QWidget *prevTab;
-    OptionsDialog *optionsDialog;
     ServerSocket *linkServer;
     QLabel *ajAddressLabel;
     QLineEdit *ajAddressEdit;

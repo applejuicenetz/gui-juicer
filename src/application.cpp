@@ -38,24 +38,7 @@ Application::Application(int & argc, char ** argv) : QApplication( argc, argv ) 
     appFileInfo.setFile(argv[0]);
 
     // -- check if juicer is default application for ajfsp links --
-    #ifdef Q_WS_WIN
-        QString appCmd = appFileInfo.absoluteFilePath().replace("/","\\");
-        appCmd = "\"" + appCmd + "\" \"%1\"";
-        QSettings settings("HKEY_CLASSES_ROOT\\ajfsp", QSettings::NativeFormat);
-        settings.setValue("Default","URL:ajfsp Protocol");
-        settings.setValue("URL Protocol","");
-        if(settings.value("shell/open/command/Default") != appCmd) {
-
-            HandlerDialog handlerDialog(
-                    tr( "ajfsp Protocol Handler" ),
-                    tr("Juicer seems not to be the default application for ajfsp:// links.\nWould you like to change this?"),
-                    QDialogButtonBox::Yes | QDialogButtonBox::No,
-                    QStyle::SP_MessageBoxQuestion);
-            if(handlerDialog.exec("handler") == QDialog::Accepted) {
-                settings.setValue("shell/open/command/Default",appCmd);
-            }
-        }
-    #endif
+    this->setAjfspHandler();
 
     *argv++;
     while(argc-- > 1) {
@@ -89,5 +72,32 @@ int Application::exec() {
 void Application::start() {
     QSplashScreen *splash = new QSplashScreen(QPixmap(":/splash.png"));
     splash->setVisible(OptionsDialog::getSetting( "showSplash", true ).toBool());
-    new Juicer(argList, splash, appFileInfo);
+    Juicer* juicer = new Juicer(argList, splash, appFileInfo);
+    connect(juicer->optionsDialog->handlerPushButton, SIGNAL(clicked()), this, SLOT(setAjfspHandler()));
+
+}
+
+
+/*!
+    \fn Application::setAjfspHandler()
+ */
+void Application::setAjfspHandler() {
+    #ifdef Q_WS_WIN
+        QString appCmd = appFileInfo.absoluteFilePath().replace("/","\\");
+        appCmd = "\"" + appCmd + "\" \"%1\"";
+        QSettings settings("HKEY_CLASSES_ROOT\\ajfsp", QSettings::NativeFormat);
+        settings.setValue("Default","URL:ajfsp Protocol");
+        settings.setValue("URL Protocol","");
+        if(settings.value("shell/open/command/Default") != appCmd) {
+
+            HandlerDialog handlerDialog(
+                    tr( "ajfsp Protocol Handler" ),
+                    tr("Juicer seems not to be the default application for ajfsp:// links.\nWould you like to change this?"),
+                    QDialogButtonBox::Yes | QDialogButtonBox::No,
+                    QStyle::SP_MessageBoxQuestion);
+            if(handlerDialog.exec("handler") == QDialog::Accepted) {
+                settings.setValue("shell/open/command/Default",appCmd);
+            }
+        }
+    #endif
 }

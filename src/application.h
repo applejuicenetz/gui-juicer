@@ -44,6 +44,7 @@ public:
     QFileInfo appFileInfo;
 public slots:
     void start();
+    void setAjfspHandler();
 private:
     Socket *socket;
     QStringList argList;
