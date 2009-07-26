@@ -375,7 +375,7 @@ QIcon Convert::getFileIcon(const QUrlInfo& url) {
     }
 }
 
-QIcon Convert::getFileIcon(const QString &path) {
+QIcon Convert::getFileIcon(const QString &path, bool exists) {
     return QIcon();
 }
 #endif
