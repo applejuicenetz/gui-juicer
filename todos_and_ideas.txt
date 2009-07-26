@@ -59,3 +59,6 @@ x create AJ link lists
 	x from download widget
 	x from search widget
 x optional automatically remove cnacled downloads
+- incoming tab file browser
+- start core with juicer
+- bandwidth limit profiles
