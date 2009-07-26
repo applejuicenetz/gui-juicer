@@ -43,11 +43,11 @@ public:
                         const QString& status, const QString& size, const QString& ready,
                         const QString& power, const QString& tempNumber,
                         const QString& targetDir);
-    void insertUser( const QString& downloadId, const QString& id, const QString& fileName,
-                      const QString& nickname, const QString& speed, const QString& status,
-                      const QString& power, const QString& queuePos, const QString& os,
-                      const QString& downloadfrom, const QString& downloadto,
-                      const QString& actualdownloadposition, QTime& time);
+    void insertUser(const QString& downloadId, const QString& id, const QString& fileName,
+                    const QString& nickname, const QString& speed, const QString& status,
+                    const QString& power, const QString& queuePos, const QString& os,
+                    const QString& downloadfrom, const QString& downloadto,
+                    const QString& actualdownloadposition, QTime& time);
     bool remove(const QString& id);
     bool removeDownload(const QString& id);
     DownloadItem* findDownload(const QString& id);
@@ -61,7 +61,7 @@ public:
     QTimer *partListTimer;
 
 public slots:
-    void updateView(bool force = false);
+    void updateView();
     void partListSlot();
 protected:
     void processSelected(XMLModule::Type type, const QString& request,

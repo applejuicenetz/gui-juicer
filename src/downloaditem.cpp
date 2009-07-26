@@ -20,14 +20,14 @@
 #include "downloaditem.h"
 
 
-DownloadItem::DownloadItem( const QString& id, QTreeWidget *parent )
-  : Item( parent, id )
-  , activeSourcesItem( 0 )
-  , queuedSourcesItem( 0 )
-  , otherSourcesItem( 0 )
-  , progressBar( 0 )
-  , powerSpin( 0 )
-  , partListDialog( 0 )
+DownloadItem::DownloadItem(const QString& id, QTreeWidget *parent)
+  : Item(parent, id)
+  , activeSourcesItem(0)
+  , queuedSourcesItem(0)
+  , otherSourcesItem(0)
+  , progressBar(0)
+  , powerSpin(0)
+  , partListDialog(0)
 {
     size_ = 0.0;
     ready = 0.0;
@@ -35,17 +35,17 @@ DownloadItem::DownloadItem( const QString& id, QTreeWidget *parent )
 
     firstFinished = false;
 
-    activeSourcesItem = new Item( this );
+    activeSourcesItem = new Item(this);
     activeSourcesItem->setText(FILENAME_COL, QObject::tr("1. active"));
-    activeSourcesItem->setFlags( Qt::ItemIsEnabled );
+    activeSourcesItem->setFlags(Qt::ItemIsEnabled);
 
-    queuedSourcesItem = new Item( this );
+    queuedSourcesItem = new Item(this);
     queuedSourcesItem->setText(FILENAME_COL, QObject::tr("2. queueing"));
-    queuedSourcesItem->setFlags( Qt::ItemIsEnabled );
+    queuedSourcesItem->setFlags(Qt::ItemIsEnabled);
 
-    otherSourcesItem = new Item( this );
+    otherSourcesItem = new Item(this);
     otherSourcesItem->setText(FILENAME_COL, QObject::tr("3. others"));
-    otherSourcesItem->setFlags( Qt::ItemIsEnabled );
+    otherSourcesItem->setFlags(Qt::ItemIsEnabled);
 
     partListDialog = new PartListDialog();
     partListDialog->hide();
@@ -55,23 +55,23 @@ DownloadItem::DownloadItem( const QString& id, QTreeWidget *parent )
 
     progressBar = new QProgressBar();
 
-    setText( SOURCES_COL, getSourcesString() );
-    setText( SPEED_COL, QString("0 b/s") );
-    setText( REMAIN_TIME_COL, QString( "n.a." ) );
+    setText(SOURCES_COL, getSourcesString());
+    setText(SPEED_COL, QString("0 b/s"));
+    setText(REMAIN_TIME_COL, QString("n.a."));
 
     QTimer::singleShot(100, this, SLOT(initPowerSpin()));
 }
 
 DownloadItem::~DownloadItem()
 {
-    takeChild( indexOfChild( activeSourcesItem ) );
-    takeChild( indexOfChild( queuedSourcesItem ) );
-    takeChild( indexOfChild( otherSourcesItem ) );
+    takeChild(indexOfChild(activeSourcesItem));
+    takeChild(indexOfChild(queuedSourcesItem));
+    takeChild(indexOfChild(otherSourcesItem));
     deleteUsers();
-    if ( activeSourcesItem )  delete activeSourcesItem;
-    if ( queuedSourcesItem )  delete queuedSourcesItem;
-    if ( otherSourcesItem )   delete otherSourcesItem;
-    if ( partListDialog )     delete partListDialog;
+    if (activeSourcesItem)  delete activeSourcesItem;
+    if (queuedSourcesItem)  delete queuedSourcesItem;
+    if (otherSourcesItem)   delete otherSourcesItem;
+    if (partListDialog)     delete partListDialog;
 }
 
 void DownloadItem::initPowerSpin()
@@ -87,52 +87,52 @@ void DownloadItem::initPowerSpin()
     treeWidget()->setItemWidget(this, POWER_COL, powerSpin);
     treeWidget()->setItemWidget(this, FINISHED_COL, progressBarWidget);
 
-//     connect( powerSpin, SIGNAL( valueChanged( const QString&) ), this, SLOT( applyPowerDownload() ) );
-//     connect( powerSpin, SIGNAL( valueChanged( double ) ), this, SLOT( applyPowerDownload() ) );
+//     connect(powerSpin, SIGNAL(valueChanged(const QString&)), this, SLOT(applyPowerDownload()));
+//     connect(powerSpin, SIGNAL(valueChanged(double)), this, SLOT(applyPowerDownload()));
 }
 
-void DownloadItem::moveItem( UserItem *userItem, const QString& oldStatus )
+void DownloadItem::moveItem(UserItem *userItem, const QString& oldStatus)
 {
-    if ( oldStatus != userItem->getStatus() ) {
-        if ( userItem->QTreeWidgetItem::parent() && ( oldStatus != NEW_SOURCE ) ) {
-            userItem->QTreeWidgetItem::parent()->takeChild( userItem->QTreeWidgetItem::parent()->indexOfChild( userItem ) );
+    if (oldStatus != userItem->getStatus()) {
+        if (userItem->QTreeWidgetItem::parent() && (oldStatus != NEW_SOURCE)) {
+            userItem->QTreeWidgetItem::parent()->takeChild(userItem->QTreeWidgetItem::parent()->indexOfChild(userItem));
         }
-        if ( oldStatus == ACTIVE_SOURCE ) {
-            if ( userItem->getStatus() == QUEUED_SOURCE ) {
-                queuedSourcesItem->addChild( userItem );
-            } else if ( (userItem->getStatus() != ACTIVE_SOURCE) &&  (userItem->getStatus() != QUEUED_SOURCE) ) {
-                otherSourcesItem->addChild( userItem );
+        if (oldStatus == ACTIVE_SOURCE) {
+            if (userItem->getStatus() == QUEUED_SOURCE) {
+                queuedSourcesItem->addChild(userItem);
+            } else if ((userItem->getStatus() != ACTIVE_SOURCE) &&  (userItem->getStatus() != QUEUED_SOURCE)) {
+                otherSourcesItem->addChild(userItem);
             }
-        } else if ( oldStatus == QUEUED_SOURCE ) {
-            if ( userItem->getStatus() == ACTIVE_SOURCE ) {
-                activeSourcesItem->addChild( userItem );
-            } else if ( (userItem->getStatus() != ACTIVE_SOURCE) &&  (userItem->getStatus() != QUEUED_SOURCE) ) {
-                otherSourcesItem->addChild( userItem );
+        } else if (oldStatus == QUEUED_SOURCE) {
+            if (userItem->getStatus() == ACTIVE_SOURCE) {
+                activeSourcesItem->addChild(userItem);
+            } else if ((userItem->getStatus() != ACTIVE_SOURCE) &&  (userItem->getStatus() != QUEUED_SOURCE)) {
+                otherSourcesItem->addChild(userItem);
             }
-        } else if ( oldStatus == NEW_SOURCE ) {
+        } else if (oldStatus == NEW_SOURCE) {
             // -- pass --
         } else {
-            if ( userItem->getStatus() == ACTIVE_SOURCE ) {
-                activeSourcesItem->addChild( userItem );
-            } else if ( userItem->getStatus() == QUEUED_SOURCE ) {
-                queuedSourcesItem->addChild( userItem );
+            if (userItem->getStatus() == ACTIVE_SOURCE) {
+                activeSourcesItem->addChild(userItem);
+            } else if (userItem->getStatus() == QUEUED_SOURCE) {
+                queuedSourcesItem->addChild(userItem);
             }
         }
     }
 }
 
-UserItem* DownloadItem::findUser( const QString& id ) 
+UserItem* DownloadItem::findUser(const QString& id) 
 {
-    if ( users.contains( id ) ) {
+    if (users.contains(id)) {
         return users[ id ];
     }
     return NULL;
 }
 
-void DownloadItem::removeUser( const QString& id ) 
+void DownloadItem::removeUser(const QString& id) 
 {
     UserItem* item = users[ id ];
-    users.remove( id );
+    users.remove(id);
     delete item;
 }
 
@@ -149,63 +149,63 @@ void DownloadItem::updateUser(const QString& id,
                               const QString& downloadto,
                               const QString& actualdownloadposition,
                               const QTime& time) {
-    UserItem* userItem = findUser( id );
-    if ( userItem == NULL ) {
-        if ( status == ACTIVE_SOURCE ) {
-            userItem = new UserItem( id, activeSourcesItem );
-        } else if ( status == QUEUED_SOURCE ) {
-            userItem = new UserItem( id, queuedSourcesItem );
+    UserItem* userItem = findUser(id);
+    if (userItem == NULL) {
+        if (status == ACTIVE_SOURCE) {
+            userItem = new UserItem(id, activeSourcesItem);
+        } else if (status == QUEUED_SOURCE) {
+            userItem = new UserItem(id, queuedSourcesItem);
         } else {
-            userItem = new UserItem( id, otherSourcesItem );
+            userItem = new UserItem(id, otherSourcesItem);
         }
         users[ id ] = userItem;
     }
     QString oldStatus = userItem->getStatus();
-    userItem->update( fileName, nickname, speed, status, power, queuePos, statusString, osIcon,
-                      downloadfrom, downloadto, actualdownloadposition, time );
-    moveItem( userItem, oldStatus );
+    userItem->update(fileName, nickname, speed, status, power, queuePos, statusString, osIcon,
+                      downloadfrom, downloadto, actualdownloadposition, time);
+    moveItem(userItem, oldStatus);
 }
 
-bool DownloadItem::update( const QString& hash,
+bool DownloadItem::update(const QString& hash,
                               const QString& fileName,
                               const QString& status,
                               const QString& size,
                               const QString& ready,
                               const QString& power,
                               const QString& tempNumber,
-                              const QString& targetDir )
+                              const QString& targetDir)
 {
     bool newStatus = setStatus(status);
-    if ( newStatus ) {
-        if ( status == DOWN_PAUSED ) {
-            this->setTextColor( FILENAME_COL, Qt::darkGray );
-        } else if ( status == DOWN_FINISHED ) {
-            this->setTextColor( FILENAME_COL, Qt::darkGreen );
+    if (newStatus) {
+        if (status == DOWN_PAUSED) {
+            this->setTextColor(FILENAME_COL, Qt::darkGray);
+        } else if (status == DOWN_FINISHED) {
+            this->setTextColor(FILENAME_COL, Qt::darkGreen);
             firstFinished = true;
-        } else if ( status == DOWN_CANCELD ) {
-            this->setTextColor( FILENAME_COL, Qt::red );
+        } else if (status == DOWN_CANCELD) {
+            this->setTextColor(FILENAME_COL, Qt::red);
         } else {
-            this->setTextColor( FILENAME_COL, Qt::black );
+            this->setTextColor(FILENAME_COL, Qt::black);
         }
     }
 
     this->tempNumber = tempNumber;
-    if ( size_ == 0.0 && !size.isEmpty()) {
+    if (size_ == 0.0 && !size.isEmpty()) {
         size_ = size.toDouble();
     }
 
     // -- save hash number for recovering the ajfsp link --
-    if ( hash_.isEmpty() ) {
+    if (hash_.isEmpty()) {
         hash_ = hash;
     }
 
-    this->setText( FILENAME_COL, fileName );
-    partListDialog->setFilename( fileName );
-    if ( filename_.isEmpty() && !fileName.isEmpty() ) {
+    this->setText(FILENAME_COL, fileName);
+    partListDialog->setFilename(fileName);
+    if (filename_.isEmpty() && !fileName.isEmpty()) {
         filename_ = fileName;
         this->setFileIcon(FILENAME_COL);
     }
-    if ( status_ == DOWN_FINISHED ) {
+    if (status_ == DOWN_FINISHED) {
         this->ready = size_;
         this->remainingSize = 0.0;
     } else {
@@ -213,18 +213,18 @@ bool DownloadItem::update( const QString& hash,
         this->remainingSize = size_ - this->ready;
     }
 
-    if ( this->text( SIZE_COL ).isEmpty() ) {
-        this->setText( SIZE_COL, " " + Convert::bytes( size_ ) + " " );
+    if (this->text(SIZE_COL).isEmpty()) {
+        this->setText(SIZE_COL, " " + Convert::bytes(size_) + " ");
     }
 
-    this->setText( TARGET_DIR_COL, targetDir );
+    this->setText(TARGET_DIR_COL, targetDir);
 
-    float p = Convert::powerValue( power );
-    if( p > 1.0 ) {
-        this->powerSpin->spin->setValue( p );
+    float p = Convert::powerValue(power);
+    if(p > 1.0) {
+        this->powerSpin->spin->setValue(p);
     }
-    this->powerSpin->check->setChecked( p > 1.0 );
-    this->powerSpin->spin->setEnabled( p > 1.0 );
+    this->powerSpin->check->setChecked(p > 1.0);
+    this->powerSpin->spin->setEnabled(p > 1.0);
 
     firstFinished = false;
     return newStatus;
@@ -232,54 +232,53 @@ bool DownloadItem::update( const QString& hash,
 
 
 QString DownloadItem::getSourcesString() {
-    //return QString( " " + QString::number(activeSources) + "-" + QString::number(queuedSources) + "-" + QString::number(otherSources) + " " );
+    //return QString(" " + QString::number(activeSources) + "-" + QString::number(queuedSources) + "-" + QString::number(otherSources) + " ");
     QString sources = " " + QString::number(activeSourcesItem->childCount());
     sources += "-" + QString::number(queuedSourcesItem->childCount());
     sources += "-" + QString::number(otherSourcesItem->childCount());
     return sources;
 }
 
-bool DownloadItem::updateView(const QHash<QString, QString>& downloadStatusDescr ) 
-{
-    if( ( status_ == DOWN_SEARCHING ) || ( status_ == DOWN_LOADING ) )     {
-        if ( getActiveSources() > 0 )         {
-            setTextColor( FILENAME_COL, Qt::darkBlue );
-            setText( STATUS_COL, downloadStatusDescr.value( "-1", "unknown" ) );
+bool DownloadItem::updateView(const QHash<QString, QString>& downloadStatusDescr) {
+    if((status_ == DOWN_SEARCHING) || (status_ == DOWN_LOADING)) {
+        if (getActiveSources() > 0) {
+            setTextColor(FILENAME_COL, Qt::darkBlue);
+            setText(STATUS_COL, downloadStatusDescr.value("-1", "unknown"));
             status_ = DOWN_LOADING;
         } else {
-            setTextColor( FILENAME_COL, Qt::black );
-            setText( STATUS_COL, downloadStatusDescr.value( status_, "unknown" ) );
+            setTextColor(FILENAME_COL, Qt::black);
+            setText(STATUS_COL, downloadStatusDescr.value(status_, "unknown"));
             status_ = DOWN_SEARCHING;
         }
     } else {
-        setText( STATUS_COL, downloadStatusDescr.value( status_, "unknown" ) );
+        setText(STATUS_COL, downloadStatusDescr.value(status_, "unknown"));
     }
 
-    setText( SOURCES_COL, getSourcesString() );
+    setText(SOURCES_COL, getSourcesString());
     finished = ready / size_;
     percent = (int)(finished * 100.0);
     progressBar->setValue(percent);
 
-    setText( FINISHED_SIZE_COL, " " + Convert::bytes( ready ) + " " );
-    setText( REMAIN_SIZE_COL, " " + Convert::bytes( remainingSize ) + " " );
+    setText(FINISHED_SIZE_COL, " " + Convert::bytes(ready) + " ");
+    setText(REMAIN_SIZE_COL, " " + Convert::bytes(remainingSize) + " ");
 
 
     speed = 0.0;
-    if( status_ == DOWN_LOADING ) {
+    if(status_ == DOWN_LOADING) {
         QList<UserItem*> userItems = users.values();
         for(int i=0; i<userItems.size(); i++) {
             speed += userItems[i]->getSpeed();
         }
     }
 
-    setText( SPEED_COL, " " + Convert::bytes( speed, 1 ) + "/s ");
+    setText(SPEED_COL, " " + Convert::bytes(speed, 1) + "/s ");
 
-    if( speed > 0 ) {
+    if(speed > 0) {
         remainingSec = (long int)(remainingSize / speed);
-        setText( REMAIN_TIME_COL, " " + Convert::time( remainingSec ) + " " );
+        setText(REMAIN_TIME_COL, " " + Convert::time(remainingSec) + " ");
     } else {
         remainingSec = LONG_MAX;
-        setText( REMAIN_TIME_COL, QString( " n.a. " ) );
+        setText(REMAIN_TIME_COL, QString(" n.a. "));
     }
 
     bool returnValue = firstFinished;
@@ -292,14 +291,14 @@ void DownloadItem::showWidget(const QPoint & p) {
     if(partListDialog == NULL) {
         partListDialog = new PartListDialog();
     }
-    partListDialog->move( p );
+    partListDialog->move(p);
     partListDialog->show();
 }
 
 void DownloadItem::deleteUsers() 
 {
     QList<QString> userIds = users.keys();
-    for (int i=0; i<userIds.size(); i++ ) {
+    for (int i=0; i<userIds.size(); i++) {
         delete users[userIds[i]];
     }
     users.clear();
@@ -322,7 +321,7 @@ void DownloadItem::setMissing(double missing) {
     setTextColor(MISSING_COL, missing>0.0?Qt::darkRed:Qt::darkGreen);
 }
 
-bool DownloadItem::operator<( const QTreeWidgetItem & other ) const {
+bool DownloadItem::operator<(const QTreeWidgetItem & other) const {
     int sortIndex = treeWidget()->header()->sortIndicatorSection();
     DownloadItem* downItem = (DownloadItem*)&other;
     switch(sortIndex) {
@@ -359,5 +358,5 @@ QString DownloadItem::getLinkAJFSP() {
     return "ajfsp://file|"
         + text(FILENAME_COL) + "|"
         + hash_ + "|"
-        + QString::number( (int)size_ ) + "/";
+        + QString::number((int)size_) + "/";
 }

@@ -485,7 +485,7 @@ void Juicer::connectedSince(const QString& since) {
 void Juicer::firstModified() {
     if (firstModifiedCnt <= firstModifiedMax) {
         if (firstModifiedCnt == firstModifiedMax) {
-            downloadModule->updateView(true);
+            downloadModule->updateView();
             downloadModule->adjustSizeOfColumns();
             uploadModule->adjustSizeOfColumns();
             searchModule->adjustSizeOfColumns();
