@@ -418,9 +418,9 @@ GUI for appleJuice Filesharing
 http://applejuicer.net</source>
         <translation type="unfinished">￼￼
 
-GUI für appleJuicer Filesharing￼
+GUI für appleJuice Filesharing￼
 ￼
-http://applejucier.net</translation>
+http://applejuicer.net</translation>
     </message>
 </context>
 <context>
