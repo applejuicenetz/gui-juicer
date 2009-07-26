@@ -189,7 +189,11 @@ Section "Uninstall"
   ; Remove registry keys
   DeleteRegKey HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\Juicer"
   DeleteRegKey HKLM SOFTWARE\Juicer
-
+  Var /GLOBAL cmd 
+  ReadRegStr $cmd HKCR "ajfsp\shell\open\command" ""
+  StrCmp $cmd '"$INSTDIR\juicer.exe" "%1"' 0 +2
+  DeleteRegValue HKCR "ajfsp\shell\open\command" ""
+ 
   ; Remove files and uninstaller
   Delete $INSTDIR\juicer.exe
   Delete $INSTDIR\uninstall.exe
