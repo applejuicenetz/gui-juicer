@@ -38,7 +38,7 @@ Application::Application(int & argc, char ** argv) : QApplication( argc, argv ) 
     appFileInfo.setFile(argv[0]);
 
     // -- check if juicer is default application for ajfsp links --
-    this->setAjfspHandler();
+    this->setAjfspHandler(false);
 
     *argv++;
     while(argc-- > 1) {
@@ -79,9 +79,9 @@ void Application::start() {
 
 
 /*!
-    \fn Application::setAjfspHandler()
+    \fn Application::setAjfspHandler(bool force)
  */
-void Application::setAjfspHandler() {
+void Application::setAjfspHandler(bool force) {
     #ifdef Q_WS_WIN
         QString appCmd = appFileInfo.absoluteFilePath().replace("/","\\");
         appCmd = "\"" + appCmd + "\" \"%1\"";
@@ -95,7 +95,7 @@ void Application::setAjfspHandler() {
                     tr("Juicer seems not to be the default application for ajfsp:// links.\nWould you like to change this?"),
                     QDialogButtonBox::Yes | QDialogButtonBox::No,
                     QStyle::SP_MessageBoxQuestion);
-            if(handlerDialog.exec("handler") == QDialog::Accepted) {
+            if(force || handlerDialog.exec("handler") == QDialog::Accepted) {
                 settings.setValue("shell/open/command/Default",appCmd);
             }
         }
