@@ -36,7 +36,7 @@ RequestExecutionLevel user
 ;Interface Settings
 
   !define MUI_ABORTWARNING
-
+!define MUI_ICON src\resources\juicer.ico
 ;--------------------------------
 ;Pages
   !insertmacro MUI_PAGE_WELCOME
