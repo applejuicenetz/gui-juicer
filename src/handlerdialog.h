@@ -33,20 +33,20 @@ class HandlerDialog : public QDialog, private Ui::HandlerDialog
     bool dontAskAgain_;
 
 public:
-    HandlerDialog( const QString& caption, const QString & text,
+    HandlerDialog(const QString& caption, const QString & text,
         QDialogButtonBox::StandardButtons buttons = QDialogButtonBox::Yes | QDialogButtonBox::No,
         QStyle::StandardPixmap icon = QStyle::SP_MessageBoxQuestion,
-        QWidget* parent = 0, Qt::WFlags fl = 0 );
+        QWidget* parent = 0, Qt::WFlags fl = 0);
 
-    void setText( const QString& text );
-    void setIcon( const QPixmap& pixmap );
+    void setText(const QString& text);
+    void setIcon(const QPixmap& pixmap);
 
     bool dontAskAgain() const;
 
     static const int DONT_ASK = -1;
 
 protected slots:
-    void reaskSlot( int );
+    void reaskSlot(int);
 
 public slots:
     int exec(const QString& saveString);

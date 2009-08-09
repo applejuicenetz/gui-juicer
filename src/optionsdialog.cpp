@@ -70,25 +70,31 @@ OptionsDialog::OptionsDialog(Juicer* juicer) : QDialog(juicer) {
     languageComboBox->addItem(QIcon(":/options/de.png"), "deutsch", "de");
     languageComboBox->addItem(QIcon(":/options/gb.png"), "english", "en");
 
-    launchCombo->addItem( DEFAULT_LAUNCHER );
+    launchCombo->addItem(DEFAULT_LAUNCHER);
     if(DEFAULT_LAUNCHER == KDE_LAUNCHER)
-        launchCombo->addItem( GNOME_LAUNCHER );
+        launchCombo->addItem(GNOME_LAUNCHER);
 
-    specificRadioToggled( false );
+    specificRadioToggled(false);
 
-    connect( incomingButton, SIGNAL( clicked() ), this, SLOT( selectIncomingDir() ) );
-    connect( tempButton, SIGNAL( clicked() ), this, SLOT( selectTempDir() ) );
-    connect( launcherButton, SIGNAL( clicked() ), this, SLOT( selectLauncher() ) );
-    connect( incomingSpecificButton, SIGNAL( clicked() ), this, SLOT( selectIncomingDirSpecific() ) );
-    connect( tempSpecificButton, SIGNAL( clicked() ), this, SLOT( selectTempDirSpecific() ) );
-    connect( specificRadio, SIGNAL( toggled( bool ) ), this, SLOT( specificRadioToggled( bool ) ) );
-    connect( listWidget, SIGNAL( currentRowChanged( int ) ), stackedWidget , SLOT(setCurrentIndex( int ) ) );
-    connect( jumpFtpButton, SIGNAL( clicked() ), this , SLOT(jumpToFtpSlot() ) );
-    connect( fontComboBox, SIGNAL( currentFontChanged( const QFont& ) ), this, SLOT( setFontSizes( const QFont& ) ) );
-    connect( this, SIGNAL( accepted() ), this, SLOT( acceptedSlot() ) );
+    connect(incomingButton, SIGNAL(clicked()), this, SLOT(selectIncomingDir()));
+    connect(tempButton, SIGNAL(clicked()), this, SLOT(selectTempDir()));
+    connect(launcherButton, SIGNAL(clicked()), this, SLOT(selectLauncher()));
+    connect(incomingSpecificButton, SIGNAL(clicked()), this, SLOT(selectIncomingDirSpecific()));
+    connect(tempSpecificButton, SIGNAL(clicked()), this, SLOT(selectTempDirSpecific()));
+    connect(specificRadio, SIGNAL(toggled(bool)), this, SLOT(specificRadioToggled(bool)));
+    connect(listWidget, SIGNAL(currentRowChanged(int)), stackedWidget , SLOT(setCurrentIndex(int)));
+    connect(jumpFtpButton, SIGNAL(clicked()), this , SLOT(jumpToFtpSlot()));
+    connect(fontComboBox, SIGNAL(currentFontChanged(const QFont&)), this, SLOT(setFontSizes(const QFont&)));
+    connect(this, SIGNAL(accepted()), this, SLOT(acceptedSlot()));
     connect(resetPushButton, SIGNAL(clicked()), this, SLOT(reset()));
 
-    listWidget->setCurrentRow( 0 );
+    connect(profilesList, SIGNAL(itemSelectionChanged()), this, SLOT(profileSelectionChanged()));
+    connect(addProfileButton, SIGNAL(clicked()), this, SLOT(addProfile()));
+    connect(changeProfileButton, SIGNAL(clicked()), this, SLOT(changeProfile()));
+    connect(removeProfileButton, SIGNAL(clicked()), this, SLOT(removeProfile()));
+
+    listWidget->setCurrentRow(0);
+    loadProfiles();
 }
 
 OptionsDialog::~OptionsDialog() {
@@ -101,61 +107,61 @@ AjSettings OptionsDialog::getAjSettings() {
     settings.incomingDir = incomingEdit->text();
     settings.tempDir = tempEdit->text();
     settings.autoconnect = autoConnect->isChecked()?"true":"false";
-    settings.maxDown = QString::number( downSpin->value() );
-    settings.maxUp = QString::number( upSpin->value() );
-    settings.maxSlot = QString::number( slotSpin->value() );
-    settings.maxSources = QString::number( sourcesSpin->value() );
-    settings.maxCon = QString::number( connectionsSpin->value() );
-    settings.maxNewCon = QString::number( newSpin->value() );
+    settings.maxDown = QString::number(downSpin->value());
+    settings.maxUp = QString::number(upSpin->value());
+    settings.maxSlot = QString::number(slotSpin->value());
+    settings.maxSources = QString::number(sourcesSpin->value());
+    settings.maxCon = QString::number(connectionsSpin->value());
+    settings.maxNewCon = QString::number(newSpin->value());
     settings.tcpPort = tcpEdit->text();
     return settings;
 }
 
 void OptionsDialog::setAjSettings(const AjSettings& settings) {
-    nickEdit->setText( settings.nick );
-    xmlEdit->setText( settings.xmlPort );
-    incomingEdit->setText( settings.incomingDir );
-    tempEdit->setText( settings.tempDir );
-    autoConnect->setChecked( ( settings.autoconnect.toLower() == "true" ) );
-    downSpin->setValue( settings.maxDown.toInt() / 1024 );
-    upSpin->setValue( settings.maxUp.toInt() / 1024 );
-    slotSpin->setValue( settings.maxSlot.toInt() );
-    sourcesSpin->setValue( settings.maxSources.toInt() );
-    connectionsSpin->setValue( settings.maxCon.toInt() );
-    newSpin->setValue( settings.maxNewCon.toInt() );
-    tcpEdit->setText( settings.tcpPort );
+    nickEdit->setText(settings.nick);
+    xmlEdit->setText(settings.xmlPort);
+    incomingEdit->setText(settings.incomingDir);
+    tempEdit->setText(settings.tempDir);
+    autoConnect->setChecked((settings.autoconnect.toLower() == "true"));
+    downSpin->setValue(settings.maxDown.toInt() / 1024);
+    upSpin->setValue(settings.maxUp.toInt() / 1024);
+    slotSpin->setValue(settings.maxSlot.toInt());
+    sourcesSpin->setValue(settings.maxSources.toInt());
+    connectionsSpin->setValue(settings.maxCon.toInt());
+    newSpin->setValue(settings.maxNewCon.toInt());
+    tcpEdit->setText(settings.tcpPort);
 }
 
 void OptionsDialog::setSettings() {
-    passwordEdit->setText( getSetting( "password", "" ).toString() );
-    coreEdit->setText( getSetting( "coreAddress", "localhost" ).toString() );
-    refreshSpin->setValue( getSetting( "refresh", 3 ).toInt() );
-    savePassword->setChecked( getSetting( "savePassword", false ).toBool() );
-    showSplash->setChecked( getSetting( "showSplash", true ).toBool() );
-    trayCheckBox->setChecked( getSetting( "useTray", false ).toBool() );
-    altRowsCheckBox->setChecked( getSetting( "altRows", false ).toBool() );
-    serverEdit->setText( getSetting( "serverURL", "http://www.applejuicenet.de/18.0.html" ).toString() );
-    launchCombo->setEditText( getSetting( "launcher", launchCombo->itemText(0)).toString() );
-    int location = getSetting( "location", AjSettings::SAME ).toInt();
-    sameComputerRadio->setChecked( location == AjSettings::SAME );
-    specificRadio->setChecked( location == AjSettings::SPECIFIC );
-    ftpRadio->setChecked( location == AjSettings::FTP );
-    incomingSpecificEdit->setText( getSetting("incomingDirSpecific", "/" ).toString() );
-    tempSpecificEdit->setText( getSetting( "tempDirSpecific", "/" ).toString() );
-    ftpServerEdit->setText( getSetting( "ftp", "server", "localhost" ).toString() );
-    ftpPortEdit->setText( getSetting( "ftp", "port", "21" ).toString() );
-    ftpUserEdit->setText( getSetting( "ftp", "user", "anonymous" ).toString() );
-    ftpPasswordEdit->setText( getSetting( "ftp", "password", "" ).toString() );
-    ftpInDirEdit->setText( getSetting( "ftp", "inDir", "/" ).toString() );
-    ftpTmpDirEdit->setText( getSetting( "ftp", "tmpDir", "/" ).toString() );
-    ftpActiveRadioButton->setChecked( getSetting( "ftp", "mode", QFtp::Active ) == QFtp::Active );
-    ftpPassiveRadioButton->setChecked( getSetting( "ftp", "mode", QFtp::Active ) == QFtp::Passive );
-    ftpMbSpinBox->setValue( getSetting( "ftp", "mb", "10" ).toInt() );
-    bool ftpFull = getSetting( "ftp", "full", false ).toBool();
-    ftpFullRadioButton->setChecked( ftpFull );
-    ftpMbRadioButton->setChecked( !ftpFull );
-    fetchServersCheckBox->setChecked( getSetting( "fetchServersOnStartup", false ).toBool() );
-    languageComboBox->setCurrentIndex(languageComboBox->findData(getSetting( "language", "en" ).toString().split("_")[0]));
+    passwordEdit->setText(getSetting("password", "").toString());
+    coreEdit->setText(getSetting("coreAddress", "localhost").toString());
+    refreshSpin->setValue(getSetting("refresh", 3).toInt());
+    savePassword->setChecked(getSetting("savePassword", false).toBool());
+    showSplash->setChecked(getSetting("showSplash", true).toBool());
+    trayCheckBox->setChecked(getSetting("useTray", false).toBool());
+    altRowsCheckBox->setChecked(getSetting("altRows", false).toBool());
+    serverEdit->setText(getSetting("serverURL", "http://www.applejuicenet.de/18.0.html").toString());
+    launchCombo->setEditText(getSetting("launcher", launchCombo->itemText(0)).toString());
+    int location = getSetting("location", AjSettings::SAME).toInt();
+    sameComputerRadio->setChecked(location == AjSettings::SAME);
+    specificRadio->setChecked(location == AjSettings::SPECIFIC);
+    ftpRadio->setChecked(location == AjSettings::FTP);
+    incomingSpecificEdit->setText(getSetting("incomingDirSpecific", "/").toString());
+    tempSpecificEdit->setText(getSetting("tempDirSpecific", "/").toString());
+    ftpServerEdit->setText(getSetting("ftp", "server", "localhost").toString());
+    ftpPortEdit->setText(getSetting("ftp", "port", "21").toString());
+    ftpUserEdit->setText(getSetting("ftp", "user", "anonymous").toString());
+    ftpPasswordEdit->setText(getSetting("ftp", "password", "").toString());
+    ftpInDirEdit->setText(getSetting("ftp", "inDir", "/").toString());
+    ftpTmpDirEdit->setText(getSetting("ftp", "tmpDir", "/").toString());
+    ftpActiveRadioButton->setChecked(getSetting("ftp", "mode", QFtp::Active) == QFtp::Active);
+    ftpPassiveRadioButton->setChecked(getSetting("ftp", "mode", QFtp::Active) == QFtp::Passive);
+    ftpMbSpinBox->setValue(getSetting("ftp", "mb", "10").toInt());
+    bool ftpFull = getSetting("ftp", "full", false).toBool();
+    ftpFullRadioButton->setChecked(ftpFull);
+    ftpMbRadioButton->setChecked(!ftpFull);
+    fetchServersCheckBox->setChecked(getSetting("fetchServersOnStartup", false).toBool());
+    languageComboBox->setCurrentIndex(languageComboBox->findData(getSetting("language", "en").toString().split("_")[0]));
 
     // -- lists for optionaly showing columns/labales --
     statusbarList->clear();
@@ -181,15 +187,15 @@ void OptionsDialog::setSettings() {
     }
 
     QFont font;
-    QVariant v = getSetting( "font", QApplication::font() );
-    if ( v.isValid() && ! v.toString().isEmpty() ) {
+    QVariant v = getSetting("font", QApplication::font());
+    if (v.isValid() && ! v.toString().isEmpty()) {
         font = v.value<QFont>();
     }
     else {
-      font = QFont( "Arial", 9, QFont::Normal );
+      font = QFont("Arial", 9, QFont::Normal);
     }
-    QApplication::setFont( font );
-    fontComboBox->setCurrentFont( font );
+    QApplication::setFont(font);
+    fontComboBox->setCurrentFont(font);
     setFontSizes(font);
 #ifdef Q_WS_WIN
     handlerCheckCheckBox->setChecked(!OptionsDialog::hasSetting("handler") || OptionsDialog::getSetting("handler", false).toBool());
@@ -307,16 +313,16 @@ void OptionsDialog::writeSettings() {
     setSetting("ftp", "full", ftpFullRadioButton->isChecked());
     setSetting("ftp", "mb", ftpMbSpinBox->value());
 
-    setSetting( "fetchServersOnStartup",  fetchServersCheckBox->isChecked() );
-    setSetting( "language",  languageComboBox->itemData(languageComboBox->currentIndex()) );
+    setSetting("fetchServersOnStartup",  fetchServersCheckBox->isChecked());
+    setSetting("language",  languageComboBox->itemData(languageComboBox->currentIndex()));
 
     QList<QVariant> statusbarComponents;
     for(int i=0; i<statusbarList->count(); i++) {
         statusbarComponents.append(statusbarList->item(i)->checkState() == Qt::Checked);
     }
-    setSetting( "statusbarComponents",  statusbarComponents );
+    setSetting("statusbarComponents",  statusbarComponents);
 
-    setSetting( "font", getFont() );
+    setSetting("font", getFont());
 
 #ifdef Q_WS_WIN
     if(handlerCheckCheckBox->isChecked() && !handlerDefaultCheckBox->isChecked()) {
@@ -470,7 +476,7 @@ bool OptionsDialog::hasSetting(const QString& key) {
  */
 bool OptionsDialog::hasSetting(const QString& group, const QString& key) {
     QSettings lokalSettings;
-    lokalSettings.beginGroup( group );
+    lokalSettings.beginGroup(group);
     bool ret = lokalSettings.contains(key);
     lokalSettings.endGroup();
     return ret;
@@ -491,7 +497,7 @@ void OptionsDialog::removeSetting(const QString& key) {
  */
 void OptionsDialog::removeSetting(const QString& group, const QString& key) {
     QSettings lokalSettings;
-    lokalSettings.beginGroup( group );
+    lokalSettings.beginGroup(group);
     lokalSettings.remove(key);
     lokalSettings.endGroup();
 }
@@ -545,4 +551,91 @@ QList<QVariant> OptionsDialog::getStatusbarShows(int n) {
         }
     }
     return show;
+}
+
+
+/*!
+    \fn OptionsDialog::addProfile()
+ */
+void OptionsDialog::addProfile() {
+    bool ok;
+    QString name = QInputDialog::getText(this, tr("Profile name"), tr("Profile Name:"), QLineEdit::Normal, "", &ok);
+    if(ok && !name.isEmpty()) {
+        QStringList profiles = getSetting("profiles").toStringList();
+        profiles << name;
+        setSetting("profiles", profiles);
+        loadProfiles();
+        updateProfile(QHash<QString, QVariant>(), name);
+    }
+}
+
+
+/*!
+    \fn OptionsDialog::changeProfile()
+ */
+void OptionsDialog::changeProfile() {
+    QList<QListWidgetItem*> selection = profilesList->selectedItems();
+    if(!selection.isEmpty()) {
+        QString name = selection.first()->text();
+        updateProfile(getGroupSetting("profile", name).toHash(), name);
+    }
+}
+
+
+/*!
+    \fn OptionsDialog::removeProfile()
+ */
+void OptionsDialog::removeProfile() {
+    QStringList profiles = getSetting("profiles").toStringList();
+    QList<QListWidgetItem*> selected = profilesList->selectedItems();
+    if(!selected.isEmpty()) {
+        profiles.removeAll(selected.first()->text());
+        setSetting("profiles", profiles);
+        loadProfiles();
+    }
+}
+
+
+/*!
+    \fn OptionsDialog::loadProfiles()
+ */
+void OptionsDialog::loadProfiles() {
+    QStringList profiles = getSetting("profiles").toStringList();
+    profilesList->clear();
+    profilesList->addItems(profiles);
+    profileSelectionChanged();
+}
+
+
+/*!
+    \fn OptionsDialog::profileSelectionChanged()
+ */
+void OptionsDialog::profileSelectionChanged() {
+    QList<QListWidgetItem*> selection = profilesList->selectedItems();
+    bool selected = !selection.isEmpty();
+    changeProfileButton->setEnabled(selected);
+    removeProfileButton->setEnabled(selected);
+    if(selected) {
+        QHash<QString, QVariant> profile = getGroupSetting("profile", selection.first()->text()).toHash();
+        downSpin->setValue(profile["maxDown"].toInt());
+        upSpin->setValue(profile["maxUp"].toInt());
+        connectionsSpin->setValue(profile["maxCon"].toInt());
+        slotSpin->setValue(profile["maxSlot"].toInt());
+        sourcesSpin->setValue(profile["maxSources"].toInt());
+        newSpin->setValue(profile["maxNewCon"].toInt());
+    }
+}
+
+
+/*!
+    \fn OptionsDialog::updateProfile(QHash<QString, QVariant> profile, const QString& name)
+ */
+void OptionsDialog::updateProfile(QHash<QString, QVariant> profile, const QString& name) {
+    profile["maxDown"] = downSpin->value();
+    profile["maxUp"] = upSpin->value();
+    profile["maxCon"] = connectionsSpin->value();
+    profile["maxSlot"] = slotSpin->value();
+    profile["maxSources"] = sourcesSpin->value();
+    profile["maxNewCon"] = newSpin->value();
+    setSetting("profile", name, profile);
 }

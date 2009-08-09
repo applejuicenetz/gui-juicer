@@ -3,6 +3,7 @@
 # Unterordner relativ zum Projektordner: ./src
 # Das Target ist eine Anwendung:  ../bin/ajqt4gui
 
+VERSION = -1.2
 
 include(quazip/quazip.pri)
 INCLUDEPATH += quazip

@@ -94,6 +94,8 @@ public:
     static QString archive();
     static QString cddvd();
     static QList<QVariant> getStatusbarShows(int n);
+    void loadProfiles();
+    void updateProfile(QHash<QString, QVariant> profile, const QString& name);
 private:
     QFontDatabase fontDatabase;
     Juicer* juicer;
@@ -108,6 +110,10 @@ protected slots:
     void acceptedSlot();
     void setFontSizes( const QFont& font );
     void reset();
+    void removeProfile();
+    void changeProfile();
+    void addProfile();
+    void profileSelectionChanged();
 };
 
 #endif
