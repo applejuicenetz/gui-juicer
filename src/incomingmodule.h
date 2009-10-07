@@ -40,6 +40,7 @@ public:
     IncomingModule(Juicer* juicer);
     ~IncomingModule();
     void setDir(const QString& dir);
+    QString getActualIncomingDir();
 
 private:
     void initToolBar();
@@ -49,7 +50,6 @@ private:
     void openFtp();
     void removeFtp();
     void initPopup();
-    AjSettings::LOCATION getLocation();
     bool confirmRemove(QItemList& items);
     QFtp* ftp;
     QLabel* waitLabel;

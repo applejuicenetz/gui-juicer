@@ -53,7 +53,8 @@ HEADERS += ftp.h \
  xmlmodule.h \
  convert.h \
  dirselectiondialog.h \
- autoupdate.h
+ autoupdate.h \
+ dragndroptreewidget.h
 SOURCES += main.cpp \
            md5c.c \
            md5class.cpp \
@@ -91,7 +92,8 @@ SOURCES += main.cpp \
  downloaditem.cpp \
  downloadmodule.cpp \
  ftp.cpp \
- autoupdate.cpp
+ autoupdate.cpp \
+ dragndroptreewidget.cpp
 
 CONFIG += warn_on \
           qt \

@@ -21,22 +21,32 @@
 #include "juicer.h"
 
 ModuleBase::ModuleBase(Juicer* juicer, QTreeWidget* treeWidget, QToolBar* toolbar, QWidget* tabWidget) : QObject(juicer) {
-    this->juicer = juicer;
-    this->xml = juicer->xml;
+    init(juicer, treeWidget, toolbar, tabWidget);
     this->treeWidget = treeWidget;
-    this->toolbar = toolbar;
-    this->treeWidget->insertActions(NULL, toolbar->actions());
-    this->treeWidget->setContextMenuPolicy(Qt::ActionsContextMenu);
-    this->tabIndex = juicer->ajTab->indexOf(tabWidget);
-    this->tabText = juicer->ajTab->tabText(tabIndex);
     updateAlternatingRowColors();
     connect(treeWidget, SIGNAL(itemSelectionChanged()), this, SLOT(selectionChanged()));
 }
 
 
+ModuleBase::ModuleBase(Juicer* juicer, QWidget* contentWidget, QToolBar* toolbar, QWidget* tabWidget) : QObject(juicer) {
+    init(juicer, contentWidget, toolbar, tabWidget);
+}
+
 ModuleBase::~ModuleBase() {
 
 }
+
+void ModuleBase::init(Juicer* juicer, QWidget* contentWidget, QToolBar* toolbar, QWidget* tabWidget) {
+    this->juicer = juicer;
+    this->xml = juicer->xml;
+    this->contentWidget = contentWidget;
+    this->toolbar = toolbar;
+    this->contentWidget->insertActions(NULL, toolbar->actions());
+    this->contentWidget->setContextMenuPolicy(Qt::ActionsContextMenu);
+    this->tabIndex = juicer->ajTab->indexOf(tabWidget);
+    this->tabText = juicer->ajTab->tabText(tabIndex);
+}
+
 
 /*!
     \fn ModuleBase::adjustSizeOfColumns()

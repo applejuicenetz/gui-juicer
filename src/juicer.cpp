@@ -30,6 +30,7 @@ Juicer::Juicer(const QStringList& argList, QSplashScreen *splash, const QFileInf
     , serverModule(0)
     , shareModule(0)
     , incomingModule(0)
+    , coreModule(0)
     , exitId(-1)
     , started(false)
     , connected(false)
@@ -65,6 +66,7 @@ Juicer::Juicer(const QStringList& argList, QSplashScreen *splash, const QFileInf
     serverModule = new ServerModule(this);
     shareModule = new ShareModule(this);
     incomingModule = new IncomingModule(this);
+    //coreModule = new CoreModule(this);
 
     prevTab = downloads;
 
@@ -304,8 +306,7 @@ void Juicer::timerSlot() {
     }
 }
 
-void Juicer::showOptions()
-{
+void Juicer::showOptions() {
     if(connected) {
         xml->get("settings");
     }
@@ -450,6 +451,7 @@ void Juicer::tabChanged(int index) {
     serverToolBar->setVisible(tab == server);
     shareToolBar->setVisible(tab == shares);
     incomingToolBar->setVisible(tab == incoming);
+    //coreToolBar->setVisible(tab == core);
 
     if((prevTab == shares) && (shareModule->isChanged()) && 
        (QMessageBox::question(this, tr("Question"), tr("You've changed your shares.\nDo you want to transfer the changes to the core?"), QMessageBox::Yes, QMessageBox::No) == QMessageBox::Yes)) {
@@ -558,6 +560,8 @@ void Juicer::adjustColumns() {
         serverModule->adjustSizeOfColumns();
     if(shares->isVisible())
         shareModule->adjustSizeOfColumns();
+    if(incoming->isVisible())
+        incomingModule->adjustSizeOfColumns();
 }
 
 
@@ -605,6 +609,13 @@ IconWidget* Juicer::addToStatusBar(IconWidget* widget) {
 void Juicer::initStatusBar() {
     static bool first = true;
     if(first) {
+        profilesWidget = new QWidget(statusBar());
+        profilesBox = new QHBoxLayout();
+        profileGroup = new QButtonGroup(statusBar());
+        profilesWidget->setLayout(profilesBox);
+        statusBar()->addPermanentWidget(profilesWidget);
+
+
         warnFirewallLabel = new QLabel(this);
         statusBar()->addPermanentWidget(warnFirewallLabel);
         connectedLabel = addToStatusBar(new IconWidget(":/small/connected.png", "0", "Connected Since", QBoxLayout::LeftToRight, this, 2, 2));
@@ -614,11 +625,31 @@ void Juicer::initStatusBar() {
         downSizeLabel = addToStatusBar(new IconWidget(":/small/downloaded.png", "0", "Downloaded", QBoxLayout::LeftToRight, this, 2, 2));
         upSizeLabel = addToStatusBar(new IconWidget(":/small/uploaded.png", "0", "Uploaded", QBoxLayout::LeftToRight, this, 2, 2));
         creditsLabel = addToStatusBar(new IconWidget(":/small/credits.png", "0", "Credits", QBoxLayout::LeftToRight, this, 2, 2));
+
         first = false;
+
+        connect(profileGroup, SIGNAL(buttonClicked(QAbstractButton*)), this, SLOT(profileButtonClicked(QAbstractButton*)));
     }
     QList<QVariant> show = OptionsDialog::getStatusbarShows(statusBarWidgets.size());
     for(int i=0; i<statusBarWidgets.size(); i++) {
         statusBarWidgets.at(i)->setVisible(show.at(i).toBool());
+    }
+    // -- remove all profile radio buttons --
+    QList<QAbstractButton *> buttons = profileGroup->buttons();
+    for(int i=0; i<buttons.size(); i++) {
+        profileGroup->removeButton(buttons.at(i));
+        profilesBox->removeWidget(buttons.at(i));
+        delete buttons.at(i);
+    }
+    // -- add profile radio buttons if enabled --
+    if(OptionsDialog::getSetting("profilesStatusbar", false).toBool()) {
+        QStringList profiles = OptionsDialog::getSetting("profiles").toStringList();
+        for(int i=0; i<profiles.size(); i++) {
+            QRadioButton* profileButton = new QRadioButton(profiles.at(i));
+            profileGroup->addButton(profileButton);
+            profilesBox->addWidget(profileButton);
+        }
+        setCurrentProfile();
     }
 }
 
@@ -853,8 +884,10 @@ void Juicer::getNetworkInfo() {
 void Juicer::setFirewalled(bool firewalled) {
     if(firewalled) {
         warnFirewallLabel->setPixmap(QPixmap(":/warning.png"));
+        warnFirewallLabel->setToolTip(tr("Firewalled"));
     } else {
         warnFirewallLabel->clear();
+        warnFirewallLabel->setToolTip("");
     }
 }
 
@@ -873,5 +906,40 @@ void Juicer::autoUpdate() {
 void Juicer::requestFinished(int id, bool error) {
     if(!error && id == exitId && OptionsDialog::getSetting("quitGUIAfterCoreExit", true).toBool()) {
         this->quit();
+    }
+}
+
+
+/*!
+    \fn Juicer::profileButtonClicked(QAbstractButton* button)
+ */
+void Juicer::profileButtonClicked(QAbstractButton* button) {
+    QHash<QString, QVariant> profile = OptionsDialog::getGroupSetting("profile", button->text()).toHash();
+    QString settingsString = "";
+    settingsString += "&MaxUpload=" + QString::number(profile["maxUp"].toInt() * 1024);
+    settingsString += "&MaxDownload=" + QString::number(profile["maxDown"].toInt() * 1024);
+    settingsString += "&MaxSourcesPerFile=" + profile["maxSources"].toString();
+    settingsString += "&MaxConnections=" + profile["maxCon"].toString();
+    settingsString += "&Speedperslot=" + profile["maxSlot"].toString();
+    settingsString += "&MaxNewConnectionsPerTurn=" + profile["maxNewCon"].toString();
+    xml->set("setsettings", settingsString);
+    OptionsDialog::setSetting("currentProfile", button->text());
+    optionsDialog->setCurrentProfile();
+}
+
+
+/*!
+    \fn Juicer::setCurrentProfile()
+ */
+void Juicer::setCurrentProfile() {
+    if(OptionsDialog::hasSetting("currentProfile")) {
+        QString current = OptionsDialog::getSetting("currentProfile", "").toString();
+        QList<QAbstractButton *> buttons = profileGroup->buttons();
+        for(int i=0; i<buttons.size(); i++) {
+            if(buttons.at(i)->text() == current) {
+                buttons.at(i)->setChecked(true);
+                break;
+            }
+        }
     }
 }

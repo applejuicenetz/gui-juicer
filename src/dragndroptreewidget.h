@@ -17,55 +17,35 @@
  *   along with this program; if not, see http://www.gnu.org/licenses/     *
  ***************************************************************************/
 
-#ifndef QAJMODULEBASE_H
-#define QAJMODULEBASE_H
+#ifndef DRAGNDROPTREEWIDGET_H
+#define DRAGNDROPTREEWIDGET_H
 
-#include <QObject>
 #include <QTreeWidget>
-#include <QMessageBox>
-#include <QFileDialog>
-#include <QToolBar>
-#include <QMainWindow>
+#include <QMouseEvent>
+#include <QApplication>
+#include <QUrl>
 
 #include "convert.h"
-
-class Juicer;
-class XMLModule;
+#include "optionsdialog.h"
+#include "incomingitem.h"
+#include "incomingmodule.h"
 
 /**
-    @author Matthias Reif <matthias.reif@informatik.tu-chemnitz.de>
+	@author Matthias Reif <matthias.reif@informatik.tu-chemnitz.de>
 */
-class ModuleBase : public QObject {
+class DragNDropTreeWidget : public QTreeWidget
+{
 Q_OBJECT
 public:
-    ModuleBase(Juicer* juicer, QTreeWidget* treeWidget, QToolBar* toolbar, QWidget* tabWidget = NULL);
-    ModuleBase(Juicer* juicer, QWidget* contentWidget, QToolBar* toolbar, QWidget* tabWidget = NULL);
-    ~ModuleBase();
-    void init(Juicer* juicer, QWidget* contentWidget, QToolBar* toolbar, QWidget* tabWidget);
-    void sortItemsInitially(const QString& settingsGroup);
-    void saveSortOrder(const QString& settingsGroup);
-    void updateAlternatingRowColors();
-protected:
-    Juicer* juicer;
-    QTreeWidget* treeWidget;
-    QWidget* contentWidget;
-    QToolBar* toolbar;
-    QString tabText;
-    int tabIndex;
-    XMLModule* xml;
-public slots:
-    void adjustSizeOfColumns();
-protected slots:
-    void linkListSlot();
-    virtual void selectionChanged() = 0;
-};
+    DragNDropTreeWidget(QWidget *parent = 0);
 
-/// needed because of a Qt Designer issue
-class DockMain : public QMainWindow {
-Q_OBJECT
-public:
-    DockMain(QWidget *parent = 0) : QMainWindow(parent) {}
-    ~DockMain() {}
+    ~DragNDropTreeWidget();
+    void mousePressEvent(QMouseEvent *event);
+    void mouseMoveEvent(QMouseEvent *event);
+    void setIncomingModule(IncomingModule* incomingModule);
+private:
+    QPoint dragStartPosition;
+    IncomingModule* incomingModule;
 };
 
 #endif

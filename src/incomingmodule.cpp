@@ -30,6 +30,7 @@ IncomingModule::IncomingModule(Juicer* juicer) : ModuleBase(juicer, juicer->inco
     connect(juicer->actionDelete_Incoming, SIGNAL(triggered()), this, SLOT(remove()));
     connect(juicer->actionReload_Incoming, SIGNAL(triggered()), this, SLOT(reload()));
     selectionChanged();
+    juicer->incomingTreeWidget->setIncomingModule(this);
 }
 
 
@@ -67,17 +68,10 @@ void IncomingModule::reloadFtp() {
     \fn IncomingModule::copy()
  */
 void IncomingModule::copy() {
-    QString actDir;
-    // determine the path
-    AjSettings::LOCATION location = getLocation();
-    if(location == AjSettings::FTP) {
+    QString actDir = getActualIncomingDir();
+    if(actDir.isEmpty()) { // -- ftp --
         storeFtp();
     } else {
-        if(location == AjSettings::SPECIFIC) {
-            actDir = OptionsDialog::getSetting("incomingDirSpecific", "/").toString() + QDir::separator();
-        } else if(location == AjSettings::SAME) {
-            actDir = this->dir + QDir::separator();
-        }
         QItemList selectedItems = treeWidget->selectedItems();
         for(int i=0; i<selectedItems.size(); i++) {
             QString newDir = QFileDialog::getExistingDirectory(juicer, tr("copy to"), actDir)
@@ -129,17 +123,10 @@ void IncomingModule::removeFtp() {
 void IncomingModule::remove() {
     QItemList selectedItems = treeWidget->selectedItems();
     if(confirmRemove(selectedItems)) {
-        QString actDir;
-        // determine the path
-        AjSettings::LOCATION location = getLocation();
-        if(location == AjSettings::FTP) {
+        QString actDir = getActualIncomingDir();
+        if(actDir.isEmpty()) { // -- ftp --
             removeFtp();
         } else {
-            if(location == AjSettings::SPECIFIC) {
-                actDir = OptionsDialog::getSetting("incomingDirSpecific", "/").toString() + QDir::separator();
-            } else if(location == AjSettings::SAME) {
-                actDir = this->dir + QDir::separator();
-            }
             for(int i=0; i<selectedItems.size(); i++) {
                 if(!QFile::remove(actDir + selectedItems[i]->text(IncomingItem::FILENAME_COL))) {
                     QMessageBox::critical(juicer, "Error", tr("Could not remove %1.").arg(actDir + selectedItems[i]->text(IncomingItem::FILENAME_COL)));
@@ -214,31 +201,26 @@ void IncomingModule::openFtp() {
 void IncomingModule::reload() {
     treeWidget->clear();
     waitLabel->setVisible(false);
-    AjSettings::LOCATION location = getLocation();
-    if(location == AjSettings::FTP) {
+    QString actDir = getActualIncomingDir();
+    if(actDir.isEmpty()) { // -- ftp --
         reloadFtp();
     } else {
-        QString actDir;
-        if(location == AjSettings::SAME) {
-            if(this->dir.isEmpty()) {
-                QLabel* l = new QLabel(tr("There is no connection to the core.\nYou may want to define the incoming directory manually at the options dialog."), treeWidget);
-                l->adjustSize();
-                l->move((treeWidget->width() - l->width()) / 2, (treeWidget->height() - l->height()) / 2);
-                l->show();
-                return;
-            }
-            actDir = this->dir;
+        if(OptionsDialog::getSetting("location", AjSettings::SAME).toInt() == AjSettings::SAME
+                    && this->dir.isEmpty()) {
+            QLabel* l = new QLabel(tr("There is no connection to the core.\nYou may want to define the incoming directory manually at the options dialog."), treeWidget);
+            l->adjustSize();
+            l->move((treeWidget->width() - l->width()) / 2, (treeWidget->height() - l->height()) / 2);
+            l->show();
         } else {
-            actDir = OptionsDialog::getSetting("incomingDirSpecific", "/").toString();
-        }
-        QDir dirDir(actDir);
-        if(dirDir.exists()) {
-            QFileIconProvider fileIconProvider;
-            QFileInfoList list = dirDir.entryInfoList(QDir::AllEntries | QDir::NoDotAndDotDot);
-            for(int i=0; i<list.size(); i++) {
-                QFileInfo& file = list[i];
-                IncomingItem* item = new IncomingItem(file, treeWidget);
-                treeWidget->addTopLevelItem(item);
+            QDir dirDir(actDir);
+            if(dirDir.exists()) {
+                QFileIconProvider fileIconProvider;
+                QFileInfoList list = dirDir.entryInfoList(QDir::AllEntries | QDir::NoDotAndDotDot);
+                for(int i=0; i<list.size(); i++) {
+                    QFileInfo& file = list[i];
+                    IncomingItem* item = new IncomingItem(file, treeWidget);
+                    treeWidget->addTopLevelItem(item);
+                }
             }
         }
     }
@@ -260,21 +242,16 @@ void IncomingModule::setDir(const QString& dir) {
 void IncomingModule::open() {
     QStringList args = Juicer::getExec();
     QString exec = args.takeFirst();
-    QString actDir;
-    // determine the path
-    AjSettings::LOCATION location = getLocation();
-    if(location == AjSettings::SPECIFIC) {
-        actDir = OptionsDialog::getSetting("incomingDirSpecific", "/").toString() + QDir::separator();
-    } else if(location == AjSettings::SAME) {
-        actDir = this->dir + QDir::separator();
-    } else {  // ftp
+    QString actDir = getActualIncomingDir();
+    if(actDir.isEmpty()) { // -- ftp --
         return openFtp();
-    }
-    QItemList selectedItems = treeWidget->selectedItems();
-    for(int i=0; i<selectedItems.size(); i++) {
-        args <<  actDir + selectedItems[i]->text(IncomingItem::FILENAME_COL);
-        QProcess::startDetached(exec, args);
-        args.removeLast();
+    } else {
+        QItemList selectedItems = treeWidget->selectedItems();
+        for(int i=0; i<selectedItems.size(); i++) {
+            args <<  actDir + selectedItems[i]->text(IncomingItem::FILENAME_COL);
+            QProcess::startDetached(exec, args);
+            args.removeLast();
+        }
     }
 }
 
@@ -288,15 +265,6 @@ void IncomingModule::insert(QUrlInfo info) {
         adjustSizeOfColumns();
     }
 }
-
-
-/*!
-    \fn IncomingModule::getLocation()
- */
-AjSettings::LOCATION IncomingModule::getLocation() {
-    return (AjSettings::LOCATION)OptionsDialog::getSetting("location", AjSettings::SAME).toInt();
-}
-
 
 /*!
     \fn IncomingModule::ftpReadyRead(QFile* dstFile, FTP* ftp)
@@ -329,4 +297,19 @@ void IncomingModule::selectionChanged() {
     juicer->actionOpen_Incoming->setEnabled(oneSelected);
     juicer->actionCopy_Incoming->setEnabled(oneSelected);
     juicer->actionDelete_Incoming->setEnabled(oneSelected);
+}
+
+
+/*!
+    \fn IncomingModule::getActualIncomingDir()
+ */
+QString IncomingModule::getActualIncomingDir() {
+    switch((AjSettings::LOCATION)OptionsDialog::getSetting("location", AjSettings::SAME).toInt()) {
+        case AjSettings::SPECIFIC:
+            return OptionsDialog::getSetting("incomingDirSpecific", "/").toString() + QDir::separator();
+        case AjSettings::SAME:
+            return this->dir + QDir::separator();
+        default: // -- ftp --
+            return "";
+    }
 }

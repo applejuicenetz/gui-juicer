@@ -45,6 +45,7 @@
 #include "servermodule.h"
 #include "sharemodule.h"
 #include "incomingmodule.h"
+#include "coremodule.h"
 
 #include "xmlmodule.h"
 #include "optionsdialog.h"
@@ -77,6 +78,7 @@ public:
     ServerModule *serverModule;
     ShareModule *shareModule;
     IncomingModule *incomingModule;
+    CoreModule *coreModule;
     QHash<QString, QIcon> osIcons;
     QList<IconWidget*> statusBarWidgets;   /// hide-able statusbar widgets
     OptionsDialog *optionsDialog;
@@ -103,6 +105,7 @@ public:
     QString getAppPath() const;
     void setFirewalled(bool  firewalled);
     void autoUpdate();
+    void setCurrentProfile();
 
 protected:
     void initToolBars();
@@ -134,6 +137,9 @@ protected:
     QSplashScreen *splash;
     QStringList clipboardTexts;
     AutoUpdate* autoUpdater;
+    QWidget* profilesWidget;
+    QHBoxLayout* profilesBox;
+    QButtonGroup* profileGroup;
 
 private slots:
     bool login(const QString& message = "<h3>Login</h3>", bool error = false);
@@ -159,6 +165,7 @@ private slots:
     void showManual();
     void clipboardChanged(QClipboard::Mode mode);
     void getNetworkInfo();
+    void profileButtonClicked(QAbstractButton* button);
 public slots:
     void requestFinished(int id, bool error);
 };

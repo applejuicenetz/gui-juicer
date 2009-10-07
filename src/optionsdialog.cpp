@@ -93,8 +93,17 @@ OptionsDialog::OptionsDialog(Juicer* juicer) : QDialog(juicer) {
     connect(changeProfileButton, SIGNAL(clicked()), this, SLOT(changeProfile()));
     connect(removeProfileButton, SIGNAL(clicked()), this, SLOT(removeProfile()));
 
+    profileChangeActive = true;
+    profileChanged = false;
     listWidget->setCurrentRow(0);
-    loadProfiles();
+
+    connect(downSpin, SIGNAL(valueChanged(int)), this, SLOT(limitsChanged()));
+    connect(upSpin, SIGNAL(valueChanged(int)), this, SLOT(limitsChanged()));
+    connect(slotSpin, SIGNAL(valueChanged(int)), this, SLOT(limitsChanged()));
+    connect(sourcesSpin, SIGNAL(valueChanged(int)), this, SLOT(limitsChanged()));
+    connect(connectionsSpin, SIGNAL(valueChanged(int)), this, SLOT(limitsChanged()));
+    connect(newSpin, SIGNAL(valueChanged(int)), this, SLOT(limitsChanged()));
+
 }
 
 OptionsDialog::~OptionsDialog() {
@@ -118,6 +127,7 @@ AjSettings OptionsDialog::getAjSettings() {
 }
 
 void OptionsDialog::setAjSettings(const AjSettings& settings) {
+    profileChangeActive = false;
     nickEdit->setText(settings.nick);
     xmlEdit->setText(settings.xmlPort);
     incomingEdit->setText(settings.incomingDir);
@@ -130,6 +140,9 @@ void OptionsDialog::setAjSettings(const AjSettings& settings) {
     connectionsSpin->setValue(settings.maxCon.toInt());
     newSpin->setValue(settings.maxNewCon.toInt());
     tcpEdit->setText(settings.tcpPort);
+    loadProfiles();
+    profileChanged = false;
+    profileChangeActive = true;
 }
 
 void OptionsDialog::setSettings() {
@@ -205,6 +218,7 @@ void OptionsDialog::setSettings() {
     checkUpdatesCheckBox->setChecked(getSetting("checkUpdates", true).toBool());
     observeClipboardCheckBox->setChecked(getSetting("observeClipboard", false).toBool());
     quitGUIAfterCoreExitCheckBox->setChecked(getSetting("quitGUIAfterCoreExit", true).toBool());
+    profilesStatusbarCheckBox->setChecked(getSetting("profilesStatusbar", false).toBool());
     videoEdit->setText(video());
     audioEdit->setText(audio());
     imageEdit->setText(image());
@@ -335,6 +349,7 @@ void OptionsDialog::writeSettings() {
     OptionsDialog::setSetting("checkUpdates", checkUpdatesCheckBox->isChecked());
     OptionsDialog::setSetting("observeClipboard", observeClipboardCheckBox->isChecked());
     OptionsDialog::setSetting("quitGUIAfterCoreExit", quitGUIAfterCoreExitCheckBox->isChecked());
+    OptionsDialog::setSetting("profilesStatusbar", profilesStatusbarCheckBox->isChecked());
 
     OptionsDialog::setSetting("dataTypes", "video", videoEdit->text());
     OptionsDialog::setSetting("dataTypes", "audio", audioEdit->text());
@@ -398,6 +413,13 @@ void OptionsDialog::setSetting(const QString& group, const QString& key, QVarian
  */
 void OptionsDialog::acceptedSlot() {
     writeSettings();
+    QList<QListWidgetItem*> selection = profilesList->selectedItems();
+    bool selected = !selection.isEmpty();
+    if(selected && !profileChanged) {
+        setSetting("currentProfile", selection.first()->text());
+    } else {
+        removeSetting("currentProfile");
+    }
 }
 
 /*!
@@ -603,6 +625,7 @@ void OptionsDialog::loadProfiles() {
     QStringList profiles = getSetting("profiles").toStringList();
     profilesList->clear();
     profilesList->addItems(profiles);
+    setCurrentProfile();
     profileSelectionChanged();
 }
 
@@ -616,6 +639,8 @@ void OptionsDialog::profileSelectionChanged() {
     changeProfileButton->setEnabled(selected);
     removeProfileButton->setEnabled(selected);
     if(selected) {
+        profileChangeActive = false;
+//        setSetting("currentProfile", selection.first()->text());
         QHash<QString, QVariant> profile = getGroupSetting("profile", selection.first()->text()).toHash();
         downSpin->setValue(profile["maxDown"].toInt());
         upSpin->setValue(profile["maxUp"].toInt());
@@ -623,6 +648,9 @@ void OptionsDialog::profileSelectionChanged() {
         slotSpin->setValue(profile["maxSlot"].toInt());
         sourcesSpin->setValue(profile["maxSources"].toInt());
         newSpin->setValue(profile["maxNewCon"].toInt());
+        profileChangeActive = true;
+    } else {
+//        removeSetting("currentProfile");
     }
 }
 
@@ -638,4 +666,28 @@ void OptionsDialog::updateProfile(QHash<QString, QVariant> profile, const QStrin
     profile["maxSources"] = sourcesSpin->value();
     profile["maxNewCon"] = newSpin->value();
     setSetting("profile", name, profile);
+}
+
+
+/*!
+    \fn OptionsDialog::setCurrentProfile()
+ */
+void OptionsDialog::setCurrentProfile() {
+    if(hasSetting("currentProfile")) {
+        QList<QListWidgetItem *> current = profilesList->findItems(
+                getSetting("currentProfile", "").toString(), Qt::MatchExactly);
+        if(!current.isEmpty()) {
+            profilesList->setCurrentItem(current.first());
+        }
+    }
+}
+
+
+/*!
+    \fn OptionsDialog::limitsChanged()
+ */
+void OptionsDialog::limitsChanged() {
+    if(profileChangeActive) {
+        profileChanged = true;
+    }
 }
