@@ -45,7 +45,6 @@
 #include "servermodule.h"
 #include "sharemodule.h"
 #include "incomingmodule.h"
-#include "coremodule.h"
 
 #include "xmlmodule.h"
 #include "optionsdialog.h"
@@ -78,7 +77,6 @@ public:
     ServerModule *serverModule;
     ShareModule *shareModule;
     IncomingModule *incomingModule;
-    CoreModule *coreModule;
     QHash<QString, QIcon> osIcons;
     QList<IconWidget*> statusBarWidgets;   /// hide-able statusbar widgets
     OptionsDialog *optionsDialog;

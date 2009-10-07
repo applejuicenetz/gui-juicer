@@ -30,7 +30,6 @@ Juicer::Juicer(const QStringList& argList, QSplashScreen *splash, const QFileInf
     , serverModule(0)
     , shareModule(0)
     , incomingModule(0)
-    , coreModule(0)
     , exitId(-1)
     , started(false)
     , connected(false)
@@ -66,7 +65,6 @@ Juicer::Juicer(const QStringList& argList, QSplashScreen *splash, const QFileInf
     serverModule = new ServerModule(this);
     shareModule = new ShareModule(this);
     incomingModule = new IncomingModule(this);
-    //coreModule = new CoreModule(this);
 
     prevTab = downloads;
 
