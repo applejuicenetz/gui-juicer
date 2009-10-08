@@ -287,8 +287,7 @@ void XMLModule::handleIds(QDomNode& node)
 /*!
     \fn XMLModule::handleNetworkInfo(QDomElement& e)
  */
-void XMLModule::handleNetworkInfo(QDomElement& e)
-{
+void XMLModule::handleNetworkInfo(QDomElement& e) {
     bool firewalled = e.attribute("firewalled")=="true";
     juicer->networkDialog->setValues(
         e.attribute("users"),
@@ -361,6 +360,7 @@ void XMLModule::processUsers() {
             e.attribute("downloadfrom"),
             e.attribute("downloadto"),
             e.attribute("actualdownloadposition"),
+            e.attribute("source"),
             time);
     }
     juicer->downloadsTreeWidget->setUpdatesEnabled(true);

@@ -24,6 +24,8 @@
 #include <QTreeWidget>
 #include <QApplication>
 #include <QUrlInfo>
+#include <QProgressBar>
+#include <QVBoxLayout>
 
 #include "convert.h"
 
@@ -59,8 +61,13 @@ public:
     void setFileIcon(int column);
     void setFileIcon(int column, QFileInfo& file);
     void setFileIcon(int column, QUrlInfo& url);
-
+    QProgressBar* initProgressBar(int col);
 protected:
+    void initProgressBar(QProgressBar& progressBar, int col);
+    static void updateProgressBar(QProgressBar& progressBar,
+                const QString& from, const QString& to, const QString& current);
+    static void updateProgressBar(QProgressBar& progressBar, int from, int to, int current);
+    static int progressPercentualValue(const QProgressBar& progressBar);
     QString id_;
     QString status_;
 

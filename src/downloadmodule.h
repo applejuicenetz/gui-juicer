@@ -47,7 +47,8 @@ public:
                     const QString& nickname, const QString& speed, const QString& status,
                     const QString& power, const QString& queuePos, const QString& os,
                     const QString& downloadfrom, const QString& downloadto,
-                    const QString& actualdownloadposition, QTime& time);
+                    const QString& actualdownloadposition, const QString& source,
+                    QTime& time);
     bool remove(const QString& id);
     bool removeDownload(const QString& id);
     DownloadItem* findDownload(const QString& id);
@@ -74,8 +75,7 @@ protected:
     QDoubleSpinBox* powerSpin;
     QCheckBox *powerCheck;
     QAction *powerButtonAction;
-    QHash<QString, QString> userStatusDescr;
-    QHash<QString, QString> downloadStatusDescr;
+    QHash<QString, QString> userStatusDescr, downloadStatusDescr, userSourceDescr;
     QString tempDir, incomingDir;
     bool hidePaused;
 

@@ -48,6 +48,12 @@ DownloadModule::DownloadModule(Juicer* juicer, QWidget* tabWidget)
     downloadStatusDescr["16"] = QObject::tr("creating .dat");
     downloadStatusDescr["17"] = QObject::tr("canceled");
     downloadStatusDescr["18"] = QObject::tr("paused");
+    userSourceDescr["1"] = QObject::tr("AJFSP-Link");
+    userSourceDescr["2"] = QObject::tr("Client-Client Connection");
+    userSourceDescr["3"] = QObject::tr("Upload List");
+    userSourceDescr["4"] = QObject::tr("Last Start");
+    userSourceDescr["5"] = QObject::tr("Text Search");
+    userSourceDescr["6"] = QObject::tr("Server Search");
 
     currIdRoundRobin = -1;
 
@@ -157,6 +163,7 @@ void DownloadModule::insertUser(const QString& downloadId,
                                 const QString& downloadfrom,
                                 const QString& downloadto,
                                 const QString& actualdownloadposition,
+                                const QString& source,
                                 QTime& time)
 {
     DownloadItem *downloadItem = findDownload(downloadId);
@@ -166,7 +173,7 @@ void DownloadModule::insertUser(const QString& downloadId,
     }
     downloadItem->updateUser(id, fileName, nickname, speed, status, power, queuePos,
                              userStatusDescr[status], juicer->osIcons[os], downloadfrom,
-                             downloadto, actualdownloadposition, time);
+                             downloadto, actualdownloadposition, userSourceDescr[source], time);
 }
 
 /*!

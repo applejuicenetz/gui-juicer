@@ -91,32 +91,51 @@ void DownloadItem::initPowerSpin()
 //     connect(powerSpin, SIGNAL(valueChanged(double)), this, SLOT(applyPowerDownload()));
 }
 
-void DownloadItem::moveItem(UserItem *userItem, const QString& oldStatus)
-{
-    if (oldStatus != userItem->getStatus()) {
+void DownloadItem::moveItem(UserItem *userItem, const QString& newStatus) {
+    QString oldStatus = userItem->getStatus();
+    if (oldStatus != newStatus) {
         if (userItem->QTreeWidgetItem::parent() && (oldStatus != NEW_SOURCE)) {
-            userItem->QTreeWidgetItem::parent()->takeChild(userItem->QTreeWidgetItem::parent()->indexOfChild(userItem));
+            QTreeWidgetItem *p = userItem->QTreeWidgetItem::parent();
+            userItem->progressChunk = NULL;
+            treeWidget()->removeItemWidget(userItem, DownloadItem::FINISHED_COL);
+            p->takeChild(p->indexOfChild(userItem));
         }
         if (oldStatus == ACTIVE_SOURCE) {
-            if (userItem->getStatus() == QUEUED_SOURCE) {
+            if (newStatus == QUEUED_SOURCE) {
                 queuedSourcesItem->addChild(userItem);
-            } else if ((userItem->getStatus() != ACTIVE_SOURCE) &&  (userItem->getStatus() != QUEUED_SOURCE)) {
+            } else if ((newStatus != ACTIVE_SOURCE) &&  (newStatus != QUEUED_SOURCE)) {
                 otherSourcesItem->addChild(userItem);
             }
         } else if (oldStatus == QUEUED_SOURCE) {
-            if (userItem->getStatus() == ACTIVE_SOURCE) {
+            if (newStatus == ACTIVE_SOURCE) {
                 activeSourcesItem->addChild(userItem);
-            } else if ((userItem->getStatus() != ACTIVE_SOURCE) &&  (userItem->getStatus() != QUEUED_SOURCE)) {
+            } else if ((newStatus != ACTIVE_SOURCE) &&  (newStatus != QUEUED_SOURCE)) {
                 otherSourcesItem->addChild(userItem);
             }
         } else if (oldStatus == NEW_SOURCE) {
             // -- pass --
         } else {
-            if (userItem->getStatus() == ACTIVE_SOURCE) {
+            if (newStatus == ACTIVE_SOURCE) {
                 activeSourcesItem->addChild(userItem);
-            } else if (userItem->getStatus() == QUEUED_SOURCE) {
+            } else if (newStatus == QUEUED_SOURCE) {
                 queuedSourcesItem->addChild(userItem);
             }
+        }
+        if(newStatus == ACTIVE_SOURCE) {
+            userItem->progressChunk = userItem->initProgressBar(DownloadItem::FINISHED_COL);
+/*
+ QProgressBar {
+     border: 2px solid grey;
+     border-radius: 5px;
+     text-align: center;
+ }
+
+ QProgressBar::chunk {
+     background-color: #53A3FF;
+     width: 20px;
+     text-align: center;
+ }
+*/
         }
     }
 }
@@ -148,6 +167,7 @@ void DownloadItem::updateUser(const QString& id,
                               const QString& downloadfrom,
                               const QString& downloadto,
                               const QString& actualdownloadposition,
+                              const QString& source,
                               const QTime& time) {
     UserItem* userItem = findUser(id);
     if (userItem == NULL) {
@@ -160,10 +180,9 @@ void DownloadItem::updateUser(const QString& id,
         }
         users[ id ] = userItem;
     }
-    QString oldStatus = userItem->getStatus();
+    moveItem(userItem, status);
     userItem->update(fileName, nickname, speed, status, power, queuePos, statusString, osIcon,
-                      downloadfrom, downloadto, actualdownloadposition, time);
-    moveItem(userItem, oldStatus);
+                      downloadfrom, downloadto, actualdownloadposition, source, time);
 }
 
 bool DownloadItem::update(const QString& hash,

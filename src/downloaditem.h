@@ -71,7 +71,7 @@ public:
            TARGET_DIR_COL     = 11
          };
 
-    void moveItem(UserItem *userItem, const QString& oldStatus);
+    void moveItem(UserItem *userItem, const QString& newStatus);
     bool update(const QString& hash, const QString& fileName, const QString& status,
                  const QString& size, const QString& ready, const QString& power,
                  const QString& tempNumber, const QString& targetDir);
@@ -79,7 +79,8 @@ public:
                      const QString& speed, const QString& status, const QString& power,
                      const QString& queuePos, const QString& statusString, QIcon& osIcon,
                      const QString& downloadfrom, const QString& downloadto,
-                     const QString& actualdownloadposition, const QTime& time);
+                     const QString& actualdownloadposition, const QString& source,
+                     const QTime& time);
 
     UserItem* findUser(const QString& id);
     void removeUser(const QString& id);

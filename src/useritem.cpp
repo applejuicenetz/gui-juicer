@@ -20,30 +20,27 @@
 #include "useritem.h"
 
 UserItem::UserItem( const QString& id, QTreeWidget *parent ) 
-  : Item( parent, id )
-{
+  : Item( parent, id ) {
     init();
 }
 
 UserItem::UserItem( const QString& id, QTreeWidgetItem *parent ) 
-  : Item( parent, id )
-{
+  : Item( parent, id ) {
     init();
 }
 
 UserItem::~UserItem()
 {}
 
-void UserItem::init()
-{
+void UserItem::init() {
     speed = 0;
     fileNameSet = false;
     status_ = NEW_SOURCE;
     setFlags( Qt::ItemIsEnabled );
+    progressChunk = NULL;
 }
 
-void UserItem::setSpeed( const QString& newSpeedString, const QTime& /*time*/ )
-{
+void UserItem::setSpeed( const QString& newSpeedString, const QTime& /*time*/ ) {
     speed = newSpeedString.toInt();
     if ( status_ == ACTIVE_SOURCE )
         setText( DownloadItem::SPEED_COL, Convert::bytes(newSpeedString) + "/s" );
@@ -51,21 +48,21 @@ void UserItem::setSpeed( const QString& newSpeedString, const QTime& /*time*/ )
         setText( DownloadItem::SPEED_COL, "" );
 }
 
-void UserItem::update( const QString& fileName,
-                          const QString& nickname,
-                          const QString& speed,
-                          const QString& status,
-                          const QString& power,
-                          const QString& queuePos,
-                          const QString& statusString,
-                          QIcon& osIcon,
-                          const QString& downloadfrom,
-                          const QString& downloadto,
-                          const QString& actualdownloadposition,
-                          const QTime& time )
-{
+void UserItem::update(const QString& fileName,
+                      const QString& nickname,
+                      const QString& speed,
+                      const QString& status,
+                      const QString& power,
+                      const QString& queuePos,
+                      const QString& statusString,
+                      QIcon& osIcon,
+                      const QString& downloadfrom,
+                      const QString& downloadto,
+                      const QString& actualdownloadposition,
+                      const QString& source,
+                      const QTime& time) {
     this->fileName = fileName;
-    status_ = status;
+    this->status_ = status;
     this->power = power;
     this->queuePos = queuePos.toInt();
     setSpeed( speed, time );
@@ -76,14 +73,12 @@ void UserItem::update( const QString& fileName,
         setText( DownloadItem::STATUS_COL,  statusString );
     }
     setText( DownloadItem::POWER_COL,  Convert::power( power ) );
-    setText( DownloadItem::SOURCES_COL,  nickname );
-    if ( !fileNameSet && !fileName.isEmpty() )
-    {
+    setText( DownloadItem::SOURCES_COL,  nickname  + " (" + source + ")");
+    if ( !fileNameSet && !fileName.isEmpty() ) {
         setText( DownloadItem::FILENAME_COL, fileName );
         fileNameSet = true;
     }
-    if ( this->icon(DownloadItem::SOURCES_COL).isNull() )
-    {
+    if ( this->icon(DownloadItem::SOURCES_COL).isNull() ) {
         setIcon( DownloadItem::SOURCES_COL, osIcon );
     }
     if(actualdownloadposition != "-1") {
@@ -93,6 +88,9 @@ void UserItem::update( const QString& fileName,
         setText(DownloadItem::SIZE_COL, Convert::bytes(dTo - dFrom + 1.0, 2));
         setText(DownloadItem::REMAIN_SIZE_COL, Convert::bytes(dTo - dPosition + 1.0, 2));
         setText(DownloadItem::FINISHED_SIZE_COL, Convert::bytes(dPosition - dFrom, 2));
+        if(progressChunk != NULL) {
+            updateProgressBar(*progressChunk, dFrom, dTo, dPosition);
+        }
     } else {
         setText(DownloadItem::SIZE_COL, "");
         setText(DownloadItem::REMAIN_SIZE_COL, "");
