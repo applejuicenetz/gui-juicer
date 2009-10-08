@@ -87,6 +87,7 @@ private:
     void handleShares(QDomElement& e);
     void handleIds(QDomNode& node);
     void handleNetworkInfo(QDomElement& e);
+    void handleInformation(QDomElement& e);
     void handleUpload(QDomElement& e);
     void handleDownload(QDomElement& e);
     void handleUser(QDomElement& e, QTime& time);

@@ -81,7 +81,9 @@ public:
     QList<IconWidget*> statusBarWidgets;   /// hide-able statusbar widgets
     OptionsDialog *optionsDialog;
 
-    void setStatusBarText(const QString& downSpeed, const QString& upSpeed, const QString& credits, const QString& downSize, const QString& upSize);
+    void setStatusBarText(const QString& downSpeed, const QString& upSpeed,
+                          const QString& credits, const QString& downSize,
+                          const QString& upSize, const QString& openConnections);
     void setFilesystemSeparator(const QString& separator);
     // returns filesystemseperator of the remote filesystem where the Core runs
     QString getFilesystemSeparator() const;
@@ -128,7 +130,8 @@ protected:
     QLineEdit *ajAddressEdit;
     QToolButton *ajAddressButton;
     QLabel *warnFirewallLabel;
-    IconWidget *downSpeedLabel, *upSpeedLabel, *creditsLabel, *downSizeLabel, *upSizeLabel, *coreVersionLabel, *connectedLabel;
+    IconWidget *downSpeedLabel, *upSpeedLabel, *creditsLabel, *downSizeLabel,
+               *upSizeLabel, *coreVersionLabel, *connectedLabel, *connectionsLabel;
     bool started, connected, localCore;
     QStringList queuedLinks;
     int firstModifiedCnt, firstModifiedMax;

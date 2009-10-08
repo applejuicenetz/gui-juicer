@@ -95,13 +95,7 @@ void XMLModule::requestFinished(int id, bool error) {
                     } else if(e.tagName() == "generalinformation") {
                         handleGeneralInformation(n);
                     } else if(e.tagName() == "information") {
-                        juicer->setStatusBarText(
-                            e.attribute("downloadspeed"),
-                            e.attribute("uploadspeed"),
-                            e.attribute("credits"),
-                            e.attribute("sessiondownload"),
-                            e.attribute("sessionupload")
-                       );
+                        handleInformation(e);
                     } else if(e.tagName() == "networkinfo") {
                         handleNetworkInfo(e);
                     } else if(e.tagName() == "upload") {
@@ -303,6 +297,19 @@ void XMLModule::handleNetworkInfo(QDomElement& e) {
     juicer->welcomeEdit->setHtml(e.firstChildElement("welcomemessage").text().trimmed());
 }
 
+/*!
+    \fn XMLModule::handleInformation(QDomElement& e)
+ */
+void XMLModule::handleInformation(QDomElement& e) {
+    juicer->setStatusBarText(
+        e.attribute("downloadspeed"),
+        e.attribute("uploadspeed"),
+        e.attribute("credits"),
+        e.attribute("sessiondownload"),
+        e.attribute("sessionupload"),
+        e.attribute("openconnections")
+    );
+}
 
 /*!
     \fn XMLModule::handleUpload(QDomElement& e)

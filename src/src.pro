@@ -188,6 +188,7 @@ resources/warning.png \
  resources/small/view_tree.png \
  resources/small/view_detailed.png \
  resources/small/update.png \
+ resources/small/network-wired.png \
  resources/options/de.png \
  resources/options/fonts.png \
  resources/options/gb.png \

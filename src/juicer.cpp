@@ -386,7 +386,8 @@ void Juicer::gotSession() {
 }
 
 void Juicer::setStatusBarText(const QString& downSpeed, const QString& upSpeed,
-        const QString& credits, const QString& downSize, const QString& upSize) {
+        const QString& credits, const QString& downSize, const QString& upSize,
+        const QString& openConnections) {
     QString downStreamString = Convert::bytes(downSpeed) + "/s";
     QString upStreamString = Convert::bytes(upSpeed) + "/s";
     QString creditsString = Convert::bytesExtra(credits);
@@ -398,6 +399,7 @@ void Juicer::setStatusBarText(const QString& downSpeed, const QString& upSpeed,
     creditsLabel->setText(creditsString);
     downSizeLabel->setText(downSizeString);
     upSizeLabel->setText(upSizeString);
+    connectionsLabel->setText(openConnections);
 
     // show all information via tray icon
     tray->setToolTip("Juicer - appleJuice Qt4 GUI\n\n" +
@@ -613,19 +615,17 @@ void Juicer::initStatusBar() {
         profilesWidget->setLayout(profilesBox);
         statusBar()->addPermanentWidget(profilesWidget);
 
-
         warnFirewallLabel = new QLabel(this);
         statusBar()->addPermanentWidget(warnFirewallLabel);
-        connectedLabel = addToStatusBar(new IconWidget(":/small/connected.png", "0", "Connected Since", QBoxLayout::LeftToRight, this, 2, 2));
-        coreVersionLabel = addToStatusBar(new IconWidget(":/small/version.png", "0", "Core Version", QBoxLayout::LeftToRight, this, 2, 2));
-        downSpeedLabel = addToStatusBar(new IconWidget(":/small/downstream.png", "0", "Downstream", QBoxLayout::LeftToRight, this, 2, 2));
-        upSpeedLabel = addToStatusBar(new IconWidget(":/small/upstream.png", "0", "Upstream", QBoxLayout::LeftToRight, this, 2, 2));
-        downSizeLabel = addToStatusBar(new IconWidget(":/small/downloaded.png", "0", "Downloaded", QBoxLayout::LeftToRight, this, 2, 2));
-        upSizeLabel = addToStatusBar(new IconWidget(":/small/uploaded.png", "0", "Uploaded", QBoxLayout::LeftToRight, this, 2, 2));
-        creditsLabel = addToStatusBar(new IconWidget(":/small/credits.png", "0", "Credits", QBoxLayout::LeftToRight, this, 2, 2));
-
+        connectedLabel = addToStatusBar(new IconWidget(":/small/connected.png", "0", tr("Connected Since"), QBoxLayout::LeftToRight, this, 2, 2));
+        connectionsLabel = addToStatusBar(new IconWidget(":/small/connections.png", "0", tr("Number Of Open Connections"), QBoxLayout::LeftToRight, this, 2, 2));
+        coreVersionLabel = addToStatusBar(new IconWidget(":/small/version.png", "0", tr("Core Version"), QBoxLayout::LeftToRight, this, 2, 2));
+        downSpeedLabel = addToStatusBar(new IconWidget(":/small/downstream.png", "0", tr("Downstream"), QBoxLayout::LeftToRight, this, 2, 2));
+        upSpeedLabel = addToStatusBar(new IconWidget(":/small/upstream.png", "0", tr("Upstream"), QBoxLayout::LeftToRight, this, 2, 2));
+        downSizeLabel = addToStatusBar(new IconWidget(":/small/downloaded.png", "0", tr("Downloaded"), QBoxLayout::LeftToRight, this, 2, 2));
+        upSizeLabel = addToStatusBar(new IconWidget(":/small/uploaded.png", "0", tr("Uploaded"), QBoxLayout::LeftToRight, this, 2, 2));
+        creditsLabel = addToStatusBar(new IconWidget(":/small/credits.png", "0", tr("Credits"), QBoxLayout::LeftToRight, this, 2, 2));
         first = false;
-
         connect(profileGroup, SIGNAL(buttonClicked(QAbstractButton*)), this, SLOT(profileButtonClicked(QAbstractButton*)));
     }
     QList<QVariant> show = OptionsDialog::getStatusbarShows(statusBarWidgets.size());
