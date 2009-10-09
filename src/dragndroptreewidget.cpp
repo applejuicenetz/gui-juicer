@@ -53,7 +53,7 @@ void DragNDropTreeWidget::mouseMoveEvent(QMouseEvent *event) {
             QMimeData *mimeData = new QMimeData;
             mimeData->setUrls(urls);
             drag->setMimeData(mimeData);
-            drag->exec(Qt::CopyAction | Qt::MoveAction);
+            drag->exec(Qt::CopyAction | Qt::MoveAction | Qt::LinkAction);
             incomingModule->reload();
         }
     }

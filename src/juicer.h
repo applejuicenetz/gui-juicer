@@ -54,6 +54,7 @@
 #include "serversocket.h"
 #include "iconwidget.h"
 #include "autoupdate.h"
+#include "aboutdialog.h"
 
 static const QString WINDOWS = "1";
 static const QString LINUX = "2";

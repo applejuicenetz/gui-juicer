@@ -15,7 +15,9 @@ logindialogbase.ui \
  partlistdialogbase.ui \
  mainwindowbase.ui \
  updatedialogbase.ui \
- dirselectiondialogbase.ui
+ dirselectiondialogbase.ui \
+ replacedialogbase.ui \
+ aboutdialogbase.ui
 HEADERS += ftp.h \
            global.h \
            md5class.h \
@@ -54,7 +56,9 @@ HEADERS += ftp.h \
  convert.h \
  dirselectiondialog.h \
  autoupdate.h \
- dragndroptreewidget.h
+ dragndroptreewidget.h \
+ replacedialog.h \
+ aboutdialog.h
 SOURCES += main.cpp \
            md5c.c \
            md5class.cpp \
@@ -93,7 +97,9 @@ SOURCES += main.cpp \
  downloadmodule.cpp \
  ftp.cpp \
  autoupdate.cpp \
- dragndroptreewidget.cpp
+ dragndroptreewidget.cpp \
+ replacedialog.cpp \
+ aboutdialog.cpp
 
 CONFIG += warn_on \
           qt \
@@ -115,13 +121,17 @@ resources/connect_creating.png \
 resources/dummy.png \
 resources/editpaste.png \
 resources/edit.png \
+resources/edit-rename.png \
+resources/edit-find-replace.png \
 resources/emptytrash.png \
 resources/exec.png \
+resources/system-run.png \
 resources/filesave.png \
 resources/find.png \
 resources/folder_open.png \
 resources/fileopen.png \
 resources/juicer.png \
+resources/juicer-big.png \
 resources/launch.png \
 resources/network.png \
 resources/partlist.png \
@@ -134,6 +144,7 @@ resources/show_table_column.png \
 resources/splash.png \
 resources/stop.png \
 resources/text_block.png \
+resources/link.png \
 resources/toggle_log.png \
 resources/vcs_add.png \
 resources/vcs_commit.png \
@@ -189,6 +200,7 @@ resources/warning.png \
  resources/small/view_detailed.png \
  resources/small/update.png \
  resources/small/network-wired.png \
+ resources/small/go-next.png \
  resources/options/de.png \
  resources/options/fonts.png \
  resources/options/gb.png \

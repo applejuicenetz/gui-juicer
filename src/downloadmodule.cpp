@@ -83,6 +83,7 @@ DownloadModule::DownloadModule(Juicer* juicer, QWidget* tabWidget)
     connect(juicer->actionShow_Part_List, SIGNAL(triggered()), this, SLOT(partListSlot()));
     connect(juicer->actionRename, SIGNAL(triggered()), this, SLOT(renameSlot()));
     connect(juicer->actionRename_By_Clipboard, SIGNAL(triggered()), this, SLOT(renamePlusSlot()));
+    connect(juicer->actionReplace, SIGNAL(triggered()), this, SLOT(replaceSlot()));
     connect(juicer->actionOpen, SIGNAL(triggered()), this, SLOT(openSlot()));
     connect(juicer->actionCopy_Link, SIGNAL(triggered()), this, SLOT(linkSlot()));
     connect(juicer->actionRemove_Finished, SIGNAL(triggered()), this, SLOT(cleanSlot()));
@@ -342,11 +343,10 @@ void DownloadModule::renamePlusSlot() {
     QString oldFilename, newFilename;
     QString newFilenameBase = qApp->clipboard()->text(QClipboard::Clipboard);
 
-    int i = 0;
     QItemList selectedItems = treeWidget->selectedItems();
-    QItemList::iterator item;
-    for(item = selectedItems.begin(); item != selectedItems.end(); item++) {
-        oldFilename = (*item)->text(DownloadItem::FILENAME_COL);
+    for(int i=0; i<selectedItems.size(); i++) {
+        Item* item = (Item*)selectedItems.at(i);
+        oldFilename = item->text(DownloadItem::FILENAME_COL);
         newFilename = newFilenameBase;
         if(selectedItems.size() > 1) {
             newFilename += "_" + QString::number(i+1);
@@ -357,9 +357,20 @@ void DownloadModule::renamePlusSlot() {
         }
         newFilename = QString(QUrl::toPercentEncoding(newFilename));
         if(!newFilename.isEmpty()) {
-            xml->set("renamedownload", "&id=" + ((Item*)(*item))->getId() + "&name=" + newFilename);
+            xml->set("renamedownload", "&id=" + item->getId() + "&name=" + newFilename);
         }
-        i++;
+    }
+}
+
+void DownloadModule::replaceSlot() {
+    QItemList selectedItems = treeWidget->selectedItems();
+    ReplaceDialog replaceDialog(selectedItems, DownloadItem::FILENAME_COL, juicer);
+    if(replaceDialog.exec() == QDialog::Accepted) {
+        for(int i=0; i<selectedItems.size(); i++) {
+            Item* item = (Item*)selectedItems.at(i);
+            QString newFilename = replaceDialog.replace(item->text(DownloadItem::FILENAME_COL));
+            xml->set("renamedownload", "&id=" + item->getId() + "&name=" + newFilename);
+        }
     }
 }
 

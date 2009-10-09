@@ -732,6 +732,7 @@
     <addaction name="actionShow_Part_List"/>
     <addaction name="actionRename"/>
     <addaction name="actionRename_By_Clipboard"/>
+    <addaction name="actionReplace"/>
     <addaction name="actionOpen"/>
     <addaction name="actionCopy_Link"/>
     <addaction name="actionCreate_Link_List"/>
@@ -865,6 +866,7 @@
    <addaction name="actionShow_Part_List"/>
    <addaction name="actionRename"/>
    <addaction name="actionRename_By_Clipboard"/>
+   <addaction name="actionReplace"/>
    <addaction name="actionOpen"/>
    <addaction name="actionTarget_Folder"/>
    <addaction name="actionCopy_Link"/>
@@ -1153,7 +1155,7 @@
   <action name="actionCopy_Link">
    <property name="icon">
     <iconset resource="images.qrc">
-     <normaloff>:/text_block.png</normaloff>:/text_block.png</iconset>
+     <normaloff>:/link.png</normaloff>:/link.png</iconset>
    </property>
    <property name="text">
     <string>Copy Link</string>
@@ -1231,7 +1233,7 @@
   <action name="actionCopy_Link_Search">
    <property name="icon">
     <iconset resource="images.qrc">
-     <normaloff>:/text_block.png</normaloff>:/text_block.png</iconset>
+     <normaloff>:/link.png</normaloff>:/link.png</iconset>
    </property>
    <property name="text">
     <string>Copy Link</string>
@@ -1339,7 +1341,7 @@
   <action name="actionCopy_Link_Share">
    <property name="icon">
     <iconset resource="images.qrc">
-     <normaloff>:/text_block.png</normaloff>:/text_block.png</iconset>
+     <normaloff>:/link.png</normaloff>:/link.png</iconset>
    </property>
    <property name="text">
     <string>Copy Link</string>
@@ -1436,6 +1438,18 @@
    </property>
    <property name="text">
     <string>Check for Update</string>
+   </property>
+  </action>
+  <action name="actionReplace">
+   <property name="icon">
+    <iconset resource="images.qrc">
+     <normaloff>:/replace.png</normaloff>:/replace.png</iconset>
+   </property>
+   <property name="text">
+    <string>Replace</string>
+   </property>
+   <property name="toolTip">
+    <string>Replace Parts Of Filenames</string>
    </property>
   </action>
  </widget>

@@ -32,6 +32,7 @@
 #include "ftp.h"
 #include "optionsdialog.h"
 #include "dirselectiondialog.h"
+#include "replacedialog.h"
 
 class DownloadModule : public ModuleBase {
   Q_OBJECT
@@ -95,6 +96,7 @@ protected slots:
     void pauseSlot();
     void renameSlot();
     void renamePlusSlot();
+    void replaceSlot();
     void openSlot();
     void linkSlot();
     void setMultiPowerDownload();
