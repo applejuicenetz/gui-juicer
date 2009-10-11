@@ -24,33 +24,30 @@
 #include <QRegExp>
 #include <QPushButton>
 #include <QMessageBox>
+#include <QCompleter>
 
 #include "ui_replacedialogbase.h"
 #include "convert.h"
+#include "optionsdialog.h"
 
-class ReplaceDialog : public QDialog, public Ui::ReplaceDialog
-{
+class ReplaceDialog : public QDialog, public Ui::ReplaceDialog {
   Q_OBJECT
 
 public:
-  ReplaceDialog(QItemList& items, int itemCol, QWidget* parent = 0, Qt::WFlags fl = 0 );
-  ~ReplaceDialog();
+    ReplaceDialog(QItemList& items, int itemCol, QWidget* parent = 0, Qt::WFlags fl = 0 );
+    ~ReplaceDialog();
     QString replace(const QString& src);
-    QRegExp::PatternSyntax getPatternSyntax();
-    enum {ORIGINAL, ARROW, PREVIEW};
-  /*$PUBLIC_FUNCTIONS$*/
-
-public slots:
-  /*$PUBLIC_SLOTS$*/
 
 protected:
+    QRegExp::PatternSyntax getPatternSyntax();
+    enum {ORIGINAL, ARROW, PREVIEW};
     QString errorMsg;
     QRegExp re;
+    QCompleter *beforeCompleter, *afterCompleter;
+    static const int HIST_SIZE = 100;
 protected slots:
-  /*$PROTECTED_SLOTS$*/
-  virtual void          reject();
-  virtual void          accept();
-  void createPreview();
+    virtual void accept();
+    void createPreview();
 };
 
 #endif

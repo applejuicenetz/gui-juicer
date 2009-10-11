@@ -368,7 +368,7 @@ void DownloadModule::replaceSlot() {
     if(replaceDialog.exec() == QDialog::Accepted) {
         for(int i=0; i<selectedItems.size(); i++) {
             Item* item = (Item*)selectedItems.at(i);
-            QString newFilename = replaceDialog.replace(item->text(DownloadItem::FILENAME_COL));
+            QString newFilename = QUrl::toPercentEncoding(replaceDialog.replace(item->text(DownloadItem::FILENAME_COL)));
             xml->set("renamedownload", "&id=" + item->getId() + "&name=" + newFilename);
         }
     }

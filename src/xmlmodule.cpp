@@ -31,10 +31,9 @@ XMLModule::XMLModule(Juicer* juicer, QObject *parent) : QHttp(parent) {
 XMLModule::~XMLModule() {
 }
 
-int XMLModule::exec(const QString & request, int nErrors) {
+int XMLModule::exec(const QString & request) {
     int id = QHttp::get(request);
     requests[id] = request;
-    errors[id] = nErrors;
     return id;
 }
 
@@ -52,7 +51,7 @@ int XMLModule::get(const QString & request, QString param) {
         param += "&filter=down;uploads;user;server;search;informations;ids";
     }
     int httpRequest = exec("/xml/" + request + ".xml?password=" + passwordMD5 + param);
-    if(request == "downloadpartlist") {
+    if(httpRequest >= 0 && request == "downloadpartlist") {
         if(!param.contains("simple")) {
             partListRequests[ httpRequest ] = param.split("=")[1];
         } else {
@@ -142,9 +141,8 @@ void XMLModule::requestFinished(int id, bool error) {
 //             handleShares(root);
 //         }
 
-/*    } else if(errors[id] < 1) {
-        exec("requests[id]", errors[id] + 1);*/
     } else if(QHttp::error() != QHttp::Aborted) {
+        qDebug() << QHttp::error();
         // -- use a timer (it does NOT work calling it directly) --
         QTimer::singleShot(0, this, SLOT(networkErrorSlot()));
     }
@@ -170,6 +168,8 @@ void XMLModule::httpErrorSlot() {
 void XMLModule::responseHeaderReceived (const QHttpResponseHeader & resp) {
     if(resp.statusCode() != 200) {
         // -- use a timer (it does NOT work calling it directly) --
+        qDebug() << resp.statusCode();
+        qDebug() << resp.reasonPhrase();
         QTimer::singleShot(0, this, SLOT(httpErrorSlot()));
     }
 }
@@ -503,12 +503,10 @@ void XMLModule::sendToTray(const QString & message1, const QString & message2) {
 /*!
     \fn XMLModule::printAllAttributes(QDomElement& e)
  */
-void XMLModule::printAllAttributes(QDomElement& e)
-{
+void XMLModule::printAllAttributes(QDomElement& e) {
     QDomNamedNodeMap a = e.attributes();
-    printf("%d\n", a.length());
+    qDebug() << a.length();
     for(unsigned int i=0; i<a.length(); i++) {
-        QDomNode item = a.item(i);
-        printf("%s\t\t%s\n", item.nodeName().toLatin1().data(), item.nodeValue().toLatin1().data());
+        qDebug() << a.item(i).nodeName() << "\t\t" << a.item(i).nodeValue();
     }
 }

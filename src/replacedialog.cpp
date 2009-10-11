@@ -22,11 +22,17 @@
 ReplaceDialog::ReplaceDialog(QItemList& items, int itemCol, QWidget* parent, Qt::WFlags fl) : QDialog( parent, fl ), Ui::ReplaceDialog() {
     setupUi(this);
     errorMsg = validLabel->text();
+
+    beforeCompleter = new QCompleter(OptionsDialog::getGroupSetting("ReplaceDialog", "beforeHistory").toStringList(), this);
+    beforeCompleter = new QCompleter(OptionsDialog::getGroupSetting("ReplaceDialog", "beforeHistory").toStringList(), this);
+    afterCompleter = new QCompleter(OptionsDialog::getGroupSetting("ReplaceDialog", "afterHistory").toStringList(), this);
+    beforeEdit->setCompleter(beforeCompleter);
+    afterEdit->setCompleter(afterCompleter);
+
     connect(beforeEdit, SIGNAL(textChanged(const QString &)), this, SLOT(createPreview()));
     connect(afterEdit, SIGNAL(textChanged(const QString &)), this, SLOT(createPreview()));
     connect(typeComboBox, SIGNAL(currentIndexChanged(int)), this, SLOT(createPreview()));
     connect(caseSensitiveCheckBox, SIGNAL(toggled(bool)), this, SLOT(createPreview()));
-    //linkLabel->setText("<a href='http://doc.trolltech.com/4.5/qregexp.html#details'>more...</a>");
 
     table->setRowCount(items.size());
     for(int i=0; i<items.size(); i++) {
@@ -41,11 +47,8 @@ ReplaceDialog::ReplaceDialog(QItemList& items, int itemCol, QWidget* parent, Qt:
 ReplaceDialog::~ReplaceDialog() {
 }
 
-void ReplaceDialog::reject() {
-  QDialog::reject();
-}
-
 void ReplaceDialog::accept() {
+    // -- check for equal filenames and warn if necessary --
     bool same = false;
     for(int row1=0; row1<table->rowCount() && !same; row1++) {
         for(int row2=0; row2<table->rowCount() && !same; row2++) {
@@ -55,6 +58,23 @@ void ReplaceDialog::accept() {
     if(!same || QMessageBox::question(this, tr("Equal Filenames"),
              tr("Two or more files have the same new filename.\nAre you sure you want to continue?"),
              QMessageBox::Yes | QMessageBox::No) == QMessageBox::Yes) {
+
+        QStringList beforeHistory = OptionsDialog::getGroupSetting("ReplaceDialog", "beforeHistory").toStringList();
+        QStringList afterHistory = OptionsDialog::getGroupSetting("ReplaceDialog", "afterHistory").toStringList();
+        if(!beforeHistory.contains(beforeEdit->text())) {
+            beforeHistory.append(beforeEdit->text());
+        }
+        if(!afterHistory.contains(afterEdit->text())) {
+            afterHistory.append(afterEdit->text());
+        }
+        while(beforeHistory.size() >= HIST_SIZE) {
+            beforeHistory.takeFirst();
+        }
+        while(afterHistory.size() >= HIST_SIZE) {
+            afterHistory.takeFirst();
+        }
+        OptionsDialog::setSetting("ReplaceDialog", "beforeHistory", beforeHistory);
+        OptionsDialog::setSetting("ReplaceDialog", "afterHistory", afterHistory);
         QDialog::accept();
     }
 }

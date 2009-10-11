@@ -50,7 +50,7 @@ public:
 
     enum Type {GET, SET};
     void resetHttp();
-    int exec(const QString & request, int nErrors = 0);
+    int exec(const QString & request);
     int make(Type type, const QString & request, QString param = "");
     int get(const QString & request, QString param = "");
     int set(const QString & request, QString param = "");
