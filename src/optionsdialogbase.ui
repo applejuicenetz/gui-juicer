@@ -206,6 +206,13 @@
         </layout>
        </item>
        <item>
+        <widget class="QCheckBox" name="useCompression">
+         <property name="text">
+          <string>use compression</string>
+         </property>
+        </widget>
+       </item>
+       <item>
         <widget class="QCheckBox" name="autoConnect">
          <property name="text">
           <string>automatically connect to servers</string>

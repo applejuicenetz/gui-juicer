@@ -41,7 +41,7 @@
 class Juicer;
 class QXMLHandler;
 
-class XMLModule : public QHttp
+class XMLModule : protected QHttp
 {
     Q_OBJECT
 public:
@@ -61,6 +61,7 @@ public:
 
     QString getRecentTime() const { return timeStamp; }
     const QDomDocument& getContent() const { return doc; }
+    int setHost(const QString& hostName, quint16 port = 80);
 
 protected:
     Juicer *juicer;

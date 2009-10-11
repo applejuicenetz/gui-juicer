@@ -31,6 +31,11 @@ XMLModule::XMLModule(Juicer* juicer, QObject *parent) : QHttp(parent) {
 XMLModule::~XMLModule() {
 }
 
+
+int XMLModule::setHost(const QString& hostName, quint16 port) {
+    return QHttp::setHost(hostName, port);
+}
+
 int XMLModule::exec(const QString & request) {
     int id = QHttp::get(request);
     requests[id] = request;
@@ -50,6 +55,9 @@ int XMLModule::get(const QString & request, QString param) {
         param += "&session=" + session + "&timestamp=" + timeStamp;
         param += "&filter=down;uploads;user;server;search;informations;ids";
     }
+    if(OptionsDialog::getSetting("useCompression", false).toBool()) {
+        param += "&mode=zip";
+    }
     int httpRequest = exec("/xml/" + request + ".xml?password=" + passwordMD5 + param);
     if(httpRequest >= 0 && request == "downloadpartlist") {
         if(!param.contains("simple")) {
@@ -68,7 +76,19 @@ int XMLModule::set(const QString & request, QString param) {
 void XMLModule::requestFinished(int id, bool error) {
     if(!error) {
         QTime now = QTime::currentTime();
-        doc.setContent(readAll());
+        QByteArray content = readAll();
+        if(lastResponse().contentType().contains("zlib")) {
+            QByteArray zData;
+            uint expSize = lastResponse().contentLength();
+            zData.append((expSize>>24) & 0xFF);
+            zData.append((expSize>>16) & 0xFF);
+            zData.append((expSize>>8) & 0xFF);
+            zData.append(expSize & 0xFF);
+            zData.append(content);
+            content = qUncompress(zData);
+        }
+        doc.setContent(content);
+        
         QDomElement root = doc.documentElement();
         QDomNode n;
         if(root.tagName() == "applejuice") {

@@ -150,6 +150,7 @@ void OptionsDialog::setSettings() {
     coreEdit->setText(getSetting("coreAddress", "localhost").toString());
     refreshSpin->setValue(getSetting("refresh", 3).toInt());
     savePassword->setChecked(getSetting("savePassword", false).toBool());
+    useCompression->setChecked(getSetting("useCompression", false).toBool());
     showSplash->setChecked(getSetting("showSplash", true).toBool());
     trayCheckBox->setChecked(getSetting("useTray", false).toBool());
     altRowsCheckBox->setChecked(getSetting("altRows", false).toBool());
@@ -299,6 +300,7 @@ void OptionsDialog::writeSettings() {
 
     setSetting("coreAddress", coreEdit->text());
     setSetting("savePassword", savePassword->isChecked());
+    setSetting("useCompression", useCompression->isChecked());
     setSetting("showSplash", showSplash->isChecked());
     setSetting("useTray", trayCheckBox->isChecked());
     setSetting("altRows", altRowsCheckBox->isChecked());
