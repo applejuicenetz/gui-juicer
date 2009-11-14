@@ -23,17 +23,17 @@
 #include <QDialog>
 #include <QWindowsStyle>
 
-#include "ui_handlerdialogbase.h"
+#include "ui_askagaindialogbase.h"
 #include "optionsdialog.h"
 
-class HandlerDialog : public QDialog, private Ui::HandlerDialog
+class AskAgainDialog : public QDialog, private Ui::AskAgainDialog
 {
   Q_OBJECT
 
     bool dontAskAgain_;
 
 public:
-    HandlerDialog(const QString& caption, const QString & text,
+    AskAgainDialog(const QString& caption, const QString & text,
         QDialogButtonBox::StandardButtons buttons = QDialogButtonBox::Yes | QDialogButtonBox::No,
         QStyle::StandardPixmap icon = QStyle::SP_MessageBoxQuestion,
         QWidget* parent = 0, Qt::WFlags fl = 0);

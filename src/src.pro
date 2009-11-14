@@ -11,13 +11,13 @@ INCLUDEPATH += quazip
 FORMS += optionsdialogbase.ui  \
 networkdialogbase.ui \
 logindialogbase.ui \
- handlerdialogbase.ui \
  partlistdialogbase.ui \
  mainwindowbase.ui \
  updatedialogbase.ui \
  dirselectiondialogbase.ui \
  replacedialogbase.ui \
- aboutdialogbase.ui
+ aboutdialogbase.ui \
+ askagaindialogbase.ui
 HEADERS += ftp.h \
            global.h \
            md5class.h \
@@ -42,7 +42,6 @@ HEADERS += ftp.h \
            iconwidget.h \
            logindialog.h \
            powerspin.h \
- handlerdialog.h \
  partlistdialog.h \
  downloadmodule.h \
  uploadmodule.h \
@@ -58,7 +57,8 @@ HEADERS += ftp.h \
  autoupdate.h \
  dragndroptreewidget.h \
  replacedialog.h \
- aboutdialog.h
+ aboutdialog.h \
+ askagaindialog.h
 SOURCES += main.cpp \
            md5c.c \
            md5class.cpp \
@@ -81,7 +81,6 @@ SOURCES += main.cpp \
            iconwidget.cpp \
            logindialog.cpp \
            powerspin.cpp \
- handlerdialog.cpp \
  partlistdialog.cpp \
  uploadmodule.cpp \
  searchmodule.cpp \
@@ -99,7 +98,8 @@ SOURCES += main.cpp \
  autoupdate.cpp \
  dragndroptreewidget.cpp \
  replacedialog.cpp \
- aboutdialog.cpp
+ aboutdialog.cpp \
+ askagaindialog.cpp
 
 CONFIG += warn_on \
           qt \

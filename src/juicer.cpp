@@ -18,7 +18,7 @@
  ***************************************************************************/
 
 #include "juicer.h"
-#include "handlerdialog.h"
+#include "askagaindialog.h"
 
 Juicer::Juicer(const QStringList& argList, QSplashScreen *splash, const QFileInfo& appFileInfo)
     : QMainWindow()
@@ -167,7 +167,7 @@ void Juicer::initTrayIcon() {
  */
 void Juicer::closeEvent(QCloseEvent* ce) {
      if(tray->isVisible() && !isMinimized()) {
-        HandlerDialog trayDialog(
+        AskAgainDialog trayDialog(
                 tr("Minimizing to tray"),
                 tr("Tray Icon is enabled so Juicer runs minimized in the background.\nUse Quit GUI to close the GUI."),
                 QDialogButtonBox::Ok,
@@ -517,7 +517,7 @@ void Juicer::firstModified() {
             }
             // -- if the core is not on localhost, warn the user --
             if(!localCore && optionsDialog->sameComputerRadio->isChecked()) {
-                HandlerDialog localCoreDialog(
+                AskAgainDialog localCoreDialog(
                     "Information",
                     tr("The Core is not running on the local machine. In order to use the full functionality like directly opening downloads or the incoming view you have to specify the incoming and temporary directory in the options menu."),
                     QDialogButtonBox::Ok, QStyle::SP_MessageBoxInformation);

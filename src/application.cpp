@@ -19,7 +19,7 @@
 
 #include "application.h"
 
-#include "handlerdialog.h"
+#include "askagaindialog.h"
 
 
 #include "convert.h"

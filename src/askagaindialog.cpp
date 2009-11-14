@@ -17,15 +17,15 @@
  *   along with this program; if not, see http://www.gnu.org/licenses/     *
  ***************************************************************************/
 
-#include "handlerdialog.h"
+#include "askagaindialog.h"
 
-HandlerDialog::HandlerDialog( const QString& caption,
+AskAgainDialog::AskAgainDialog( const QString& caption,
                                     const QString & text,
                                     QDialogButtonBox::StandardButtons buttons,
                                     QStyle::StandardPixmap icon,
                                     QWidget* parent /*= 0*/,
                                     Qt::WFlags fl /*= 0*/ )
-  : QDialog( parent, fl ), Ui::HandlerDialog()
+  : QDialog( parent, fl ), Ui::AskAgainDialog()
   , dontAskAgain_( false )
 {
     setupUi( this );
@@ -41,33 +41,33 @@ HandlerDialog::HandlerDialog( const QString& caption,
 }
 
 
-void HandlerDialog::setText( const QString& text )
+void AskAgainDialog::setText( const QString& text )
 {
     textLabel->setText( text );
 }
 
-void HandlerDialog::setIcon( const QPixmap& pixmap )
+void AskAgainDialog::setIcon( const QPixmap& pixmap )
 {
     iconLabel->setPixmap( pixmap );
 }
 
-bool HandlerDialog::dontAskAgain() const
+bool AskAgainDialog::dontAskAgain() const
 {
     return dontAskAgain_;
 }
 
-void HandlerDialog::reaskSlot( int state )
+void AskAgainDialog::reaskSlot( int state )
 {
     dontAskAgain_ = ( state == Qt::Checked );
 }
 
 
 /*!
-    \fn HandlerDialog::exec(const QString& saveString)
+    \fn AskAgainDialog::exec(const QString& saveString)
     if the dialog was already answered permanently, return the saved answer,
     otherwise the dialog is shown and the answer will be saved
  */
-int HandlerDialog::exec(const QString& saveString)
+int AskAgainDialog::exec(const QString& saveString)
 {
     if(OptionsDialog::hasSetting("accepted", saveString)) {
         return OptionsDialog::getGroupSetting("accepted", saveString).toInt();
