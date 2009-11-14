@@ -22,6 +22,7 @@
 
 #include <QFileDialog>
 #include <QMessageBox>
+#include <QFileSystemWatcher>
 
 #include "optionsdialog.h"
 #include "incomingitem.h"
@@ -53,6 +54,7 @@ private:
     bool confirmRemove(QItemList& items);
     QFtp* ftp;
     QLabel* waitLabel;
+    QFileSystemWatcher* watcher;
 
 public slots:
     void reload();
@@ -61,6 +63,7 @@ public slots:
     void remove();
     void insert(QUrlInfo info);
     void selectionChanged();
+    void resetWatcher();
 private:
     class CopyThread : public QThread {
         public:

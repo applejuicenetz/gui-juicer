@@ -41,7 +41,7 @@
 class Juicer;
 class QXMLHandler;
 
-class XMLModule : protected QHttp
+class XMLModule : public QHttp
 {
     Q_OBJECT
 public:

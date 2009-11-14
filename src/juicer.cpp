@@ -151,12 +151,12 @@ void Juicer::connectActions() {
 void Juicer::initTrayIcon() {
     tray = new QSystemTrayIcon(QIcon(":/juicer.png"), this);
     if(OptionsDialog::getSetting("useTray", false).toBool()) {
-        tray->setVisible(true);
+        tray->show();
         tray->setContextMenu(menuAppleJuice);
         connect(tray, SIGNAL(activated(QSystemTrayIcon::ActivationReason)),
                  this, SLOT(trayActivated(QSystemTrayIcon::ActivationReason)));
     } else {
-        tray->setVisible(false);
+        tray->hide();
     }
 }
 
@@ -366,6 +366,7 @@ void Juicer::showOptions() {
 void Juicer::settingsReady(const AjSettings& settings) {
     downloadModule->setDirs(settings.tempDir, settings.incomingDir);
     incomingModule->setDir(settings.incomingDir);
+    incomingModule->resetWatcher();
     if(optionsDialog != NULL) {
         optionsDialog->setAjSettings(settings);
 //         optionsDialog->setSettings();

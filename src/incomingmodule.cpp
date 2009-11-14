@@ -23,12 +23,14 @@
 IncomingModule::IncomingModule(Juicer* juicer) : ModuleBase(juicer, juicer->incomingTreeWidget, juicer->incomingToolBar) {
     ftp = new QFtp(this);
     waitLabel = new QLabel(tr("please wait..."), treeWidget);
+    watcher = new QFileSystemWatcher(this);
     connect(ftp, SIGNAL(listInfo (QUrlInfo)), this, SLOT(insert(QUrlInfo)));
     connect(treeWidget, SIGNAL(itemDoubleClicked (QTreeWidgetItem*, int)), this, SLOT(open()));
     connect(juicer->actionOpen_Incoming, SIGNAL(triggered()), this, SLOT(open()));
     connect(juicer->actionCopy_Incoming, SIGNAL(triggered()), this, SLOT(copy()));
     connect(juicer->actionDelete_Incoming, SIGNAL(triggered()), this, SLOT(remove()));
     connect(juicer->actionReload_Incoming, SIGNAL(triggered()), this, SLOT(reload()));
+    connect(watcher, SIGNAL(directoryChanged(QString)), this, SLOT(reload()));
     selectionChanged();
     juicer->incomingTreeWidget->setIncomingModule(this);
 }
@@ -311,5 +313,16 @@ QString IncomingModule::getActualIncomingDir() {
             return this->dir + QDir::separator();
         default: // -- ftp --
             return "";
+    }
+}
+
+void IncomingModule::resetWatcher() {
+    QStringList paths = watcher->directories();
+    if(!paths.empty()) {
+        watcher->removePaths(paths);
+    }
+    QString actDir = getActualIncomingDir();
+    if(!actDir.isEmpty()) {
+        watcher->addPath(actDir);
     }
 }
