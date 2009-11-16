@@ -98,7 +98,7 @@ public:
     static QStringList getExec();
     void setClipboard(const QString& text);
     static QStringList getAjfspLinks(const QString& text, const QString& type = "[^|]*");
-    void processLinks(const QString& text, const QString& type = "[^|]*");
+    QStringList processLinks(const QString& text, const QString& type = "[^|]*");
     QString getTempDirectory() const;
     QString getIncomingDirectory() const;
     void setTempDirectory(const QString& folder);
@@ -107,6 +107,7 @@ public:
     void setFirewalled(bool  firewalled);
     void autoUpdate();
     void setCurrentProfile();
+    void notifyAjfspLink(QStringList& links);
 
 protected:
     void initToolBars();
@@ -144,6 +145,8 @@ protected:
     QButtonGroup* profileGroup;
 
 private slots:
+    void processLinksAndNotify(const QString& text, const QString& type = "[^|]*");
+
     bool login(const QString& message = "<h3>Login</h3>", bool error = false);
     void openAjL();
     void about();
@@ -154,7 +157,7 @@ private slots:
     void xmlError(const QString& reason);
     void gotSession();
     void processLink(const QString& link);
-    void processLink();
+    void processLinkFromToolbar();
     void processClipboard();
     void tabChanged(int index);
     void quit();

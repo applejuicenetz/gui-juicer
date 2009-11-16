@@ -49,7 +49,7 @@ Juicer::Juicer(const QStringList& argList, QSplashScreen *splash, const QFileInf
     firstModifiedMax = 2;// + argList.size();
 
     linkServer = new ServerSocket(Application::APP_PORT);
-    connect(linkServer, SIGNAL(lineReady(const QString&)), this, SLOT(processLink(const QString&)));
+    connect(linkServer, SIGNAL(lineReady(const QString&)), this, SLOT(processLinksAndNotify(const QString&)));
 
     osIcons[LINUX] = QIcon(":/small/linux.png");
     osIcons[WINDOWS] = QIcon(":/small/windows.png");
@@ -96,7 +96,7 @@ Juicer::Juicer(const QStringList& argList, QSplashScreen *splash, const QFileInf
 
     tabChanged(ajTab->indexOf(downloads));
 
-    // -- we need to do this as an event, because we can quit the application only if the application is already in the event loop --
+    // -- we need to do this as an event, because we can quit the application only if it is already in the event loop --
     QTimer::singleShot(0, this, SLOT(login()));
 
     queueLinks(argList);
@@ -118,12 +118,10 @@ void Juicer::initToolBars() {
     ajAddressLabel->setText("ajfsp link:");
     ajAddressLabel->adjustSize();
     ajLinks->addWidget(ajAddressLabel);
-
     ajAddressEdit = new QLineEdit(ajLinks);
     ajLinks->addWidget(ajAddressEdit);
-    connect(ajAddressEdit, SIGNAL(returnPressed()), this, SLOT(processLink()));
-
-    ajLinks->addAction(QIcon(":/ok.png"), tr("process link"), this, SLOT(processLink()));
+    connect(ajAddressEdit, SIGNAL(returnPressed()), this, SLOT(processLinkFromToolbar()));
+    ajLinks->addAction(QIcon(":/ok.png"), tr("process link"), this, SLOT(processLinkFromToolbar()));
 }
 
 /*!
@@ -142,6 +140,7 @@ void Juicer::connectActions() {
     connect(actionManual, SIGNAL(triggered()), this, SLOT(showManual()));
     connect(actionAbout, SIGNAL(triggered()), this, SLOT(about()));
     connect(actionAbout_Qt, SIGNAL(triggered()), this, SLOT(aboutQt()));
+    actionQuit_GUI->setShortcut(Qt::ControlModifier + Qt::Key_Q);
 }
 
 /*!
@@ -402,41 +401,10 @@ void Juicer::setStatusBarText(const QString& downSpeed, const QString& upSpeed,
     upSizeLabel->setText(upSizeString);
     connectionsLabel->setText(openConnections);
 
-    // show all information via tray icon
-    tray->setToolTip("Juicer - appleJuice Qt4 GUI\n\n" +
-        downStreamString + "\n" +
-        upStreamString + "\n" +
-        creditsString + "\n" +
-        downSizeString + "\n" +
-        upSizeString);
+    QString m = QString("Juicer - appleJuice Qt4 GUI\n\nDownstream: %1\nUpstream: %2\nDownloaded: %3\nUploaded: %4\nCredits: %5");
+    tray->setToolTip(m.arg(downStreamString).arg(upStreamString).arg(downSizeString).arg(upSizeString).arg(creditsString));
 }
 
-void Juicer::processLink(const QString& link) {
-    QString encodedLink = QUrl::fromPercentEncoding(link.trimmed().toUtf8());
-    QStringList s = encodedLink.split("|");
-    if(s.size() > 3) {
-        QString name = s[1];
-        QString hash = s[2];
-        QString size = s[3].split("/")[0];
-        if(s[0].toLower() == "ajfsp://file") {
-            ShareFileItem* file;
-            DownloadItem* download;
-            if((file = shareModule->findFile(size, hash)) != NULL) {
-                QMessageBox::information(this, tr("Information"), tr("The file seems to be already in the share\n\n%1").arg(file->getFilename()));
-            } else if((download = downloadModule->findDownload(size, hash)) != NULL) {
-                QMessageBox::information(this, tr("Information"),
-                    tr("The file seems to be already in the download list\n\n%1").arg(download->text(DownloadItem::FILENAME_COL)));
-            }
-        }
-        encodedLink = s[0] + "|" + QUrl::toPercentEncoding(name)  + "|" + hash + "|" + size + "/";
-    }
-    xml->set("processlink", "&link=" + encodedLink);
-}
-
-void Juicer::processLink() {
-    processLink(ajAddressEdit->text().trimmed());
-    ajAddressEdit->clear();
-}
 
 void Juicer::processClipboard() {
     processLink(qApp->clipboard()->text(QClipboard::Clipboard));
@@ -576,8 +544,7 @@ QStringList Juicer::getExec() {
     QStringList args;
     if(launcher == KDE_LAUNCHER) {
         args.clear();
-        args << "kfmclient";
-        args << "exec";
+        args << "kfmclient" << "exec";
     } else if(launcher == GNOME_LAUNCHER) {
         args.clear();
         args << "gnome-open";
@@ -586,8 +553,7 @@ QStringList Juicer::getExec() {
         args << "open";
     } else if(launcher == WIN_LAUNCHER) {
         args.clear();
-        args << "start";
-        args << "\"\"";
+        args << "start" << "\"\"";
     } else {
         args << launcher.split(" ");
     }
@@ -764,7 +730,7 @@ void Juicer::showManual() {
  */
 void Juicer::clipboardChanged(QClipboard::Mode mode) {
     if(OptionsDialog::getSetting("observeClipboard", false).toBool()) {
-        processLinks(qApp->clipboard()->text(mode));
+        processLinksAndNotify(qApp->clipboard()->text(mode));
     }
     clipboardTexts.clear();
 }
@@ -794,17 +760,62 @@ QStringList Juicer::getAjfspLinks(const QString& text, const QString& type) {
 }
 
 
+void Juicer::processLinkFromToolbar() {
+    processLink(ajAddressEdit->text().trimmed());
+    ajAddressEdit->clear();
+}
+
+
+void Juicer::processLink(const QString& link) {
+    QString encodedLink = QUrl::fromPercentEncoding(link.trimmed().toUtf8());
+    QStringList s = encodedLink.split("|");
+    if(s.size() > 3) {
+        QString name = s[1];
+        QString hash = s[2];
+        QString size = s[3].split("/")[0];
+        if(s[0].toLower() == "ajfsp://file") {
+            ShareFileItem* file;
+            DownloadItem* download;
+            if((file = shareModule->findFile(size, hash)) != NULL) {
+                QMessageBox::information(this, tr("Information"), tr("The file seems to be already in the share\n\n%1").arg(file->getFilename()));
+            } else if((download = downloadModule->findDownload(size, hash)) != NULL) {
+                QMessageBox::information(this, tr("Information"),
+                    tr("The file seems to be already in the download list\n\n%1").arg(download->text(DownloadItem::FILENAME_COL)));
+            }
+        }
+        encodedLink = s[0] + "|" + QUrl::toPercentEncoding(name)  + "|" + hash + "|" + size + "/";
+    }
+    xml->set("processlink", "&link=" + encodedLink);
+}
+
+
 /*!
     \fn Juicer::processLinks(const QString& text, const QString& type)
  */
-void Juicer::processLinks(const QString& text, const QString& type) {
+QStringList Juicer::processLinks(const QString& text, const QString& type) {
     QStringList links = getAjfspLinks(text, type);
-    for(int i=0; i<links.size(); i++) {
-        if(!clipboardTexts.contains(links.at(i))) {
-            processLink(links.at(i));
+    QMutableStringListIterator it(links);
+    while(it.hasNext()) {
+        QString link = it.next();
+        // -- prevent links added into the clipboard out of Juicer --
+        if(!clipboardTexts.contains(link)) {
+            processLink(link);
+        } else {
+            it.remove();
         }
     }
+    return links;
 }
+
+
+/*!
+    \fn Juicer::processLinksAndNotify(const QString& text, const QString& type)
+ */
+void Juicer::processLinksAndNotify(const QString& text, const QString& type) {
+    QStringList links = processLinks(text, type);
+    notifyAjfspLink(links);
+}
+
 
 /*!
     \fn Juicer::setFilesystemSeparator(const QString& separator)
@@ -938,5 +949,20 @@ void Juicer::setCurrentProfile() {
                 break;
             }
         }
+    }
+}
+
+
+/*!
+    \fn Juicer::notifyAjfspLink(QStringList& links)
+ */
+void Juicer::notifyAjfspLink(QStringList& links) {
+    if(!links.isEmpty()) {
+        QString msg;
+        for(int i=0; i<links.size(); i++) {
+            QStringList parts = links.at(i).split('|');
+            msg += parts[1] + "\n";
+        }
+        tray->showMessage("Processed Link", msg.trimmed());
     }
 }
