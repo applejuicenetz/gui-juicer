@@ -108,6 +108,7 @@ public:
     void autoUpdate();
     void setCurrentProfile();
     void notifyAjfspLink(QStringList& links);
+    void restartTimer(int sec  = -1);
 
 protected:
     void initToolBars();
@@ -151,7 +152,6 @@ private slots:
     void openAjL();
     void about();
     void aboutQt();
-    void timerSlot();
     void showOptions();
     void settingsReady(const AjSettings& settings);
     void xmlError(const QString& reason);
@@ -173,6 +173,7 @@ private slots:
     void profileButtonClicked(QAbstractButton* button);
 public slots:
     void requestFinished(int id, bool error);
+    void timerSlot();
 };
 
 #endif

@@ -14,8 +14,8 @@
     <projectname>juicer</projectname>
     <projectdirectory>.</projectdirectory>
     <absoluteprojectpath>false</absoluteprojectpath>
-    <description></description>
-    <defaultencoding></defaultencoding>
+    <description/>
+    <defaultencoding/>
   </general>
   <kdevfileview>
     <groups>
@@ -44,6 +44,7 @@
       <designerpluginpaths/>
     </qt>
     <references>
+      <pcs>Qt4</pcs>
       <pcs>automatic_%2Fhome%2Fremat%2Fsvn%2Fjuicer</pcs>
     </references>
     <codecompletion>
@@ -60,7 +61,7 @@
       <statusBarTypeEvaluation>false</statusBarTypeEvaluation>
       <namespaceAliases>std=_GLIBCXX_STD;__gnu_cxx=std</namespaceAliases>
       <processPrimaryTypes>true</processPrimaryTypes>
-      <processFunctionArguments>false</processFunctionArguments>
+      <processFunctionArguments>true</processFunctionArguments>
       <preProcessAllHeaders>true</preProcessAllHeaders>
       <parseMissingHeaders>false</parseMissingHeaders>
       <resolveIncludePaths>true</resolveIncludePaths>
@@ -72,7 +73,7 @@
       <resolveIncludePathsUsingMakeExperimental>false</resolveIncludePathsUsingMakeExperimental>
     </codecompletion>
     <creategettersetter>
-      <prefixGet></prefixGet>
+      <prefixGet/>
       <prefixSet>set</prefixSet>
       <prefixVariable>m_,_</prefixVariable>
       <parameterName>theValue</parameterName>
@@ -130,16 +131,16 @@
   </kdevdoctreeview>
   <kdevdebugger>
     <general>
-      <dbgshell></dbgshell>
+      <dbgshell/>
       <breakpoints/>
       <programargs/>
       <gdbpath>/usr/bin/gdb</gdbpath>
       <breakonloadinglibs>true</breakonloadinglibs>
       <separatetty>false</separatetty>
       <floatingtoolbar>false</floatingtoolbar>
-      <configGdbScript></configGdbScript>
-      <runShellScript></runShellScript>
-      <runGdbScript></runGdbScript>
+      <configGdbScript/>
+      <runShellScript/>
+      <runGdbScript/>
       <raiseGDBOnStart>false</raiseGDBOnStart>
     </general>
     <display>
@@ -151,8 +152,8 @@
   </kdevdebugger>
   <kdevtrollproject>
     <run>
-      <mainprogram>/home/holg/Projekte/juicer/src/juicer</mainprogram>
-      <programargs></programargs>
+      <mainprogram>/home/remat/svn/juicer/src/juicer</mainprogram>
+      <programargs/>
       <directoryradio>executable</directoryradio>
       <runarguments>
         <ajqt4gui/>
@@ -169,8 +170,8 @@
         <juicer/>
         <src/>
       </debugarguments>
-      <globaldebugarguments></globaldebugarguments>
-      <globalcwd>/home/holg/Projekte/juicer/src/</globalcwd>
+      <globaldebugarguments/>
+      <globalcwd>/home/remat/svn/juicer/src/</globalcwd>
       <useglobalprogram>true</useglobalprogram>
       <terminal>false</terminal>
       <autocompile>true</autocompile>
@@ -186,7 +187,7 @@
       <runmultiplejobs>true</runmultiplejobs>
       <numberofjobs>2</numberofjobs>
       <dontact>false</dontact>
-      <makebin></makebin>
+      <makebin/>
       <prio>0</prio>
       <envvars/>
     </make>
@@ -203,10 +204,12 @@
       <subclass uifile="src/qajhandlerdialogbase.ui" sourcefile="qajhandlerdialog.h" />
       <subclass uifile="src/qajshareselectiondialogbase.ui" sourcefile="qajshareselectiondialog.cpp" />
       <subclass uifile="src/qajshareselectiondialogbase.ui" sourcefile="qajshareselectiondialog.h" />
-      <subclass uifile="src/helpdialogbase.ui" sourcefile="helpdialog.cpp" />
-      <subclass uifile="src/helpdialogbase.ui" sourcefile="helpdialog.h" />
       <subclass uifile="src/updatedialogbase.ui" sourcefile="updatedialog.cpp" />
       <subclass uifile="src/updatedialogbase.ui" sourcefile="updatedialog.h" />
+      <subclass uifile="src/replacedialogbase.ui" sourcefile="replacedialog.cpp" />
+      <subclass uifile="src/replacedialogbase.ui" sourcefile="replacedialog.h" />
+      <subclass uifile="src/aboutdialogbase.ui" sourcefile="aboutdialog.cpp" />
+      <subclass uifile="src/aboutdialogbase.ui" sourcefile="aboutdialog.h" />
     </subclassing>
   </kdevtrollproject>
   <workspace>
@@ -225,7 +228,7 @@
     <projectdoc>
       <docsystem>Doxygen-Dokumentation</docsystem>
       <docurl>juicer.tag</docurl>
-      <usermanualurl></usermanualurl>
+      <usermanualurl/>
     </projectdoc>
   </kdevdocumentation>
   <substmap>

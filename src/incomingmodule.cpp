@@ -155,7 +155,7 @@ void IncomingModule::storeFtp() {
     for(int  i=0; i<selectedItems.size(); i++) {
         filename = selectedItems.at(i)->text(IncomingItem::FILENAME_COL);
         localDir = QFileDialog::getExistingDirectory(juicer, tr("copy")+"\"" + filename + "\" "+tr("to"));
-        if(localDir != "") {
+        if(!localDir.isEmpty()) {
             if(!localDir.endsWith(QDir::separator())) {
                 localDir += QDir::separator();
             }

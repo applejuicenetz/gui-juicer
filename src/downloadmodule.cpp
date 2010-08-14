@@ -110,6 +110,15 @@ DownloadModule::DownloadModule(Juicer* juicer, QWidget* tabWidget)
     hidePausedSlot(juicer->actionHide_Paused->isChecked());
     selectionChanged();
     adjustTabText();
+    
+    if(QSound::isAvailable()) {
+        
+        printf("ok\n");
+    } else {
+        
+        printf("NO\n");
+    }
+    pauseSound = new QSound(":/sounds/sound1.mp3", this);
 }
 
 DownloadModule::~DownloadModule() {
@@ -165,8 +174,7 @@ void DownloadModule::insertUser(const QString& downloadId,
                                 const QString& downloadto,
                                 const QString& actualdownloadposition,
                                 const QString& source,
-                                QTime& time)
-{
+                                QTime& time) {
     DownloadItem *downloadItem = findDownload(downloadId);
     if(downloadItem == NULL) {  // -- this shouldn't happen, just in case... --
         insertDownload(downloadId, "", "", "", "", "", "", "", "");
@@ -265,47 +273,26 @@ DownloadModule::DownloadUser DownloadModule::findParent(const QString& id) {
     return du;
 }
 
-/*!
-    \fn DownloadModule::processSelected(XMLModule::Type type, const QString& request, const QString& para)
- */
-void DownloadModule::processSelected(XMLModule::Type type, const QString& request, const QString& para) {
-    QItemList items = treeWidget->selectedItems();
-    for(QItemList::iterator i = items.begin(); i!=items.end(); i++) {
-        xml->make(type, request, para + "&id=" + ((Item*)(*i))->getId());
-    }
-}
-
-/*!
-    \fn DownloadModule::getSelected(const QString& request, const QString& para)
- */
-void DownloadModule::getSelected(const QString& request, const QString& para) {
-    processSelected(XMLModule::GET, request, para);
-}
-
-/*!
-    \fn DownloadModule::setSelected(const QString& request, const QString& para)
- */
-void DownloadModule::setSelected(const QString& request, const QString& para) {
-    processSelected(XMLModule::SET, request, para);
-}
-
 void DownloadModule::cancelSlot() {
-    QString text = tr("Do you realy want to cancel %n download(s)?", "", treeWidget->selectedItems().size());
+    QItemList selected = treeWidget->selectedItems();
+    QString text = tr("Do you realy want to cancel %n download(s)?", "", selected.size());
     if(QMessageBox::question(juicer, tr("Confirm"), text, QMessageBox::No, QMessageBox::Yes) == QMessageBox::Yes) {
-        setSelected("canceldownload");
+        processIdX(selected, "canceldownload");
     }
 }
 
 void DownloadModule::cleanSlot() {
     xml->set("cleandownloadlist");
+    juicer->timerSlot();
 }
 
 void DownloadModule::resumeSlot() {
-    setSelected("resumedownload");
+    processSelectedIdX("resumedownload");
 }
 
 void DownloadModule::pauseSlot() {
-    setSelected("pausedownload");
+    pauseSound->play();
+    processSelectedIdX("pausedownload");
 }
 
 void DownloadModule::partListSlot() {
@@ -314,7 +301,7 @@ void DownloadModule::partListSlot() {
         xml->get("downloadpartlist", "&simple&id=" + id);
     }
     if(treeWidget->selectedItems().count() == 1) { // part list widget flickers if more than one item is selected
-        getSelected("downloadpartlist");
+        processSelected(XMLModule::GET, "downloadpartlist");
     }
 }
 
@@ -337,6 +324,7 @@ void DownloadModule::renameSlot() {
             xml->set("renamedownload", "&id=" + ((Item*)(*item))->getId() + "&name=" + newFilename);
         }
     }
+    juicer->timerSlot();
 }
 
 void DownloadModule::renamePlusSlot() {
@@ -360,6 +348,7 @@ void DownloadModule::renamePlusSlot() {
             xml->set("renamedownload", "&id=" + item->getId() + "&name=" + newFilename);
         }
     }
+    juicer->timerSlot();
 }
 
 void DownloadModule::replaceSlot() {
@@ -372,6 +361,7 @@ void DownloadModule::replaceSlot() {
             xml->set("renamedownload", "&id=" + item->getId() + "&name=" + newFilename);
         }
     }
+    juicer->timerSlot();
 }
 
 void DownloadModule::openSlot() {
@@ -386,13 +376,11 @@ void DownloadModule::openSlot() {
     if(location == AjSettings::SPECIFIC) {
         iDir = OptionsDialog::getSetting("incomingDirSpecific", "/").toString() + seperator;
         tDir = OptionsDialog::getSetting("tempDirSpecific", "/").toString() + seperator;
-    }
-    else if(location == AjSettings::SAME) {
+    } else if(location == AjSettings::SAME) {
         iDir = incomingDir + seperator;
         tDir = tempDir + seperator;
-    }
     // -- ftp --
-    else {
+    } else {
         // TODO
         return;
     }
@@ -421,7 +409,7 @@ void DownloadModule::linkSlot() {
  */
 void DownloadModule::setMultiPowerDownload() {
     float value = powerCheck->isChecked() ? powerSpin->value() : 1.0;
-    setSelected("setpowerdownload", "&Powerdownload=" + Convert::power(value));
+    processSelectedIdX("setpowerdownload", "&Powerdownload=" + Convert::power(value));
 }
 
 /*!
@@ -430,7 +418,7 @@ void DownloadModule::setMultiPowerDownload() {
 void DownloadModule::applyPowerDownload() {
     if(treeWidget->selectedItems().size() == 1) {
         float value = powerCheck->isChecked() ? powerSpin->value() : 1.0;
-        setSelected("setpowerdownload", "&Powerdownload=" + Convert::power(value));
+        processSelectedIdX("setpowerdownload", "&Powerdownload=" + Convert::power(value));
     }
 }
 
@@ -439,6 +427,7 @@ void DownloadModule::applyPowerDownload() {
  */
 void DownloadModule::applyPowerDownload(const QString& id, double value) {
     xml->set("setpowerdownload", "&Powerdownload="+Convert::power(value)+"&id="+id);
+//     juicer->timerSlot();
 }
 
 /*!
@@ -449,6 +438,7 @@ void DownloadModule::maxPowerDownload() {
     for(QList<QString>::iterator i = ids.begin(); i != ids.end(); i++) {
         xml->set("setpowerdownload", "&Powerdownload="+Convert::power(50)+"&id="+(*i));
     }
+//     juicer->timerSlot();
 }
 
 /*!
@@ -590,7 +580,7 @@ void DownloadModule::storeDownloadFtp() {
     for(item = selectedItems.begin(); item != selectedItems.end(); item++) {
         filename = (*item)->text(DownloadItem::FILENAME_COL);
         localDir = QFileDialog::getExistingDirectory(juicer, "save \"" + filename + "\" + to");
-        if (localDir != "") {
+        if(!localDir.isEmpty()) {
             if(!localDir.endsWith(QDir::separator())) {
                 localDir += QDir::separator();
             }
@@ -645,7 +635,7 @@ void DownloadModule::targetFolder() {
     if(tf.exec() == QDialog::Accepted) {
         QString path = tf.getPath();  // ever below incoming!
         qDebug() << path;
-        setSelected("settargetdir", "&dir=" + path);
+        processSelected(XMLModule::SET, "settargetdir", "&dir=" + path);
     }
 }
 

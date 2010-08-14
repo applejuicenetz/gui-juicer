@@ -36,8 +36,8 @@ class Item : public QTreeWidgetItem, public QObject
 {
 // Q_OBJECT
 public:
-    Item( QTreeWidget *parent, const QString& id="generic" );
-    Item( QTreeWidgetItem *parent, const QString& id="generic" );
+    Item(QTreeWidget *parent, const QString& id="generic");
+    Item(QTreeWidgetItem *parent, const QString& id="generic");
 
     virtual ~Item();
 

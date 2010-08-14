@@ -26,11 +26,11 @@
 #include <QFileDialog>
 #include <QToolBar>
 #include <QMainWindow>
+#include <xmlmodule.h>
 
 #include "convert.h"
 
 class Juicer;
-class XMLModule;
 
 /**
     @author Matthias Reif <matthias.reif@informatik.tu-chemnitz.de>
@@ -45,6 +45,10 @@ public:
     void sortItemsInitially(const QString& settingsGroup);
     void saveSortOrder(const QString& settingsGroup);
     void updateAlternatingRowColors();
+    void process(QItemList& items, XMLModule::Type type, const QString& request, const QString& para = "");
+    void processSelected(XMLModule::Type type, const QString& request, const QString& para = "");
+    void processIdX(QItemList& items, const QString& request, const QString& para = "");
+    void processSelectedIdX(const QString& request, const QString& para = "");
 protected:
     Juicer* juicer;
     QTreeWidget* treeWidget;

@@ -22,10 +22,8 @@
 
 #include <qglobal.h>
 
-ShareModule::ShareModule(Juicer* juicer) 
-  : ModuleBase(juicer, juicer->sharesTreeWidget, juicer->shareToolBar)
-  , prio_(1)
-{
+ShareModule::ShareModule(Juicer* juicer)
+  : ModuleBase(juicer, juicer->sharesTreeWidget, juicer->shareToolBar) {
     this->filesystemSeparator = filesystemSeparator;
     changed_ = false;
 
@@ -34,7 +32,7 @@ ShareModule::ShareModule(Juicer* juicer)
     prioSpin = new QSpinBox(juicer->shareToolBar);
     prioSpin->setRange(1, 250);
     juicer->shareToolBar->addWidget(prioSpin);
-    prioButton = new QPushButton( tr("SET"), juicer->shareToolBar);
+    prioButton = new QPushButton(tr("Apply"), juicer->shareToolBar);
     juicer->shareToolBar->addWidget(prioButton);
 
     connect(treeWidget, SIGNAL(itemSelectionChanged()), this, SLOT(selectionChanged()));
@@ -46,31 +44,28 @@ ShareModule::ShareModule(Juicer* juicer)
     connect(juicer->actionCreate_Link_List_Share, SIGNAL(triggered()), this, SLOT(linkListSlot()));
 
 //    connect(prioSpin, SIGNAL(valueChanged(int)), this, SLOT(setPriority(int)));
-    connect(prioSpin, SIGNAL(valueChanged(int)), this, SLOT(setTmpPriority(int)));
     connect(prioButton, SIGNAL(clicked()), this, SLOT(setPriority()));
 
     selectionChanged();
 }
 
 
-ShareModule::~ShareModule()
-{}
+ShareModule::~ShareModule() {
+}
 
-void ShareModule::insertShare( const QString& path, const QString& shareMode) {
+void ShareModule::insertShare(const QString& path, const QString& shareMode) {
     new ShareItem(treeWidget, path, (shareMode == "subdirectory"));
 }
 
-void ShareModule::insertSlot()
-{
+void ShareModule::insertSlot() {
     DirSelectionDialog dialog(tr("Select a directory you want to share:"),
             QString::Null(), true, juicer->xml, juicer);
-    if( dialog.exec() == QDialog::Accepted ) {
+    if(dialog.exec() == QDialog::Accepted) {
         QString path =  dialog.getPath();
-        if( ! path.isEmpty() ) {
+        if(! path.isEmpty()) {
             QString mode = "directory";
-            if(QMessageBox::question( juicer, "question", tr("Share subdirectories?"),
-                                      QMessageBox::Yes|QMessageBox::No) == QMessageBox::Yes )
-            {
+            if(QMessageBox::question(juicer, "question", tr("Share subdirectories?"),
+                                      QMessageBox::Yes|QMessageBox::No) == QMessageBox::Yes) {
                 mode = "subdirectory";
             }
             insertShare(path, mode);
@@ -80,50 +75,46 @@ void ShareModule::insertSlot()
     }
 }
 
-void ShareModule::removeSlot()
-{
+void ShareModule::removeSlot() {
     QItemList  selectedItems = treeWidget->selectedItems();
-    for(int i=0; i<selectedItems.size(); i++ ) {
+    for(int i=0; i<selectedItems.size(); i++) {
         //delete it.current();
-        selectedItems[i]->setFlags( 0 );
+        selectedItems[i]->setFlags(0);
     }
     changed_ = true;
-    juicer->actionCommit_Share->setEnabled( true );
+    juicer->actionCommit_Share->setEnabled(true);
 }
 
-void ShareModule::reloadSlot()
-{
+void ShareModule::reloadSlot() {
     treeWidget->clear();
     sharedFiles.clear();
-    xml->get( "settings" );
-    xml->get( "share" );
-
-    juicer->actionCommit_Share->setEnabled( false );
+    xml->get("settings");
+    xml->get("share");
+    juicer->actionCommit_Share->setEnabled(false);
 }
 
-void ShareModule::commitSlot()
-{
+void ShareModule::commitSlot() {
     QString sharesString;
     int cnt = 1;
     for(int i=0; i<treeWidget->topLevelItemCount() ; i++) {
         ShareItem* item = (ShareItem*)treeWidget->topLevelItem(i);
-        if ( item->flags() & Qt::ItemIsEnabled ) {
+        if (item->flags() & Qt::ItemIsEnabled) {
             sharesString += "&sharedirectory" + QString::number(cnt) + "=" + item->getPath();
             sharesString += "&sharesub" + QString::number(cnt) + "=";
             ShareItem* shareItem = dynamic_cast<ShareItem*>(item);
-            if ( shareItem == NULL ) {
-              qFatal( "ShareModule::commitSlot: shareItem is NULL" );
+            if (shareItem == NULL) {
+              qFatal("ShareModule::commitSlot: shareItem is NULL");
               return;
             }
             sharesString += shareItem->isRecursive() ? "true" : "false";
             cnt++;
         }
     }
-    sharesString += "&countshares=" + QString::number( cnt-1 );
-    xml->set( "setsettings", sharesString );
-//    xml->get( "settings" );
+    sharesString += "&countshares=" + QString::number(cnt-1);
+    xml->set("setsettings", sharesString);
+//    xml->get("settings");
     changed_ = false;
-    juicer->actionCommit_Share->setEnabled( false );
+    juicer->actionCommit_Share->setEnabled(false);
 
     updateSharedFilesList();
 }
@@ -133,8 +124,8 @@ void ShareModule::linkSlot() {
     for(int i=0; i<selectedItems.size(); i++) {
         if(selectedItems[i]->parent() != NULL) {
             ShareFileItem* shareItem = dynamic_cast<ShareFileItem*>(selectedItems[0]);
-            if ( shareItem != NULL ) {
-                QApplication::clipboard()->setText( shareItem->getLinkAJFSP() );
+            if (shareItem != NULL) {
+                QApplication::clipboard()->setText(shareItem->getLinkAJFSP());
             }
         }
     }
@@ -143,7 +134,7 @@ void ShareModule::linkSlot() {
 ShareItem* ShareModule::findShare(const QString& fileName) {
     for(int i=0; i<treeWidget->topLevelItemCount() ; i++) {
         ShareItem* item = dynamic_cast<ShareItem*>(treeWidget->topLevelItem(i));
-        if ( item == NULL ) continue;
+        if (item == NULL) continue;
         if(fileName.startsWith(item->getPath())) {
             return item;
         }
@@ -151,7 +142,7 @@ ShareItem* ShareModule::findShare(const QString& fileName) {
     return NULL;
 }
 
-void ShareModule::insertFile( const QString& id,
+void ShareModule::insertFile(const QString& id,
                                  const QString& hash,
                                  const QString& fileName,
                                  const QString& size,
@@ -159,16 +150,16 @@ void ShareModule::insertFile( const QString& id,
                                  const QString& lastAsked,
                                  const QString& askCount,
                                  const QString& searchCount,
-                                 const QString& filesystemSeperator ) 
-{
+                                 const QString& filesystemSeperator) {
     ShareFileItem *shareFileItem = findFile(id);
-    if( shareFileItem == NULL ) {
+    if(shareFileItem == NULL) {
         ShareItem* parentItem = findShare(fileName);
-        if ( parentItem != NULL ) {
-            shareFileItem = new ShareFileItem( id, parentItem );
-            if ( shareFileItem == NULL ) return;  // new failed?
+        if (parentItem != NULL) {
+            shareFileItem = new ShareFileItem(id, parentItem);
+            if (shareFileItem == NULL) return;  // new failed?
             parentItem->insertSharedFile(shareFileItem);
             sharedFiles[ id ] = shareFileItem;
+            connect(shareFileItem, SIGNAL(priorityChanged(const QString&, const QString&)), this, SLOT(setPriority(const QString&, const QString&)));
         }
         else {
 //            qDebug() << fileName << endl;
@@ -180,40 +171,34 @@ void ShareModule::insertFile( const QString& id,
     adjustSizeOfColumns();
 }
 
-ShareFileItem* ShareModule::findFile( const QString& id )
-{
-    if ( sharedFiles.contains( id ) ) {
+ShareFileItem* ShareModule::findFile(const QString& id) {
+    if (sharedFiles.contains(id)) {
         return sharedFiles[id];
-    }
-    else {
+    } else {
         return NULL;
     }
 }
 
-void ShareModule::updateSharedFilesList() 
-{
+void ShareModule::updateSharedFilesList() {
     treeWidget->clear();
     sharedFiles.clear();
-    xml->get( "settings" );
-    xml->get( "share" );
+    xml->get("settings");
+    xml->get("share");
 }
 
-void ShareModule::setTmpPriority(int prio) 
-{
-    prio_ = prio;
+void ShareModule::setPriority(const QString& id, const QString& priority) {
+    xml->set("setpriority", "&priority=" + priority + "&id=" + id);
 }
 
-void ShareModule::setPriority() 
-{
+void ShareModule::setPriority() {
     QItemList  selectedItems = treeWidget->selectedItems();
     for(int i=0; i<selectedItems.size(); i++) {
         if(selectedItems[i]->parent() != NULL) {
             ShareFileItem* ajShareItem = dynamic_cast<ShareFileItem*>(selectedItems[i]);
-            if ( ajShareItem != NULL) {
-              xml->set("setpriority", "&priority=" + QString::number(prio_) + "&id=" + ajShareItem->getId());
-              ajShareItem->updatePrio(prio_);
+            if (ajShareItem != NULL) {
+                setPriority(ajShareItem->getId(), QString::number(prioSpin->value()));
+                ajShareItem->updatePrio(prioSpin->value());
             }
-            else return;
         }
     }
 //    xml->get("share");
@@ -224,8 +209,7 @@ void ShareModule::setPriority()
 /*!
     \fn ShareModule::findFile(const QString& size, const QString& hash)
  */
-ShareFileItem* ShareModule::findFile(const QString& size, const QString& hash) 
-{
+ShareFileItem* ShareModule::findFile(const QString& size, const QString& hash) {
     QList<ShareFileItem*> list = sharedFiles.values();
     for(int i=0; i<list.size(); i++) {
         if(list[i]->getSize() == size.toDouble() && list[i]->getHash() == hash) {
@@ -239,7 +223,7 @@ void ShareModule::selectionChanged() {
     bool shareSelected = false;
     bool fileSelected = false;
     QItemList  selectedItems = treeWidget->selectedItems();
-    for(int i=0; i<selectedItems.size(); i++ ) {
+    for(int i=0; i<selectedItems.size(); i++) {
         if(treeWidget->selectedItems()[i]->parent() == NULL) {
             shareSelected = true;
         } else {

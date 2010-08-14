@@ -19,8 +19,7 @@
 
 #include "powerspin.h"
 
-PowerSpin::PowerSpin(const QString& id, QWidget *parent) : QWidget(parent)
-{
+PowerSpin::PowerSpin(const QString& id, QWidget *parent) : QWidget(parent) {
     this->id = id;
     QHBoxLayout *layout = new QHBoxLayout;
 
@@ -47,14 +46,9 @@ PowerSpin::PowerSpin(const QString& id, QWidget *parent) : QWidget(parent)
 }
 
 
-PowerSpin::~PowerSpin()
-{
+PowerSpin::~PowerSpin() {
 }
 
-void PowerSpin::powerChanged()
-{
-    if(check->isChecked())
-        powerChanged(id, spin->value());
-    else
-        powerChanged(id, 1.0);
+void PowerSpin::powerChanged() {
+    powerChanged(id, check->isChecked()?spin->value():1.0);
 }

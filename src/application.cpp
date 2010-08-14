@@ -32,7 +32,7 @@ Application::Application(int & argc, char ** argv) : QApplication( argc, argv ) 
     QCoreApplication::setOrganizationDomain("progeln.de");
     QCoreApplication::setApplicationName("Juicer");
     QCoreApplication::setApplicationVersion("1.2");
-    setQuitOnLastWindowClosed( false );
+    setQuitOnLastWindowClosed(false);
     socket = NULL;
 
     appFileInfo.setFile(argv[0]);

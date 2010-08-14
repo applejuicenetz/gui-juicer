@@ -22,14 +22,21 @@
 
 QString ShareFileItem::filesystemSeperator = "";
 
-ShareFileItem::ShareFileItem(const QString& id, ShareItem *parent) 
-  : Item(/*dynamic_cast<QTreeWidgetItem*>*/parent, id)
-{
+ShareFileItem::ShareFileItem(const QString& id, ShareItem *parent) : Item(parent, id) {
+    prioritySpin = new QSpinBox();
+    prioritySpin->setMaximumHeight(20);
+    prioritySpin->setRange(1, 250);
+    QTimer::singleShot(100, this, SLOT(initPrioritySpin()));
 }
 
 
-ShareFileItem::~ShareFileItem()
-{
+ShareFileItem::~ShareFileItem() {
+}
+
+
+void ShareFileItem::initPrioritySpin() {
+    treeWidget()->setItemWidget(this, ShareItem::PRIORITY_COL, prioritySpin);
+    connect(prioritySpin, SIGNAL(valueChanged(const QString&)), this, SLOT(priorityChanged(const QString &)));
 }
 
 
@@ -40,11 +47,10 @@ void ShareFileItem::update(const QString& hash,
                            const QString& lastAsked,
                            const QString& askCount,
                            const QString& searchCount,
-                           const QString& filesystemSeperator)
-{
+                           const QString& filesystemSeperator) {
     setText(ShareItem::PATH_COL, fileName.split(filesystemSeperator).last());
     setText(ShareItem::SIZE_COL, Convert::bytesExtra(size));
-    setText(ShareItem::PRIORITY_COL, priority);
+    prioritySpin->setValue(priority.toInt());
     setText(ShareItem::LAST_ASKED_COL, Convert::dateString(lastAsked));
     setText(ShareItem::ASK_COUNT_COL, askCount);
     setText(ShareItem::SEARCH_COUNT_COL, searchCount);
@@ -67,8 +73,7 @@ void ShareFileItem::update(const QString& hash,
     if (parentItem != NULL) parentItem->update();
 }
 
-void ShareFileItem::updatePrio(int prio)
-{
+void ShareFileItem::updatePrio(int prio) {
     setText(ShareItem::PRIORITY_COL, QString::number(prio));
 }
 
@@ -76,9 +81,10 @@ void ShareFileItem::updatePrio(int prio)
 bool ShareFileItem::operator<(const QTreeWidgetItem & other) const {
     int sortIndex = treeWidget()->header()->sortIndicatorSection();
     const ShareFileItem* shareFileItem = dynamic_cast<const ShareFileItem*>(&other);
-    if (shareFileItem == NULL) return false;
-    switch (sortIndex)
-    {
+    if (shareFileItem == NULL) {
+        return false;
+    }
+    switch (sortIndex) {
     case ShareItem::PATH_COL:
         return text(ShareItem::PATH_COL) < other.text(ShareItem::PATH_COL);
     case ShareItem::SIZE_COL:
@@ -95,14 +101,15 @@ bool ShareFileItem::operator<(const QTreeWidgetItem & other) const {
 }
 
 QString ShareFileItem::getLinkAJFSP() {
-    QString ajfspLink;
-    ajfspLink.append("ajfsp://file|");
-    ajfspLink.append(filename_.split(filesystemSeperator).last());
-    ajfspLink.append("|");
-    ajfspLink.append(hash_);
-    ajfspLink.append("|");
-    ajfspLink.append(QString::number((unsigned long int)size_));
-    ajfspLink.append("/");
-    return ajfspLink;
+    QString ajfspLink = "ajfsp://file|%1|%2|%3/";
+    QString file = filename_.split(filesystemSeperator).last();
+    return ajfspLink.arg(file).arg(hash_).arg((unsigned long)size_);
 }
 
+
+/*!
+    \fn ShareFileItem::priorityChanged(const QString& priority)
+ */
+void ShareFileItem::priorityChanged(const QString& priority) {
+    priorityChanged(id_, priority);
+}

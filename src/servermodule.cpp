@@ -60,12 +60,8 @@ void ServerModule::insertServer(const QString& id, const QString& name, const QS
     }
 }
 
-void ServerModule::removeSlot()
-{
-    QList<QTreeWidgetItem*> items = treeWidget->selectedItems();
-    for(QList<QTreeWidgetItem*>::iterator i = items.begin(); i!=items.end(); i++) {
-        xml->set( "removeserver", "&id=" + ((Item*)(*i))->getId() );
-    }
+void ServerModule::removeSlot() {
+    processSelected(XMLModule::SET, "removeserver");
 }
 
 void ServerModule::connectSlot() {
@@ -84,6 +80,7 @@ void ServerModule::connectSlot() {
         }
         if(doSo) {
             xml->set("serverlogin", "&id=" + ((Item*)items.first())->getId());
+            juicer->timerSlot();
         }
     }
 }

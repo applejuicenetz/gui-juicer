@@ -48,7 +48,7 @@ Juicer::Juicer(const QStringList& argList, QSplashScreen *splash, const QFileInf
 
     firstModifiedMax = 2;// + argList.size();
 
-    linkServer = new ServerSocket(Application::APP_PORT);
+    linkServer = new ServerSocket(Application::APP_PORT, this);
     connect(linkServer, SIGNAL(lineReady(const QString&)), this, SLOT(processLinksAndNotify(const QString&)));
 
     osIcons[LINUX] = QIcon(":/small/linux.png");
@@ -175,6 +175,7 @@ void Juicer::closeEvent(QCloseEvent* ce) {
         trayDialog.exec("minimize");
         showMinimized();
         setHidden(true);
+        restartTimer(10);
         ce->ignore();
      } else {
         // make sure tray icon disappears when quit (Windows problem)
@@ -190,6 +191,7 @@ void Juicer::quit() {
     saveGUIState();
     downloads->close();
     server->close();
+    linkServer->close();
     qApp->quit();
 }
 
@@ -339,9 +341,7 @@ void Juicer::showOptions() {
             }
         }
 
-        timer->stop();
-        timer->setSingleShot(false);
-        timer->start(OptionsDialog::getSetting("refresh", 3).toInt() * 1000);
+        restartTimer();
 
         if(connected) {
             QString settingsString = "";
@@ -378,8 +378,7 @@ void Juicer::gotSession() {
     xml->get("settings");
     QSettings lokalSettings;
     timerSlot();
-    timer->setSingleShot(false);
-    timer->start(lokalSettings.value("refresh", 3).toInt() * 1000);
+    restartTimer();
     downloadModule->partListTimer->setSingleShot(false);
     downloadModule->partListTimer->start(5000);
     shareModule->reloadSlot();
@@ -408,6 +407,7 @@ void Juicer::setStatusBarText(const QString& downSpeed, const QString& upSpeed,
 
 void Juicer::processClipboard() {
     processLink(qApp->clipboard()->text(QClipboard::Clipboard));
+    timerSlot();
 }
 
 
@@ -500,6 +500,7 @@ void Juicer::processQueuedLinks() {
     while(!queuedLinks.isEmpty()) {
         processLink(queuedLinks.takeFirst());
     }
+    timerSlot();
 }
 
 void Juicer::queueLinks(const QStringList& links) {
@@ -624,7 +625,9 @@ void Juicer::initStatusBar() {
  */
 void Juicer::trayActivated(QSystemTrayIcon::ActivationReason reason) {
     if(reason == QSystemTrayIcon::Trigger) {
+        timerSlot();
         setVisible(!isVisible());
+        restartTimer(isVisible()?-1:10);
         if(isMinimized()) {
             showNormal();
             activateWindow();    // make widget active, otherwise one must first click at the tab in the task bar to get Juicer in front
@@ -686,6 +689,7 @@ void Juicer::openAjL() {
                                       ajListFileName, QSystemTrayIcon::Information, 3000);
                 }
                 ajListFile.close();
+                timerSlot();
             }
         } else {
             tray->showMessage(tr("No such file"), ajListFileName, QSystemTrayIcon::Information, 3000);
@@ -763,6 +767,7 @@ QStringList Juicer::getAjfspLinks(const QString& text, const QString& type) {
 void Juicer::processLinkFromToolbar() {
     processLink(ajAddressEdit->text().trimmed());
     ajAddressEdit->clear();
+    timerSlot();
 }
 
 
@@ -804,6 +809,7 @@ QStringList Juicer::processLinks(const QString& text, const QString& type) {
             it.remove();
         }
     }
+    timerSlot();
     return links;
 }
 
@@ -965,4 +971,17 @@ void Juicer::notifyAjfspLink(QStringList& links) {
         }
         tray->showMessage("Processed Link", msg.trimmed());
     }
+}
+
+
+/*!
+    \fn Juicer::restartTimer(int sec)
+ */
+void Juicer::restartTimer(int sec) {
+    timer->stop();
+    timer->setSingleShot(false);
+    if(sec < 0) {
+        sec = OptionsDialog::getSetting("refresh", 3).toInt();
+    }
+    timer->start(sec * 1000);
 }

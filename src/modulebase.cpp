@@ -163,3 +163,49 @@ void ModuleBase::linkListSlot() {
 void ModuleBase::updateAlternatingRowColors() {
     this->treeWidget->setAlternatingRowColors(OptionsDialog::getSetting("altRows", false).toBool());
 }
+
+
+/*!
+    \fn ModuleBase::process(QItemList& items, XMLModule::Type type, const QString& request, const QString& para)
+ */
+void ModuleBase::process(QItemList& items, XMLModule::Type type, const QString& request, const QString& para) {
+    for(QItemList::iterator i = items.begin(); i!=items.end(); i++) {
+        xml->make(type, request, para + "&id=" + ((Item*)(*i))->getId());
+    }
+}
+
+/*!
+    \fn ModuleBase::processSelected(XMLModule::Type type, const QString& request, const QString& para)
+ */
+void ModuleBase::processSelected(XMLModule::Type type, const QString& request, const QString& para) {
+    QItemList items = treeWidget->selectedItems();
+    process(items, type, request, para);
+    juicer->timerSlot();
+}
+
+/*!
+    \fn ModuleBase::processIdX(QItemList& items, const QString& request, const QString& para)
+ */
+void ModuleBase::processIdX(QItemList& items, const QString& request, const QString& para) {
+    // -- there seems to be a bug in the appleJuice core ... --
+    process(items, XMLModule::SET, request, para);
+/*    if(items.empty()) {
+        return;
+    }
+    QString ids = "&id="+((Item*)items.at(0))->getId();
+    for(int i=1; i<items.size(); i++) {
+        ids += "&id"+QString::number(i)+"="+((Item*)items.at(i))->getId();
+    }
+    qDebug() << ids;
+    xml->set(request, para + ids);*/
+    juicer->timerSlot();
+}
+
+
+/*!
+    \fn ModuleBase::processSelectedIdX(const QString& request, const QString& para)
+ */
+void ModuleBase::processSelectedIdX(const QString& request, const QString& para) {
+    QItemList items = treeWidget->selectedItems();
+    processIdX(items, request, para);
+}

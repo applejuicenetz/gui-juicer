@@ -22,6 +22,7 @@
 
 #include <QString>
 #include <QObject>
+#include <QSpinBox>
 
 #include "useritem.h"
 
@@ -34,6 +35,7 @@ class ShareItem;
 */
 class ShareFileItem : public Item
 {
+Q_OBJECT
 public:
     ShareFileItem( const QString& id, ShareItem *parent = 0 );
     virtual ~ShareFileItem();
@@ -47,9 +49,17 @@ public:
     void updatePrio( int prio );
     virtual bool operator<(const QTreeWidgetItem & other) const;
     qulonglong lastAsked;
+    QSpinBox* prioritySpin;
 
 protected:
     static QString filesystemSeperator;
+
+public slots:
+    void initPrioritySpin();
+signals:
+    void priorityChanged(const QString& id, const QString& priority);
+private slots:
+    void priorityChanged(const QString& priority);
 };
 
 #endif

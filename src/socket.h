@@ -23,6 +23,7 @@
 #include <QTcpSocket>
 #include <QStringList>
 #include <QCoreApplication>
+#include <QHostAddress>
 
 /**
 @author Matthias Reif
@@ -31,7 +32,7 @@ class Socket : public QTcpSocket
 {
     Q_OBJECT
 public:
-    Socket( int appPort, const QStringList& argList, QObject *parent = 0 );
+    Socket(int appPort, const QStringList& argList, QObject *parent = 0);
     ~Socket();
     void start();
 

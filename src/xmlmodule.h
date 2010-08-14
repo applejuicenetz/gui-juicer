@@ -50,7 +50,6 @@ public:
 
     enum Type {GET, SET};
     void resetHttp();
-    int exec(const QString & request);
     int make(Type type, const QString & request, QString param = "");
     int get(const QString & request, QString param = "");
     int set(const QString & request, QString param = "");
@@ -64,6 +63,7 @@ public:
     int setHost(const QString& hostName, quint16 port = 80);
 
 protected:
+    int exec(const QString & request);
     Juicer *juicer;
     QString timeStamp;
     QString passwordMD5;

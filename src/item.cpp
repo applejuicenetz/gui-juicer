@@ -19,16 +19,14 @@
 
 #include "item.h"
 
-Item::Item( QTreeWidget *parent, const QString& id ) 
-  : QTreeWidgetItem( parent ), QObject()
+Item::Item( QTreeWidget *parent, const QString& id ) : QTreeWidgetItem( parent ), QObject()
   , id_(id)
   , status_("-1")
   , size_(0.0)
 {
 }
 
-Item::Item( QTreeWidgetItem *parent, const QString& id ) 
-  : QTreeWidgetItem( parent ), QObject()
+Item::Item( QTreeWidgetItem *parent, const QString& id ) : QTreeWidgetItem( parent ), QObject()
   , id_(id)
   , status_("-1")
   , size_(0.0)

@@ -23,12 +23,11 @@
 #include <QObject>
 #include <QInputDialog>
 #include <QClipboard>
-
-#include "xmlmodule.h"
+#include <QSound>
+ 
 #include "modulebase.h"
 #include "downloaditem.h"
 #include "useritem.h"
-#include "convert.h"
 #include "ftp.h"
 #include "optionsdialog.h"
 #include "dirselectiondialog.h"
@@ -66,11 +65,6 @@ public slots:
     void updateView();
     void partListSlot();
 protected:
-    void processSelected(XMLModule::Type type, const QString& request,
-                          const QString& para = "");
-    void getSelected(const QString& request, const QString& para = "");
-    void setSelected(const QString& request, const QString& para = "");
-
     QHash<QString, DownloadItem*> downloads;
     int currIdRoundRobin;
     QDoubleSpinBox* powerSpin;
@@ -88,6 +82,8 @@ protected:
     };
     DownloadModule::DownloadUser findParent(const QString& id);
     void adjustTabText();
+    
+    QSound* pauseSound;
 
 protected slots:
     void cancelSlot();

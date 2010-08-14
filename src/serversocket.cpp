@@ -20,7 +20,7 @@
 #include "serversocket.h"
 
 ServerSocket::ServerSocket(quint16 port, QObject *parent) : QTcpServer(parent) {
-    listen(QHostAddress::Any, port);
+    listen(QHostAddress::LocalHost, port);
     clientSocket = NULL;
     connect(this, SIGNAL(newConnection()), this, SLOT(newConnectionSlot()));
 }
@@ -34,7 +34,7 @@ ServerSocket::~ServerSocket() {
 
 void ServerSocket::readLine() {
     QString line;
-    while((line = clientSocket->readLine()) != "") {
+    while(!(line = clientSocket->readLine()).isEmpty()) {
         lineReady(line);
     }
 }

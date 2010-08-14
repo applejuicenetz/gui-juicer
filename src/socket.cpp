@@ -38,5 +38,5 @@ void Socket::connected() {
 }
 
 void Socket::start() {
-    connectToHost( "localhost", appPort );
+    connectToHost(QHostAddress::LocalHost, appPort);
 }
