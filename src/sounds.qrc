@@ -1,0 +1,11 @@
+<!DOCTYPE RCC>
+<RCC version="1.0">
+
+
+<qresource prefix="/sounds">
+    <file alias="sound1.mp3">resources/sounds/sound1.mp3</file>
+
+</qresource>
+
+
+</RCC>
