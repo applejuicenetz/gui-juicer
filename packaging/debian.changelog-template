@@ -1,0 +1,5 @@
+juicer ($version-$release) stable; urgency=low
+
+  * $message
+
+ -- Matthias Reif <matthias_reif@web.de> $date

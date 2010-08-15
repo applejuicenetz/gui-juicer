@@ -1,0 +1,49 @@
+Summary: Juicer - appleJuice Qt GUI
+Summary(de): Juicer - appleJuice Qt GUI
+Name: juicer
+Version: $version
+Release: $release
+License: GPL
+Group: Applications/Internet
+Source: http://progeln.de/~remat/$filename
+Distribution: none
+Vendor: none
+Packager: Matthias Reif <matthias_reif@web.de>
+BuildRequires: gcc gcc-c++ make zlib
+%if 0%{?rhel_version} || 0%{?mandriva_version}
+BuildRequires: qt4-devel
+%else
+BuildRequires: qt-devel
+%endif
+
+%description
+Juicer is a Qt4 based graphical user interface for the applejuice filesharing.
+
+%description -l de
+Juicer ist eine Qt4 basierende graphische Benutzerschnittstelle für das
+appleJucie filesharing.
+
+%prep
+%setup
+
+%build
+%if 0%{?rhel_version} || 0%{?mandriva_version} > 2006
+export PATH=/usr/lib/qt4/bin:$PATH  
+export QTDIR=%{_prefix}/lib/qt4/  
+%endif
+%if 0%{?fedora}
+qmake-qt4
+%else
+qmake
+%endif
+make
+
+%install
+INSTALL_ROOT=$RPM_BUILD_ROOT make install
+
+%clean
+echo rm -rf $RPM_BUILD_ROOT
+
+%files
+%defattr(-,root,root)
+/usr/bin/juicer
