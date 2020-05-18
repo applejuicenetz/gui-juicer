@@ -1,6 +1,10 @@
 VERSION = -1.2
-include(quazip/quazip.pri) \
+
+DEFINES += QUAZIP_STATIC
+
+LIBS += -lquazip
 INCLUDEPATH += quazip
+
 FORMS += optionsdialogbase.ui \
  networkdialogbase.ui \
  logindialogbase.ui \
@@ -11,6 +15,7 @@ FORMS += optionsdialogbase.ui \
  replacedialogbase.ui \
  aboutdialogbase.ui \
  askagaindialogbase.ui
+
 HEADERS += ftp.h \
  global.h \
  md5class.h \
@@ -52,6 +57,7 @@ HEADERS += ftp.h \
  replacedialog.h \
  aboutdialog.h \
  askagaindialog.h
+
 SOURCES += main.cpp \
  md5c.c \
  md5class.cpp \
@@ -93,15 +99,21 @@ SOURCES += main.cpp \
  replacedialog.cpp \
  aboutdialog.cpp \
  askagaindialog.cpp
+
 CONFIG += warn_on \
  qt \
  stl \
  debug \
  release
+
 TEMPLATE = app
+
 QT += core gui network xml
+
 RESOURCES += images.qrc translations.qrc sounds.qrc
+
 RC_FILE = resources/juicer.rc
+
 DISTFILES += resources/juicer.rc \
  resources/translations/juicer_de.qm \
  resources/button_ok.png \
@@ -201,6 +213,7 @@ DISTFILES += resources/juicer.rc \
  resources/options/undo.png \
  resources/options/viewmag.png \
  LICENSE
+
 TRANSLATIONS += juicer_de.ts
 TARGET = juicer
 INSTALLS += target
