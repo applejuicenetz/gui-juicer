@@ -26,11 +26,11 @@
 #include <QFileDialog>
 #include <QToolBar>
 #include <QMainWindow>
-#include <xmlmodule.h>
 
 #include "convert.h"
 
 class Juicer;
+class XMLModule;
 
 /**
     @author Matthias Reif <matthias.reif@informatik.tu-chemnitz.de>
@@ -39,20 +39,13 @@ class ModuleBase : public QObject {
 Q_OBJECT
 public:
     ModuleBase(Juicer* juicer, QTreeWidget* treeWidget, QToolBar* toolbar, QWidget* tabWidget = NULL);
-    ModuleBase(Juicer* juicer, QWidget* contentWidget, QToolBar* toolbar, QWidget* tabWidget = NULL);
     ~ModuleBase();
-    void init(Juicer* juicer, QWidget* contentWidget, QToolBar* toolbar, QWidget* tabWidget);
     void sortItemsInitially(const QString& settingsGroup);
     void saveSortOrder(const QString& settingsGroup);
     void updateAlternatingRowColors();
-    void process(QItemList& items, XMLModule::Type type, const QString& request, const QString& para = "");
-    void processSelected(XMLModule::Type type, const QString& request, const QString& para = "");
-    void processIdX(QItemList& items, const QString& request, const QString& para = "");
-    void processSelectedIdX(const QString& request, const QString& para = "");
 protected:
     Juicer* juicer;
     QTreeWidget* treeWidget;
-    QWidget* contentWidget;
     QToolBar* toolbar;
     QString tabText;
     int tabIndex;

@@ -2,7 +2,7 @@ Format: 1.0
 Source: juicer
 Version: $version
 Binary: jucier
-Maintainer: Matthias Reif <matthias_reif@web.de>
+Maintainer: red171 <red171@applejuicenet.cc>
 Architecture: any
 Debtransform-Tar: $filename
 Build-Depends: zlib1g-dev, libqt4-dev (>= 4.4), qt4-qmake (>= 4.4), gcc, g++, make, debhelper

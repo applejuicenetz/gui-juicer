@@ -1,12 +1,10 @@
 FROM debian:buster
 
-RUN apt -y update
-
-RUN apt install -y qttools5-dev-tools \
-                nsis \
-                gcc \
-                g++ \
-                make
+RUN apt update && apt install -y \
+    qt4-dev-tools \
+    cmake \
+    make \
+    gcc \
 
 RUN mkdir /work
 

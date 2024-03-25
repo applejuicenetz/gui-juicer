@@ -5,10 +5,10 @@ Version: $version
 Release: $release
 License: GPL
 Group: Applications/Internet
-Source: https://github.com/appleJuiceNET/gui-juicer
+Source: https://github.com/applejuicenetz/gui-juicer
 Distribution: none
 Vendor: none
-Packager: Matthias Reif <matthias_reif@web.de>
+Packager: red171 <red171@applejuicenet.cc>
 BuildRequires: gcc gcc-c++ make zlib
 %if 0%{?rhel_version} || 0%{?mandriva_version}
 BuildRequires: qt4-devel
@@ -17,11 +17,11 @@ BuildRequires: qt-devel
 %endif
 
 %description
-Juicer is a Qt4 based graphical user interface for the applejuice filesharing.
+Juicer is a Qt4 based graphical user interface for the appleJuice filesharing.
 
 %description -l de
 Juicer ist eine Qt4 basierende graphische Benutzerschnittstelle für das
-appleJucie filesharing.
+appleJuice filesharing.
 
 %prep
 %setup

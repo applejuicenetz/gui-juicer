@@ -23,15 +23,15 @@
 #include <QObject>
 #include <QInputDialog>
 #include <QClipboard>
-#include <QSound>
- 
+
+#include "xmlmodule.h"
 #include "modulebase.h"
 #include "downloaditem.h"
 #include "useritem.h"
+#include "convert.h"
 #include "ftp.h"
 #include "optionsdialog.h"
 #include "dirselectiondialog.h"
-#include "replacedialog.h"
 
 class DownloadModule : public ModuleBase {
   Q_OBJECT
@@ -47,8 +47,7 @@ public:
                     const QString& nickname, const QString& speed, const QString& status,
                     const QString& power, const QString& queuePos, const QString& os,
                     const QString& downloadfrom, const QString& downloadto,
-                    const QString& actualdownloadposition, const QString& source,
-                    QTime& time);
+                    const QString& actualdownloadposition, QTime& time);
     bool remove(const QString& id);
     bool removeDownload(const QString& id);
     DownloadItem* findDownload(const QString& id);
@@ -65,12 +64,18 @@ public slots:
     void updateView();
     void partListSlot();
 protected:
+    void processSelected(XMLModule::Type type, const QString& request,
+                          const QString& para = "");
+    void getSelected(const QString& request, const QString& para = "");
+    void setSelected(const QString& request, const QString& para = "");
+
     QHash<QString, DownloadItem*> downloads;
     int currIdRoundRobin;
     QDoubleSpinBox* powerSpin;
     QCheckBox *powerCheck;
     QAction *powerButtonAction;
-    QHash<QString, QString> userStatusDescr, downloadStatusDescr, userSourceDescr;
+    QHash<QString, QString> userStatusDescr;
+    QHash<QString, QString> downloadStatusDescr;
     QString tempDir, incomingDir;
     bool hidePaused;
 
@@ -82,8 +87,6 @@ protected:
     };
     DownloadModule::DownloadUser findParent(const QString& id);
     void adjustTabText();
-    
-    QSound* pauseSound;
 
 protected slots:
     void cancelSlot();
@@ -92,7 +95,6 @@ protected slots:
     void pauseSlot();
     void renameSlot();
     void renamePlusSlot();
-    void replaceSlot();
     void openSlot();
     void linkSlot();
     void setMultiPowerDownload();

@@ -38,6 +38,9 @@
 class ShareModule : public ModuleBase
 {
     Q_OBJECT
+
+    QHash<QString, ShareFileItem*> sharedFiles;
+
 public:
     QLabel*        prioLabel;
     QSpinBox*      prioSpin;
@@ -71,16 +74,15 @@ public slots:
 protected:
     ShareItem* findShare(const QString& fileName);
     QString filesystemSeparator;
+    int prio_;
     bool changed_;
-    QHash<QString, ShareFileItem*> sharedFiles;
 
 private slots:
     void insertSlot();
     void removeSlot();
     void linkSlot();
+    void setTmpPriority(int prio);
     void setPriority();
-    void setPriority(const QString& id, const QString& priority);
-
 };
 
 #endif

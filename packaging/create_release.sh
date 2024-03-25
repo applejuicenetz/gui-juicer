@@ -1,6 +1,9 @@
 #!/usr/bin/env bash
 
 set -e
+set -x
+
+cd $(dirname "$(realpath "$0")")
 
 release="1"
 version=$(grep VERSION ../src/src.pro | cut -d\- -f2)
@@ -13,9 +16,11 @@ filepath=$osc_dir/$filename
 mkdir -p ../build
 
 cd ../src
+
 qmake
 make
 make dist
+
 # removing moc files from source archive
 gunzip $qt_filename
 tar --delete -f $qt_filename_un $(tar --list -f $qt_filename_un | grep moc_)

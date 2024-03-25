@@ -6,10 +6,9 @@
     <file alias="configure.png">resources/configure.png</file>
     <file alias="connect.png">resources/connect_creating.png</file>
     <file alias="rename_plus.png">resources/editpaste.png</file>
-    <file alias="rename.png">resources/edit-rename.png</file>
-    <file alias="replace.png">resources/edit-find-replace.png</file>
+    <file alias="rename.png">resources/edit.png</file>
     <file alias="filter.png">resources/emptytrash.png</file>
-    <file alias="exec.png">resources/system-run.png</file>
+    <file alias="exec.png">resources/exec.png</file>
     <file alias="save.png">resources/filesave.png</file>
     <file alias="find.png">resources/find.png</file>
     <file alias="launch.png">resources/launch.png</file>
@@ -28,9 +27,7 @@
     <file alias="partlist2.png">resources/partlist2.png</file>
     <file alias="dummy.png">resources/dummy.png</file>
     <file alias="juicer.png">resources/juicer.png</file>
-    <file alias="juicer-big.png">resources/juicer-big.png</file>
     <file alias="text_block.png">resources/text_block.png</file>
-    <file alias="link.png">resources/link.png</file>
     <file alias="folder_open.png">resources/folder_open.png</file>
     <file alias="fileopen.png">resources/fileopen.png</file>
     <file alias="toggle_log.png">resources/toggle_log.png</file>
@@ -87,8 +84,6 @@
     <file alias="recursive.png">resources/small/view_tree.png</file>
     <file alias="not_recursive.png">resources/small/view_detailed.png</file>
     <file alias="update.png">resources/small/update.png</file>
-    <file alias="connections.png">resources/small/network-wired.png</file>
-    <file alias="go-next.png">resources/small/go-next.png</file>
 </qresource>
 
 <qresource prefix="/options">

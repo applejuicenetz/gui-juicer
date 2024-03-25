@@ -24,9 +24,6 @@
     </property>
     <item>
      <widget class="QTabWidget" name="ajTab">
-      <property name="enabled">
-       <bool>true</bool>
-      </property>
       <property name="currentIndex">
        <number>0</number>
       </property>
@@ -52,9 +49,6 @@
           <horstretch>0</horstretch>
           <verstretch>0</verstretch>
          </sizepolicy>
-        </property>
-        <property name="styleSheet">
-         <string notr="true"/>
         </property>
         <property name="selectionMode">
          <enum>QAbstractItemView::ExtendedSelection</enum>
@@ -142,8 +136,8 @@
         </property>
         <property name="minimumSize">
          <size>
-          <width>77</width>
-          <height>41</height>
+          <width>0</width>
+          <height>0</height>
          </size>
         </property>
         <property name="windowTitle">
@@ -649,13 +643,7 @@
          <number>0</number>
         </property>
         <item>
-         <widget class="DragNDropTreeWidget" name="incomingTreeWidget">
-          <property name="dragEnabled">
-           <bool>true</bool>
-          </property>
-          <property name="dragDropMode">
-           <enum>QAbstractItemView::DragOnly</enum>
-          </property>
+         <widget class="QTreeWidget" name="incomingTreeWidget">
           <property name="selectionMode">
            <enum>QAbstractItemView::ExtendedSelection</enum>
           </property>
@@ -732,7 +720,6 @@
     <addaction name="actionShow_Part_List"/>
     <addaction name="actionRename"/>
     <addaction name="actionRename_By_Clipboard"/>
-    <addaction name="actionReplace"/>
     <addaction name="actionOpen"/>
     <addaction name="actionCopy_Link"/>
     <addaction name="actionCreate_Link_List"/>
@@ -866,7 +853,6 @@
    <addaction name="actionShow_Part_List"/>
    <addaction name="actionRename"/>
    <addaction name="actionRename_By_Clipboard"/>
-   <addaction name="actionReplace"/>
    <addaction name="actionOpen"/>
    <addaction name="actionTarget_Folder"/>
    <addaction name="actionCopy_Link"/>
@@ -985,17 +971,6 @@
    <addaction name="actionDelete_Incoming"/>
    <addaction name="separator"/>
    <addaction name="actionReload_Incoming"/>
-  </widget>
-  <widget class="QToolBar" name="coreToolBar">
-   <property name="windowTitle">
-    <string>toolBar</string>
-   </property>
-   <attribute name="toolBarArea">
-    <enum>TopToolBarArea</enum>
-   </attribute>
-   <attribute name="toolBarBreak">
-    <bool>false</bool>
-   </attribute>
   </widget>
   <action name="actionConfigure">
    <property name="icon">
@@ -1155,7 +1130,7 @@
   <action name="actionCopy_Link">
    <property name="icon">
     <iconset resource="images.qrc">
-     <normaloff>:/link.png</normaloff>:/link.png</iconset>
+     <normaloff>:/text_block.png</normaloff>:/text_block.png</iconset>
    </property>
    <property name="text">
     <string>Copy Link</string>
@@ -1233,7 +1208,7 @@
   <action name="actionCopy_Link_Search">
    <property name="icon">
     <iconset resource="images.qrc">
-     <normaloff>:/link.png</normaloff>:/link.png</iconset>
+     <normaloff>:/text_block.png</normaloff>:/text_block.png</iconset>
    </property>
    <property name="text">
     <string>Copy Link</string>
@@ -1341,7 +1316,7 @@
   <action name="actionCopy_Link_Share">
    <property name="icon">
     <iconset resource="images.qrc">
-     <normaloff>:/link.png</normaloff>:/link.png</iconset>
+     <normaloff>:/text_block.png</normaloff>:/text_block.png</iconset>
    </property>
    <property name="text">
     <string>Copy Link</string>
@@ -1440,18 +1415,6 @@
     <string>Check for Update</string>
    </property>
   </action>
-  <action name="actionReplace">
-   <property name="icon">
-    <iconset resource="images.qrc">
-     <normaloff>:/replace.png</normaloff>:/replace.png</iconset>
-   </property>
-   <property name="text">
-    <string>Replace</string>
-   </property>
-   <property name="toolTip">
-    <string>Replace Parts Of Filenames</string>
-   </property>
-  </action>
  </widget>
  <customwidgets>
   <customwidget>
@@ -1465,11 +1428,6 @@
    <extends>QWidget</extends>
    <header>partswidget.h</header>
    <container>1</container>
-  </customwidget>
-  <customwidget>
-   <class>DragNDropTreeWidget</class>
-   <extends>QTreeWidget</extends>
-   <header>dragndroptreewidget.h</header>
   </customwidget>
  </customwidgets>
  <resources>

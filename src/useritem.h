@@ -43,37 +43,38 @@ public:
 
     ~UserItem();
 
-    void update(const QString& fileName, const QString& nickname, const QString& speed,
-                const QString& status, const QString& power, const QString& queuePos,
-                const QString& statusString, QIcon& osIcon, const QString& downloadfrom,
-                const QString& downloadto, const QString& actualdownloadposition,
-                const QString& source, const QTime& time);
+    void update( const QString& fileName, const QString& nickname, const QString& speed, const QString& status, const QString& power, const QString& queuePos, const QString& statusString, QIcon& osIcon, const QString& downloadfrom, const QString& downloadto, const QString& actualdownloadposition, const QTime& time );
 
     void setSpeed( const QString& newSpeedString, const QTime& time );
 
-    int getSpeed() {
+    int getSpeed()
+    {
         return speed;
     }
-    int getQueuePos() {
+    int getQueuePos()
+    {
         return queuePos;
     }
-    QString getId() {
+    QString getId()
+    {
         return id;
     }
-    QString getPower() {
+    QString getPower()
+    {
         return power;
     }
     void setAvgSpeed();
-    QProgressBar* progressChunk;
 private:
     void init();
 protected:
-    int speed, queuePos;
+    int speed;
     QList<int> speeds;
     QList<QTime> times;
-    QString id, power, fileName;
+    QString id;
+    int queuePos;
+    QString power;
+    QString fileName;
     bool fileNameSet;
-
 };
 
 #endif

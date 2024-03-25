@@ -1,7 +1,7 @@
 Source: juicer
 Section: juicer
 Priority: optional
-Maintainer: Matthias Reif <matthias_reif@web.de>
+Maintainer: red171 <red171@applejuicenet.cc>
 Build-Depends: zlib1g-dev, libqt4-dev (>= 4.4), qt4-qmake (>= 4.4), gcc, g++, make, debhelper
 
 Package: juicer

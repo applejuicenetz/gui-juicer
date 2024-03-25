@@ -50,6 +50,7 @@ public:
 
     enum Type {GET, SET};
     void resetHttp();
+    int exec(const QString & request, int nErrors = 0);
     int make(Type type, const QString & request, QString param = "");
     int get(const QString & request, QString param = "");
     int set(const QString & request, QString param = "");
@@ -60,10 +61,8 @@ public:
 
     QString getRecentTime() const { return timeStamp; }
     const QDomDocument& getContent() const { return doc; }
-    int setHost(const QString& hostName, quint16 port = 80);
 
 protected:
-    int exec(const QString & request);
     Juicer *juicer;
     QString timeStamp;
     QString passwordMD5;
@@ -88,7 +87,6 @@ private:
     void handleShares(QDomElement& e);
     void handleIds(QDomNode& node);
     void handleNetworkInfo(QDomElement& e);
-    void handleInformation(QDomElement& e);
     void handleUpload(QDomElement& e);
     void handleDownload(QDomElement& e);
     void handleUser(QDomElement& e, QTime& time);
