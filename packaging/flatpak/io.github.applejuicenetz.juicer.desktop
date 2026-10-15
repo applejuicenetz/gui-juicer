@@ -1,0 +1,9 @@
+[Desktop Entry]
+Type=Application
+Name=appleJuice Juicer
+Comment=Qt4-Oberfläche für den appleJuice Core
+Exec=juicer %u
+Icon=io.github.applejuicenetz.juicer
+Terminal=false
+Categories=Network;FileTransfer;P2P;
+MimeType=x-scheme-handler/ajfsp;

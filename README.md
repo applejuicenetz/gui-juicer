@@ -1,40 +1,23 @@
-# appleJuice Qt4 GUI - juicer
+# Juicer
 
+[![Release](https://img.shields.io/github/v/release/applejuicenetz/gui-juicer.svg)](https://github.com/applejuicenetz/gui-juicer/releases/latest)
+[![Downloads](https://img.shields.io/github/downloads/applejuicenetz/gui-juicer/total)](https://github.com/applejuicenetz/gui-juicer/releases)
+[![Lizenz](https://img.shields.io/github/license/applejuicenetz/gui-juicer.svg)](LICENSE)
+[![CI](https://github.com/applejuicenetz/gui-juicer/actions/workflows/ci.yml/badge.svg)](https://github.com/applejuicenetz/gui-juicer/actions/workflows/ci.yml)
+[![Release-Build](https://github.com/applejuicenetz/gui-juicer/actions/workflows/build.yml/badge.svg)](https://github.com/applejuicenetz/gui-juicer/actions/workflows/build.yml)
 
-## create build container
+Juicer ist eine Qt4-Oberfläche für den appleJuice Core. Die Verbindung erfolgt über dessen HTTP/XML-Schnittstelle.
 
-```bash
-docker build -f Dockerfile -t applejuicenet/gui-juicer:dev .
-```
+## Linux
 
-### build debian package
+Build-Ziele sind ausschließlich **64 Bit: amd64 und arm64**. Das Archiv für die eigene Architektur entpacken und `./juicer` starten. Qt4-Bibliotheken liegen im Archiv; Systembibliotheken für X11, Schriftarten, Bilder und OpenSSL müssen auf dem Zielsystem vorhanden sein. Die Pakete sind keine vollständig statischen Anwendungen.
 
-```bash
-docker run -t -i --rm -v $PWD:/work applejuicenet/gui-juicer:dev bash
-cd packaging
-./create_release.sh
-```
+Im Anmeldedialog Host, XML-Port (standardmäßig `9851`) und Core-Passwort eintragen. Für lokale Verbindungen `127.0.0.1` verwenden. Der Core muss separat installiert und gestartet sein.
 
-### build for Windows
+Dateigrößen und Chunkpositionen werden als 64-Bit-Werte verarbeitet. Fortschrittsbalken verwenden einen skalierten Wertebereich.
 
-```bash
-# TODO 
-```
+## Einschränkungen
 
-### build on macOS
+Docker wird nur zum Bauen verwendet und ist zum Starten der Pakete nicht nötig.
 
-```bash
-brew tap cartr/qt4
-brew install qt@4
-cd src
-export QMAKESPEC=macx-g++
-/usr/local/Cellar/qt@4/4.8.7_6/bin/qmake
-# make clean
-make
-```
-
-## nice2know
-
-Update kamen über
-
-`applejuicer.net/update/update.xml`
+Lizenz: GNU GPL v3 oder neuer, siehe [LICENSE](LICENSE).

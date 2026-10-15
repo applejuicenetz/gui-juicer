@@ -1,0 +1,7 @@
+FROM ubuntu:18.04
+ENV DEBIAN_FRONTEND=noninteractive
+RUN apt-get update \
+ && apt-get install -y --no-install-recommends build-essential libqt4-dev qt4-qmake zlib1g-dev xvfb xauth file ca-certificates \
+ && rm -rf /var/lib/apt/lists/*
+WORKDIR /work
+CMD ["sh", "-ec", "qmake juicer.pro && make -j2"]

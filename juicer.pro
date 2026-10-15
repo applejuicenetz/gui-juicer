@@ -1,10 +1,3 @@
-
-QT += ftp
-QT += widgets
-
-TEMPLATE = subdirs 
+TEMPLATE = subdirs
 SUBDIRS = src
-CONFIG += warn_on \
-          qt \
-          thread \
-          release
+CONFIG += release

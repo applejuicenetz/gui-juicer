@@ -53,7 +53,8 @@
 #include "convert.h"
 #include "serversocket.h"
 #include "iconwidget.h"
-#include "autoupdate.h"
+#include "updatecheck.h"
+#include "aboutdialog.h"
 
 static const QString WINDOWS = "1";
 static const QString LINUX = "2";
@@ -81,7 +82,9 @@ public:
     QList<IconWidget*> statusBarWidgets;   /// hide-able statusbar widgets
     OptionsDialog *optionsDialog;
 
-    void setStatusBarText(const QString& downSpeed, const QString& upSpeed, const QString& credits, const QString& downSize, const QString& upSize);
+    void setStatusBarText(const QString& downSpeed, const QString& upSpeed,
+                          const QString& credits, const QString& downSize,
+                          const QString& upSize, const QString& openConnections);
     void setFilesystemSeparator(const QString& separator);
     // returns filesystemseperator of the remote filesystem where the Core runs
     QString getFilesystemSeparator() const;
@@ -95,7 +98,7 @@ public:
     static QStringList getExec();
     void setClipboard(const QString& text);
     static QStringList getAjfspLinks(const QString& text, const QString& type = "[^|]*");
-    void processLinks(const QString& text, const QString& type = "[^|]*");
+    QStringList processLinks(const QString& text, const QString& type = "[^|]*");
     QString getTempDirectory() const;
     QString getIncomingDirectory() const;
     void setTempDirectory(const QString& folder);
@@ -103,6 +106,9 @@ public:
     QString getAppPath() const;
     void setFirewalled(bool  firewalled);
     void autoUpdate();
+    void setCurrentProfile();
+    void notifyAjfspLink(QStringList& links);
+    void restartTimer(int sec  = -1);
 
 protected:
     void initToolBars();
@@ -127,26 +133,32 @@ protected:
     QLineEdit *ajAddressEdit;
     QToolButton *ajAddressButton;
     QLabel *warnFirewallLabel;
-    IconWidget *downSpeedLabel, *upSpeedLabel, *creditsLabel, *downSizeLabel, *upSizeLabel, *coreVersionLabel, *connectedLabel;
+    IconWidget *downSpeedLabel, *upSpeedLabel, *creditsLabel, *downSizeLabel,
+               *upSizeLabel, *coreVersionLabel, *connectedLabel, *connectionsLabel;
     bool started, connected, localCore;
     QStringList queuedLinks;
     int firstModifiedCnt, firstModifiedMax;
     QSplashScreen *splash;
     QStringList clipboardTexts;
-    AutoUpdate* autoUpdater;
+    UpdateCheck* updateCheck;
+    QWidget* profilesWidget;
+    QHBoxLayout* profilesBox;
+    QButtonGroup* profileGroup;
 
 private slots:
+    void processLinksAndNotify(const QString& text, const QString& type = "[^|]*");
+
     bool login(const QString& message = "<h3>Login</h3>", bool error = false);
     void openAjL();
     void about();
     void aboutQt();
-    void timerSlot();
+    void checkForUpdate();
     void showOptions();
     void settingsReady(const AjSettings& settings);
     void xmlError(const QString& reason);
     void gotSession();
     void processLink(const QString& link);
-    void processLink();
+    void processLinkFromToolbar();
     void processClipboard();
     void tabChanged(int index);
     void quit();
@@ -159,8 +171,10 @@ private slots:
     void showManual();
     void clipboardChanged(QClipboard::Mode mode);
     void getNetworkInfo();
+    void profileButtonClicked(QAbstractButton* button);
 public slots:
     void requestFinished(int id, bool error);
+    void timerSlot();
 };
 
 #endif

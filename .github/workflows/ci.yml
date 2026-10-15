@@ -1,0 +1,36 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  tests:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - name: Check shell scripts
+        run: sh -n packaging/build-linux.sh packaging/build-windows.sh packaging/build-flatpak.sh
+      - name: Run Qt4 regression tests only
+        run: |
+          docker build -f Dockerfile.qt4 -t juicer-tests .
+          docker run --rm -v "$PWD:/source:ro" juicer-tests sh -ec '
+            mkdir -p /tests/tests /tests/src
+            cp /source/tests/*.cpp /source/tests/*.pro /tests/tests/
+            cp /source/src/item.cpp /source/src/item.h /source/src/convert.cpp /source/src/convert.h /source/src/updatecheck.cpp /source/src/updatecheck.h /tests/src/
+            cd /tests/tests
+            Xvfb :88 -screen 0 1024x768x24 >/dev/null 2>&1 &
+            export DISPLAY=:88
+            sleep 1
+            qmake tests.pro
+            make -j2
+            ./progress_test
+            qmake updatecheck_test.pro
+            make -j2
+            ./updatecheck_test
+          '

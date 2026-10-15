@@ -24,6 +24,8 @@
 #include <QTreeWidget>
 #include <QApplication>
 #include <QUrlInfo>
+#include <QProgressBar>
+#include <QVBoxLayout>
 
 #include "convert.h"
 
@@ -34,8 +36,8 @@ class Item : public QTreeWidgetItem, public QObject
 {
 // Q_OBJECT
 public:
-    Item( QTreeWidget *parent, const QString& id="generic" );
-    Item( QTreeWidgetItem *parent, const QString& id="generic" );
+    Item(QTreeWidget *parent, const QString& id="generic");
+    Item(QTreeWidgetItem *parent, const QString& id="generic");
 
     virtual ~Item();
 
@@ -52,19 +54,24 @@ public:
     QString getFilename() const {
         return filename_;
     }
-    double getSize() const {
+    qulonglong getSize() const {
         return size_;
     }
     bool setHiddenSave(bool hidden);
     void setFileIcon(int column);
     void setFileIcon(int column, QFileInfo& file);
     void setFileIcon(int column, QUrlInfo& url);
-
+    QProgressBar* initProgressBar(int col);
 protected:
+    void initProgressBar(QProgressBar& progressBar, int col);
+    static void updateProgressBar(QProgressBar& progressBar,
+                const QString& from, const QString& to, const QString& current);
+    static void updateProgressBar(QProgressBar& progressBar, qulonglong from, qulonglong to, qulonglong current);
+    static int progressPercentualValue(const QProgressBar& progressBar);
     QString id_;
     QString status_;
 
-    double  size_;
+    qulonglong size_;
     QString hash_;
     QString filename_;
 };

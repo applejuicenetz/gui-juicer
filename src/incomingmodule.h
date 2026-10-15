@@ -22,6 +22,7 @@
 
 #include <QFileDialog>
 #include <QMessageBox>
+#include <QFileSystemWatcher>
 
 #include "optionsdialog.h"
 #include "incomingitem.h"
@@ -40,6 +41,7 @@ public:
     IncomingModule(Juicer* juicer);
     ~IncomingModule();
     void setDir(const QString& dir);
+    QString getActualIncomingDir();
 
 private:
     void initToolBar();
@@ -49,10 +51,10 @@ private:
     void openFtp();
     void removeFtp();
     void initPopup();
-    AjSettings::LOCATION getLocation();
     bool confirmRemove(QItemList& items);
     QFtp* ftp;
     QLabel* waitLabel;
+    QFileSystemWatcher* watcher;
 
 public slots:
     void reload();
@@ -61,6 +63,7 @@ public slots:
     void remove();
     void insert(QUrlInfo info);
     void selectionChanged();
+    void resetWatcher();
 private:
     class CopyThread : public QThread {
         public:

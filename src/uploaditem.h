@@ -21,7 +21,6 @@
 #define QAJUPLOADITEM_H
 
 #include <QHeaderView>
-#include <QProgressBar>
 
 #include "item.h"
 
@@ -55,11 +54,6 @@ public:
                   LOADED_COL      = 9,
                   LASTSEEN_COL    = 10 };
 
-    enum progressBars {
-                  PRGB_CHUNKS,
-                  PRGB_LOADED
-                };
-
     virtual bool operator<( const QTreeWidgetItem & other ) const;
     bool update(const QIcon& osIcon, const QString& status, const QString& statusDescr,
                 const QString& directState, const QString& priority, const QString& nick,
@@ -71,10 +65,8 @@ public:
         return shareId;
     }
 
-    int progressPercentualValue( progressBars p ) const;
 private:
-    void initProgressBar( QProgressBar& progressBar, column col );
-    void updateChunkProgress( int uploadFrom, int uploadTo, int uploadCurrent );
+    void updateChunkProgress(qulonglong uploadFrom, qulonglong uploadTo, qulonglong uploadCurrent);
     void updateLoadedProgress( const QString& loaded );
     void updateLastSeen( const QString& lastSeen );
 };

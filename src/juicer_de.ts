@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
 <TS version="2.0" language="de">
-<defaultcodec></defaultcodec>
 <context>
     <name></name>
     <message>
@@ -265,8 +264,8 @@ Sie können das Incoming-Verzeichnis selbst bei den Einstellungen angeben.</tran
         <location filename="juicer.cpp" line="172"/>
         <source>Tray Icon is enabled so Juicer runs minimized in the background.
 Use Quit GUI to close the GUI.</source>
-        <translation type="unfinished">Das Tray-Icon ist aktiviert damit juicer minimiert im hintergrund läuft.
-Benutzen Sie &quot;GUI schließen&quot; aus dem Menu um die HUI zu beenden.</translation>
+        <translation type="unfinished">Das Tray-Icon ist aktiviert damit Juicer minimiert im Hintergrund läuft.
+Benutzen Sie &quot;GUI schließen&quot; aus dem Menu um die Juicer zu beenden.</translation>
     </message>
     <message>
         <source>Downstream: %1/s</source>

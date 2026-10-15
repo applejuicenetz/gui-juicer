@@ -1,0 +1,27 @@
+id: io.github.applejuicenetz.juicer
+runtime: org.freedesktop.Platform
+runtime-version: '25.08'
+sdk: org.freedesktop.Sdk
+command: juicer
+build-options:
+  no-debuginfo: true
+finish-args:
+  - --share=network
+  - --share=ipc
+  - --socket=x11
+  - --filesystem=xdg-download
+  - --filesystem=~/appleJuice:create
+modules:
+  - name: juicer
+    buildsystem: simple
+    build-commands:
+      - mkdir -p /app/lib /app/bin
+      - cp -a lib/. /app/lib/
+      - install -Dm755 bin/juicer /app/bin/juicer.bin
+      - install -Dm755 juicer.sh /app/bin/juicer
+      - install -Dm644 juicer.png /app/share/icons/hicolor/128x128/apps/io.github.applejuicenetz.juicer.png
+      - install -Dm644 io.github.applejuicenetz.juicer.desktop /app/share/applications/io.github.applejuicenetz.juicer.desktop
+      - install -Dm644 io.github.applejuicenetz.juicer.metainfo.xml /app/share/metainfo/io.github.applejuicenetz.juicer.metainfo.xml
+    sources:
+      - type: dir
+        path: ../../dist/flatpak-stage

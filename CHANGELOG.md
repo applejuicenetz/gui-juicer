@@ -1,5 +1,13 @@
 # Changelog
 
+### Version 1.3
+
+* Unterstützung für Dateien über 2 GiB (64-Bit-Dateigrößen und -Positionen) passend zum neuen Core; mit großen Dateien gegen einen echten Core getestet
+* Größen in ajfsp-Links, Suchergebnissen, Freigaben und Listenexport werden nicht mehr abgeschnitten
+* Fortschrittsanzeigen für Down- und Uploads korrekt bei Positionen über 4 GiB
+* Neue Pakete: Windows-Setup (x64, läuft auch auf Windows ARM64), Linux-Archive für amd64 und arm64, Flatpak für arm64
+* Update-Prüfung über die GitHub-Release-API mit Link auf die Release-Seite; das alte Self-Update (HTTP-Download und Überschreiben der Programmdateien) ist entfernt
+
 ### Version 1.2
 
 * Dock-Widgets für Teileliste und Server-Willkommensnachricht

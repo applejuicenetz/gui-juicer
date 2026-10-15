@@ -2,5 +2,16 @@
 build/
 Makefile
 *.o
-*.cpp
+moc_*.cpp
+qrc_*.cpp
+/dist/
+/src/juicer
+/src/.moc/
+/src/.obj/
+ui_*.h
+/tests/progress_test
+/tests/updatecheck_test
+/tests/*.log
+__pycache__/
 
+.flatpak-builder/

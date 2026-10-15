@@ -1,0 +1,11 @@
+FROM ubuntu:18.04
+ENV DEBIAN_FRONTEND=noninteractive
+RUN apt-get update && apt-get install -y --no-install-recommends ca-certificates curl gnupg make file \
+ && curl -fsSL https://pkg.mxe.cc/repos/apt/client-conf/mxeapt.gpg -o /tmp/mxe-key \
+ && gpg --dearmor < /tmp/mxe-key > /usr/share/keyrings/mxe.gpg \
+ && printf 'deb [signed-by=/usr/share/keyrings/mxe.gpg] https://pkg.mxe.cc/repos/apt bionic main\n' > /etc/apt/sources.list.d/mxe.list \
+ && apt-get update \
+ && apt-get install -y --no-install-recommends mxe-x86-64-w64-mingw32.static-qt \
+ && rm -rf /var/lib/apt/lists/*
+ENV PATH=/usr/lib/mxe/usr/bin:$PATH
+WORKDIR /build
