@@ -18,7 +18,7 @@
     InstallDirRegKey HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${PRODUCT}" "InstallLocation"
     InstallDir "$PROGRAMFILES64\${COMPANY}\${PRODUCT_SHORT}"
     Name "${PRODUCT}"
-    OutFile "${OUTPUT}/juicer-1.3-windows-x86_64-setup.exe"
+    OutFile "${OUTPUT}/juicer-1.3.1-windows-x86_64-setup.exe"
     SetCompressor lzma
     RequestExecutionLevel admin
     ShowInstDetails show
@@ -65,7 +65,7 @@ Section ""
     AddSize ${INSTALLSIZE}
 
     SetOutPath "$INSTDIR"
-    File /oname=${EXE_NAME}.exe "${OUTPUT}/juicer-1.3-windows-x86_64.exe"
+    File /oname=${EXE_NAME}.exe "${OUTPUT}/juicer-1.3.1-windows-x86_64.exe"
 
     WriteUninstaller "uninstaller.exe"
 
@@ -75,7 +75,7 @@ Section ""
 
     # uninstaller keys
     WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${PRODUCT}" "DisplayName" "${PRODUCT}"
-    WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${PRODUCT}" "DisplayVersion" "1.3"
+    WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${PRODUCT}" "DisplayVersion" "1.3.1"
     WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${PRODUCT}" "UninstallString" '"$INSTDIR\uninstaller.exe"'
     WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${PRODUCT}" "InstallLocation" "$INSTDIR"
     WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${PRODUCT}" "DisplayIcon" '"$INSTDIR\${EXE_NAME}.exe",0'

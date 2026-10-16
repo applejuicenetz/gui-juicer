@@ -1,5 +1,13 @@
 # Changelog
 
+### Version 1.3.1
+
+* Neuer Start-Tab mit den appleJuice-News passend zur Core-Version, wie in den anderen GUIs; Links öffnen im Browser
+* HTTPS funktioniert jetzt auch unter Linux: Pakete bringen OpenSSL 1.0 mit; News und Update-Prüfung sind damit erreichbar
+* Server-Quelle verwendet die aktuelle URL `http://www.applejuicenet.cc/serverlist/xmllist.php` wie JavaGUI und phpGUI; die alte Adresse wird automatisch ersetzt
+* Schreibweise „appleJuice“ im Menü
+* Über-Dialog verweist auf das GitHub-Repository statt auf `applejuicer.net`
+
 ### Version 1.3
 
 * Unterstützung für Dateien über 2 GiB (64-Bit-Dateigrößen und -Positionen) passend zum neuen Core; mit großen Dateien gegen einen echten Core getestet
