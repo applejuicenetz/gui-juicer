@@ -29,6 +29,12 @@ sleep 1
 qmake updatecheck_test.pro
 make -j2
 ./updatecheck_test
+qmake newsfeed_test.pro
+make -j2
+./newsfeed_test
+qmake serverlist_test.pro
+make -j2
+./serverlist_test
 cd /build
 mkdir -p /output/stage/bin /output/stage/lib
 cp src/juicer /output/stage/bin/
@@ -36,6 +42,11 @@ strip /output/stage/bin/juicer
 ldd src/juicer | while read name arrow path rest; do
  case "$name" in libQt*|libaudio*) cp -L "$path" /output/stage/lib/;; esac
 done
+cp -L /opt/openssl-1.0.2/lib/libssl.so.1.0.0 /opt/openssl-1.0.2/lib/libcrypto.so.1.0.0 /output/stage/lib/
+# Qt4 muss OpenSSL aus dem Paket finden, nicht aus der Build-Umgebung.
+cd /build/tests
+env LD_LIBRARY_PATH=/output/stage/lib ./newsfeed_test
+cd /build
 printf "#!/bin/sh\nHERE=\$(CDPATH= cd -- \"\$(dirname \"\$0\")\" && pwd)\nexport LD_LIBRARY_PATH=\"\$HERE/lib\${LD_LIBRARY_PATH:+:\$LD_LIBRARY_PATH}\"\nexec \"\$HERE/bin/juicer\" \"\$@\"\n" > /output/stage/juicer
 chmod +x /output/stage/juicer
 cp /source/LICENSE /output/stage/
@@ -47,7 +58,7 @@ result=$?
 set -e
 [ "$result" = 124 ] || { cat /output/smoke.log; exit 1; }
 arch=$(dpkg --print-architecture)
-tar -czf /output/juicer-1.3-linux-$arch.tar.gz -C /output/stage .
+tar -czf /output/juicer-1.3.1-linux-$arch.tar.gz -C /output/stage .
 rm -rf /output/stage
 '
-sha256sum "$root/dist/juicer-1.3-linux-$arch.tar.gz"
+sha256sum "$root/dist/juicer-1.3.1-linux-$arch.tar.gz"

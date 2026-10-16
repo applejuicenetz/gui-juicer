@@ -30,6 +30,23 @@
       <property name="currentIndex">
        <number>0</number>
       </property>
+      <widget class="QWidget" name="start">
+       <attribute name="icon">
+        <iconset resource="images.qrc">
+         <normaloff>:/small/version.png</normaloff>:/small/version.png</iconset>
+       </attribute>
+       <attribute name="title">
+        <string>Start</string>
+       </attribute>
+       <layout class="QVBoxLayout" name="verticalLayout_start">
+        <property name="margin">
+         <number>0</number>
+        </property>
+        <item>
+         <widget class="QTextBrowser" name="newsBrowser"/>
+        </item>
+       </layout>
+      </widget>
       <widget class="DockMain" name="downloads">
        <attribute name="icon">
         <iconset resource="images.qrc">
@@ -702,7 +719,7 @@
    </property>
    <widget class="QMenu" name="menuAppleJuice">
     <property name="title">
-     <string>&amp;AppleJuice</string>
+     <string>&amp;appleJuice</string>
     </property>
     <addaction name="actionConfigure"/>
     <addaction name="actionNet_Info"/>

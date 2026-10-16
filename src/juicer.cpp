@@ -66,11 +66,12 @@ Juicer::Juicer(const QStringList& argList, QSplashScreen *splash, const QFileInf
     shareModule = new ShareModule(this);
     incomingModule = new IncomingModule(this);
 
-    prevTab = downloads;
+    prevTab = start;
 
     networkDialog = new NetworkDialog(this);
     optionsDialog = new OptionsDialog(this);
     updateCheck = new UpdateCheck(this);
+    newsFeed = new NewsFeed(newsBrowser, this);
 
     initToolBars();
     connectActions();
@@ -94,7 +95,7 @@ Juicer::Juicer(const QStringList& argList, QSplashScreen *splash, const QFileInf
 
     connect(ajTab, SIGNAL(currentChanged(int)), this, SLOT(tabChanged(int)));
 
-    tabChanged(ajTab->indexOf(downloads));
+    tabChanged(ajTab->indexOf(start));
 
     // -- we need to do this as an event, because we can quit the application only if it is already in the event loop --
     QTimer::singleShot(0, this, SLOT(login()));
@@ -442,6 +443,7 @@ void Juicer::exitCore() {
 
 void Juicer::setCoreVersion(const QString& version) {
     coreVersionLabel->setText(version);
+    newsFeed->load(version);
 }
 
 void Juicer::connectedSince(const QString& since) {

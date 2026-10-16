@@ -22,7 +22,7 @@ jobs:
           docker run --rm -v "$PWD:/source:ro" juicer-tests sh -ec '
             mkdir -p /tests/tests /tests/src
             cp /source/tests/*.cpp /source/tests/*.pro /tests/tests/
-            cp /source/src/item.cpp /source/src/item.h /source/src/convert.cpp /source/src/convert.h /source/src/updatecheck.cpp /source/src/updatecheck.h /tests/src/
+            cp /source/src/item.cpp /source/src/item.h /source/src/convert.cpp /source/src/convert.h /source/src/updatecheck.cpp /source/src/updatecheck.h /source/src/newsfeed.cpp /source/src/newsfeed.h /source/src/serverlist.cpp /source/src/serverlist.h /tests/src/
             cd /tests/tests
             Xvfb :88 -screen 0 1024x768x24 >/dev/null 2>&1 &
             export DISPLAY=:88
@@ -33,4 +33,10 @@ jobs:
             qmake updatecheck_test.pro
             make -j2
             ./updatecheck_test
+            qmake newsfeed_test.pro
+            make -j2
+            ./newsfeed_test
+            qmake serverlist_test.pro
+            make -j2
+            ./serverlist_test
           '

@@ -54,6 +54,7 @@
 #include "serversocket.h"
 #include "iconwidget.h"
 #include "updatecheck.h"
+#include "newsfeed.h"
 #include "aboutdialog.h"
 
 static const QString WINDOWS = "1";
@@ -141,6 +142,7 @@ protected:
     QSplashScreen *splash;
     QStringList clipboardTexts;
     UpdateCheck* updateCheck;
+    NewsFeed* newsFeed;
     QWidget* profilesWidget;
     QHBoxLayout* profilesBox;
     QButtonGroup* profileGroup;

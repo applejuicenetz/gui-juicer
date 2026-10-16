@@ -1,4 +1,4 @@
-VERSION = 1.3
+VERSION = 1.3.1
 
 
 FORMS += optionsdialogbase.ui \
@@ -47,6 +47,8 @@ HEADERS += ftp.h \
  convert.h \
  dirselectiondialog.h \
  updatecheck.h \
+ newsfeed.h \
+ serverlist.h \
  dragndroptreewidget.h \
  replacedialog.h \
  aboutdialog.h \
@@ -88,6 +90,8 @@ SOURCES += main.cpp \
  downloadmodule.cpp \
  ftp.cpp \
  updatecheck.cpp \
+ newsfeed.cpp \
+ serverlist.cpp \
  dragndroptreewidget.cpp \
  replacedialog.cpp \
  aboutdialog.cpp \

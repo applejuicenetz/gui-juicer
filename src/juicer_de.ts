@@ -249,6 +249,20 @@ Sie können das Incoming-Verzeichnis selbst bei den Einstellungen angeben.</tran
     </message>
 </context>
 <context>
+    <name>ServerList</name>
+    <message>
+        <source>The response is too large.</source>
+        <translation>Die Antwort ist zu groß.</translation>
+    </message>
+</context>
+<context>
+    <name>NewsFeed</name>
+    <message>
+        <source>The news could not be loaded.</source>
+        <translation>Die News konnten nicht geladen werden.</translation>
+    </message>
+</context>
+<context>
     <name>Juicer</name>
     <message>
         <location filename="juicer.cpp" line="127"/>
@@ -414,12 +428,12 @@ URL: http://ajqtgui.sf.net</translation>
 
 GUI for appleJuice Filesharing
 
-http://applejuicer.net</source>
+https://github.com/applejuicenetz/gui-juicer</source>
         <translation type="unfinished">￼￼
 
 GUI für appleJuice Filesharing￼
 ￼
-http://applejuicer.net</translation>
+https://github.com/applejuicenetz/gui-juicer</translation>
     </message>
 </context>
 <context>
@@ -467,6 +481,10 @@ http://applejuicer.net</translation>
 </context>
 <context>
     <name>MainWindowBase</name>
+    <message>
+        <source>Start</source>
+        <translation>Start</translation>
+    </message>
     <message>
         <source>MainWindow</source>
         <translation type="obsolete">Hauptfenster</translation>
@@ -699,8 +717,8 @@ http://applejuicer.net</translation>
     </message>
     <message>
         <location filename="mainwindowbase.ui" line="672"/>
-        <source>&amp;AppleJuice</source>
-        <translation type="unfinished">&amp;Applejuice</translation>
+        <source>&amp;appleJuice</source>
+        <translation type="unfinished">&amp;appleJuice</translation>
     </message>
     <message>
         <location filename="mainwindowbase.ui" line="684"/>
