@@ -10,7 +10,7 @@ Juicer ist eine Qt4-Oberfläche für den appleJuice Core. Die Verbindung erfolgt
 
 ## Linux
 
-Build-Ziele sind ausschließlich **64 Bit: amd64 und arm64**. Das Archiv für die eigene Architektur entpacken und `./juicer` starten. Qt4-Bibliotheken liegen im Archiv; Systembibliotheken für X11, Schriftarten, Bilder und OpenSSL müssen auf dem Zielsystem vorhanden sein. Die Pakete sind keine vollständig statischen Anwendungen.
+Build-Ziele sind ausschließlich **64 Bit: amd64 und arm64**. Das Archiv für die eigene Architektur entpacken und `./juicer` starten. Qt4-Bibliotheken liegen im Archiv; Systembibliotheken für X11, Schriftarten und Bilder müssen auf dem Zielsystem vorhanden sein. Die Pakete sind keine vollständig statischen Anwendungen.
 
 Im Anmeldedialog Host, XML-Port (standardmäßig `9851`) und Core-Passwort eintragen. Für lokale Verbindungen `127.0.0.1` verwenden. Der Core muss separat installiert und gestartet sein.
 
