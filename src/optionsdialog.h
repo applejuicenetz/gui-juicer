@@ -27,6 +27,7 @@
 #include <QFontDialog>
 #include "ui_optionsdialogbase.h"
 #include "iconwidget.h"
+#include "serverlist.h"
 
 static const QString CONNECTED_SINCE = "0";
 static const QString CORE_VERSION = "1";

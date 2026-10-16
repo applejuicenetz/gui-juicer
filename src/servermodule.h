@@ -21,7 +21,7 @@
 #define QAJSERVERWIDGET_H
 
 #include <QHash>
-#include <QHttp>
+#include "serverlist.h"
 #include <QSettings>
 #include <QMessageBox>
 
@@ -49,14 +49,15 @@ public:
 private:
     QString connectedWithId, connectingToId;
     QHash<QString, ServerItem*> servers;
-    QHttp *serverHttp;
+    ServerList *serverList;
     QDateTime connectedSince;
 
 public slots:
     void connectSlot();
     void removeSlot();
     void searchSlot();
-    void gotServer( int id, bool error );
+    void gotServer( const QString& text );
+    void serverFailed( const QString& message );
     void selectionChanged();
 };
 

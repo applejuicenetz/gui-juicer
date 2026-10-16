@@ -30,8 +30,9 @@ ServerModule::ServerModule(Juicer* juicer) : ModuleBase(juicer, juicer->serverTr
     QObject::connect(juicer->actionRemove_Server, SIGNAL(triggered()), this, SLOT(removeSlot()));
     QObject::connect(juicer->actionSearch_Server, SIGNAL(triggered()), this, SLOT(searchSlot()));
 
-    serverHttp = new QHttp( this );
-    QObject::connect( serverHttp, SIGNAL( requestFinished ( int , bool ) ), this, SLOT( gotServer( int , bool ) ) );
+    serverList = new ServerList( this );
+    QObject::connect( serverList, SIGNAL( linksReady( const QString& ) ), this, SLOT( gotServer( const QString& ) ) );
+    QObject::connect( serverList, SIGNAL( failed( const QString& ) ), this, SLOT( serverFailed( const QString& ) ) );
 
     QObject::connect(juicer->actionShow_Welcome_Message, SIGNAL(triggered(bool)), juicer->welcomeDock, SLOT(setVisible(bool)));
     QObject::connect(juicer->welcomeDock, SIGNAL(visibilityChanged(bool)), juicer->actionShow_Welcome_Message, SLOT(setChecked(bool)));
@@ -87,16 +88,7 @@ void ServerModule::connectSlot() {
 
 void ServerModule::searchSlot()
 {
-    QString serverURL = OptionsDialog::getSetting( "serverURL", "http://www.applejuicenet.de/18.0.html" ).toString();
-
-    QString host;
-    if ( serverURL.indexOf( "http://", 0, Qt::CaseInsensitive ) == 0 )
-        host = serverURL.section( '/', 2, 2);
-    else
-        host = serverURL.section( '/', 0, 0);
-
-    serverHttp->setHost( host );
-    serverHttp->get( serverURL );
+    serverList->fetch( ServerList::effectiveUrl( OptionsDialog::getSetting( "serverURL", ServerList::defaultUrl() ).toString() ) );
 }
 
 void ServerModule::connectedWith(const QString& id) {
@@ -141,12 +133,12 @@ bool ServerModule::remove(const QString& id) {
     return false;
 }
 
-void ServerModule::gotServer(int , bool error) {
-    if(error) {
-        QMessageBox::critical( NULL, tr("error"), tr("Could not fetch server source.") , QMessageBox::Abort, QMessageBox::Cancel );
-    } else {
-        juicer->processLinks(serverHttp->readAll(), "server");
-    }
+void ServerModule::gotServer( const QString& text ) {
+    juicer->processLinks( text, "server" );
+}
+
+void ServerModule::serverFailed( const QString& message ) {
+    QMessageBox::critical( NULL, tr("error"), tr("Could not fetch server source.") + "\n" + message, QMessageBox::Abort, QMessageBox::Cancel );
 }
 
 

@@ -154,7 +154,7 @@ void OptionsDialog::setSettings() {
     showSplash->setChecked(getSetting("showSplash", true).toBool());
     trayCheckBox->setChecked(getSetting("useTray", false).toBool());
     altRowsCheckBox->setChecked(getSetting("altRows", false).toBool());
-    serverEdit->setText(getSetting("serverURL", "http://www.applejuicenet.de/18.0.html").toString());
+    serverEdit->setText(ServerList::effectiveUrl(getSetting("serverURL", ServerList::defaultUrl()).toString()));
     launchCombo->setEditText(getSetting("launcher", launchCombo->itemText(0)).toString());
     int location = getSetting("location", AjSettings::SAME).toInt();
     sameComputerRadio->setChecked(location == AjSettings::SAME);
