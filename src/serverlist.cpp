@@ -47,7 +47,7 @@ void ServerList::fetch(const QString& url) {
         target = "http://" + target;
     }
     redirects = 0;
-    QNetworkRequest request{QUrl(target)};
+    QNetworkRequest request((QUrl(target)));
     request.setRawHeader("User-Agent", "Juicer");
     reply = manager.get(request);
     connect(reply, SIGNAL(finished()), this, SLOT(finished()));
